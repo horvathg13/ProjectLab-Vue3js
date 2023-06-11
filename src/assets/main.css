@@ -1,0 +1,263 @@
+@import './base.css';
+
+
+#app {
+  background-color: #333;
+  min-height: 100vh;
+}
+
+/*General CSS Rules*/
+.header{
+  height: 55px;
+  z-index: 2;
+}
+.error-message-header{
+  height:20px;
+  color: #912d2b;
+  text-align: center;
+  font-weight: bold;
+}
+.background{
+  width: 100%;
+  background-position: center;
+  height: 100vh;
+  filter: blur(4px);
+  position: fixed;
+  top: 0;
+  
+  
+}
+
+span{
+  color: rgb(251, 215, 33);
+  font-weight: bold;
+}
+
+.main-container{
+  width: 100%;
+  min-height: calc(100vh - 55px);
+  
+}
+
+.form-container{
+  color: white;
+  width: 500px;
+  height: auto;
+  margin:auto;
+  
+}
+
+form{
+  height: 300px;
+  width: 500px;
+  margin-top: 10%;
+}
+
+.form button{
+  margin: auto;
+  left:50%;
+  top:2%;
+  transform: translate(-50%, -10%);
+}
+.dp__btn{
+  left: 0% !important;
+  transform: translate(0%) !important;
+}
+.dp__input_icon_pad{
+  padding-left: var(--dp-input-icon-padding)!important;
+}
+
+.centerd-component-container{
+  width: max-content;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+}
+
+.ui.error.message{
+  margin:auto;
+  width: fit-content;
+  border-radius: 25px;
+}
+.ui.message>.close.icon{
+  padding-left: 7px;
+}
+.scrolling-table-container{
+  height: 500px; 
+  overflow-y: auto;
+  border-radius: 15px;
+}
+
+.ui.table td{
+  padding: 0.7em ;
+}
+
+.dp__action_buttons{
+  right :15%;
+}
+
+/*Header*/
+.ui.buttons:not(.basic):not(.inverted){
+  padding-left: 90%;
+  padding-top: 1%;
+}
+.dropdown .menu.active {
+  display: block !important;
+}
+
+.ui.table thead th{
+  text-align: center;
+  vertical-align:baseline;
+}
+
+/* Greeting */
+.g-main-container{
+  min-height: calc(100vh - 55px);
+}
+
+.background.greeting{
+  background-image:url("../assets/GreetingP_icons/labyrinth_v2.jpg");
+  
+
+}
+
+.g-header-container{
+  color: white;
+  margin-top: 0px;
+  position: absolute;
+  top: calc(50% - 300px);
+  left: 5%;
+  z-index: 2;
+  width: 50%;
+  height: 75%;
+  margin:2% 20%;
+  text-align: center;
+}
+.g-main-header{
+  padding: 10px;
+}
+
+.g-header{
+  padding: 70px;
+}
+.g-main-header h1{
+  font-size: 110px;
+}
+
+.g-header h2{
+  font-size: 35px;
+}
+.g-buttons{
+  display: flex;
+  margin-left: 30%;
+}
+.g-buttons a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+
+/* Register */
+
+.background.register{
+  background-image:url("../assets/RegP_icons/reg-bg-v3.png");
+ filter: blur(1px);
+}
+
+.reg-img{
+  width: 53%;
+  background-image:url("../assets/RegP_icons/lab-nobg.png");
+  background-position: center;
+  height: 500px;
+  top: 10px;
+  background-size: 90%;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+  transition-property: all;
+  transition-duration: 1s;
+  transition-timing-function: ease-in-out;
+}
+
+.centerd-component-container:hover .reg-img {
+  opacity: 1;
+  background-size: 100%;
+}
+
+.form-title h1{
+  color: white;
+  font-size: 80px;
+  margin:0 25%
+}
+.field label{
+  color: white !important;
+  font-size: 20px !important;
+}
+.ui.large.form{
+  margin:auto
+}
+
+
+
+/*Login*/
+
+.background.login{
+  background-image:url("../assets/LoginP_icons/login_bcgrd_v3.jpg");
+}
+
+/*Home Page*/
+.background.home{
+  background-image: url("../assets/HomeP_icons/home_doors.jpg");
+  filter: blur(13px);
+}
+.ui.link.cards > .card {
+  width: 180px;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+}
+
+.ui.cards>.card>.image>img{
+  height: 200px;
+}
+.ui.cards>.card>.content{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  background-color: rgb(210, 245, 53);
+}
+.HP-title{
+  color: white;
+  margin: 0 auto;
+  width: max-content;
+}
+.HP-title h1{
+  font-size: 40px;
+}
+
+.HP-title h3{
+  font-size: 30px;
+}
+
+.ui.link.cards{
+  margin: 150px auto;
+  width: fit-content
+}
+
+/*Alternative Login*/
+.alternative-title-container{
+  color: white;
+  margin:0 auto;
+  position: absolute;
+  top: calc(50% - 250px);
+  width: 100%;
+  height: auto;
+  text-align: center;
+  margin-top: 2%;
+}
+.alternative-title-container h1{
+  font-size: 40px;
+}
+
+

@@ -1,72 +1,40 @@
 <script>
     import VueDatePicker from '@vuepic/vue-datepicker';
     import '@vuepic/vue-datepicker/dist/main.css'
+    import MultipleSelectComponents from '../Common/MultipleSelectComponents.vue'
     
     export default{
         name: "TaskAttachModal",
         components:{
             VueDatePicker,
+            MultipleSelectComponents,
         },
         props:{
-            getNoParticipants:Array,
-            isDropdownOpen: null,
-            isDropdownOpenActive: null,
-            getparticipans:Array,
-            taskData:Array
+            getProjectParticipants:Array,
+            getActiveTaskParticipants:Array,
+            
         },
         data(){
             return{
-                active_employee:{
-                    id:[],
-                    name:[],
-                    email:[],
-                },
-                remove_active_employee:[],
-                selected_employee:{
-                    id: [],
-                    name: [],
-                    email: [],
-                },
-                date:""
+                selected_employee:[],
+                
                 
             }
         },
         methods: {
-            toggleDrop(){
-                this.$emit("toggleDrop")
-                console.log("toggleDrop is working")
-            },
-            toggleDropActive(){
-                this.$emit("toggleDropActive")
-                console.log("secound toggle drop is working")
-            },
             cancelModal() {
                 this.$emit("cancel-modal");
             },
 
             attach(){
-                this.$emit("attach-user", { selected_employee: this.selected_employee, deadline: this.date,})
+                this.$emit("attach-user", {selected_employee: this.selected_employee})
             },
 
-            removeUser(){
-                this.$emit("remove-user", { remove: this.remove_active_employee})
-            },
+            makeSelection(data){
+                const {select}=data
 
-            remove(user){
-                remove_active_employee.push({
-                    "id" : user.id,
-                    "name" : user.name, 
-                    "email" : user.email
-                });
-
-                this.getNoParticipants.push(user)
-            },
-
-            select_employee(user) {
-                this.selected_employee.id = user.id;
-                this.selected_employee.name = user.name;
-                this.selected_employee.email = user.email
-            },
+                this.selected_employee = data
+            }
 
           
         },
@@ -84,7 +52,7 @@
             
                 <div class="header">
                     
-                    <h1>Let's Check Tasks</h1>
+                    <h1>Employee Controll Panel</h1>
                     
                 </div>
           
@@ -92,58 +60,34 @@
                 <div class="forms">
 
                     <div class="form-container">
+
                         <form class="ui form" @submit.prevent="attach" novalidate>
-                            <div class="field">
-                                <label>{{}}</label>
-                            </div>
-
-                            <div class="field"><label>Remove Avtive Employee(s)</label></div>
-                            <div class="ui fluid selection dropdown" @click="toggleDropActive" :class="{ active: remove_active_employee.name }">
-                                <i class="dropdown icon"></i>
-                                <input type="hidden" name="user" v-model="remove_active_employee.id">
-                                    <div class="selected-text">{{ remove_active_employee.name ? remove_active_employee.name + ' (' + remove_active_employee.email + ')':"" }}</div>
-                                    <div class="menu" :class="{ active: isDropdownOpen }" >
-                                        <div class="item" v-for="participant in getparticipant" :key="participant.id" @click="remove(participant)">
-                                            {{ participant.name }} ({{ participant.email }})
-                                        </div>
-                                    </div>
-                            </div>
-
-                            <div class="field"><label>Add employee(s)</label></div>
-                            <div class="ui fluid selection dropdown" @click="toggleDrop" :class="{ active: selected_employee.name }">
-                                <i class="dropdown icon"></i>
-                                <input type="hidden" name="user" v-model="selected_employee.id">
-                                    <div class="selected-text">{{ selected_employee.name ? selected_employee.name + ' (' + selected_employee.email + ')':"" }}</div>
-                                    <div class="menu" :class="{ active: isDropdownOpen }" >
-                                        <div class="item" v-for="user in getNoParticipants" :key="user.id" @click="select_employee(user)">
-                                            {{ user.name }} ({{ user.email }})
-                                        </div>
-                                    </div>
-                            </div>
-                            <div class="field">
-                                <label>Enter Deadline</label>
-                                <VueDatePicker v-model="date" 
-                                :flow="flow"
-                                :enable-time-picker="false"
-                                model-type="yyyy.MM.dd"
-                                >{{ date }}</VueDatePicker>
-                            </div>
+                           
+                            <div class="field"><label>Remove or Add Active Employee(s)</label></div>
+                            <MultipleSelectComponents :VforArray="this.getProjectParticipants.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" @select="makeSelection"></MultipleSelectComponents>
+                            
                     
-                            <button class="ui green button" type="submit">Create</button>
+                            <button class="ui green create button" type="submit">That's it!</button>
                         </form>
                     </div>
                     <div class="cancel">
                         <button class="ui red button" @click="cancelModal">Cancel</button>
                     </div>
                     
-              </div>
+                </div>
               
             </div>
-            
-      </div>
+        </div>    
+      
 </template>
 
-<style scoped>  
+<style scoped>
+    .ui.form .field{
+        margin: 25px 0 0
+    }
+    .ui.green.create.button{
+        top:30%
+    }
 
     .selected-text{
         color: black;

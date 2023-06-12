@@ -160,7 +160,7 @@
                 this.projectData = [project]
                 console.log(this.projectData,"érik a szőlő")
                 this.redirectToTasks = true;
-                //this.$router.push('/projects/tasks');
+                this.$router.push(`/projects/${project.project_id}/tasks`);
                 
             },
 
@@ -272,7 +272,7 @@
                             <td>
                                 <button class="ui small violet button"><i class="edit icon"></i>Edit</button>
                                 <button class="ui small orange button" @click="redirect(project)"><i class="tasks icon"></i>View Tasks</button>
-                                <button class="ui small green button" @click="showParticipantModal(project)"><i class="users icon"></i>Employees</button>
+                                <button class="ui small green button" @click="showParticipantModal(project)"><i class="user plus icon"></i>Employees</button>
 
                             </td>
                            

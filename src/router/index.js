@@ -54,7 +54,7 @@ const router = createRouter({
       props:true,
     },
     {
-      path: "/projects/tasks",
+      path: "/projects/:id?/tasks",
       name:"ProjectTasks",
       component: ProjectTasks,
       props:true,

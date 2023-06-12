@@ -66,9 +66,7 @@
 
                     <div class="form-container">
                         <form class="ui form" @submit.prevent="createParticipant" novalidate>
-                            <div class="field">
-                                <label>{{}}</label>
-                            </div>
+                           
                             <div class="field"><label>Employees</label></div>
                             <MultipleSelectComponents :VforArray="this.getusers.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" @select="makeSelection"></MultipleSelectComponents>
                             

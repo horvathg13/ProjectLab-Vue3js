@@ -6,6 +6,7 @@
   import ErrorPopup from './Common/ErrorPopup.vue';
   import TaskAttachModal from './Modals/TaskAttachModal.vue';
   
+  
 
   export default {
     name: "ProjectTasks",
@@ -17,7 +18,7 @@
         TaskAttachModal,
     },
     props:{
-        projectData:[]
+        
     },
 
     data() {
@@ -31,10 +32,15 @@
             deadline:"",
             description:"",
             t_priority:"",
-            isDropdownOpenActive:false,
-            getusers:Array,
+            getusers:{},
             priorities:Array,
             taskData:Array,
+            message:"",
+            projectData:[],
+            AttachTask:Array,
+            assignEmployee:Array,
+
+
         }
     },
    
@@ -44,11 +50,12 @@
             this.isDropdownOpenActive = !this.isDropdownOpenActive;
             console.log("Heyhó Active Dropping")
         },
-        Attach_Modal(){
+        Attach_Modal(task){
             if(this.show_Attach_Modal == false){
                 this.show_Attach_Modal = true
             }
-            console.log("attach_is active")
+            this.AttachTask = task
+            console.log(this.AttachTask,"attach_is active")
         },
         showCreateTaskModal(){
            
@@ -93,10 +100,6 @@
                             this.show_popup = false
                             this.cancelModal()
                         },  1500)
-                        
-                        
-                        
-                       
                     }
                 }).catch((error) => {
                         
@@ -111,22 +114,56 @@
                     }
                 });
             
-        },
+            },
+            AssignEmployeeToTask(data){
+                const {selected_employee}=data
+                this.assignEmployee=data.selected_employee.select;
+                console.log(this.assignEmployee, "mackó", JSON.stringify(this.AttachTask))
+                let formData = new FormData();
+                formData.append("employee",this.assignEmployee);
+                formData.append("toAttachTaskData",this.AttachTask);
+
+                let url ="http://127.0.0.1:8000/api/assign-employee-to-task";
+                ServiceClient.post(url,formData).then((response) =>{
+                    console.log(response);
+                    if (response.status == 200){
+                        this.show_popup = true
+                        setTimeout(() => {
+                            this.show_popup = false
+                            this.cancelModal()
+                        },  1500)
+                    }
+                }).catch((error) => {
+                        
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                            },  2000)
+                            
+                        }
+                    }
+                });
+            
+            },
+            
         
 
-            /*getProjectsById(){
-                let url ="http://127.0.0.1:8000/api/getprojects";
+            getProjectsById(){
+                let url =`http://127.0.0.1:8000/api/projects/${this.$route.params.id}`;
                 ServiceClient.post(url).then((response) =>{
                         
                         if (response.status == 200){
                             
-                            this.getprojects=response.data
+                            this.projectData=response.data
                             
                         }
                     }).catch((error) => {
                             
                         if (error.response && error.response.status) {
                             if (error.response.data && error.response.data.message) {
+                                this.message = error.response.data.message
                                 this.show_error_popup = true
                                 setTimeout(() => {
                                     this.show_error_popup = false
@@ -135,7 +172,7 @@
                             }
                         }
                     });
-            },*/
+            },
 
             getTaskEmployee(){
                 let url ="http://127.0.0.1:8000/api/get-task-employee";
@@ -181,19 +218,20 @@
 
             },
 
-            getTasks(p_id){
-                let url =`http://127.0.0.1:8000/api/gettasks/${p_id}`
+            getTasks(){
+                let url =`http://127.0.0.1:8000/api/projects/${this.$route.params.id}/tasks`
 
                 ServiceClient.post(url).then((response) =>{
                         
                     if (response.status == 200){
-                        this.taskData=Object.values(response.data)
+                        this.taskData=response.data
                         console.log(this.taskData, "szegény legény")
                     }
                 }).catch((error) => {
                         
                     if (error.response && error.response.status) {
                         if (error.response.data && error.response.data.message) {
+                            this.message = error.response.data.message
                             this.show_error_popup = true
                             setTimeout(() => {
                                 this.show_error_popup = false
@@ -203,16 +241,37 @@
                     }
                 });
 
-            }
+            },
+            getProjectParticipants(){
+                let url =`http://127.0.0.1:8000/api/getprojectparticipants/${this.$route.params.id}`;
+                ServiceClient.post(url).then((response) =>{
+                        
+                        if (response.status == 200){
+                           
+                            this.getusers=response.data
+                        }
+                    }).catch((error) => {
+                            
+                        if (error.response && error.response.status) {
+                            if (error.response.data && error.response.data.message) {
+                                this.show_error_popup = true
+                                setTimeout(() => {
+                                    this.show_error_popup = false
+                                },  4500)
+                                
+                            }
+                        }
+                    });
+            },
 
             
         },
         mounted(){
             this.getPriorities()
             console.log(this.projectData, "süsü")
-            this.p_id = this.projectData[0].project_id
-            console.log(this.p_id)
-            this.getTasks(this.projectData[0].project_id)
+            this.getProjectsById()
+            this.getProjectParticipants()
+            this.getTasks()
         }
     }
 
@@ -231,7 +290,7 @@
         <Success_Popup v-if="show_popup==true"></Success_Popup>
     </Transition>
     <Transition name="drop">
-        <ErrorPopup v-if="show_error_popup==true"></ErrorPopup>
+        <ErrorPopup v-if="show_error_popup==true" :message="this.message"></ErrorPopup>
     </Transition>
     <Transition name="drop">
         <AreYouSureModal v-if="show_areyousure_popup==true"></AreYouSureModal>
@@ -264,8 +323,8 @@
                         <td>
                             <button class="ui normal violet button"><i class="edit icon"></i>Edit Task</button>
                             <button class="ui normal orange button"><i class="users icon"></i>Employees</button>
-                            <button class="ui normal green button" @click="Attach_Modal"><i class="users icon"></i>Attach To Employee</button>
-                            <button class="ui normal green button"><i class="users icon"></i>Attach To Myself</button>
+                            <button class="ui normal green button" @click="Attach_Modal(task)"><i class="user plus icon"></i>Attach To Employee</button>
+                            <button class="ui normal green button"><i class="user plus icon"></i>Attach To Myself</button>
                         </td>
                        
                         
@@ -297,11 +356,10 @@
     </Transition> 
     <Transition>
             <TaskAttachModal v-if="show_Attach_Modal == true"
-            @cancel-modal="cancelModal"  
-            @toggleDrop= "toggleDropdown" 
-            @toggleDropActive="toggleDropdownActive"
-            :isDropdownOpen="this.isDropdownOpen"
-            :isDropdownOpenActive="this.isDropdownOpenActive"></TaskAttachModal>
+            @cancel-modal="cancelModal"
+            :getProjectParticipants="this.getusers"
+            @attach-user="AssignEmployeeToTask"
+            ></TaskAttachModal>
     </Transition>
 </div>
 </template>

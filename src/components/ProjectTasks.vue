@@ -39,6 +39,7 @@
             projectData:[],
             AttachTask:Array,
             assignEmployee:Array,
+            RequestData:[]
 
 
         }
@@ -118,13 +119,22 @@
             AssignEmployeeToTask(data){
                 const {selected_employee}=data
                 this.assignEmployee=data.selected_employee.select;
-                console.log(this.assignEmployee, "mackó", JSON.stringify(this.AttachTask))
-                let formData = new FormData();
-                formData.append("employee",this.assignEmployee);
-                formData.append("toAttachTaskData",this.AttachTask);
+                console.log(this.assignEmployee, "mackó", this.AttachTask)
+                
+                this.RequestData = this.assignEmployee.map(employee => {
+                    return {
+                    id: employee.id,
+                    name: employee.name,
+                    deadline: this.AttachTask.dedadline,
+                    description: this.AttachTask.description,
+                    task_status: this.AttachTask.status,
+                    task_id: this.AttachTask.task_id,
+                    task_name: this.AttachTask.task_name
+                    };
+                });
 
                 let url ="http://127.0.0.1:8000/api/assign-employee-to-task";
-                ServiceClient.post(url,formData).then((response) =>{
+                ServiceClient.post(url,this.RequestData, {headers:{ 'Content-Type': 'application/json'}}).then((response) =>{
                     console.log(response);
                     if (response.status == 200){
                         this.show_popup = true

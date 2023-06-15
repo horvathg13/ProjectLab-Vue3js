@@ -12,7 +12,7 @@
         props:{
             getProjectParticipants:Array,
             getActiveTaskParticipants:Array,
-            
+            taskData:Array,
         },
         data(){
             return{
@@ -34,7 +34,14 @@
                 const {select}=data
 
                 this.selected_employee = data
+            },
+            detach(data){
+                const{detach} = data;
+                console.log(data.detach.id)
+                
+                let url
             }
+            
 
           
         },
@@ -64,7 +71,10 @@
                         <form class="ui form" @submit.prevent="attach" novalidate>
                            
                             <div class="field"><label>Remove or Add Active Employee(s)</label></div>
-                            <MultipleSelectComponents :VforArray="this.getProjectParticipants.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" @select="makeSelection"></MultipleSelectComponents>
+                            <MultipleSelectComponents :VforArray="this.getProjectParticipants.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" 
+                            :VforActiveArray="this.getActiveTaskParticipants.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" 
+                            @select="makeSelection"
+                            @detach-user="detach"></MultipleSelectComponents>
                             
                     
                             <button class="ui green create button" type="submit">That's it!</button>

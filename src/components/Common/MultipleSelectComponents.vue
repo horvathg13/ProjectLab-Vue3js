@@ -3,7 +3,7 @@
 export default{
     props:{
        VforArray:Array,
-       
+       VforActiveArray:Array,
     },
     data(){
         return{
@@ -38,6 +38,15 @@ export default{
            let index = this.selected.indexOf(u=> u.id === user.id)+1
            this.selected.splice(index, 1);
            
+        },
+        removeActiveUser(user){
+            this.$emit("detach-user", {detach:user})     
+
+
+            /*let index = this.VforActiveArray.indexOf(u=> u.id === user.id)+1
+            this.selected.splice(index, 1);
+            //warning message */
+           
         }
 
     },
@@ -55,6 +64,7 @@ export default{
         
         <i class="dropdown icon"></i>
         <input type="hidden"  v-model="selected.id">
+            <a class="ui label transition activeEmployee" v-if="VforActiveArray" v-for="user in VforActiveArray" :key="user.id">{{ user.name ? user.name: "" }}<i class="delete icon" @click="removeActiveUser(user)"></i></a>
             <a class="ui label transition" v-for="user in selected" :key="user.id">{{ user.name ? user.name: "" }}<i class="delete icon" @click="removeUser(user)"></i></a>
             <div class="menu" :class="{ active: isDropdownOpen }" >
                 <div class="item" v-for="v in VforArray" :key="v.id" @click="select(v)">
@@ -73,6 +83,10 @@ span{
 .ui label.transition{
     display: inline-block !important;
 
+}
+
+.ui.label.transition.activeEmployee{
+    background-color: rgb(61, 240, 61);
 }
 
 </style>

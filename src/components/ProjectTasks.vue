@@ -64,7 +64,7 @@
                 this.show_Create_Task_Modal = true
             }
             
-            console.log(this.p_id, "pressd")
+           
         },
 
         cancelModal(){
@@ -83,6 +83,10 @@
             this.description = task.description;
             this.t_priority = task.priority;
             console.log(this.deadline, this.task_name, this.description, this.t_priority)
+            
+            for(let p in this.projectData){
+                this.p_id= this.projectData[p].project_id;
+            }
             
             
             let formData = new FormData();
@@ -167,7 +171,7 @@
                         if (response.status == 200){
                             
                             this.projectData=response.data
-                            
+                            console.log(this.projectData)
                         }
                     }).catch((error) => {
                             
@@ -274,11 +278,45 @@
                     });
             },
 
+            AttachMyself(task){
+                let taskId = task.task_id;
+                let projectId = null;
+                for(let p in this.projectData){
+                projectId = this.projectData[p].project_id;
+                }
+               
+                console.log(taskId, projectId, "lolo")
+                let url = `http://127.0.0.1:8000/api/projects/${projectId}/tasks/${taskId}`;
+
+                ServiceClient.post(url).then((response) =>{
+                        
+                    if (response.status == 200){
+                        this.message = response.data.message 
+                        this.show_popup = true
+                        setTimeout(() => {
+                            this.show_popup = false
+                            this.cancelModal()
+                        },  1500)
+                    }
+                }).catch((error) => {
+                        
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message = error.response.data.message;
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                            },  4500)
+                            
+                        }
+                    }
+                });
+            }
+
             
         },
         mounted(){
             this.getPriorities()
-            console.log(this.projectData, "süsü")
             this.getProjectsById()
             this.getProjectParticipants()
             this.getTasks()
@@ -297,7 +335,7 @@
         <h2>Manager: {{ project.manager }}</h2>
     </div>
     <Transition name="drop">
-        <Success_Popup v-if="show_popup==true"></Success_Popup>
+        <Success_Popup v-if="show_popup==true" :message = "this.message"></Success_Popup>
     </Transition>
     <Transition name="drop">
         <ErrorPopup v-if="show_error_popup==true" :message="this.message"></ErrorPopup>
@@ -334,7 +372,7 @@
                             <button class="ui normal violet button"><i class="edit icon"></i>Edit Task</button>
                             <button class="ui normal orange button"><i class="users icon"></i>Employees</button>
                             <button class="ui normal green button" @click="Attach_Modal(task)"><i class="user plus icon"></i>Attach To Employee</button>
-                            <button class="ui normal green button"><i class="user plus icon"></i>Attach To Myself</button>
+                            <button class="ui normal green button" @click=" AttachMyself(task)"><i class="user plus icon"></i>Attach To Myself</button>
                         </td>
                        
                         

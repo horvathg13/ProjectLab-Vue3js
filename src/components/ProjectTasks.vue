@@ -39,8 +39,8 @@
             projectData:[],
             AttachTask:Array,
             assignEmployee:Array,
-            RequestData:[]
-
+            RequestData:[],
+            getActiveTaskEmployee:Array,
 
         }
     },
@@ -56,7 +56,26 @@
                 this.show_Attach_Modal = true
             }
             this.AttachTask = task
-            console.log(this.AttachTask,"attach_is active")
+            console.log(this.AttachTask.task_id,"attach_is active")
+
+            let url=`http://127.0.0.1:8000/api/getActiveEmployees/${this.AttachTask.task_id}`;
+            ServiceClient.post(url).then((response) =>{
+                    console.log(response);
+                    if (response.status == 200){
+                       this.getActiveTaskEmployee = response.data
+                    }
+                }).catch((error) => {
+                        
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                            },  2000)
+                            
+                        }
+                    }
+                });
         },
         showCreateTaskModal(){
            
@@ -311,7 +330,8 @@
                         }
                     }
                 });
-            }
+            },
+
 
             
         },
@@ -406,6 +426,8 @@
             <TaskAttachModal v-if="show_Attach_Modal == true"
             @cancel-modal="cancelModal"
             :getProjectParticipants="this.getusers"
+            :getActiveTaskParticipants="this.getActiveTaskEmployee"
+            :taskData="this.AttachTask"
             @attach-user="AssignEmployeeToTask"
             ></TaskAttachModal>
     </Transition>

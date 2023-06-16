@@ -52,9 +52,7 @@
             console.log("Heyhó Active Dropping")
         },
         Attach_Modal(task){
-            if(this.show_Attach_Modal == false){
-                this.show_Attach_Modal = true
-            }
+            
             this.AttachTask = task
             console.log(this.AttachTask.task_id,"attach_is active")
 
@@ -63,6 +61,10 @@
                     console.log(response);
                     if (response.status == 200){
                        this.getActiveTaskEmployee = response.data
+                       console.log(this.getActiveTaskEmployee, "lokol")
+                       if(this.show_Attach_Modal == false){
+                            this.show_Attach_Modal = true
+                        }
                     }
                 }).catch((error) => {
                         

@@ -8,7 +8,7 @@ export default{
     data(){
         return{
             selected:[],
-                
+            remove:[],
             isDropdownOpen:false,
                 
         }
@@ -31,7 +31,7 @@ export default{
             if(!exist){
                 this.selected.push(selectedUser);
                 
-                this.$emit("select", {select:this.selected})
+                this.$emit("select", {select:this.selected, remove:this.remove})
             }
         },
         removeUser(user){
@@ -40,13 +40,11 @@ export default{
            
         },
         removeActiveUser(user){
-            this.$emit("detach-user", {detach:user})     
+            this.remove.push(user);
+            let index = this.VforActiveArray.indexOf(user);
+            this.VforActiveArray.splice(index, 1);
 
-
-            /*let index = this.VforActiveArray.indexOf(u=> u.id === user.id)+1
-            this.selected.splice(index, 1);
-            //warning message */
-           
+            
         }
 
     },

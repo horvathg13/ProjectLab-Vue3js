@@ -39,7 +39,7 @@
                 const{detach} = data;
                 console.log(data.detach.id)
                 
-                let url
+                
             }
             
 

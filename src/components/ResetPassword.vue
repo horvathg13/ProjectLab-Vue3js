@@ -138,7 +138,7 @@ export default{
     </div>
 
 </template>
-<style>
+<style scoped>
 .centerd-component-container{
     top:65%
 }

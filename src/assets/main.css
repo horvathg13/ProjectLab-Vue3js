@@ -101,9 +101,14 @@ form{
 
 /*Header*/
 .ui.buttons:not(.basic):not(.inverted){
-  padding-left: 90%;
-  padding-top: 1%;
+  height: 40px;
+  top:7px;
+  right: 10px;
 }
+.ui.teal.buttons .button{
+  background-color: yellowgreen;
+}
+
 .dropdown .menu.active {
   display: block !important;
 }
@@ -168,7 +173,7 @@ form{
 }
 
 .reg-img{
-  width: 53%;
+  width: 500px;
   background-image:url("../assets/RegP_icons/lab-nobg.png");
   background-position: center;
   height: 500px;

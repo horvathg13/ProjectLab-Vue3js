@@ -72,7 +72,7 @@ export default{
     </div>
 </template>
 
-<style>
+<style scoped>
 
 span{
     color:rgba(0,0,0,.87);

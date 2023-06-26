@@ -45,7 +45,21 @@ export default{
 </script>
 
 <template>
-    <div class="header" v-if="hasToken">
+    <div class="header"> <!--v-if="hasToken"-->
+        <div class="logo">
+            <img src="../assets/RegP_icons/lab-nobg.png">
+            <h1><span>Pro</span>ject-Lab</h1>
+        </div>
+        <div class="header-items">
+            <ul>
+                <li>Home</li>
+                <li>Users</li>
+                <li>Notifications</li>
+                <li>Projects</li>
+                <li>My Tasks</li>
+                <li>Statistics</li>
+            </ul>
+        </div>
         <div class="ui teal buttons">
             <div class="ui button" @click="editProfile"><i class="user circle icon"></i>Profile</div>
             <div class="ui floating dropdown icon button" ref="dropdown" @click="toggleDropdown">
@@ -57,3 +71,47 @@ export default{
         </div>
     </div>
 </template>
+
+<style scoped>
+    .header{
+        display: flex;
+        justify-content: space-between;
+        background-color: rgba(255,255,255,.5);
+    }
+    .logo{
+        display: flex;
+        background-color: yellowgreen;
+        color:white;
+        width: 230px;
+        border-radius:10px;
+        left:1px;
+        bottom:1px;
+    }
+    .logo h1{
+        margin:auto;
+        
+    }
+    .header img{
+        width: 70px;
+        background-color: yellowgreen;
+        border-radius:10px;
+    }
+
+    .header-items ul li{
+        display: inline-flex;
+        justify-content: space-between;
+        padding: 15px 30px;
+
+    }
+    .header-items ul li:hover{
+        background-color: yellowgreen;
+        cursor: pointer;
+        border-radius: 10px;
+        font-weight: bold;
+        color: white;
+    }
+
+
+   
+
+</style>

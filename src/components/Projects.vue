@@ -5,7 +5,7 @@
   import ErrorPopup from './Common/ErrorPopup.vue';
   import ProjectTasks from './ProjectTasks.vue';
   import AddProjectParticipantsModal from './Modals/AddProjectParticipantsModal.vue';
-  
+  import AccrodionMenu from './Common/AccordionMenu.vue'
 
   export default {
     components: {
@@ -13,8 +13,8 @@
         Success_Popup,
         ErrorPopup,
         ProjectTasks,
-        AddProjectParticipantsModal
-        
+        AddProjectParticipantsModal,
+        AccrodionMenu,
     },
 
     data() {
@@ -231,12 +231,10 @@
 </script>
 <template>
         <div class="main-container">
-        <div class="background login">
+        <div class="background component">
         </div>
         
-        <div class="HP-title">
-            <h1>Create Project</h1>
-        </div>
+        <AccrodionMenu></AccrodionMenu>
         <Transition name="drop">
             <Success_Popup v-if="show_popup==true" :message="this.message"></Success_Popup>
         </Transition>
@@ -246,7 +244,7 @@
         <Transition name="drop">
             <AreYouSureModal v-if="show_areyousure_popup==true"></AreYouSureModal>
         </Transition>
-        
+        <div class="title"> <h1>Projects</h1></div>
         <div class="centerd-component-container">
             
             <div class="scrolling-table-container">

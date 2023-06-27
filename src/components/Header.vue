@@ -82,7 +82,7 @@ export default{
         display: flex;
         background-color: yellowgreen;
         color:white;
-        width: 230px;
+        min-width: 230px;
         border-radius:10px;
         left:1px;
         bottom:1px;
@@ -92,7 +92,8 @@ export default{
         
     }
     .header img{
-        width: 70px;
+        max-width: 70px;
+        max-height:60px;
         background-color: yellowgreen;
         border-radius:10px;
     }

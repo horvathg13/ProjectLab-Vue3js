@@ -108,7 +108,7 @@
     }
 
     .modal-overlay {
-    
+    z-index: 9999;
     position: fixed;
     top: 0;
     bottom: 0;

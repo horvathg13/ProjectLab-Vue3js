@@ -55,7 +55,7 @@
 <style scoped>
 
     .modal-overlay {
-    
+    z-index: 9999;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -84,15 +84,11 @@
     }
     .form-container{
         height: 250px;
-        display: flex;
-        left:20%;
-        justify-content:space-between
+        display: inline-flex;
+        left:15%;
+        
     }
 
-
-    .cancel{
-        margin-top: 15%;
-    }
     .header{
         text-align: center;
     }

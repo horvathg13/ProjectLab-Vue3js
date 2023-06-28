@@ -118,3 +118,9 @@ export default{
     </div>
 
 </template>
+
+<style scoped>
+    .background.login{
+        filter: blur(10px) grayscale(0.35) hue-rotate(1091deg);
+    }
+</style>

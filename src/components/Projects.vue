@@ -234,7 +234,6 @@
         <div class="background component">
         </div>
         
-        <AccrodionMenu></AccrodionMenu>
         <Transition name="drop">
             <Success_Popup v-if="show_popup==true" :message="this.message"></Success_Popup>
         </Transition>

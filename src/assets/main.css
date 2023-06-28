@@ -21,15 +21,16 @@
   width: 100%;
   background-position: center;
   height: 100vh;
-  filter: blur(4px);
+  filter: blur(21px) grayscale(0.35) hue-rotate(1091deg);
   position: fixed;
   top: 0;
-  
+  background-size: 100%;
+
   
 }
 
 .background.component{
-  background-image: url("../assets/park-ori.jpg");
+  background-image: url("../assets/mozaik-v2.png");
   
   
 }
@@ -43,7 +44,7 @@ span{
   width: 100%;
   min-height: calc(100vh - 55px);
   display: flex;
-  
+  height: 100%;
   
 }
 
@@ -80,8 +81,10 @@ form{
   max-height: 100%;
   min-width: 50%;
   width: 100%;
-  height: auto;
-  
+  height: calc(100% - 90px);
+  background-color: #00000050;
+
+
 }
 
 .ui.error.message{
@@ -126,10 +129,8 @@ form{
 
 .content-title.task{
   width: max-content;
-  padding: 25px;
   border-bottom: rgb(254, 151, 7) 3px solid;
-  background-color: #0d6b237a;
-  border-radius:10px;
+  
 }
 
 .content-title.task h2{

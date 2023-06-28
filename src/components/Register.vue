@@ -135,3 +135,10 @@ export default{
     </div>
 
 </template>
+
+<style scoped>
+    .centerd-component-container{
+        display: flex;
+    }
+
+</style>

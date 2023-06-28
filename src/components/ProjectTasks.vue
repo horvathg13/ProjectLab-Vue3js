@@ -365,9 +365,7 @@
     <Transition name="drop">
         <AreYouSureModal v-if="show_areyousure_popup==true"></AreYouSureModal>
     </Transition>
-    <div class="">
-        <button class="ui left floated primary button">Back to projects</button>
-    </div>
+    
     <div class="content-container">
         <div class="content-title task" v-for="project in this.projectData" :key="project.id">
             <h1>Project:&nbsp;&nbsp;{{project.name}}</h1>
@@ -442,3 +440,11 @@
     </Transition>
 </div>
 </template>
+
+<style scope>
+
+.centerd-component-container{
+    height: calc(100% - 142 px);
+}
+
+</style>

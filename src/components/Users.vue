@@ -33,7 +33,9 @@ import ResetPasswordManualModal from './Modals/ResetPasswordManualModal.vue';
             isDropdownOpen: false,
             user:{},
             triggerModal:false,
-            triggerValue: null 
+            triggerValue: null,
+            dataSave:[],
+            func:'',
         }
     },
    
@@ -41,34 +43,34 @@ import ResetPasswordManualModal from './Modals/ResetPasswordManualModal.vue';
         trigger(data){
             const{trigger} = data
             this.triggerValue = trigger
-            console.log(this.triggerValue)           
+            console.log(this.triggerValue)
+            
+            if(this.triggerValue === true){
+                if(this.func === 'BannUser'){
+                    this.BannUser();
+                }else if(this.func === 'open_show_role_selector_modal'){
+                    this.open_show_role_selector_modal();
+                }else if(this.func === 'PasswordResetManual'){
+                    this.PasswordResetManual()
+                }
+            }else if(this.triggerValue===false){
+                this.triggerModal=false;
+                this.triggerValue=null;
+            }
         },
         toggleDropdown() {
             this.isDropdownOpen = !this.isDropdownOpen;
             console.log("dropping")
         },
-        open_show_role_selector_modal(id, name){
+        open_show_role_selector_modal(){
             this.triggerModal = true;
-
-            const checkTriggerValue = () => {
-            if (this.triggerValue === true){
-                this.triggerModal = false
-                this.triggerValue = null
-
-                this.user.id = id;
-                this.user.name = name;
-                console.log(this.user);
-                if(this.show_role_selector_modal==false){
-                    this.show_role_selector_modal = true
-                }
-            }else if(this.triggerValue===false){
-                this.triggerModal=false;
-                this.triggerValue=null;
-            }else{
-                setTimeout(checkTriggerValue,100);
-            }
-            }
-            checkTriggerValue()
+            this.triggerModal = false;
+            this.triggerValue = null;
+            this.user.id = this.dataSave.id;
+            this.user.name = this.dataSave.name;
+            this.show_role_selector_modal = true;
+            console.log(this.user);
+            
         },
         updateModal(){
             
@@ -191,90 +193,66 @@ import ResetPasswordManualModal from './Modals/ResetPasswordManualModal.vue';
                     });
             },
 
-            BannUser(id) {
-                this.triggerModal = true;
-                const checkTriggerValue = () => {
-                    if (this.triggerValue === true) {
-                        this.triggerModal = false;
-                        this.triggerValue = null;
+            BannUser() {
+                this.triggerModal = false;
+                this.triggerValue = null;
 
-                        let url = `http://127.0.0.1:8000/api/bann-user/${id}`;
-                        ServiceClient.post(url)
-                            .then((response) => {
-                                if (response.status === 200) {
-                                    this.show_popup = true;
-                                    setTimeout(() => {
-                                        this.show_popup = false;
-                                        this.getUsers();
-                                    }, 1500);
-                                    this.url = response.data.data.url;
-                                }
-                            })
-                            .catch((error) => {
-                                if (error.response && error.response.status) {
-                                    if (error.response.data && error.response.data.message) {
-                                        this.show_error_popup = true;
-                                        setTimeout(() => {
-                                            this.show_error_popup = false;
-                                        }, 2000);
-                                    }
-                                }
-                            });
-                    } else if (this.triggerValue === false) {
-                        this.triggerModal = false;
-                        this.triggerValue= null
-                        return;
-                    } else {
-                        setTimeout(checkTriggerValue, 100);
-                    }
-                };
-
-                checkTriggerValue();
-            },
-            PasswordResetManual(id){
-                this.triggerModal= true
-
-                const checkTriggerValue = () => {
-                if (this.triggerValue === true) {
-                    this.triggerModal = false;
-                    this.triggerValue = null;
-
-                    let url = `http://127.0.0.1:8000/api/password-reset-manual/${id}`;
-                    ServiceClient.post(url).then((response) => {
-
-                        if (response.status == 200) {
-                            this.url = response.data.data.url
-                            console.log(response)
-                            this.show_popup = true
+                let url = `http://127.0.0.1:8000/api/bann-user/${this.dataSave.id}`;
+                ServiceClient.post(url)
+                    .then((response) => {
+                        if (response.status === 200) {
+                            this.show_popup = true;
                             setTimeout(() => {
-                                this.show_popup = false
-                                this.show_reset_password_manual_modal = true;
-                            }, 1500)
-
-
+                                this.show_popup = false;
+                                this.getUsers();
+                            }, 1500);
+                            this.url = response.data.data.url;
                         }
-                    }).catch((error) => {
-
+                    })
+                    .catch((error) => {
                         if (error.response && error.response.status) {
                             if (error.response.data && error.response.data.message) {
-                                this.show_error_popup = true
+                                this.show_error_popup = true;
                                 setTimeout(() => {
-                                    this.show_error_popup = false
-                                }, 2000)
-
+                                    this.show_error_popup = false;
+                                }, 2000);
                             }
                         }
                     });
-                }else if(this.triggerValue === false){
-                    this.triggerModal = false;
-                    this.triggerValue = null;
-                    return;
-                }else{
-                    setTimeout(checkTriggerValue, 100);
-                }
-                }
-                checkTriggerValue()
+            
+            },
+            PasswordResetManual(){
                 
+                this.triggerModal = false;
+                this.triggerValue = null;
+
+                let url = `http://127.0.0.1:8000/api/password-reset-manual/${this.dataSave.id}`;
+                ServiceClient.post(url).then((response) => {
+
+                    if (response.status == 200) {
+                        this.url = response.data.data.url
+                        console.log(response)
+                        this.show_popup = true
+                        setTimeout(() => {
+                            this.show_popup = false
+                            this.show_reset_password_manual_modal = true;
+                        }, 1500)
+
+
+                    }
+                }).catch((error) => {
+
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                            }, 2000)
+
+                        }
+                    }
+                });
+               
             },
 
             userToRole(data) {
@@ -309,6 +287,14 @@ import ResetPasswordManualModal from './Modals/ResetPasswordManualModal.vue';
                         }
                     }
                 });
+            },
+            
+            DataSave(user, func){
+                this.dataSave = user;
+                this.func = func
+                console.log(this.dataSave, this.func)
+                this.triggerModal= true
+
             },
 
 
@@ -364,9 +350,9 @@ import ResetPasswordManualModal from './Modals/ResetPasswordManualModal.vue';
                             <td>{{user.role }}</td>
                             <td>
                                 <button class="ui small yellow button"><i class="edit icon"></i>Edit</button>
-                                <button class="ui small red button" @click="BannUser(user.id)"><i class="close icon"></i>Ban user</button>
-                                <button class="ui small purple button" @click="open_show_role_selector_modal(user.id, user.name)"><i class="balance scale icon"></i>Roles</button>
-                                <button class="ui small orange button" @click="PasswordResetManual(user.id)"><i class="key icon"></i>Reset password</button>
+                                <button class="ui small red button" @click="DataSave(user, 'BannUser')"><i class="close icon"></i>Ban user</button>
+                                <button class="ui small purple button" @click="DataSave(user, 'open_show_role_selector_modal')"><i class="balance scale icon"></i>Roles</button>
+                                <button class="ui small orange button" @click="DataSave(user, 'PasswordResetManual')"><i class="key icon"></i>Reset password</button>
                             </td>
                         </tr>
                     </tbody>

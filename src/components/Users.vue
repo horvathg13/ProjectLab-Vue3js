@@ -327,18 +327,20 @@ import ResetPasswordManualModal from './Modals/ResetPasswordManualModal.vue';
 
 <template>
     <div class="main-container">
-        <div class="background login">
+        <div class="background component">
         </div>
         
-        <div class="HP-title">
-            <h1>Users</h1>
-        </div>
         <Transition name="drop">
             <Success_Popup v-if="show_popup==true"></Success_Popup>
         </Transition>
         <Transition name="drop">
             <ErrorPopup v-if="show_error_popup==true"></ErrorPopup>
         </Transition>
+        <div class="content-container">
+            <div class="content-title users">
+                <h1>Users</h1>
+            </div>
+        
         <div class="centerd-component-container">
             <div class="scrolling-table-container">
                 <table class="ui striped table">
@@ -348,8 +350,9 @@ import ResetPasswordManualModal from './Modals/ResetPasswordManualModal.vue';
                             <th>Name</th>
                             <th>E-mail</th>
                             <th>Role</th>
-                            <th>Actions</th>
-                            <th><button class="ui right floated small primary labeled icon button" @click="updateModal"><i class="user plus icon"></i>Add</button></th>
+                            <th>Actions
+                            <button class="ui right floated small primary labeled icon button" @click="updateModal"><i class="user plus icon"></i>Add</button>
+                            </th>
                             
                         </tr>
                     </thead>
@@ -365,17 +368,10 @@ import ResetPasswordManualModal from './Modals/ResetPasswordManualModal.vue';
                                 <button class="ui small purple button" @click="open_show_role_selector_modal(user.id, user.name)"><i class="balance scale icon"></i>Roles</button>
                                 <button class="ui small orange button" @click="PasswordResetManual(user.id)"><i class="key icon"></i>Reset password</button>
                             </td>
-                            <td>                              
-                            </td>
-                            
-                            
-                            
-                           
                         </tr>
                     </tbody>
                     <tfoot class="full-width">
                         <tr>
-                            <th></th>
                             <th></th>
                             <th></th>
                             <th colspan="4">
@@ -386,6 +382,7 @@ import ResetPasswordManualModal from './Modals/ResetPasswordManualModal.vue';
                     </tfoot>
                 </table>
            </div>
+        </div>
         </div>
         <Transition>
                 <AddUserModal v-if="showModal==true" @cancel-modal="cancelModal"

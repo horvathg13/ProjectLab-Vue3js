@@ -349,13 +349,13 @@
 
 <template>
     <div class="main-container">
-    <div class="background login">
+    <div class="background component">
     </div>
     
-    <div class="HP-title" v-for="project in this.projectData" :key="project.id">
+    <!--<div class="HP-title" v-for="project in this.projectData" :key="project.id">
         <h1>Project Name: {{project.name}}</h1>
         <h2>Manager: {{ project.manager }}</h2>
-    </div>
+    </div>-->
     <Transition name="drop">
         <Success_Popup v-if="show_popup==true" :message = "this.message"></Success_Popup>
     </Transition>
@@ -368,53 +368,60 @@
     <div class="">
         <button class="ui left floated primary button">Back to projects</button>
     </div>
-    <div class="centerd-component-container">
-        <div class="scrolling-table-container">
-            <table class="ui striped table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Task name</th>
-                        <th>Deadline</th>
-                        <th>Task Status</th>
-                        <th>Task Priority</th>
-                        <th>Actions
-                        <button class="ui right floated small primary labeled icon button" @click="showCreateTaskModal()"><i class="tasks icon"></i>New Task</button></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="task in taskData" :key="task.task_id">
-                        <td>{{ task.task_id }}</td>
-                        <td>{{task.task_name }}</td>
-                        <td>{{task.dedadline }}</td>
-                        <td>{{task.status }}</td>
-                        <td>{{ task.priority}}</td>
-                       
-                        <td>
-                            <button class="ui normal violet button"><i class="edit icon"></i>Edit Task</button>
-                            <button class="ui normal orange button"><i class="users icon"></i>Employees</button>
-                            <button class="ui normal green button" @click="Attach_Modal(task)"><i class="user plus icon"></i>Attach To Employee</button>
-                            <button class="ui normal green button" @click=" AttachMyself(task)"><i class="user plus icon"></i>Attach To Myself</button>
-                        </td>
-                       
+    <div class="content-container">
+        <div class="content-title task" v-for="project in this.projectData" :key="project.id">
+            <h1>Project:&nbsp;&nbsp;{{project.name}}</h1>
+            <h2>Manager: &nbsp;&nbsp;{{ project.manager }}</h2>
+        </div>
+    
+        <div class="centerd-component-container">
+            <div class="scrolling-table-container">
+                <table class="ui striped table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Task name</th>
+                            <th>Deadline</th>
+                            <th>Task Status</th>
+                            <th>Task Priority</th>
+                            <th>Actions
+                            <button class="ui right floated small primary labeled icon button" @click="showCreateTaskModal()"><i class="tasks icon"></i>New Task</button></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="task in taskData" :key="task.task_id">
+                            <td>{{ task.task_id }}</td>
+                            <td>{{task.task_name }}</td>
+                            <td>{{task.dedadline }}</td>
+                            <td>{{task.status }}</td>
+                            <td>{{ task.priority}}</td>
                         
+                            <td>
+                                <button class="ui normal violet button"><i class="edit icon"></i>Edit Task</button>
+                                <button class="ui normal orange button"><i class="users icon"></i>Employees</button>
+                                <button class="ui normal green button" @click="Attach_Modal(task)"><i class="user plus icon"></i>Attach To Employee</button>
+                                <button class="ui normal green button" @click=" AttachMyself(task)"><i class="user plus icon"></i>Attach To Myself</button>
+                            </td>
                         
-                       
-                    </tr>
-                </tbody>
-                <tfoot class="full-width">
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th colspan="4">
-                    
-                        </th>
-                    </tr>
-                    
-                </tfoot>
-            </table>
-       </div>
+                            
+                            
+                        
+                        </tr>
+                    </tbody>
+                    <tfoot class="full-width">
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="4">
+                        
+                            </th>
+                        </tr>
+                        
+                    </tfoot>
+                </table>
+        </div>
+        </div>
     </div>
     <Transition>
             <CreateTaskModal v-if="show_Create_Task_Modal==true" 

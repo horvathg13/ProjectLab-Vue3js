@@ -244,54 +244,58 @@
         <Transition name="drop">
             <AreYouSureModal v-if="show_areyousure_popup==true"></AreYouSureModal>
         </Transition>
-        <div class="title"> <h1>Projects</h1></div>
-        <div class="centerd-component-container">
-            
-            <div class="scrolling-table-container">
-                <table class="ui striped table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Manager</th>
-                            <th>Title</th>
-                            <th>Status</th>
-                            <th>Deadline</th>
-                            <th>Actions
-                            <button class="ui right floated small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="project in getprojects" :key="project.id">
-                            <td>{{project.project_id}}</td>
-                            <td>{{project.manager}}</td>
-                            <td>{{project.name}}</td>
-                            <td>{{ project.status}}</td>
-                            <td>{{ project.deadline}}</td>
-                            <td>
-                                <button class="ui small violet button"><i class="edit icon"></i>Edit</button>
-                                <button class="ui small orange button" @click="redirect(project)"><i class="tasks icon"></i>View Tasks</button>
-                                <button class="ui small green button" @click="showParticipantModal(project)"><i class="user plus icon"></i>Employees</button>
+        <div class="content-container">         
+            <div class="content-title">
+                <h1>Projects</h1>
+            </div>
+            <div class="centerd-component-container">
+                
+                <div class="scrolling-table-container">
+                    <table class="ui striped table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Manager</th>
+                                <th>Title</th>
+                                <th>Status</th>
+                                <th>Deadline</th>
+                                <th>Actions
+                                <button class="ui right floated small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="project in getprojects" :key="project.id">
+                                <td>{{project.project_id}}</td>
+                                <td>{{project.manager}}</td>
+                                <td>{{project.name}}</td>
+                                <td>{{ project.status}}</td>
+                                <td>{{ project.deadline}}</td>
+                                <td>
+                                    <button class="ui small violet button"><i class="edit icon"></i>Edit</button>
+                                    <button class="ui small orange button" @click="redirect(project)"><i class="tasks icon"></i>View Tasks</button>
+                                    <button class="ui small green button" @click="showParticipantModal(project)"><i class="user plus icon"></i>Employees</button>
 
-                            </td>
-                           
+                                </td>
                             
+                                
+                                
                             
-                           
-                        </tr>
-                    </tbody>
-                    <tfoot class="full-width">
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="4">
-                        
-                            </th>
-                        </tr>
-                        
-                    </tfoot>
-                </table>
-           </div>
+                            </tr>
+                        </tbody>
+                        <tfoot class="full-width">
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th colspan="4">
+                            
+                                </th>
+                            </tr>
+                            
+                        </tfoot>
+                    </table>
+            </div>
+            </div>
         </div>
         <Transition>
                 <CreateProjectModal v-if="showModal==true" 

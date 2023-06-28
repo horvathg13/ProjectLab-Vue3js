@@ -79,9 +79,9 @@ form{
   padding:50px 15%;
   max-height: 100%;
   min-width: 50%;
-  width: max-content;
+  width: 100%;
   height: auto;
-  display: flex;
+  
 }
 
 .ui.error.message{
@@ -93,19 +93,48 @@ form{
   padding-left: 7px;
 }
 .scrolling-table-container{
-  height: 500px; 
-  overflow-y: auto;
   border-radius: 15px;
 }
 
 .ui.table td{
   padding: 0.7em ;
+  text-align: center;
 }
 
 .dp__action_buttons{
   right :15%;
 }
 
+.content-container{
+  width: 100%;
+  min-height:calc(100vh - 55px) ;
+  
+}
+.content-title{
+  padding: 10px;
+  width: 20%;
+  border-bottom: rgb(86, 247, 11) 3px solid;
+  left: 5%;
+}
+.content-title h1{
+  font-size: 50px;
+  color: white;
+}
+.content-title.users{
+  border-bottom: rgb(34, 178, 255) 3px solid;
+}
+
+.content-title.task{
+  width: max-content;
+  padding: 25px;
+  border-bottom: rgb(254, 151, 7) 3px solid;
+  background-color: #0d6b237a;
+  border-radius:10px;
+}
+
+.content-title.task h2{
+  color:white
+}
 /*Header*/
 .ui.buttons:not(.basic):not(.inverted){
   height: 40px;

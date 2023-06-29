@@ -83,9 +83,8 @@ export default{
         background-color: yellowgreen;
         color:white;
         min-width: 230px;
-        border-radius:10px;
-        left:1px;
-        bottom:1px;
+        border-radius:5px;
+    
     }
     .logo h1{
         margin:auto;
@@ -95,7 +94,6 @@ export default{
         max-width: 70px;
         max-height:60px;
         background-color: yellowgreen;
-        border-radius:10px;
     }
 
     .header-items ul li{

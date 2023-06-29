@@ -27,7 +27,9 @@
         <div class="modal-overlay">
             
             <div class="modal"> 
-            
+                <div class="close">
+                    <i class="close large red icon" @click="cancelModal"></i>
+                </div>
                 <div class="header">
                     <i class="exclamation huge triangle icon"></i>
                     <h2>You Activated The Manual Password Reset Mode!</h2>
@@ -46,7 +48,6 @@
                         </button>
                     </div>
                     
-                    <button class="ui red button" @click="cancelModal">Cancel</button>
                     
                     
                 </div>
@@ -96,7 +97,7 @@
         height: 120px;
         margin:0 auto;
         width: auto;
-        top:150px
+        top:100px
         
     }
 
@@ -109,5 +110,10 @@
     .ui.red.button{
         margin-top: 7%;
         left: 38%;
+    }
+    .close{
+        width: 60px;
+        left:84%;
+        cursor: pointer;
     }
 </style>

@@ -233,9 +233,10 @@ import ResetPasswordManualModal from './Modals/ResetPasswordManualModal.vue';
                         this.url = response.data.data.url
                         console.log(response)
                         this.show_popup = true
+                        this.show_reset_password_manual_modal = true;
                         setTimeout(() => {
                             this.show_popup = false
-                            this.show_reset_password_manual_modal = true;
+                            
                         }, 1500)
 
 
@@ -347,7 +348,7 @@ import ResetPasswordManualModal from './Modals/ResetPasswordManualModal.vue';
                             <td>{{user.id}}</td>
                             <td>{{user.name}}</td>
                             <td>{{user.email}}</td>
-                            <td>{{user.role }}</td>
+                            <td>{{user.roles}}</td>
                             <td>
                                 <button class="ui small yellow button"><i class="edit icon"></i>Edit</button>
                                 <button class="ui small red button" @click="DataSave(user, 'BannUser')"><i class="close icon"></i>Ban user</button>

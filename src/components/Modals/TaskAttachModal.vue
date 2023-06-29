@@ -56,7 +56,9 @@
         <div class="modal-overlay">
             
             <div class="modal"> 
-            
+                <div class="close">
+                    <i class="close large red icon" @click="cancelModal"></i>
+                </div>
                 <div class="header">
                     
                     <h1>Employee Controll Panel</h1>
@@ -80,10 +82,6 @@
                             <button class="ui green create button" type="submit">That's it!</button>
                         </form>
                     </div>
-                    <div class="cancel">
-                        <button class="ui red button" @click="cancelModal">Cancel</button>
-                    </div>
-                    
                 </div>
               
             </div>
@@ -156,5 +154,11 @@
     .field label{
         font-weight: bold;
         color: rgb(0 0 0 / 62%) !important  
+    }
+
+    .close{
+        width: 60px;
+        left:84%;
+        cursor: pointer;
     }
 </style>

@@ -62,7 +62,9 @@
         <div class="modal-overlay">
             
             <div class="modal"> 
-            
+                <div class="close">
+                    <i class="close large red icon" @click="cancelModal"></i>
+                </div>
                 <div class="header">
                     
                     <h1>Let's create a task!</h1>
@@ -108,9 +110,6 @@
                             </div>-->
                             <button class="ui green button" type="submit">Create</button>
                         </form>
-                    </div>
-                    <div class="cancel">
-                        <button class="ui red button" @click="cancelModal">Cancel</button>
                     </div>
                     
               </div>
@@ -184,5 +183,10 @@
     }
     .ui.green.button{
         top:15px
+    }
+    .close{
+        width: 60px;
+        left:84%;
+        cursor: pointer;
     }
 </style>

@@ -351,11 +351,6 @@
     <div class="main-container">
     <div class="background component">
     </div>
-    
-    <!--<div class="HP-title" v-for="project in this.projectData" :key="project.id">
-        <h1>Project Name: {{project.name}}</h1>
-        <h2>Manager: {{ project.manager }}</h2>
-    </div>-->
     <Transition name="drop">
         <Success_Popup v-if="show_popup==true" :message = "this.message"></Success_Popup>
     </Transition>
@@ -441,10 +436,10 @@
 </div>
 </template>
 
-<style scope>
+<style scoped>
 
-.centerd-component-container{
-    height: calc(100% - 142 px);
-}
+    .centerd-component-container{
+        height: calc(100% - 142px);
+    }
 
 </style>

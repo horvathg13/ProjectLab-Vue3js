@@ -111,7 +111,6 @@ form{
 .content-container{
   width: 100%;
   min-height:calc(100vh - 55px) ;
-  
 }
 .content-title{
   z-index: 99;

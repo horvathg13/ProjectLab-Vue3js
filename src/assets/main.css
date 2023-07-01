@@ -118,6 +118,7 @@ form{
   width: 20%;
   border-bottom: rgb(86, 247, 11) 3px solid;
   left: 5%;
+  min-width: 200px;
 }
 .content-title h1{
   font-size: 50px;

@@ -2,15 +2,21 @@
 export default{
     props:{
         h1Title:"",
+        message:null,
+        path:""
     },
     data(){
         return{
-
+            bcData:[],
         }
     },
     methods:{
-        
+       
     },
+    mounted() {
+        console.log(this.$route)
+    },
+ 
 }
 </script>
 
@@ -22,8 +28,15 @@ export default{
         <div class="content-title users" v-if="h1Title == 'Users'">
             <h1>{{h1Title}}</h1>
         </div>
-        <div class="message-container">
-            <div class="ui large red left pointing label"><i class="envelope icon"></i>1</div>
+        <div class="ui large breadcrumb">
+            <a class="section">Home</a>
+            <i class="right chevron icon divider"></i>
+            <a class="section">Projects</a>
+            <i class="right chevron icon divider"></i>
+            <div class="section" :class="{active: h1Title}"> Tasks</div>
+        </div>
+        <div class="message-container" v-if="h1Title != 'Greeting' && h1Title !=='Register' && h1Title !=='Login'">
+            <div class="ui large red left pointing label"><i class="envelope icon"></i>{{ message ? message: 0 }}</div>
         </div>
     </div>
 </template>
@@ -38,7 +51,7 @@ export default{
         
     }
     .message-container{
-        left:60%;
+        left:calc(100% - 50%);
     }
     .content-title-container{
         width: 100%;
@@ -60,4 +73,21 @@ export default{
     70% { transform: translate(1px, 1px) rotate(-1deg); }
     100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
+
+.ui.large.breadcrumb{
+    max-width: max-content;
+    height: 50px;
+    left:calc(100% - 80%);
+    top:35px;
+}
+.ui.breadcrumb a.section{
+    color:white;
+}
+.ui.breadcrumb .icon.divider{
+    color:black;
+}
+.ui.breadcrumb .active.section{
+    color: lawngreen;
+}
+
 </style>

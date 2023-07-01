@@ -5,75 +5,76 @@
     import Success_Popup from './Common/Success_Popup.vue'
 
 
-export default{
-    name: "Login",
-    components: { 
-        Success_Popup,
-    },
-    data() {
-        return {
-            user: {},
-            email: "",
-            password: "",
-            errors: [],
-            user_name: "",
-            userData: {},
-            login_succeded: false,
-            disablefield: false
-        };
-    },
-   
-    methods: {
-        async login() {
-            this.errors = [];
-            this.user_name = "";
-            let formData = new FormData();
-            formData.append("email", this.email);
-            formData.append("password", this.password);
-            let url = "http://127.0.0.1:8000/api/login";
-            this.disablefield = true;
-
-            ServiceClient.post(url, formData).then(response => {
-                if (response.data.success) {
-                   
-                    this.login_succeded = true;
-                    console.log(response.data);
-
-                    setTimeout(() => {
-                        store.commit("setUserData", response.data.data)
-                        localStorage.setItem("token", response.data.data.token);
-                        this.$router.push({path: "/home"});
-
-                    }, 1300);
-                    
-                  
-                }
-            }).catch((error) => {
-                this.disablefield= false        
-                if (error.response.status === 401) {
-                if (error.response.data.message) {
-                    this.errors.push(error.response.data.message) 
-                    
-                } else {
-                    this.errors = ["Server error occurred"] 
-                }
-                }
-            });
-            /*ServiceClient.post("http://127.0.0.1:8000/api/getUserPermission").then(response => {
-            store.commit("setuserRole",response.data);
-            }).catch(error =>{
-            console.log(error);
-            });
-            */
+    export default{
+        name: "Login",
+        components: { 
+            Success_Popup,
         },
-        close(){
-            this.errors=[]
-        }
-    },
-    mounted() {
-    },
+        data() {
+            return {
+                user: {},
+                email: "",
+                password: "",
+                errors: [],
+                user_name: "",
+                userData: {},
+                login_succeded: false,
+                disablefield: false
+            };
+        },
     
-}
+        methods: {
+            async login() {
+                this.errors = [];
+                this.user_name = "";
+                let formData = new FormData();
+                formData.append("email", this.email);
+                formData.append("password", this.password);
+                let url = "http://127.0.0.1:8000/api/login";
+                this.disablefield = true;
+
+                ServiceClient.post(url, formData).then(response => {
+                    if (response.data.success) {
+                    
+                        this.login_succeded = true;
+                        console.log(response.data);
+
+                        setTimeout(() => {
+                            store.commit("setUserData", response.data.data)
+                            localStorage.setItem("token", response.data.data.token);
+                            this.$router.push({path: "/home"});
+
+                        }, 1300);
+                        
+                    
+                    }
+                }).catch((error) => {
+                    this.disablefield= false        
+                    if (error.response.status === 401) {
+                    if (error.response.data.message) {
+                        this.errors.push(error.response.data.message) 
+                        
+                    } else {
+                        this.errors = ["Server error occurred"] 
+                    }
+                    }
+                });
+                /*ServiceClient.post("http://127.0.0.1:8000/api/getUserPermission").then(response => {
+                store.commit("setuserRole",response.data);
+                }).catch(error =>{
+                console.log(error);
+                });
+                */
+            },
+            close(){
+                this.errors=[]
+            }
+        },
+        mounted() {
+            console.log(this.$route)
+        },
+        
+    }
 </script>
 
 <template>
@@ -83,6 +84,7 @@ export default{
         <Transition name="drop">
                 <Success_Popup v-if="login_succeded"></Success_Popup>
         </Transition>
+        <div class="content-container">
         <div class="centerd-component-container">
             
             <div class="form-container">
@@ -115,6 +117,7 @@ export default{
             
             </div>
         </div>
+        </div>
     </div>
 
 </template>
@@ -123,4 +126,5 @@ export default{
     .background.login{
         filter: blur(10px) grayscale(0.35) hue-rotate(1091deg);
     }
+    
 </style>

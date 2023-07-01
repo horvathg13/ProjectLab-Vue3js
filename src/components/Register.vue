@@ -77,6 +77,9 @@ export default{
         close(){
             this.errors=[]
         }
+    },
+    mounted(){
+        console.log(this.$route)
     }
 }
 </script>

@@ -6,6 +6,7 @@ import AreYouSureModal from './Modals/AreYouSureModal.vue';
 import RoleSelectorModal from './Modals/RoleSelectorModal.vue';
 import Success_Popup from './Common/Success_Popup.vue';
 import ResetPasswordManualModal from './Modals/ResetPasswordManualModal.vue';
+import ContentTitle from './Common/ContentTitle.vue'
 
   export default {
     components: { 
@@ -15,6 +16,7 @@ import ResetPasswordManualModal from './Modals/ResetPasswordManualModal.vue';
         ResetPasswordManualModal,
         RoleSelectorModal,
         AreYouSureModal,
+        ContentTitle,
     },
     data() {
         return {
@@ -324,9 +326,10 @@ import ResetPasswordManualModal from './Modals/ResetPasswordManualModal.vue';
             <ErrorPopup v-if="show_error_popup==true"></ErrorPopup>
         </Transition>
         <div class="content-container">
-            <div class="content-title users">
+            
+            <!--<div class="content-title users">
                 <h1>Users</h1>
-            </div>
+            </div>-->
         
         <div class="centerd-component-container">
             <div class="scrolling-table-container">

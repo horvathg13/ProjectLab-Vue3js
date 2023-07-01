@@ -165,7 +165,7 @@
 
     .close{
         width: 60px;
-        left:84%;
+        left:80%;
         cursor: pointer;
     }
 </style>

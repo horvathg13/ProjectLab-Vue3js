@@ -24,7 +24,7 @@ export default{
     <div class="HP-main">
         <div class= "background home">
         </div>  
-        
+        <div class="content-container">
         <div class="HP-title">
             <h1>Welcome {{ username }}</h1>
             <h3>Let's work on something!</h3>
@@ -86,6 +86,7 @@ export default{
                     
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </template>

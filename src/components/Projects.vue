@@ -5,7 +5,8 @@
   import ErrorPopup from './Common/ErrorPopup.vue';
   import ProjectTasks from './ProjectTasks.vue';
   import AddProjectParticipantsModal from './Modals/AddProjectParticipantsModal.vue';
-  import AccrodionMenu from './Common/AccordionMenu.vue'
+  import AccrodionMenu from './Common/AccordionMenu.vue';
+  import ContentTitle from './Common/ContentTitle.vue'
 
   export default {
     components: {
@@ -15,6 +16,7 @@
         ProjectTasks,
         AddProjectParticipantsModal,
         AccrodionMenu,
+        ContentTitle,
     },
 
     data() {
@@ -35,6 +37,7 @@
             participants:[],
             finalData:[],
             mergeData:{},
+            h1:""
         }
     },
    
@@ -153,9 +156,7 @@
                         }
                     });
             },
-            getProjectEmployee(id){
-
-            },
+            
             redirect(project){
                 this.projectData = [project]
                 console.log(this.projectData,"érik a szőlő")
@@ -215,6 +216,9 @@
                             }, 2000);
                         }
                         });
+                    },
+                    contentTitle(){
+                        this.h1= this.$route.name
                     }
                 
                 
@@ -224,6 +228,7 @@
         mounted(){
             this.getProjects()
             this.getUsers()
+            this.contentTitle();
         }
     }
 
@@ -243,10 +248,11 @@
         <Transition name="drop">
             <AreYouSureModal v-if="show_areyousure_popup==true"></AreYouSureModal>
         </Transition>
-        <div class="content-container">         
-            <div class="content-title">
+        <div class="content-container"> 
+            
+            <!--<div class="content-title">
                 <h1>Projects</h1>
-            </div>
+            </div>-->
             <div class="centerd-component-container">
                 
                 <div class="scrolling-table-container">

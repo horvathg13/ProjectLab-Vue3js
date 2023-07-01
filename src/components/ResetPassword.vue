@@ -99,47 +99,44 @@ export default{
         <Transition name="drop">
                 <Success_Popup v-if="login_succeded"></Success_Popup>
         </Transition>
-        <div class="alternative-title-container">
-            <h1>Reset Password</h1>
-        </div>
-        <div class="centerd-component-container">
-            
-            <div class="form-container">
-                <div class="HP-title">
-                        <h1>Welcome {{name}}</h1>
-                        <h2>Please, set your new password</h2>
-                </div>
-                <div class="ui error thiny message" role="alert" v-if="errors.length">
-                        <i class="thiny close icon" @click="close"></i>
-                        <div class="error-message-header"><i class="exclamation triangle icon"></i>
-                            Attention!
+        <div class="content-container">
+            <div class="centerd-component-container">
+                
+                <div class="form-container">
+                    <div class="HP-title">
+                            <h1>Welcome {{name}}</h1>
+                            <h2>Please, set your new password</h2>
+                    </div>
+                    <div class="ui error thiny message" role="alert" v-if="errors.length">
+                            <i class="thiny close icon" @click="close"></i>
+                            <div class="error-message-header"><i class="exclamation triangle icon"></i>
+                                Attention!
+                            </div>
+                            <ul class="list">
+                                <li v-for="(error,index) in errors" :key="index">
+                                {{ error }}
+                                </li>
+                            </ul>
+                    </div>
+                    <form class="ui big form" @submit.prevent="resetPassword" novalidate>
+                        
+                        <div class="field">
+                            <label><span>P</span>assword</label>
+                            <input type="password" name="password" :disabled="disablefield" placeholder="password" v-model="password">
                         </div>
-                        <ul class="list">
-                            <li v-for="(error,index) in errors" :key="index">
-                            {{ error }}
-                            </li>
-                        </ul>
+                        <div class="field">
+                            <label><span>C</span>onfirm password</label>
+                            <input type="password" name="password" :disabled="disablefield" placeholder="confirm password" v-model="c_password">
+                        </div>
+                        <button class="big ui green button" type="submit" :disabled="disablefield">Reset</button>
+                    </form>
+                
                 </div>
-                <form class="ui big form" @submit.prevent="resetPassword" novalidate>
-                    
-                    <div class="field">
-                        <label><span>P</span>assword</label>
-                        <input type="password" name="password" :disabled="disablefield" placeholder="password" v-model="password">
-                    </div>
-                    <div class="field">
-                        <label><span>C</span>onfirm password</label>
-                        <input type="password" name="password" :disabled="disablefield" placeholder="confirm password" v-model="c_password">
-                    </div>
-                    <button class="big ui green button" type="submit" :disabled="disablefield">Reset</button>
-                </form>
-            
             </div>
         </div>
     </div>
 
 </template>
 <style scoped>
-.centerd-component-container{
-    top:65%
-}
+
 </style>

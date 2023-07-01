@@ -2,7 +2,7 @@
 import Header from "../src/components/Header.vue"
 import ServiceClient from "./ServiceClient";
 import {store} from "./VuexStore"
-
+import ContentTitle from './components/Common/ContentTitle.vue'
  
 
 ServiceClient.post('http://127.0.0.1:8000/api/getUserData').then(response => {
@@ -14,6 +14,7 @@ ServiceClient.post('http://127.0.0.1:8000/api/getUserData').then(response => {
 
 <template>
   <Header />
+  <ContentTitle v-if="this.$route.name !== 'tasks'" :h1Title="this.$route.name" />
   <router-view></router-view>
 </template>
 

@@ -21,6 +21,14 @@
             showParticipantModalEmit(){
                 this.$emit("showParticipantModal", {data: this.data})
             },
+            Attach_ModalEmit(){
+                this.$emit("Attach_Modal", {data: this.data})
+
+            },
+            AttachMyselfEmit(){
+                this.$emit("AttachMyself", {data: this.data})
+
+            }
         }
     }
 </script>
@@ -30,8 +38,9 @@
         <i class="ellipsis horizontal icon"></i>
         <div class="right menu"  :class="{ active: this.circulardrop }">
             <div class="item" v-if="component === 'Projects'"><button class="ui small orange button" @click="redirectEmit()"><i class="tasks icon"></i>View Tasks</button></div>
-            <div class="item"><button class="ui small green button" @click="showParticipantModalEmit()"><i class="user plus icon"></i>Employees</button></div>
-
+            <div class="item" v-if="component === 'Projects'"><button class="ui small green button" @click="showParticipantModalEmit()"><i class="user plus icon"></i>Employees</button></div>
+            <div class="item" v-if="component === 'Tasks'"><button class="ui normal green button" @click="Attach_ModalEmit()"><i class="user plus icon"></i>Attach To Employee</button></div>
+            <div class="item" v-if="component === 'Tasks'"><button class="ui normal green button" @click=" AttachMyselfEmit()"><i class="user plus icon"></i>Attach To Myself</button></div>
         </div>
     </button>
 </template>

@@ -25,6 +25,7 @@
   position: fixed;
   top: 0;
   background-size: 100%;
+  min-height: 100%;
 
   
 }
@@ -131,6 +132,10 @@ form{
 .content-title.task{
   width: max-content;
   border-bottom: rgb(254, 151, 7) 3px solid;
+  margin-bottom:20px;
+  width: auto;
+  min-width: auto;
+  max-width: max-content;
   
 }
 

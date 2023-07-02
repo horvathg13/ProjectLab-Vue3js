@@ -274,7 +274,7 @@
                                 <th>Title</th>
                                 <th>Status</th>
                                 <th>Deadline</th>
-                                <th>Actions
+                                <th>
                                 <button class="ui right floated small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>
                             </tr>
                         </thead>
@@ -345,7 +345,5 @@
 </template>
 
 <style scoped>
-.ui.table{
-    cursor: pointer;
-}
+
 </style>

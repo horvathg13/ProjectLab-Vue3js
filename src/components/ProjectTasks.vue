@@ -5,6 +5,7 @@
   import Success_Popup from './Common/Success_Popup.vue';
   import ErrorPopup from './Common/ErrorPopup.vue';
   import TaskAttachModal from './Modals/TaskAttachModal.vue';
+  import CircularMenu from './Common/CircularMenu.vue';
   
   
 
@@ -16,6 +17,7 @@
         Success_Popup,
         ErrorPopup,
         TaskAttachModal,
+        CircularMenu,
     },
     props:{
         
@@ -52,8 +54,8 @@
             console.log("Heyhó Active Dropping")
         },
         Attach_Modal(task){
-            
-            this.AttachTask = task
+            const{data} = task
+            this.AttachTask = task.data
             console.log(this.AttachTask.task_id,"attach_is active")
 
             let url=`http://127.0.0.1:8000/api/getActiveEmployees/${this.AttachTask.task_id}`;
@@ -300,7 +302,8 @@
             },
 
             AttachMyself(task){
-                let taskId = task.task_id;
+                const {data} = task
+                let taskId = task.data.task_id;
                 let projectId = null;
                 for(let p in this.projectData){
                 projectId = this.projectData[p].project_id;
@@ -363,14 +366,15 @@
     </Transition>
     
     <div class="content-container">
-        <div class="content-title task" v-for="project in this.projectData" :key="project.id">
-            <h1>Project:&nbsp;&nbsp;{{project.name}}</h1>
-            <h2>Manager: &nbsp;&nbsp;{{ project.manager }}</h2>
-        </div>
+        
     
         <div class="centerd-component-container">
+            <div class="content-title task" v-for="project in this.projectData" :key="project.id">
+            <h1>{{project.name}}</h1>
+            <h2>{{ project.manager }}</h2>
+            </div>
             <div class="scrolling-table-container">
-                <table class="ui striped table">
+                <table class="ui selectable striped table">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -378,7 +382,7 @@
                             <th>Deadline</th>
                             <th>Task Status</th>
                             <th>Task Priority</th>
-                            <th>Actions
+                            <th>
                             <button class="ui right floated small primary labeled icon button" @click="showCreateTaskModal()"><i class="tasks icon"></i>New Task</button></th>
                         </tr>
                     </thead>
@@ -391,10 +395,16 @@
                             <td>{{ task.priority}}</td>
                         
                             <td>
-                                <button class="ui normal violet button"><i class="edit icon"></i>Edit Task</button>
+                                <CircularMenu
+                                  :data="task"
+                                  :component="this.$route.name"
+                                  @Attach_Modal="this.Attach_Modal"
+                                  @AttachMyself="this.AttachMyself">
+                                </CircularMenu>
+                                 <!--<button class="ui normal violet button"><i class="edit icon"></i>Edit Task</button>
                                 <button class="ui normal orange button"><i class="users icon"></i>Employees</button>
-                                <button class="ui normal green button" @click="Attach_Modal(task)"><i class="user plus icon"></i>Attach To Employee</button>
-                                <button class="ui normal green button" @click=" AttachMyself(task)"><i class="user plus icon"></i>Attach To Myself</button>
+                               <button class="ui normal green button" @click="Attach_Modal(task)"><i class="user plus icon"></i>Attach To Employee</button>
+                                <button class="ui normal green button" @click=" AttachMyself(task)"><i class="user plus icon"></i>Attach To Myself</button>-->
                             </td>
                         
                             
@@ -440,7 +450,8 @@
 <style scoped>
 
     .centerd-component-container{
-        height: calc(100% - 142px);
+       /* height: calc(100% - 142px);*/
+       
     }
 
 </style>

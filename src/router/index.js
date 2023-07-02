@@ -30,12 +30,17 @@ const router = createRouter({
     {
       path: "/home",
       name:"Homepage",
-      component: Home
+      component: Home,
     },
     {
       path: "/users",
       name:"Users",
-      component: Users
+      component: Users,
+      meta: 
+      [{
+        breadcrumb: 'Home',
+        path:'/home'
+      }]
     },
     {
       path: "/reset-password/:token?",
@@ -52,12 +57,29 @@ const router = createRouter({
       name:"Projects",
       component: Projects,
       props:true,
+      meta: 
+      [{
+        breadcrumb: 'Home',
+        path:'/home'
+      }]
     },
     {
       path: "/projects/:id?/tasks",
-      name:"tasks",
+      name:"Tasks",
       component: ProjectTasks,
       props:true,
+      meta: 
+      [
+        {
+          breadcrumb: 'Home',
+          path:'/home'
+        },
+        {
+        breadcrumb: 'Project',
+        path: '/projects'
+        }
+        
+      ]
     },
     
   

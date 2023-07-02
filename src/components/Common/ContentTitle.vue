@@ -3,18 +3,26 @@ export default{
     props:{
         h1Title:"",
         message:null,
-        path:""
+        route:"",
+        meta:[]
     },
     data(){
         return{
-            bcData:[],
         }
     },
+    computed: {
+        breadcrumbs() {
+            return Array.isArray(this.meta) ? this.meta : [this.meta];
+            
+        },
+        
+        
+    }, 
     methods:{
        
     },
     mounted() {
-        console.log(this.$route)
+        
     },
  
 }
@@ -28,13 +36,11 @@ export default{
         <div class="content-title users" v-if="h1Title == 'Users'">
             <h1>{{h1Title}}</h1>
         </div>
-        <div class="ui large breadcrumb">
-            <a class="section">Home</a>
+        <div class="ui large breadcrumb" v-for="(data,index) in meta" :key="index">
+            <a class="section" :href="data.path">{{data.breadcrumb}}</a>
             <i class="right chevron icon divider"></i>
-            <a class="section">Projects</a>
-            <i class="right chevron icon divider"></i>
-            <div class="section" :class="{active: h1Title}"> Tasks</div>
         </div>
+       <div class="ui large breadcrumb section" v-if="h1Title != 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && h1Title !=='Homepage'" :class="{active: h1Title}"> {{ h1Title }}</div>
         <div class="message-container" v-if="h1Title != 'Greeting' && h1Title !=='Register' && h1Title !=='Login'">
             <div class="ui large red left pointing label"><i class="envelope icon"></i>{{ message ? message: 0 }}</div>
         </div>
@@ -86,8 +92,9 @@ export default{
 .ui.breadcrumb .icon.divider{
     color:black;
 }
-.ui.breadcrumb .active.section{
+.ui.large.breadcrumb{
     color: lawngreen;
+    font-weight: bold;
 }
 
 </style>

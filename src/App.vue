@@ -14,7 +14,7 @@ ServiceClient.post('http://127.0.0.1:8000/api/getUserData').then(response => {
 
 <template>
   <Header />
-  <ContentTitle v-if="this.$route.name !== 'tasks'" :h1Title="this.$route.name" :path="this.$route.path" />
+  <ContentTitle  :h1Title="$route.name" :route="$route.path" :meta="$route.meta"/>
   <router-view></router-view>
 </template>
 

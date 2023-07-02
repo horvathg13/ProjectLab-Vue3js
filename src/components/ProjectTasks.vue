@@ -342,6 +342,7 @@
             this.getProjectsById()
             this.getProjectParticipants()
             this.getTasks()
+            console.log(this.$route)
         }
     }
 

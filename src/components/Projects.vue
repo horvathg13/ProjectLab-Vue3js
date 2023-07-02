@@ -229,6 +229,7 @@
             this.getProjects()
             this.getUsers()
             this.contentTitle();
+            console.log(this.$route)
         }
     }
 

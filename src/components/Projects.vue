@@ -6,7 +6,8 @@
   import ProjectTasks from './ProjectTasks.vue';
   import AddProjectParticipantsModal from './Modals/AddProjectParticipantsModal.vue';
   import AccrodionMenu from './Common/AccordionMenu.vue';
-  import ContentTitle from './Common/ContentTitle.vue'
+  import ContentTitle from './Common/ContentTitle.vue';
+  import CircularMenu from './Common/CircularMenu.vue';
 
   export default {
     components: {
@@ -17,6 +18,7 @@
         AddProjectParticipantsModal,
         AccrodionMenu,
         ContentTitle,
+        CircularMenu,
     },
 
     data() {
@@ -37,7 +39,8 @@
             participants:[],
             finalData:[],
             mergeData:{},
-            h1:""
+            h1:"",
+            circulardrop:false
         }
     },
    
@@ -51,10 +54,11 @@
         },
 
         showParticipantModal(project){
+            const{data} = project
             if(this.show_participant_modal==false){
                 this.show_participant_modal = true
             }
-            this.projectData = [project]
+            this.projectData = [project.data]
             console.log("parti",  this.projectData)
         },
 
@@ -158,10 +162,11 @@
             },
             
             redirect(project){
+                const {data} = project.data;
                 this.projectData = [project]
                 console.log(this.projectData,"érik a szőlő")
                 this.redirectToTasks = true;
-                this.$router.push(`/projects/${project.project_id}/tasks`);
+                this.$router.push(`/projects/${project.data.project_id}/tasks`);
                 
             },
 
@@ -219,6 +224,10 @@
                     },
                     contentTitle(){
                         this.h1= this.$route.name
+                    },
+                    circularMenuDropdown(){
+                        this.circulardrop = !this.circulardrop
+                        console.log("circular drop")
                     }
                 
                 
@@ -229,7 +238,7 @@
             this.getProjects()
             this.getUsers()
             this.contentTitle();
-            console.log(this.$route)
+            
         }
     }
 
@@ -257,7 +266,7 @@
             <div class="centerd-component-container">
                 
                 <div class="scrolling-table-container">
-                    <table class="ui striped table">
+                    <table class="ui selectable striped table">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -277,10 +286,22 @@
                                 <td>{{ project.status}}</td>
                                 <td>{{ project.deadline}}</td>
                                 <td>
-                                    <button class="ui small violet button"><i class="edit icon"></i>Edit</button>
-                                    <button class="ui small orange button" @click="redirect(project)"><i class="tasks icon"></i>View Tasks</button>
-                                    <button class="ui small green button" @click="showParticipantModal(project)"><i class="user plus icon"></i>Employees</button>
+                                    <!--<button class="ui small violet button"><i class="edit icon"></i>Edit</button>-->
+                                    
+                                    <!--<button class="circular ui scrolling dropdown blue icon button" @click="circularMenuDropdown">
+                                        <i class="ellipsis horizontal icon"></i>
+                                        <div class="right menu"  :class="{active: this.circulardrop}">
+                                            <div class="item"><button class="ui small orange button" @click="redirect(project)"><i class="tasks icon"></i>View Tasks</button></div>
+                                            <div class="item"><button class="ui small green button" @click="showParticipantModal(project)"><i class="user plus icon"></i>Employees</button></div>
 
+                                        </div>
+                                    </button>-->
+                                    <CircularMenu
+                                        :data="project"
+                                        :component="this.$route.name"
+                                        @redirect="this.redirect"
+                                        @showParticipantModal="this.showParticipantModal">
+                                    </CircularMenu>
                                 </td>
                             
                                 
@@ -322,3 +343,9 @@
         </Transition>
     </div>
 </template>
+
+<style scoped>
+.ui.table{
+    cursor: pointer;
+}
+</style>

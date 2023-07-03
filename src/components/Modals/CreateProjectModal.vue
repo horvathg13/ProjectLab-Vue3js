@@ -11,7 +11,10 @@
         props:{
             getusers:Array,
             isDropdownOpen: null,
-            selected:{}
+            selected:{},
+            EditMode:false,
+            EditData:{},
+            
             
         },
         data(){
@@ -22,9 +25,28 @@
                     name: "",
                     email: "",
                 },
-                date:""
+                date:"",
+                splittedDate:[],
+                formattingDate:[],
+                editdate:"",
+               
                 
             }
+        },
+        mounted(){
+            if(this.EditData && this.EditMode=== true){
+                console.log(this.EditData, "solution", this.getusers, "getuser")
+                this.p_name= this.EditData.name;
+                this.editdate = this.EditData.deadline.split("-").join("/")
+               /* for(let i = this.splittedDate.length - 1; i >= 0; i--){
+                    this.formattingDate.push(this.splittedDate[i])
+                }
+
+                this.date = this.formattingDate.join("/")*/
+                console.log(this.editdate)
+                
+            }
+       
         },
         methods: {
            
@@ -40,7 +62,7 @@
             makeSelection(data){
                 const {select} = data
                 this.selectedManager= select
-            },
+            },           
           
         },
         
@@ -56,8 +78,8 @@
                 </div>
                 <div class="header">
                     
-                    <h1>Let's create a new project!</h1>
-                    
+                    <h1 v-if="this.EditMode === false">Let's create a new project!</h1>
+                    <h1 v-if="this.EditMode === true">Edit Mode</h1>
                 </div>
           
               
@@ -70,10 +92,11 @@
                                 <input type="text" name="name" placeholder="Name" v-model="p_name">
                             </div>
                             <div class="field"><label>Select a Manager</label></div>
-                            <SelectComponents :VforArray="this.getusers.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" @select="makeSelection"></SelectComponents>
+                            <SelectComponents :VforArray="this.getusers.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" :editmanager="this.EditData.manager" @select="makeSelection"></SelectComponents>
                             <div class="field">
                                 <label>Enter Deadline</label>
-                                <VueDatePicker v-model="date" 
+                                <VueDatePicker v-model="date"
+                                :placeholder="editdate" 
                                 :flow="flow"
                                 :enable-time-picker="false"
                                 model-type="yyyy.MM.dd"
@@ -156,4 +179,5 @@
         left:84%;
         cursor: pointer;
     }
+
 </style>

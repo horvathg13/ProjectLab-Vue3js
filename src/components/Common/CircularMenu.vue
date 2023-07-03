@@ -28,7 +28,10 @@
             AttachMyselfEmit(){
                 this.$emit("AttachMyself", {data: this.data})
 
-            }
+            },
+            EditEmit(){
+                this.$emit("edit", {data:this.data, switching:true})
+            },
         }
     }
 </script>
@@ -41,6 +44,7 @@
             <div class="item" v-if="component === 'Projects'"><button class="ui small green button" @click="showParticipantModalEmit()"><i class="user plus icon"></i>Employees</button></div>
             <div class="item" v-if="component === 'Tasks'"><button class="ui normal green button" @click="Attach_ModalEmit()"><i class="user plus icon"></i>Attach To Employee</button></div>
             <div class="item" v-if="component === 'Tasks'"><button class="ui normal green button" @click=" AttachMyselfEmit()"><i class="user plus icon"></i>Attach To Myself</button></div>
+            <div class="item"><button class="ui normal violet button item" @click=" EditEmit()"><i class="edit icon"></i>Edit</button></div>
         </div>
     </button>
 </template>
@@ -50,5 +54,8 @@
     .ui.button.dropdown .menu.active{
         display: block !important;
 
+    }
+    .ui.button.item{
+        width: 120px;
     }
 </style>

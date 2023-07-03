@@ -40,7 +40,9 @@
             finalData:[],
             mergeData:{},
             h1:"",
-            circulardrop:false
+            circulardrop:false,
+            EditMode:false,
+            Editdata:[]
         }
     },
    
@@ -65,6 +67,7 @@
         cancelModal(){
             this.showModal = false
             this.show_participant_modal = false
+            this.EditMode = false
             
         },
 
@@ -228,7 +231,15 @@
                     circularMenuDropdown(){
                         this.circulardrop = !this.circulardrop
                         console.log("circular drop")
+                    },
+                    EditingModeSwitch(kiskutya){
+                        const {data, switching} = kiskutya
+                        this.Editdata = kiskutya.data
+                        this.EditMode = kiskutya.switching;
+                        console.log(this.Editdata, "editmode")
+                        this.showModal = true
                     }
+
                 
                 
 
@@ -300,7 +311,8 @@
                                         :data="project"
                                         :component="this.$route.name"
                                         @redirect="this.redirect"
-                                        @showParticipantModal="this.showParticipantModal">
+                                        @showParticipantModal="this.showParticipantModal"
+                                        @edit="this.EditingModeSwitch">
                                     </CircularMenu>
                                 </td>
                             
@@ -330,7 +342,9 @@
                 
                 @create-project="createProjects" 
                 :getusers="this.getusers" 
-                :isDropdownOpen="this.isDropdownOpen"></CreateProjectModal>
+                :isDropdownOpen="this.isDropdownOpen"
+                :EditMode="this.EditMode"
+                :EditData="this.Editdata"></CreateProjectModal>
         </Transition>
         <ProjectTasks v-if="redirectToTasks==true"
         :projectData="this.projectData"></ProjectTasks>

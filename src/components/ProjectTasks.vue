@@ -336,6 +336,13 @@
                     }
                 });
             },
+            EditingModeSwitch(kiskutya){
+                const {data, switching} = kiskutya
+                this.Editdata = kiskutya.data
+                this.EditMode = kiskutya.switching;
+                console.log(this.Editdata, "editmode")
+                this.show_Create_Task_Modal =true
+            }
 
 
             
@@ -399,12 +406,10 @@
                                   :data="task"
                                   :component="this.$route.name"
                                   @Attach_Modal="this.Attach_Modal"
-                                  @AttachMyself="this.AttachMyself">
+                                  @AttachMyself="this.AttachMyself"
+                                  @edit="this.EditingModeSwitch">
                                 </CircularMenu>
-                                 <!--<button class="ui normal violet button"><i class="edit icon"></i>Edit Task</button>
-                                <button class="ui normal orange button"><i class="users icon"></i>Employees</button>
-                               <button class="ui normal green button" @click="Attach_Modal(task)"><i class="user plus icon"></i>Attach To Employee</button>
-                                <button class="ui normal green button" @click=" AttachMyself(task)"><i class="user plus icon"></i>Attach To Myself</button>-->
+                                
                             </td>
                         
                             
@@ -433,7 +438,9 @@
             @create-task="createTask" 
             :getusers="this.getusers" 
             :priorities="this.priorities"
-            :projectData="this.projectData"></CreateTaskModal>
+            :projectData="this.projectData"
+            :EditMode="this.EditMode"
+            :EditData="this.Editdata"></CreateTaskModal>
     </Transition> 
     <Transition>
             <TaskAttachModal v-if="show_Attach_Modal == true"

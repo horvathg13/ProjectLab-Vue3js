@@ -82,7 +82,7 @@
                                 <input type="text" name="name" placeholder="Name" v-model="p_name">
                             </div>
                             <div class="field"><label>Select a Manager</label></div>
-                            <SelectComponents :VforArray="this.getusers.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" :editmanager="this.EditData.manager" @select="makeSelection"></SelectComponents>
+                            <SelectComponents :VforArray="this.getusers.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" :editname="this.EditData.manager" @select="makeSelection"></SelectComponents>
                             <div class="field">
                                 <label>Enter Deadline</label>
                                 <VueDatePicker v-model="this.date"

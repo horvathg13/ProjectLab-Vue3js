@@ -3,7 +3,7 @@
 export default{
     props:{
        VforArray:Array,
-       editmanager:""
+       editname:""
        
     },
     data(){
@@ -31,9 +31,9 @@ export default{
 
     },
     mounted(){
-        if(this.editmanager){
-           this.selected.name = this.editmanager 
-           this.selected.id = 1
+        if(this.editname){
+           this.selected.name = this.editname 
+           
            console.log(this.selected.name, "electedcomponent editmanager")
         }
     }

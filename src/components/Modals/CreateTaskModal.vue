@@ -12,7 +12,9 @@
         props:{
            priorities:Array,
            isDropdownOpen: null,
-           projectData:Array
+           projectData:Array,
+           EditMode:false,
+           EditData:{},
             
         },
         data(){
@@ -54,6 +56,17 @@
             },
           
         },
+        mounted(){
+            if(this.EditData && this.EditMode=== true){
+                console.log(this.EditData, "solution")
+                this.Task_Details.name= this.EditData.task_name;
+                this.Task_Details.deadline = this.EditData.dedadline.replace(/-/g, ".")
+                this.Task_Details.description = this.EditData.description
+                this.Task_Details.priority = this.EditData.priority
+
+            }
+       
+        },
         
     }
 </script>
@@ -67,7 +80,8 @@
                 </div>
                 <div class="header">
                     
-                    <h1>Let's create a task!</h1>
+                    <h1 v-if="this.EditMode=== false">Let's create a task!</h1>
+                    <h1 v-if="this.EditMode=== true">Edit Mode</h1>
                     
                     
                 </div>
@@ -84,10 +98,10 @@
                            
                             <div class="field">
                                 <label>Task Deadline</label>
-                                <VueDatePicker v-model="Task_Details.deadline" 
-                                :flow="flow"
+                                <VueDatePicker v-model="Task_Details.deadline"
                                 :enable-time-picker="false"
                                 model-type="yyyy.MM.dd"
+                                format="yyyy-MM-dd"
                                 >{{ Task_Details.deadline }}</VueDatePicker>
                             </div>
                             <div class="field">
@@ -97,17 +111,8 @@
                             <div class="field">
                                 <label>Select Priority</label>
                             </div>
-                            <SelectComponents :VforArray="this.priorities" @select="makeSelection"></SelectComponents>
-                            <!--<div class="ui fluid selection dropdown" @click="toggleDrop" :class="{ active: Task_Details.priority }">
-                                <i class="dropdown icon"></i>
-                                <input type="hidden" name="user" v-model="Task_Details.priority"/>
-                                    <div class="selected-text">{{priority_name}} </div>
-                                    <div class="menu" :class="{ active: isDropdownOpen }" >
-                                        <div class="item" v-for="priority in priorities" :key="priority.id" @click="selectPriority(priority)">
-                                            {{ priority.task_priority }}
-                                        </div>
-                                    </div>
-                            </div>-->
+                            <SelectComponents :VforArray="this.priorities" :editname="this.EditData.priority" @select="makeSelection"></SelectComponents>
+
                             <button class="ui green button" type="submit">Create</button>
                         </form>
                     </div>

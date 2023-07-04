@@ -25,29 +25,11 @@
                     name: "",
                     email: "",
                 },
-                date:"",
-                splittedDate:[],
-                formattingDate:[],
-                editdate:"",
-               
+                date: '',              
                 
             }
         },
-        mounted(){
-            if(this.EditData && this.EditMode=== true){
-                console.log(this.EditData, "solution", this.getusers, "getuser")
-                this.p_name= this.EditData.name;
-                this.editdate = this.EditData.deadline.split("-").join("/")
-               /* for(let i = this.splittedDate.length - 1; i >= 0; i--){
-                    this.formattingDate.push(this.splittedDate[i])
-                }
-
-                this.date = this.formattingDate.join("/")*/
-                console.log(this.editdate)
-                
-            }
-       
-        },
+        
         methods: {
            
             cancelModal() {
@@ -62,10 +44,18 @@
             makeSelection(data){
                 const {select} = data
                 this.selectedManager= select
-            },           
+            },
+            
           
         },
-        
+        mounted(){
+            if(this.EditData && this.EditMode=== true){
+                console.log(this.EditData, "solution", this.getusers, "getuser")
+                this.p_name= this.EditData.name;
+                this.date = this.EditData.deadline.replace(/-/g, ".")                
+            }
+       
+        },
     }
 </script>
 
@@ -95,12 +85,12 @@
                             <SelectComponents :VforArray="this.getusers.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" :editmanager="this.EditData.manager" @select="makeSelection"></SelectComponents>
                             <div class="field">
                                 <label>Enter Deadline</label>
-                                <VueDatePicker v-model="date"
-                                :placeholder="editdate" 
-                                :flow="flow"
+                                <VueDatePicker v-model="this.date"
                                 :enable-time-picker="false"
                                 model-type="yyyy.MM.dd"
+                                format="yyyy-MM-dd"                            
                                 >{{ date }}</VueDatePicker>
+                                
                             </div>
                     
                             <button class="ui green button" type="submit">Create</button>

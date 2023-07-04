@@ -35,7 +35,7 @@ export default{
             }
         },
         removeUser(user){
-           let index = this.selected.indexOf(u=> u.id === user.id)+1
+           let index = this.selected.findIndex(u=> u.id === user.id)
            this.selected.splice(index, 1);
            
         },
@@ -62,8 +62,10 @@ export default{
         
         <i class="dropdown icon"></i>
         <input type="hidden"  v-model="selected.id">
+            <div class="selected-items">
             <a class="ui label transition activeEmployee" v-if="VforActiveArray" v-for="user in VforActiveArray" :key="user.id">{{ user.name ? user.name: "" }}<i class="delete icon" @click="removeActiveUser(user)"></i></a>
             <a class="ui label transition" v-for="user in selected" :key="user.id">{{ user.name ? user.name: "" }}<i class="delete icon" @click="removeUser(user)"></i></a>
+            </div>
             <div class="menu" :class="{ active: isDropdownOpen }" >
                 <div class="item" v-for="v in VforArray" :key="v.id" @click="select(v)">
                     {{ v.name }}
@@ -85,6 +87,10 @@ span{
 
 .ui.label.transition.activeEmployee{
     background-color: rgb(61, 240, 61);
+}
+.selected-items {
+  max-height: 80px; 
+  overflow-y: auto;
 }
 
 </style>

@@ -6,10 +6,11 @@ import AreYouSureModal from './Modals/AreYouSureModal.vue';
 import RoleSelectorModal from './Modals/RoleSelectorModal.vue';
 import Success_Popup from './Common/Success_Popup.vue';
 import ResetPasswordManualModal from './Modals/ResetPasswordManualModal.vue';
-import ContentTitle from './Common/ContentTitle.vue'
+import ContentTitle from './Common/ContentTitle.vue';
+import CircularMenu from './Common/CircularMenu.vue';
 
   export default {
-    components: { 
+    components: {
         AddUserModal,
         Success_Popup,
         ErrorPopup,
@@ -17,6 +18,7 @@ import ContentTitle from './Common/ContentTitle.vue'
         RoleSelectorModal,
         AreYouSureModal,
         ContentTitle,
+        CircularMenu
     },
     data() {
         return {
@@ -292,10 +294,11 @@ import ContentTitle from './Common/ContentTitle.vue'
                 });
             },
             
-            DataSave(user, func){
-                this.dataSave = user;
-                this.func = func
-                console.log(this.dataSave, this.func)
+            DataSave(kiskutya){
+                const {data, str} = kiskutya
+                this.dataSave = kiskutya.data;
+                this.func = kiskutya.str
+                console.log(kiskutya)
                 this.triggerModal= true
 
             },
@@ -353,10 +356,16 @@ import ContentTitle from './Common/ContentTitle.vue'
                             <td>{{user.email}}</td>
                             <td>{{user.roles}}</td>
                             <td>
-                                <button class="ui small yellow button"><i class="edit icon"></i>Edit</button>
+                                <CircularMenu
+                                :data="user"
+                                :component="this.$route.name"
+                                @DataSaveEmit="DataSave"
+                                @DataSaveRolesEmit="DataSave"
+                                @DataSaveResetPassword="DataSave"></CircularMenu>
+                                <!--<button class="ui small yellow button"><i class="edit icon"></i>Edit</button>
                                 <button class="ui small red button" @click="DataSave(user, 'BannUser')"><i class="close icon"></i>Ban user</button>
                                 <button class="ui small purple button" @click="DataSave(user, 'open_show_role_selector_modal')"><i class="balance scale icon"></i>Roles</button>
-                                <button class="ui small orange button" @click="DataSave(user, 'PasswordResetManual')"><i class="key icon"></i>Reset password</button>
+                                <button class="ui small orange button" @click="DataSave(user, 'PasswordResetManual')"><i class="key icon"></i>Reset password</button>-->
                             </td>
                         </tr>
                     </tbody>

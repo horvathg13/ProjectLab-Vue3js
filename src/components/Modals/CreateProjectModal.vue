@@ -154,9 +154,6 @@
     .form{
         margin-top: 0;
     }
-    .cancel{
-        margin-top: 12%;
-    }
     .header{
         text-align: center;
     }

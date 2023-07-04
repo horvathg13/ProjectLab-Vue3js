@@ -122,7 +122,7 @@
 
     .modal {
     background-color: white;
-    height: 425px;
+    height: calc(100% - 25%);
     width: auto;
     margin: auto;
     border-radius: 20px;

@@ -454,11 +454,3 @@
 </div>
 </template>
 
-<style scoped>
-
-    .centerd-component-container{
-       /* height: calc(100% - 142px);*/
-       
-    }
-
-</style>

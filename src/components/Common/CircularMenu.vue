@@ -40,6 +40,9 @@
             },
             DataSaveResetPasswordEmit(){
                 this.$emit("DataSaveResetPassword", {data:this.data, str:"PasswordResetManual"})
+            },
+            ChatEmit(){
+                this.$emit("Chatemit",{data: this.data})
             }
         }
     }
@@ -49,14 +52,15 @@
     <button class="circular ui scrolling dropdown blue icon button" :class="{ active,visible : circulardrop }" @click="circularMenuDropdown">
         <i class="ellipsis horizontal icon"></i>
         <div class=" menu"  :class="{ active: this.circulardrop }">
-            <div class="item" v-if="component === 'Projects'"><button class="ui small orange button" @click="redirectEmit()"><i class="tasks icon"></i>View Tasks</button></div>
-            <div class="item" v-if="component === 'Projects'"><button class="ui small green button" @click="showParticipantModalEmit()"><i class="user plus icon"></i>Employees</button></div>
-            <div class="item" v-if="component === 'Tasks'"><button class="ui normal green button" @click="Attach_ModalEmit()"><i class="user plus icon"></i>Attach To Employee</button></div>
-            <div class="item" v-if="component === 'Tasks'"><button class="ui normal green button" @click=" AttachMyselfEmit()"><i class="user plus icon"></i>Attach To Myself</button></div>
+            <div class="item" v-if="component === 'Projects'"><button class="ui small orange button item" @click="redirectEmit()"><i class="tasks icon"></i>View Tasks</button></div>
+            <div class="item" v-if="component === 'Projects'"><button class="ui small green button item" @click="showParticipantModalEmit()"><i class="user plus icon"></i>Employees</button></div>
+            <div class="item" v-if="component === 'Tasks'"><button class="ui normal green button item " @click="Attach_ModalEmit()"><i class="user plus icon"></i>Attach To Employee</button></div>
+            <div class="item" v-if="component === 'Tasks'"><button class="ui normal green button item" @click=" AttachMyselfEmit()"><i class="user plus icon"></i>Attach To Myself</button></div>
             <div class="item"><button class="ui normal violet button item" @click=" EditEmit()"><i class="edit icon"></i>Edit</button></div>
-            <div class="item" v-if="component === 'Users'"><button class="ui small red button" @click="DataSaveEmit()"><i class="close icon"></i>Ban user</button></div>
-            <div class="item" v-if="component === 'Users'"><button class="ui small purple button" @click="DataSaveRolesEmit()"><i class="balance scale icon"></i>Roles</button></div>
-            <div class="item" v-if="component === 'Users'"><button class="ui small orange button" @click="DataSaveResetPasswordEmit()"><i class="key icon"></i>Reset password</button></div>
+            <div class="item" v-if="component === 'Users'"><button class="ui small red button item" @click="DataSaveEmit()"><i class="close icon"></i>Ban user</button></div>
+            <div class="item" v-if="component === 'Users'"><button class="ui small purple button item" @click="DataSaveRolesEmit()"><i class="balance scale icon"></i>Roles</button></div>
+            <div class="item" v-if="component === 'Users'"><button class="ui small orange button item" @click="DataSaveResetPasswordEmit()"><i class="key icon"></i>Reset password</button></div>
+            <div class="item" v-if="component === 'Projects' || component === 'Tasks'"><button class="ui small blue button item" @click="ChatEmit()"><i class="comment icon"></i>Chat</button></div>
         </div>
     </button>
 </template>
@@ -68,6 +72,6 @@
 
     }
     .ui.button.item{
-        width: 120px;
+        width: 120px !important;
     }
 </style>

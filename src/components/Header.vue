@@ -52,10 +52,10 @@ export default{
         </div>
         <div class="header-items">
             <ul>
-                <li>Home</li>
-                <li>Users</li>
+                <li><a href="/home">Home</a></li>
+                <li><a href="/users">Users</a></li>
                 <li>Notifications</li>
-                <li>Projects</li>
+                <li><a href="/projects">Projects</a></li>
                 <li>My Tasks</li>
                 <li>Statistics</li>
             </ul>
@@ -108,6 +108,10 @@ export default{
         border-radius: 10px;
         font-weight: bold;
         color: white;
+    }
+    .header-items ul li a{
+        text-decoration: none;
+        color:black;
     }
 
 

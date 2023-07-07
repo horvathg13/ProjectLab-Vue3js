@@ -255,6 +255,7 @@
                                 if (response.status == 200){
                                 
                                     this.projectParticipants=response.data
+                                    this.show_Comment_Modal = true
                                 }
                             }).catch((error) => {
                                     
@@ -268,7 +269,7 @@
                                     }
                                 }
                             });
-                        this.show_Comment_Modal = true
+                        
                     },
 
                 

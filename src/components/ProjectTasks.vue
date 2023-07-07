@@ -374,6 +374,17 @@
                     });
                 
             },
+            SendMessage(emitData){
+                const{participants,message,taskData} = emitData
+                let projectId = null;
+                for(let p in this.projectData){
+                projectId = this.projectData[p].project_id;
+                }
+                console.log(emitData, "emitData", projectId, "p_id")
+
+                
+
+            }
 
 
             
@@ -485,6 +496,7 @@
     </Transition>
     <CommentModal v-if="this.show_Comment_Modal == true"
     @cancel-modal="cancelModal"
+    @sendEmit="SendMessage"
     :taskData="this.taskDataTravel"
     :Participants="this.getActiveTaskEmployee"></CommentModal>
 </div>

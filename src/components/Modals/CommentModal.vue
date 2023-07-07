@@ -7,13 +7,14 @@ export default{
     },
     data(){
         return{
-            NewParticipants:Array
+            NewParticipants:Array,
+            InputMessage:'',
         }
         
 
     },
     created(){
-        this.DataManipulation()
+       
     },
    
     methods:{
@@ -43,13 +44,16 @@ export default{
                 });
                 console.log(this.NewParticipants, "new")
             }
+        },
+        Send(){
+            this.$emit("sendEmit", {participants: this.NewParticipants, message:this.InputMessage, taskData:this.taskData})
         }
 
         
     },
     mounted(){
         console.log(this.taskData, "taskdata")
-        
+        this.DataManipulation()
     }
     
 }
@@ -118,8 +122,8 @@ export default{
 
             
                 <div class="ui large icon input">
-                    <input  type="text" placeholder="Type message">
-                    <i class="ui large paper plane outline icon"></i>
+                    <input  type="text" placeholder="Type message" v-model="InputMessage">
+                    <i class="ui large paper plane outline icon" @click="Send"></i>
                     
                 </div>
             </div>

@@ -6,6 +6,7 @@
   import ErrorPopup from './Common/ErrorPopup.vue';
   import TaskAttachModal from './Modals/TaskAttachModal.vue';
   import CircularMenu from './Common/CircularMenu.vue';
+  import CommentModal from './Modals/CommentModal.vue'
   
   
 
@@ -18,6 +19,7 @@
         ErrorPopup,
         TaskAttachModal,
         CircularMenu,
+        CommentModal,
     },
     props:{
         
@@ -43,6 +45,8 @@
             assignEmployee:Array,
             RequestData:[],
             getActiveTaskEmployee:Array,
+            show_Comment_Modal: false,
+            taskDataTravel:Array
 
         }
     },
@@ -93,6 +97,7 @@
         cancelModal(){
             this.show_Create_Task_Modal = false
             this.show_Attach_Modal = false
+            this.show_Comment_Modal = false
             this.getTasks(this.p_id)
             console.log("szevasz")
         },
@@ -342,7 +347,32 @@
                 this.EditMode = kiskutya.switching;
                 console.log(this.Editdata, "editmode")
                 this.show_Create_Task_Modal =true
-            }
+            },
+            commentModalSwitch(kismacska){
+                const{data} = kismacska
+                this.taskDataTravel = kismacska.data
+                console.log(this.taskData, "kismacskaTaskData")
+                let url=`http://127.0.0.1:8000/api/getActiveEmployees/${kismacska.data.task_id}`;
+                ServiceClient.post(url).then((response) =>{
+                        console.log(response);
+                        if (response.status == 200){
+                        this.getActiveTaskEmployee = response.data
+                        console.log(this.getActiveTaskEmployee, "lokol")
+                        }
+                    }).catch((error) => {
+                            
+                        if (error.response && error.response.status) {
+                            if (error.response.data && error.response.data.message) {
+                                this.show_error_popup = true
+                                setTimeout(() => {
+                                    this.show_error_popup = false
+                                },  2000)
+                                
+                            }
+                        }
+                    });
+                this.show_Comment_Modal = true
+            },
 
 
             
@@ -407,7 +437,8 @@
                                   :component="this.$route.name"
                                   @Attach_Modal="this.Attach_Modal"
                                   @AttachMyself="this.AttachMyself"
-                                  @edit="this.EditingModeSwitch">
+                                  @edit="this.EditingModeSwitch"
+                                  @CommentEmit="this.commentModalSwitch">
                                 </CircularMenu>
                                 
                             </td>
@@ -451,6 +482,10 @@
             @attach-user="AssignEmployeeToTask"
             ></TaskAttachModal>
     </Transition>
+    <CommentModal v-if="this.show_Comment_Modal == true"
+    @cancel-modal="cancelModal"
+    :taskData="this.taskDataTravel"
+    :Participants="this.getActiveTaskEmployee"></CommentModal>
 </div>
 </template>
 

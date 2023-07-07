@@ -1,0 +1,221 @@
+<script>
+export default{
+    props:{
+        Participants:Array,
+        projectData:Array,
+        taskData:Array
+    },
+    data(){
+
+    },
+    methods:{
+        cancelModal() {
+            this.$emit("cancel-modal");
+        },
+        getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        
+    }
+}
+</script>
+
+
+<template>
+    <div class="modal-overlay">
+        <div class="modal participants">
+            <div class="header"><h1>Participants</h1></div>
+            <div class="card participants" v-for="participant in Participants" :key="participant.id">
+                
+                <div class="avatar" :style="{backgroundColor:getRandomColor()}"><h1>{{participant.name.charAt(0).toUpperCase()}}</h1></div>
+                <span>{{participant.name}}</span>
+            </div>   
+
+        </div>
+            
+        <div class="modal"> 
+            <div class="close">
+                <i class="close large red icon" @click="cancelModal"></i>
+            </div>
+            <div class="header" >
+                
+                <h1 v-if="projectData">{{ projectData.name }}</h1>
+                <h1 v-if="taskData">{{ taskData.task_name }}</h1>
+                
+            </div>
+                    
+            <div class="messagebox">
+                <div class="message content">
+                    <div class="message">
+                        <div class="avatar"><h1>M</h1></div>
+                        <div class="message bubble ui left pointing label">
+                            <div class="message bubble content">
+                                <h3>Hello World</h3>
+                            </div>  
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="ui large icon input">
+                    <input  type="text" placeholder="Type message">
+                    <i class="ui large paper plane outline icon"></i>
+                    
+                </div>
+            </div>
+            
+        </div>
+            
+    </div>
+</template>
+
+<style scoped>
+    .ui.label{
+        border-color: #00000063;
+    }
+    span{
+        color: black;
+        margin-left: calc(100% - 90%);
+        top: calc(100px - 95px)
+    }
+    .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #3999fa;
+        color: #fff;
+        text-align: center;
+        line-height: 40px;
+    }
+    .ui.input{
+        height: 40px !important;
+        width: 100% !important;
+        
+    }
+    .ui.input>input{
+        border: black 1px solid;
+        border-radius: 5px;
+    }
+    .card.participants{
+        display: inline-flex;
+        width: 100%;
+        height: fit-content;
+        border-bottom: 1px black solid;
+        padding:5px
+    }
+
+    .ui.icon.input>i.icon{
+        pointer-events: auto;
+        cursor: pointer !important;
+    }
+    .messagebox{
+        height:calc(100% - 25%);
+        width: auto;
+       
+        /*overflow: auto;*/
+        
+    }
+    .message.content{
+        overflow: auto;
+        height:calc(100% - 25%);
+        width: 100%;
+        background-color: #e6eedf7d;
+        height: 100%;
+        border-radius: 5px;
+        
+    }
+    .message.bubble{
+        background-color: white;
+        width: fit-content;
+        height: fit-content;
+        margin: 5px;
+        padding: 5px;
+        border-radius: 10px;
+    }
+    .message.bubble.contnet{
+
+    }
+    .message{
+        display: inline-flex;
+        margin:5px
+    }
+    .header{
+        margin-bottom: 0;
+    }
+    .ui.green.button.create{
+        top:15px
+    }
+    .selected-text{
+        color: black;
+        
+    }
+   .ui.fluid.dropdown{
+        z-index: 9999;
+        
+    }
+
+    .ui.fluid.dropdown.active{
+        background-color: rgb(101, 241, 101);
+    }
+
+    .modal-overlay {
+    z-index: 9999;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin:auto;
+    display: flex;
+    justify-content: center;
+    background-color: #221e1eda;
+    width: 100%;
+    min-height: calc(100vh - 55px);
+    
+    }
+
+    .modal {
+    background-color: white;
+    height: calc(100% - 25%);
+    width: 700px;
+    margin: 15px;
+    border-radius: 20px;
+    padding:20px;
+    min-height: calc(100% - 10%);
+    }
+    .modal.participants{
+        width:250px;
+        overflow: auto;
+    }
+    .ui.input{
+        width: 500px;
+        height: auto;
+    }
+    .form-container{
+        height: 150px;
+    }
+
+    .form{
+        height: 150px;
+    }
+    .header{
+        text-align: center;
+        margin-bottom:10px
+    }
+    .field label{
+        font-weight: bold;
+        color: rgb(0 0 0 / 62%) !important  
+    }
+    .close{
+        width: 60px;
+        left:84%;
+        cursor: pointer;
+    }
+
+</style>
+

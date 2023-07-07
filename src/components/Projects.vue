@@ -8,6 +8,7 @@
   import AccrodionMenu from './Common/AccordionMenu.vue';
   import ContentTitle from './Common/ContentTitle.vue';
   import CircularMenu from './Common/CircularMenu.vue';
+  import CommentModal from './Modals/CommentModal.vue'
 
   export default {
     components: {
@@ -19,6 +20,7 @@
         AccrodionMenu,
         ContentTitle,
         CircularMenu,
+        CommentModal,
     },
 
     data() {
@@ -42,7 +44,9 @@
             h1:"",
             circulardrop:false,
             EditMode:false,
-            Editdata:[]
+            Editdata:[],
+            show_Comment_Modal:false,
+            projectParticipants:Array,
         }
     },
    
@@ -68,6 +72,7 @@
             this.showModal = false
             this.show_participant_modal = false
             this.EditMode = false
+            this.show_Comment_Modal = false
             
         },
 
@@ -113,7 +118,7 @@
                 });
             
         },
-        
+                   
 
             getProjects(){
                 let url ="http://127.0.0.1:8000/api/getprojects";
@@ -238,7 +243,33 @@
                         this.EditMode = kiskutya.switching;
                         console.log(this.Editdata, "editmode")
                         this.showModal = true
-                    }
+                    },
+                    commentModalSwitch(kismacska){
+                        const {data} = kismacska;
+                        console.log(kismacska);
+                        this.projectData = kismacska.data
+                        console.log(this.projectData, "kismacsadata")
+                        let url =`http://127.0.0.1:8000/api/getprojectparticipants/${kismacska.data.project_id}`;
+                        ServiceClient.post(url).then((response) =>{
+                                
+                                if (response.status == 200){
+                                
+                                    this.projectParticipants=response.data
+                                }
+                            }).catch((error) => {
+                                    
+                                if (error.response && error.response.status) {
+                                    if (error.response.data && error.response.data.message) {
+                                        this.show_error_popup = true
+                                        setTimeout(() => {
+                                            this.show_error_popup = false
+                                        },  4500)
+                                        
+                                    }
+                                }
+                            });
+                        this.show_Comment_Modal = true
+                    },
 
                 
                 
@@ -312,7 +343,8 @@
                                         :component="this.$route.name"
                                         @redirect="this.redirect"
                                         @showParticipantModal="this.showParticipantModal"
-                                        @edit="this.EditingModeSwitch">
+                                        @edit="this.EditingModeSwitch"
+                                        @CommentEmit="this.commentModalSwitch">
                                     </CircularMenu>
                                 </td>
                             
@@ -355,6 +387,10 @@
             :getusers="this.getusers"
             :projectData="this.projectData"></AddProjectParticipantsModal>
         </Transition>
+        <CommentModal v-if="this.show_Comment_Modal == true"
+        @cancel-modal="cancelModal"
+        :Participants="this.projectParticipants"
+        :projectData="this.projectData" ></CommentModal>
     </div>
 </template>
 

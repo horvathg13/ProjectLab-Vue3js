@@ -358,6 +358,7 @@
                         if (response.status == 200){
                         this.getActiveTaskEmployee = response.data
                         console.log(this.getActiveTaskEmployee, "lokol")
+                        this.show_Comment_Modal = true
                         }
                     }).catch((error) => {
                             
@@ -371,7 +372,7 @@
                             }
                         }
                     });
-                this.show_Comment_Modal = true
+                
             },
 
 

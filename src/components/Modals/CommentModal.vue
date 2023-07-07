@@ -6,8 +6,16 @@ export default{
         taskData:Array
     },
     data(){
+        return{
+            NewParticipants:Array
+        }
+        
 
     },
+    created(){
+        this.DataManipulation()
+    },
+   
     methods:{
         cancelModal() {
             this.$emit("cancel-modal");
@@ -19,9 +27,31 @@ export default{
             color += letters[Math.floor(Math.random() * 16)];
             }
             return color;
+        },
+
+        DataManipulation(){
+            if(this.Participants.length>0){
+                this.NewParticipants = this.Participants.map((participant) => {
+                    return{
+                        id:participant.id,
+                        name: participant.name,
+                        email:participant.email,
+                        color: this.getRandomColor(),
+                        
+                    }
+                    
+                });
+                console.log(this.NewParticipants, "new")
+            }
         }
+
+        
+    },
+    mounted(){
+        console.log(this.taskData, "taskdata")
         
     }
+    
 }
 </script>
 
@@ -30,10 +60,11 @@ export default{
     <div class="modal-overlay">
         <div class="modal participants">
             <div class="header"><h1>Participants</h1></div>
-            <div class="card participants" v-for="participant in Participants" :key="participant.id">
+            <div class="card participants" v-for="participant in this.NewParticipants" :key="participant.id">
                 
-                <div class="avatar" :style="{backgroundColor:getRandomColor()}"><h1>{{participant.name.charAt(0).toUpperCase()}}</h1></div>
+                <div class="avatar" :style="{backgroundColor: participant.color}" ><h1>{{participant.name.charAt(0).toUpperCase()}}</h1></div>
                 <span>{{participant.name}}</span>
+
             </div>   
 
         </div>
@@ -56,7 +87,31 @@ export default{
                         <div class="message bubble ui left pointing label">
                             <div class="message bubble content">
                                 <h3>Hello World</h3>
-                            </div>  
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message">
+                        <div class="avatar"><h1>G</h1></div>
+                        <div class="message bubble ui left pointing label">
+                            <div class="message bubble content">
+                                <h3>Hello Bello</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message response">
+                        <div class="avatar response"><h1>R</h1></div>
+                        <div class="message bubble ui right pointing label">
+                            <div class="message bubble content">
+                                <h3>Lilló</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message response">
+                        <div class="avatar response"><h1>E</h1></div>
+                        <div class="message bubble ui right pointing label">
+                            <div class="message bubble content">
+                                <h3>Loló</h3>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -91,6 +146,17 @@ export default{
         color: #fff;
         text-align: center;
         line-height: 40px;
+    }
+    .avatar.response{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #3999fa;
+        color: #fff;
+        text-align: center;
+        line-height: 40px;
+        left: auto;
+        right: 0;
     }
     .ui.input{
         height: 40px !important;
@@ -127,6 +193,7 @@ export default{
         background-color: #e6eedf7d;
         height: 100%;
         border-radius: 5px;
+        display: grid;
         
     }
     .message.bubble{
@@ -137,12 +204,13 @@ export default{
         padding: 5px;
         border-radius: 10px;
     }
-    .message.bubble.contnet{
-
-    }
     .message{
         display: inline-flex;
         margin:5px
+    }
+    .message.response{
+        display: flex;
+        flex-direction: row-reverse;
     }
     .header{
         margin-bottom: 0;

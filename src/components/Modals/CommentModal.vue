@@ -31,27 +31,28 @@ export default{
             return color;
         },
 
-        DataManipulation(){
+        ParticipantDataManipulation(){
             if(this.Participants.length>0){
-                this.NewParticipants = this.Participants.map((participant) => {
-                    return{
-                        id:participant.id,
-                        name: participant.name,
-                        email:participant.email,
-                        color: this.getRandomColor(),
-                        
-                    }
-                    
-                });
-                console.log(this.NewParticipants, "new")
+                console.log("hello from commentmodal", this.Participants)
+                this.NewParticipants = [];
+                for(let parti of this.Participants){
+                    this.NewParticipants.push({
+                        id: parti.id,
+                        name: parti.name,
+                        email: parti.email,
+                        color: this.getRandomColor()
+                    });
+                }
+                
             }
+            
         },
         ArrayManipulation(){
             if(this.projectData != null){
                 console.log(this.projectData,"its a project")
                 this.NewData ={ 
                   
-                    id: this.projectData.project_id,
+                    id: null,
                     name: this.projectData.name,
                     status: this.projectData.status,
                     deadline:this.projectData.deadline,
@@ -81,7 +82,7 @@ export default{
     },
     mounted(){
         console.log(this.taskData, "taskdata")
-        this.DataManipulation()
+        this.ParticipantDataManipulation()
         this.ArrayManipulation()
         
     }

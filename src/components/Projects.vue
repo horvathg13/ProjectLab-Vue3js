@@ -249,12 +249,23 @@
                         console.log(kismacska);
                         this.projectData = kismacska.data
                         console.log(this.projectData, "kismacsadata")
-                        let url =`http://127.0.0.1:8000/api/getprojectparticipants/${kismacska.data.project_id}`;
+                        let url =`http://127.0.0.1:8000/api/getprojectparticipants/${this.projectData.project_id}`;
                         ServiceClient.post(url).then((response) =>{
                                 
                                 if (response.status == 200){
-                                
-                                    this.projectParticipants=response.data
+                                    this.projectParticipants=[]
+                                    for(let data of response.data){
+                                        this.projectParticipants.push({
+                                            id:data.userId,
+                                            name:data.name,
+                                            email:data.email,
+                                            project_name:data.project_name,
+                                            status:data.status
+
+                                        })
+                                    }
+                                   
+                                    console.log(this.projectParticipants, "rókagomba")
                                     this.show_Comment_Modal = true
                                 }
                             }).catch((error) => {
@@ -271,6 +282,38 @@
                             });
                         
                     },
+                    SendMessage(emitData){
+                        const{participants,message,data} = emitData
+                        let projectId = this.projectData.project_id;
+
+                        console.log(emitData, "emitData", projectId, "p_id")
+                        let url=`http://127.0.0.1:8000/api/send-message/${encodeURIComponent(JSON.stringify(emitData))}/${projectId}`;
+
+                        ServiceClient.post(url).then((response) =>{
+                                console.log(response);
+                                if (response.status == 200){
+                                    this.show_popup=true
+                                    setTimeout(() => {
+                                    this.show_popup = false
+                                    this.cancelModal()
+                                },  1500)
+                                }
+                            }).catch((error) => {
+                                    
+                                if (error.response && error.response.status) {
+                                    if (error.response.data && error.response.data.message) {
+                                        this.message =error.response.data.message
+                                        console.log(this.message, "errormessage")
+                                        this.show_error_popup = true
+                                        setTimeout(() => {
+                                            this.show_error_popup = false
+                                        },  2000)
+                                        
+                                    }
+                                }
+                            });
+
+                    }
 
                 
                 
@@ -296,7 +339,7 @@
             <Success_Popup v-if="show_popup==true" :message="this.message"></Success_Popup>
         </Transition>
         <Transition name="drop">
-            <ErrorPopup v-if="show_error_popup==true" :errorarray="this.message"></ErrorPopup>
+            <ErrorPopup v-if="show_error_popup==true" :message="this.message"></ErrorPopup>
         </Transition>
         <Transition name="drop">
             <AreYouSureModal v-if="show_areyousure_popup==true"></AreYouSureModal>
@@ -390,6 +433,7 @@
         </Transition>
         <CommentModal v-if="this.show_Comment_Modal == true"
         @cancel-modal="cancelModal"
+        @sendEmit="SendMessage"
         :Participants="this.projectParticipants"
         :projectData="this.projectData" ></CommentModal>
     </div>

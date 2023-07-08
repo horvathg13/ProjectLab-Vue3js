@@ -375,14 +375,35 @@
                 
             },
             SendMessage(emitData){
-                const{participants,message,taskData} = emitData
+                const{participants,message,data} = emitData
                 let projectId = null;
                 for(let p in this.projectData){
                 projectId = this.projectData[p].project_id;
                 }
                 console.log(emitData, "emitData", projectId, "p_id")
+                let url=`http://127.0.0.1:8000/api/send-message/${encodeURIComponent(JSON.stringify(emitData))}/${projectId}`;
 
-                
+                ServiceClient.post(url).then((response) =>{
+                        console.log(response);
+                        if (response.status == 200){
+                            this.show_popup=true
+                            setTimeout(() => {
+                            this.show_popup = false
+                            this.cancelModal()
+                        },  1500)
+                        }
+                    }).catch((error) => {
+                            
+                        if (error.response && error.response.status) {
+                            if (error.response.data && error.response.data.message) {
+                                this.show_error_popup = true
+                                setTimeout(() => {
+                                    this.show_error_popup = false
+                                },  2000)
+                                
+                            }
+                        }
+                    });
 
             }
 

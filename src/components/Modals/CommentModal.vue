@@ -2,13 +2,14 @@
 export default{
     props:{
         Participants:Array,
-        projectData:Array,
-        taskData:Array
+        projectData:null,
+        taskData:null,
     },
     data(){
         return{
             NewParticipants:Array,
             InputMessage:'',
+            NewData:{},
         }
         
 
@@ -45,8 +46,35 @@ export default{
                 console.log(this.NewParticipants, "new")
             }
         },
+        ArrayManipulation(){
+            if(this.projectData != null){
+                console.log(this.projectData,"its a project")
+                this.NewData ={ 
+                  
+                    id: this.projectData.project_id,
+                    name: this.projectData.name,
+                    status: this.projectData.status,
+                    deadline:this.projectData.deadline,
+                }
+                console.log(this.NewData, "newdata")
+
+            }else if(this.taskData != null){
+                console.log(this.taskData, "this.taskData")
+
+                    this.NewData={
+                        id: this.taskData.task_id,
+                        name: this.taskData.task_name,
+                        status: this.taskData.status,
+                        deadline: this.taskData.dedadline,
+                    };
+
+                    console.log(this.NewData, "newdata")
+                
+            }
+           
+        },
         Send(){
-            this.$emit("sendEmit", {participants: this.NewParticipants, message:this.InputMessage, taskData:this.taskData})
+            this.$emit("sendEmit", {participants: this.NewParticipants, message:this.InputMessage, data:this.NewData})
         }
 
         
@@ -54,6 +82,8 @@ export default{
     mounted(){
         console.log(this.taskData, "taskdata")
         this.DataManipulation()
+        this.ArrayManipulation()
+        
     }
     
 }
@@ -79,8 +109,7 @@ export default{
             </div>
             <div class="header" >
                 
-                <h1 v-if="projectData">{{ projectData.name }}</h1>
-                <h1 v-if="taskData">{{ taskData.task_name }}</h1>
+                <h1>{{ NewData.name }}</h1>
                 
             </div>
                     
@@ -175,7 +204,7 @@ export default{
         display: inline-flex;
         width: 100%;
         height: fit-content;
-        border-bottom: 1px black solid;
+        border-bottom: 1px #0000004a solid;
         padding:5px
     }
 
@@ -261,6 +290,7 @@ export default{
     min-height: calc(100% - 10%);
     }
     .modal.participants{
+        min-width: 200px;
         width:250px;
         overflow: auto;
     }

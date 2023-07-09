@@ -519,7 +519,8 @@
     @cancel-modal="cancelModal"
     @sendEmit="SendMessage"
     :taskData="this.taskDataTravel"
-    :Participants="this.getActiveTaskEmployee"></CommentModal>
+    :Participants="this.getActiveTaskEmployee"
+    :projectId ="this.$route.params.id"></CommentModal>
 </div>
 </template>
 

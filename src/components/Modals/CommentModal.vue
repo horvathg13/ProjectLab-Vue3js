@@ -1,21 +1,32 @@
 <script>
+  import ServiceClient from '../../ServiceClient';
+  
+
 export default{
     props:{
         Participants:Array,
         projectData:null,
         taskData:null,
+        
+        projectId:null,
     },
     data(){
         return{
             NewParticipants:Array,
             InputMessage:'',
             NewData:{},
+            currentUserId:null,
+            messageData:Array,
+            project_id:null,
+            taskId:null,
+            messages:Array,
+            
         }
         
 
     },
     created(){
-       
+        
     },
    
     methods:{
@@ -50,9 +61,10 @@ export default{
         ArrayManipulation(){
             if(this.projectData != null){
                 console.log(this.projectData,"its a project")
+                this.project_id = this.projectData.project_id;
                 this.NewData ={ 
                   
-                    id: null,
+                    id: null, 
                     name: this.projectData.name,
                     status: this.projectData.status,
                     deadline:this.projectData.deadline,
@@ -76,6 +88,49 @@ export default{
         },
         Send(){
             this.$emit("sendEmit", {participants: this.NewParticipants, message:this.InputMessage, data:this.NewData})
+        },
+        getMessages(){
+            if(this.projectId == null){
+                this.taskId = 0;
+            }else{
+                this.taskId = this.taskData.task_id
+                this.project_id = this.projectId
+            }
+            
+            console.log( "parti")
+            let url=`http://127.0.0.1:8000/api/get-messages/project-id/${this.project_id}/task-id/${this.taskId}/participants/${encodeURIComponent(JSON.stringify(this.NewParticipants))}`;
+
+            ServiceClient.post(url).then((response) =>{
+                    console.log(response);
+                    if (response.status == 200){
+                        this.messages = response.data
+                        console.log( this.messages , "chat is here!")
+                        this.currentUserId = this.messages.currentUser_id,
+                        this.messageData = this.messages.messageData
+                        console.log("query is working", this.messageData, this.currentUserId)
+
+                        
+         
+                    }else{
+                            console.log("I dont get data")
+                        }
+                }).catch((error) => {
+                        
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            /*this.message =error.response.data.message
+                            console.log(this.message, "errormessage")
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                
+                            },  2000)*/
+                            
+                        }
+                    }
+                });
+
+
         }
 
         
@@ -84,7 +139,8 @@ export default{
         console.log(this.taskData, "taskdata")
         this.ParticipantDataManipulation()
         this.ArrayManipulation()
-        
+        this.getMessages()
+        //console.log("Hello from mounted", this.messages)
     }
     
 }
@@ -116,41 +172,32 @@ export default{
                     
             <div class="messagebox">
                 <div class="message content">
-                    <div class="message">
-                        <div class="avatar"><h1>M</h1></div>
-                        <div class="message bubble ui left pointing label">
+                    <div class="message" v-for="message in messageData" :key="message.sender_id"
+                    :class="{'message': message.sender_id === currentUserId,
+                            'message response': message.sender_id !== currentUserId
+                            }">
+                        <div class="avatar"><h1>{{message.sender_name.charAt(0).toUpperCase() }}</h1></div>
+                        <div class="message bubble ui left pointing label"
+                        :class="{'message bubble ui left pointing label': message.sender_id === currentUserId,
+                            'message bubble ui right pointing label': message.sender_id !== currentUserId
+                            }">
                             <div class="message bubble content">
-                                <h3>Hello World</h3>
+                                <h3>{{message.message}}</h3>
                             </div>
                         </div>
                     </div>
-                    <div class="message">
-                        <div class="avatar"><h1>G</h1></div>
-                        <div class="message bubble ui left pointing label">
-                            <div class="message bubble content">
-                                <h3>Hello Bello</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="message response">
+                    
+                    <!--<div class="message response"  v-for="message in messageData" :key="message.sender_id">
                         <div class="avatar response"><h1>R</h1></div>
                         <div class="message bubble ui right pointing label">
                             <div class="message bubble content">
                                 <h3>Lilló</h3>
                             </div>
                         </div>
-                    </div>
-                    <div class="message response">
-                        <div class="avatar response"><h1>E</h1></div>
-                        <div class="message bubble ui right pointing label">
-                            <div class="message bubble content">
-                                <h3>Loló</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    </div>-->
+                    
 
-            
+                </div>
                 <div class="ui large icon input">
                     <input  type="text" placeholder="Type message" v-model="InputMessage">
                     <i class="ui large paper plane outline icon" @click="Send"></i>

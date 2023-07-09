@@ -285,8 +285,7 @@
                     SendMessage(emitData){
                         const{participants,message,data} = emitData
                         let projectId = this.projectData.project_id;
-
-                        console.log(emitData, "emitData", projectId, "p_id")
+                        console.log(emitData, "emitData", projectId)
                         let url=`http://127.0.0.1:8000/api/send-message/${encodeURIComponent(JSON.stringify(emitData))}/${projectId}`;
 
                         ServiceClient.post(url).then((response) =>{
@@ -296,7 +295,7 @@
                                     setTimeout(() => {
                                     this.show_popup = false
                                     this.cancelModal()
-                                },  1500)
+                                    },  1500)
                                 }
                             }).catch((error) => {
                                     
@@ -313,7 +312,7 @@
                                 }
                             });
 
-                    }
+                    },
 
                 
                 
@@ -346,9 +345,6 @@
         </Transition>
         <div class="content-container"> 
             
-            <!--<div class="content-title">
-                <h1>Projects</h1>
-            </div>-->
             <div class="centerd-component-container">
                 
                 <div class="scrolling-table-container">
@@ -372,16 +368,7 @@
                                 <td>{{ project.status}}</td>
                                 <td>{{ project.deadline}}</td>
                                 <td>
-                                    <!--<button class="ui small violet button"><i class="edit icon"></i>Edit</button>-->
-                                    
-                                    <!--<button class="circular ui scrolling dropdown blue icon button" @click="circularMenuDropdown">
-                                        <i class="ellipsis horizontal icon"></i>
-                                        <div class="right menu"  :class="{active: this.circulardrop}">
-                                            <div class="item"><button class="ui small orange button" @click="redirect(project)"><i class="tasks icon"></i>View Tasks</button></div>
-                                            <div class="item"><button class="ui small green button" @click="showParticipantModal(project)"><i class="user plus icon"></i>Employees</button></div>
-
-                                        </div>
-                                    </button>-->
+                                   
                                     <CircularMenu
                                         :data="project"
                                         :component="this.$route.name"
@@ -435,7 +422,8 @@
         @cancel-modal="cancelModal"
         @sendEmit="SendMessage"
         :Participants="this.projectParticipants"
-        :projectData="this.projectData" ></CommentModal>
+        :projectData="this.projectData"
+        ></CommentModal>
     </div>
 </template>
 

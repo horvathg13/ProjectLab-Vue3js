@@ -1,5 +1,6 @@
 <script>
   import ServiceClient from '../../ServiceClient';
+  import ErrorPopup from '../Common/ErrorPopup.vue';
   
 
 export default{
@@ -9,6 +10,9 @@ export default{
         taskData:null,
         
         projectId:null,
+    },
+    components:{
+        ErrorPopup,
     },
     data(){
         return{
@@ -20,6 +24,8 @@ export default{
             project_id:null,
             taskId:null,
             messages:Array,
+            errorMessage:'',
+            show_error_popup:false,
             
         }
         
@@ -54,7 +60,7 @@ export default{
                         color: this.getRandomColor()
                     });
                 }
-                
+                console.log(this.NewParticipants)
             }
             
         },
@@ -118,19 +124,25 @@ export default{
                         
                     if (error.response && error.response.status) {
                         if (error.response.data && error.response.data.message) {
-                            /*this.message =error.response.data.message
-                            console.log(this.message, "errormessage")
+                            this.errorMessage = error.response.data.message
+                            console.log(this.errorMessage, "errormessage")
                             this.show_error_popup = true
                             setTimeout(() => {
                                 this.show_error_popup = false
                                 
-                            },  2000)*/
+                            },  2000)
                             
                         }
                     }
                 });
 
 
+        },
+        setMessageBackgroundColor(message){
+           let findParticipant = this.NewParticipants.find((participant)=>participant.id === message.sender_id);
+            return {
+                backgroundColor: findParticipant.color
+            }
         }
 
         
@@ -149,6 +161,9 @@ export default{
 
 <template>
     <div class="modal-overlay">
+        <Transition name="drop">
+                   <ErrorPopup v-if="show_error_popup==true" :message="this.errorMessage"></ErrorPopup>
+        </Transition>
         <div class="modal participants">
             <div class="header"><h1>Participants</h1></div>
             <div class="card participants" v-for="participant in this.NewParticipants" :key="participant.id">
@@ -176,7 +191,7 @@ export default{
                     :class="{'message': message.sender_id === currentUserId,
                             'message response': message.sender_id !== currentUserId
                             }">
-                        <div class="avatar"><h1>{{message.sender_name.charAt(0).toUpperCase() }}</h1></div>
+                        <div class="avatar" :style="setMessageBackgroundColor(message)"><h1>{{message.sender_name.charAt(0).toUpperCase() }}</h1></div>
                         <div class="message bubble ui left pointing label"
                         :class="{'message bubble ui left pointing label': message.sender_id === currentUserId,
                             'message bubble ui right pointing label': message.sender_id !== currentUserId

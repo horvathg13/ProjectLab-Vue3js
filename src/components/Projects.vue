@@ -100,6 +100,7 @@
                         setTimeout(() => {
                             this.show_popup = false
                             this.cancelModal()
+                            this.message = "";
                         },  1500)
                         console.log(response)
                     }
@@ -111,6 +112,7 @@
                             this.show_error_popup = true
                             setTimeout(() => {
                                 this.show_error_popup = false
+                                this.message = "";
                             },  2000)
                             
                         }
@@ -137,6 +139,7 @@
                                 this.show_error_popup = true
                                 setTimeout(() => {
                                     this.show_error_popup = false
+                                    this.message = "";
                                 },  4500)
                                 
                             }
@@ -206,6 +209,7 @@
                             setTimeout(() => {
                             this.show_popup = false;
                             this.cancelModal();
+                            this.message = "";
                             }, 1500);
                             console.log(response);
                         }
@@ -219,6 +223,7 @@
                             this.show_error_popup = true;
                             setTimeout(() => {
                                 this.show_error_popup = false;
+                                this.message = "";
                             }, 2000);
                             }
                         } else {
@@ -226,6 +231,7 @@
                             this.show_error_popup = true;
                             setTimeout(() => {
                             this.show_error_popup = false;
+                            this.message = "";
                             }, 2000);
                         }
                         });
@@ -272,9 +278,11 @@
                                     
                                 if (error.response && error.response.status) {
                                     if (error.response.data && error.response.data.message) {
+                                        this.message = error.response.data.message
                                         this.show_error_popup = true
                                         setTimeout(() => {
                                             this.show_error_popup = false
+                                            this.message = ""
                                         },  4500)
                                         
                                     }
@@ -306,6 +314,7 @@
                                         this.show_error_popup = true
                                         setTimeout(() => {
                                             this.show_error_popup = false
+                                            this.message = "";
                                         },  2000)
                                         
                                     }

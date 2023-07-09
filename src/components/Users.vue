@@ -22,6 +22,7 @@ import CircularMenu from './Common/CircularMenu.vue';
     },
     data() {
         return {
+            message:"",
             showModal:false,
             show_popup:false,
             show_error_popup:false,
@@ -105,9 +106,14 @@ import CircularMenu from './Common/CircularMenu.vue';
                 ServiceClient.post(url,formData).then((response) =>{
                     console.log(response);
                     if (response.status == 200){
+                        this.message = response.data.message;
                         this.show_popup = true
                         this.url = response.data.data.url
                         console.log(response.data.data.url)
+                        setTimeout(() => {
+                            this.show_popup = false
+                            this.message = "";
+                        },  2000)
                        
                     }
                 }).catch((error) => {
@@ -129,13 +135,21 @@ import CircularMenu from './Common/CircularMenu.vue';
             if(this.url.length>0){
                 navigator.clipboard.writeText(this.url)
                 .then(() => {
-                console.log("URL copied to clipboard");
+                    this.message="URL copied to clipboard"
+                    this.show_popup = true
+                    setTimeout(() => {
+                        this.show_popup = false
+                        this.message="";
+                    },  2000)
+                
                 })
                 .catch((error) => {
+                    this.message="Failed to copy URL to clipboard!"
                     console.error("Failed to copy URL to clipboard:", error);
                     this.show_error_popup = true
                     setTimeout(() => {
                             this.show_error_popup = false
+                            this.message = "";
                     },  2000)
                 });
             }else{
@@ -162,9 +176,11 @@ import CircularMenu from './Common/CircularMenu.vue';
                             
                         if (error.response && error.response.status) {
                             if (error.response.data && error.response.data.message) {
+                                this.message = "Database error occured!"
                                 this.show_error_popup = true
                                 setTimeout(() => {
                                     this.show_error_popup = false
+                                    this.message = "";
                                 },  2000)
                                 
                             }
@@ -187,9 +203,11 @@ import CircularMenu from './Common/CircularMenu.vue';
                             
                         if (error.response && error.response.status) {
                             if (error.response.data && error.response.data.message) {
+                                this.message=error.response.data.message
                                 this.show_error_popup = true
                                 setTimeout(() => {
                                     this.show_error_popup = false
+                                    this.message = "";
                                 },  2000)
                                 
                             }
@@ -216,9 +234,11 @@ import CircularMenu from './Common/CircularMenu.vue';
                     .catch((error) => {
                         if (error.response && error.response.status) {
                             if (error.response.data && error.response.data.message) {
+                                this.message=error.response.data.message
                                 this.show_error_popup = true;
                                 setTimeout(() => {
                                     this.show_error_popup = false;
+                                    this.message="";
                                 }, 2000);
                             }
                         }
@@ -323,10 +343,10 @@ import CircularMenu from './Common/CircularMenu.vue';
         </div>
         
         <Transition name="drop">
-            <Success_Popup v-if="show_popup==true"></Success_Popup>
+            <Success_Popup v-if="show_popup==true" :message="this.message"></Success_Popup>
         </Transition>
         <Transition name="drop">
-            <ErrorPopup v-if="show_error_popup==true"></ErrorPopup>
+            <ErrorPopup v-if="show_error_popup==true" :message="this.message"></ErrorPopup>
         </Transition>
         <div class="content-container">
             

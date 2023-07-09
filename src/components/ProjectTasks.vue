@@ -76,9 +76,11 @@
                         
                     if (error.response && error.response.status) {
                         if (error.response.data && error.response.data.message) {
+                            this.message=error.response.data.message
                             this.show_error_popup = true
                             setTimeout(() => {
                                 this.show_error_popup = false
+                                this.message = "";
                             },  2000)
                             
                         }
@@ -138,9 +140,11 @@
                         
                     if (error.response && error.response.status) {
                         if (error.response.data && error.response.data.message) {
+                            this.message= error.response.data.message
                             this.show_error_popup = true
                             setTimeout(() => {
                                 this.show_error_popup = false
+                                this.message="";
                             },  2000)
                             
                         }
@@ -155,13 +159,13 @@
                 
                 this.RequestData = this.assignEmployee.map(employee => {
                     return {
-                    id: employee.id,
-                    name: employee.name,
-                    deadline: this.AttachTask.dedadline,
-                    description: this.AttachTask.description,
-                    task_status: this.AttachTask.status,
-                    task_id: this.AttachTask.task_id,
-                    task_name: this.AttachTask.task_name
+                        id: employee.id,
+                        name: employee.name,
+                        deadline: this.AttachTask.dedadline,
+                        description: this.AttachTask.description,
+                        task_status: this.AttachTask.status,
+                        task_id: this.AttachTask.task_id,
+                        task_name: this.AttachTask.task_name
                     };
                 });
 
@@ -209,6 +213,7 @@
                                 this.show_error_popup = true
                                 setTimeout(() => {
                                     this.show_error_popup = false
+                                    this.message="";
                                 },  2000)
                                 
                             }
@@ -216,7 +221,7 @@
                     });
             },
 
-            getTaskEmployee(){
+            /*getTaskEmployee(){
                 let url ="http://127.0.0.1:8000/api/get-task-employee";
                 ServiceClient.post(url).then((response) =>{
                         
@@ -235,7 +240,7 @@
                             }
                         }
                     });
-            },
+            },*/
 
             getPriorities(){
                 let url ="http://127.0.0.1:8000/api/getpriorities";
@@ -249,9 +254,11 @@
                         
                     if (error.response && error.response.status) {
                         if (error.response.data && error.response.data.message) {
+                            this.message=error.response.data.message;
                             this.show_error_popup = true
                             setTimeout(() => {
                                 this.show_error_popup = false
+                                this.message="";
                             },  2000)
                             
                         }
@@ -277,6 +284,7 @@
                             this.show_error_popup = true
                             setTimeout(() => {
                                 this.show_error_popup = false
+                                this.message = "";
                             },  2000)
                             
                         }
@@ -296,9 +304,11 @@
                             
                         if (error.response && error.response.status) {
                             if (error.response.data && error.response.data.message) {
+                                this.message=error.response.data.message;
                                 this.show_error_popup = true
                                 setTimeout(() => {
                                     this.show_error_popup = false
+                                    this.message="";
                                 },  4500)
                                 
                             }
@@ -325,6 +335,7 @@
                         setTimeout(() => {
                             this.show_popup = false
                             this.cancelModal()
+                            this.message="";
                         },  1500)
                     }
                 }).catch((error) => {
@@ -335,6 +346,7 @@
                             this.show_error_popup = true
                             setTimeout(() => {
                                 this.show_error_popup = false
+                                this.message="";
                             },  4500)
                             
                         }
@@ -364,9 +376,11 @@
                             
                         if (error.response && error.response.status) {
                             if (error.response.data && error.response.data.message) {
+                                this.message=error.response.message;
                                 this.show_error_popup = true
                                 setTimeout(() => {
                                     this.show_error_popup = false
+                                    this.message="";
                                 },  2000)
                                 
                             }
@@ -386,19 +400,23 @@
                 ServiceClient.post(url).then((response) =>{
                         console.log(response);
                         if (response.status == 200){
+                            this.message = response.data.message;
                             this.show_popup=true
                             setTimeout(() => {
                             this.show_popup = false
                             this.cancelModal()
+                            this.message = "";
                         },  1500)
                         }
                     }).catch((error) => {
                             
                         if (error.response && error.response.status) {
                             if (error.response.data && error.response.data.message) {
+                                this.message=error.response.data.message
                                 this.show_error_popup = true
                                 setTimeout(() => {
                                     this.show_error_popup = false
+                                    this.message = "";
                                 },  2000)
                                 
                             }

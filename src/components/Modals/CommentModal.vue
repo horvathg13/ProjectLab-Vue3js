@@ -129,6 +129,7 @@ export default{
                             this.show_error_popup = true
                             setTimeout(() => {
                                 this.show_error_popup = false
+                                this.errorMessage = "";
                                 
                             },  2000)
                             

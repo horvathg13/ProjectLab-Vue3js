@@ -224,9 +224,10 @@ import CircularMenu from './Common/CircularMenu.vue';
                     .then((response) => {
                         if (response.status === 200) {
                             this.show_popup = true;
+                            this.getUsers();
                             setTimeout(() => {
                                 this.show_popup = false;
-                                this.getUsers();
+                                
                             }, 1500);
                             this.url = response.data.data.url;
                         }
@@ -293,6 +294,7 @@ import CircularMenu from './Common/CircularMenu.vue';
 
                         console.log(response)
                         this.show_popup = true
+                        this.getUsers()
                         setTimeout(() => {
                             this.show_popup = false
                             this.show_role_selector_modal = false

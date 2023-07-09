@@ -189,13 +189,13 @@ export default{
             <div class="messagebox">
                 <div class="message content">
                     <div class="message" v-for="message in messageData" :key="message.sender_id"
-                    :class="{'message': message.sender_id === currentUserId,
-                            'message response': message.sender_id !== currentUserId
+                    :class="{'message': message.sender_id !== currentUserId,
+                            'message response': message.sender_id === currentUserId
                             }">
                         <div class="avatar" :style="setMessageBackgroundColor(message)"><h1>{{message.sender_name.charAt(0).toUpperCase() }}</h1></div>
                         <div class="message bubble ui left pointing label"
-                        :class="{'message bubble ui left pointing label': message.sender_id === currentUserId,
-                            'message bubble ui right pointing label': message.sender_id !== currentUserId
+                        :class="{'message bubble ui left pointing label': message.sender_id !== currentUserId,
+                            'message bubble ui right pointing label': message.sender_id === currentUserId
                             }">
                             <div class="message bubble content">
                                 <h3>{{message.message}}</h3>

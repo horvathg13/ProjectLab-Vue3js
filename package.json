@@ -13,6 +13,7 @@
     "semantic-ui-css": "^2.5.0",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
+    "vue3-click-away": "^1.2.4",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

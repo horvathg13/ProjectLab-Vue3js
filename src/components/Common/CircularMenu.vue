@@ -1,16 +1,34 @@
 <script>
+import VueClickAway from "vue3-click-away";
     export default{
         props:{
             data:Array,
             component:"",
             role:Array,
         },
+        directives:{
+            VueClickAway,
+        },
+       
         data(){
             return{
-                circulardrop:false
+                circulardrop:false,
+                //dropdownClasses:false
             }
         },
         methods:{
+            onClickAway(){
+                this.circulardrop = false
+                
+                
+            },
+            /*async circularMenuDropdown(){
+                this.circulardrop = !this.circulardrop
+                console.log("circular drop")
+                this.dropdownClasses = await this.dropdownDynamicDirection();
+                console.log(this.dropdownClasses);
+                
+            },*/
             circularMenuDropdown(){
                 this.circulardrop = !this.circulardrop
                 console.log("circular drop")
@@ -43,23 +61,42 @@
             },
             CommentEmit(){
                 this.$emit("CommentEmit",{data: this.data})
-            }
+            },
+            /*dropdownDynamicDirection(){
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                    const dropdownMenu = this.$refs.dropdown;
+                    const rect = dropdownMenu.getBoundingClientRect();
+                    console.log(rect);
+                    if (rect.bottom > window.innerHeight && this.circulardrop) {
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
+                    }, 1);
+                });
+                
+                
+            }*/
+        },
+        mounted(){
+           
         }
     }
 </script>
 
 <template>
-    <button class="circular ui scrolling dropdown blue icon button" :class="{ active,visible : circulardrop }" @click="circularMenuDropdown">
+    <button  class="circular ui scrolling dropdown blue icon button" :class="{active: this.circulardrop}" @click="circularMenuDropdown" v-click-away="onClickAway" >
         <i class="ellipsis horizontal icon"></i>
-        <div class=" menu"  :class="{ active: this.circulardrop }">
-            <div class="item" v-if="component === 'Projects'"><button class="ui small orange button item" @click="redirectEmit()"><i class="tasks icon"></i>View Tasks</button></div>
+        <div ref="dropdown" class="menu"  :class="{ active: this.circulardrop }">
+            <div  class="item" v-if="component === 'Projects'"><button class="ui small orange button item" @click="redirectEmit()"><i class="tasks icon"></i>View Tasks</button></div>
             <div class="item" v-if="component === 'Projects'"><button class="ui small green button item" @click="showParticipantModalEmit()"><i class="user plus icon"></i>Employees</button></div>
             <div class="item" v-if="component === 'Tasks'"><button class="ui normal green button item " @click="Attach_ModalEmit()"><i class="user plus icon"></i>Attach To<br> Employee</button></div>
             <div class="item" v-if="component === 'Tasks'"><button class="ui normal green button item" @click=" AttachMyselfEmit()"><i class="user plus icon"></i>Attach To<br> Myself</button></div>
             <div class="item"><button class="ui normal violet button item" @click=" EditEmit()"><i class="edit icon"></i>Edit</button></div>
             <div class="item" v-if="component === 'Users'"><button class="ui small red button item" @click="DataSaveEmit()"><i class="close icon"></i>Ban user</button></div>
             <div class="item" v-if="component === 'Users'"><button class="ui small purple button item" @click="DataSaveRolesEmit()"><i class="balance scale icon"></i>Roles</button></div>
-            <div class="item" v-if="component === 'Users'"><button class="ui small orange button item" @click="DataSaveResetPasswordEmit()"><i class="key icon"></i>Reset password</button></div>
+            <div class="item" v-if="component === 'Users'"><button class="ui small orange button item" @click="DataSaveResetPasswordEmit()"><i class="key icon"></i>Reset<br> password</button></div>
             <div class="item" v-if="component === 'Projects' || component === 'Tasks'"><button class="ui small blue button item" @click="CommentEmit()"><i class="comments icon"></i>Comments</button></div>
         </div>
     </button>
@@ -71,6 +108,7 @@
         display: block !important;
 
     }
+
     .ui.button.item{
         width: 120px !important;
     }

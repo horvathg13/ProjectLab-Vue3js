@@ -1,11 +1,16 @@
 <script>
     import SelectComponents from '../Common/SelectComponents.vue';
     import MultipleSelectComponents from '../Common/MultipleSelectComponents.vue';
+    import VueClickAway from "vue3-click-away";
     export default{
         name: "AddProjectParticipantModal",
         components:{
            SelectComponents,
            MultipleSelectComponents,
+           
+        },
+        directives:{
+            VueClickAway
         },
         props:{
             getusers:Array,
@@ -36,6 +41,7 @@
                 const {select} = data
                 this.selected_user=data
             },
+           
 
           
         },
@@ -47,11 +53,11 @@
 </script>
 
 <template>
-        <div class="modal-overlay">
+        <div  class="modal-overlay"  >
             
-            <div class="modal"> 
+            <div class="modal" v-click-away="cancelModal"> 
                 <div class="close">
-                    <i class="close large red icon" @click="cancelModal"></i>
+                    <i class="close large red icon" @click="cancelModal" ></i>
                 </div>
                 <div class="header">
                     

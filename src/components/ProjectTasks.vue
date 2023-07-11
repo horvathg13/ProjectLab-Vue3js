@@ -46,7 +46,9 @@
             RequestData:[],
             getActiveTaskEmployee:Array,
             show_Comment_Modal: false,
-            taskDataTravel:Array
+            taskDataTravel:Array,
+            EditData:{},
+            EditMode:false,
 
         }
     },
@@ -100,6 +102,8 @@
             this.show_Create_Task_Modal = false
             this.show_Attach_Modal = false
             this.show_Comment_Modal = false
+            this.EditData = {},
+            this.EditMode = false
             this.getTasks(this.p_id)
             console.log("szevasz")
         },

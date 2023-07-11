@@ -1,4 +1,5 @@
 <script>
+import VueClickAway from "vue3-click-away";
     export default{
         name: "AddUserModal",
         props:{
@@ -9,6 +10,9 @@
                 name:"",
                 email:"",
             }
+        },
+        directives:{
+            VueClickAway
         },
         methods: {
             cancelModal() {
@@ -30,9 +34,9 @@
 <template>
         <div class="modal-overlay">
             
-            <div class="modal"> 
+            <div class="modal" v-click-away="cancelModal"> 
                 <div class="close">
-                    <i class="close large red icon" @click="cancelModal"></i>
+                    <i class="close large red icon" @click="cancelModal" ></i>
                 </div>
                 <div class="header">
                     
@@ -41,9 +45,9 @@
                 </div>
           
               
-                <div class="forms">
+                <div class="forms" >
 
-                    <div class="form-container">
+                    <div class="form-container" >
                         <form class="ui form" @submit.prevent="createUser" novalidate>
                             <div class="field">
                                 <label>Name</label>

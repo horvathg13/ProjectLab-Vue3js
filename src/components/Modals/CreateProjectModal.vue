@@ -2,11 +2,15 @@
     import VueDatePicker from '@vuepic/vue-datepicker';
     import '@vuepic/vue-datepicker/dist/main.css'
     import SelectComponents from '../Common/SelectComponents.vue';
+    import VueClickAway from 'vue3-click-away';
     export default{
         name: "CreateProjectModal",
         components:{
             VueDatePicker,
             SelectComponents
+        },
+        directives:{
+            VueClickAway
         },
         props:{
             getusers:Array,
@@ -62,7 +66,7 @@
 <template>
         <div class="modal-overlay">
             
-            <div class="modal"> 
+            <div class="modal" v-click-away="cancelModal"> 
                 <div class="close">
                     <i class="close large red icon" @click="cancelModal"></i>
                 </div>

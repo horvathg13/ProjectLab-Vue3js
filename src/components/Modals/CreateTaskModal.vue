@@ -2,12 +2,16 @@
     import VueDatePicker from '@vuepic/vue-datepicker';
     import '@vuepic/vue-datepicker/dist/main.css'
     import SelectComponents from '../Common/SelectComponents.vue';
+    import VueClickAway from 'vue3-click-away';
 
     export default{
         name: "CreateTaskModal",
         components:{
             VueDatePicker,
             SelectComponents,
+        },
+        directives:{
+            VueClickAway
         },
         props:{
            priorities:Array,
@@ -23,7 +27,7 @@
                     name: "",
                     deadline: "",
                     description:"",
-                    priority: null,
+                    priority: "",
                     p_id: null,
                 },
                 priority_name:"",
@@ -54,16 +58,18 @@
                 const {select} = data
                 this.Task_Details.priority= select.id
             },
+           
           
         },
         mounted(){
-            if(this.EditData && this.EditMode=== true){
+            if(this.EditData!== null && this.EditMode=== true){
                 console.log(this.EditData, "solution")
                 this.Task_Details.name= this.EditData.task_name;
                 this.Task_Details.deadline = this.EditData.dedadline.replace(/-/g, ".")
                 this.Task_Details.description = this.EditData.description
                 this.Task_Details.priority = this.EditData.priority
-
+                console.log(this.Task_Details, "solution finish")
+                
             }
        
         },
@@ -74,7 +80,7 @@
 <template>
         <div class="modal-overlay">
             
-            <div class="modal"> 
+            <div class="modal" v-click-away="cancelModal"> 
                 <div class="close">
                     <i class="close large red icon" @click="cancelModal"></i>
                 </div>
@@ -111,7 +117,7 @@
                             <div class="field">
                                 <label>Select Priority</label>
                             </div>
-                            <SelectComponents :VforArray="this.priorities" :editname="this.EditData.priority" @select="makeSelection"></SelectComponents>
+                            <SelectComponents :VforArray="this.priorities" :editname="this.Task_Details.priority" @select="makeSelection"></SelectComponents>
 
                             <button class="ui green button" type="submit">Create</button>
                         </form>

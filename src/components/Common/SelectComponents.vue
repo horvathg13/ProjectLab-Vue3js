@@ -3,7 +3,8 @@
 export default{
     props:{
        VforArray:Array,
-       editname:""
+       editname:"",
+
        
     },
     data(){
@@ -16,6 +17,14 @@ export default{
                 
         }
     },
+    /*computed:{
+        setEditName(){
+            if(this.editname !== null){
+                console.log("hello from setEditName")
+                return this.selected.name = this.editname
+            }
+        }
+    },*/
     methods:{
         toggleDrop(){
             this.$emit("toggleDrop")
@@ -28,14 +37,25 @@ export default{
 
             this.$emit("select", {select:this.selected})
         },
+        setEditName(){
+            if(this.editname !== null){
+                console.log("hello from setEditName")
+                return this.selected.name = this.editname
+            }
+        }
 
     },
     mounted(){
-        if(this.editname){
-           this.selected.name = this.editname 
+
+        this.selected.id = null
+        this.selected.name =""
+        console.log(this.selected)
+        setTimeout(()=>{
+            this.setEditName();
            
-           console.log(this.selected.name, "electedcomponent editmanager")
-        }
+        },15)
+        
+        
     }
 
 }
@@ -50,7 +70,7 @@ export default{
     <div class="ui fluid selection dropdown" @click="toggleDrop" :class="{ active: selected.name }">
         <i class="dropdown icon"></i>
         <input type="hidden" name="user" v-model="selected.id">
-            <div class="selected-text">{{ selected.name ? selected.name : "" }}</div>
+            <div class="selected-text">{{ selected.name ? selected.name : "" }} </div>
             <div class="menu" :class="{ active: isDropdownOpen }" >
                 <div class="item" v-for="v in VforArray" :key="v.id" @click="select(v)">
                     {{ v.name }}

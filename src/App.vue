@@ -10,6 +10,13 @@ ServiceClient.post('http://127.0.0.1:8000/api/getUserData').then(response => {
 }).catch(error =>{
   console.log(error);
 });
+ServiceClient.post('http://127.0.0.1:8000/api/get-unread-messages').then(response => {
+  console.log("getUnreadMessages",response.data);
+  store.commit("getUnreadMessages", response.data);
+}).catch(error =>{
+  console.log(error);
+});
+
 </script>
 
 <template>

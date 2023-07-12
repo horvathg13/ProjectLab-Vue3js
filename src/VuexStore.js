@@ -7,11 +7,15 @@ export const store = createStore({
       userRole:{},
       userID: null,
       selectedRows:[],
+      unreadMessages:{},
       
 
     },
     mutations:{
-  
+        getUnreadMessages(state,data){
+            state.unreadMessages = data
+        },
+        
         setUserData(state, data) {
             state.userData = data
             state.username = data.name

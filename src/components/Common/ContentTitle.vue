@@ -46,8 +46,8 @@ export default{
        <div class="ui large breadcrumb section" v-if="h1Title != 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && h1Title !=='Homepage'" :class="{active: h1Title}"> {{ h1Title }}</div>
         <div class="message-container" v-if="h1Title != 'Greeting' && h1Title !=='Register' && h1Title !=='Login'">
             <div class="ui large red left pointing label"><a href="/messages">
-                <i class="envelope icon" v-if="message !== 0 && message !== null"></i>
-                <i class="envelope open icon" v-else></i>{{ message ? message: 0 }}</a></div>
+                <i class="bullhorn icon" v-if="message !== 0 && message !== null"></i>
+                <i class="bullhorn open icon" v-else></i>{{ message ? message: 0 }}</a></div>
         </div>
     </div>
 </template>

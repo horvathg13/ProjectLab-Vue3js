@@ -60,7 +60,7 @@ export default{
                         color: this.getRandomColor()
                     });
                 }
-                console.log(this.NewParticipants)
+                console.log(this.NewParticipants, "newparticipants")
             }
             
         },
@@ -141,9 +141,15 @@ export default{
         },
         setMessageBackgroundColor(message){
            let findParticipant = this.NewParticipants.find((participant)=>participant.id === message.sender_id);
-            return {
-                backgroundColor: findParticipant.color
-            }
+           console.log(findParticipant, "findparticipant")
+           if(findParticipant){
+                return {
+                    backgroundColor: findParticipant.color
+                }
+           }else{
+                return {}
+           }
+            
         }
 
         

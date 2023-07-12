@@ -8,8 +8,8 @@
   import AccrodionMenu from './Common/AccordionMenu.vue';
   import ContentTitle from './Common/ContentTitle.vue';
   import CircularMenu from './Common/CircularMenu.vue';
-  import CommentModal from './Modals/CommentModal.vue'
-
+  import CommentModal from './Modals/CommentModal.vue';
+  import {store} from "../VuexStore"
   export default {
     components: {
         CreateProjectModal,
@@ -47,10 +47,27 @@
             Editdata:[],
             show_Comment_Modal:false,
             projectParticipants:Array,
+            unreadMessage:{},
         }
     },
-   
+    watch: {
+        '$store.state.unreadMessages'(newValue) {
+            this.unreadMessage = newValue;
+            console.log(this.unreadMessage, "hello from watch");
+        }
+    },
+    computed:{
+        vuexStore(){
+            this.unreadMessage= this.$store.state.unreadMessages 
+            console.log(this.unreadMessage, "hello from computed")
+        }
+    },
     methods:{
+        unreadMessages(){
+            this.unreadMessage= store.state.unreadMessages
+            console.log(this.unreadMessage, "hello from Vuex")
+        },
+
         updateModal(){
             
             if(this.showModal==false){
@@ -332,6 +349,7 @@
             this.getProjects()
             this.getUsers()
             this.contentTitle();
+           
             
         }
     }

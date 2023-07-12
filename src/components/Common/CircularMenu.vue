@@ -97,7 +97,7 @@ import VueClickAway from "vue3-click-away";
             <div class="item" v-if="component === 'Users'"><button class="ui small red button item" @click="DataSaveEmit()"><i class="close icon"></i>Ban user</button></div>
             <div class="item" v-if="component === 'Users'"><button class="ui small purple button item" @click="DataSaveRolesEmit()"><i class="balance scale icon"></i>Roles</button></div>
             <div class="item" v-if="component === 'Users'"><button class="ui small orange button item" @click="DataSaveResetPasswordEmit()"><i class="key icon"></i>Reset<br> password</button></div>
-            <div class="item" v-if="component === 'Projects' || component === 'Tasks'"><button class="ui small blue button item" @click="CommentEmit()"><i class="comments icon"></i>Comments</button></div>
+            <div class="item" v-if="component === 'Projects' || component === 'Tasks'"><button class="ui small blue button item" @click="CommentEmit()"><i class="comments icon"></i>Comments<i class="ui red bell icon"></i></button></div>
         </div>
     </button>
 </template>
@@ -112,4 +112,23 @@ import VueClickAway from "vue3-click-away";
     .ui.button.item{
         width: 120px !important;
     }
+    i.red.icon{
+        bottom:5px;
+        left:5px;
+        opacity: 1 !important;
+    }
+
+    i.red.icon:hover {
+        animation: shake 0.4s;
+        animation-iteration-count: 1;
+    }
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    20% { transform: translate(-2px, 0px) rotate(1deg); }
+    30% { transform: translate(2px, 2px) rotate(0deg); }
+    60% { transform: translate(-1px, 1px) rotate(0deg); }
+    70% { transform: translate(1px, 1px) rotate(-1deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
 </style>

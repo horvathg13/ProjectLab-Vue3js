@@ -30,6 +30,7 @@
             show_error_popup:false,
             redirectToTasks:false,
             p_name:"",
+            p_id:null,
             selectedManager:{},
             date:"",
             getprojects:Array,
@@ -95,18 +96,19 @@
 
         createProjects(data){
             
-            const { p_name, manager, date } = data;
+            const { p_name, manager, date, p_id } = data;
             
             this.p_name = p_name ;
             this.selectedManager = manager;
             this.date = date;
-            
+            this.p_id = p_id;
             console.log(this.selectedManager, this.date, p_name)
             
             let formData = new FormData();
             formData.append("p_name", this.p_name);
             formData.append("p_manager_id", this.selectedManager.id);
             formData.append("date",this.date);
+            formData.append("p_id",this.p_id);
             let url ="http://127.0.0.1:8000/api/createproject";
                 ServiceClient.post(url,formData).then((response) =>{
                     console.log(response);
@@ -264,7 +266,7 @@
                         const {data, switching} = kiskutya
                         this.Editdata = kiskutya.data
                         this.EditMode = kiskutya.switching;
-                        console.log(this.Editdata, "editmode")
+                        console.log(this.Editdata, "editmode", this.getprojects)
                         this.showModal = true
                     },
                     commentModalSwitch(kismacska){

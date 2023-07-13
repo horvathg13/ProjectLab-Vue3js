@@ -33,6 +33,7 @@
             show_Attach_Modal:false,
             p_id:"",
             task_name:"",
+            task_id:"",
             deadline:"",
             description:"",
             t_priority:"",
@@ -102,10 +103,10 @@
             this.show_Create_Task_Modal = false
             this.show_Attach_Modal = false
             this.show_Comment_Modal = false
-            this.EditData = {},
+            this.EditData={},
             this.EditMode = false
             this.getTasks(this.p_id)
-            console.log("szevasz")
+            console.log("Bezártad a Modalt")
         },
 
         createTask(data){
@@ -116,6 +117,7 @@
             this.deadline = task.deadline;
             this.description = task.description;
             this.t_priority = task.priority;
+            this.task_id = task.id;
             console.log(this.deadline, this.task_name, this.description, this.t_priority)
             
             for(let p in this.projectData){
@@ -129,6 +131,9 @@
             formData.append("description",this.description);
             formData.append("project_id",this.p_id);
             formData.append("task_priority",this.t_priority);
+            formData.append("task_id",this.task_id);
+            
+            
 
             let url ="http://127.0.0.1:8000/api/createtask";
                 ServiceClient.post(url,formData).then((response) =>{

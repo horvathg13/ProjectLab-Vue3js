@@ -3,7 +3,8 @@
 export default{
     props:{
        VforArray:Array,
-       editname:"",
+       editProject:{},
+       editTask:{},
 
        
     },
@@ -15,6 +16,40 @@ export default{
             },
             isDropdownOpen:false,
                 
+        }
+    },
+    watch:{
+        'editTask':{
+            immediate:true,
+            handler(newValue){
+                if(this.editTask != null){
+                    this.selected.name = newValue.priority  
+                    this.selected.id = newValue.priority_id
+                    console.log(this.selected, "hello from watch",newValue )
+                }else{
+                    this.selected.name = null
+                    this.selected.id = null
+                    console.log("its run else")
+                }
+               
+            },
+            deep:true
+            
+        },
+        'editProject':{
+            immediate:true,
+            handler(newValue){
+                if(this.editProject != null){
+                    console.log("hello from setEditName")
+                    this.selected.name = newValue.manager
+                    this.selected.id = newValue.manager_id
+                    console.log(this.selected.id, this.selected.name, "hello from setEditname final line")
+                }else{
+                    this.selected.name = null
+                    this.selected.id = null
+                }
+            },
+            deep:true
         }
     },
     /*computed:{
@@ -37,23 +72,39 @@ export default{
 
             this.$emit("select", {select:this.selected})
         },
-        setEditName(){
-            if(this.editname !== null){
+        setEditProject(){
+            if(this.editProject !== null){
                 console.log("hello from setEditName")
-                return this.selected.name = this.editname
+                this.selected.name = this.editProject.manager
+                this.selected.id = this.editProject.manager_id
+                console.log(this.selected.id, this.selected.name, "hello from setEditname final line")
+            }
+        },
+        setEditTask(){
+            if(this.editTask != null){
+                console.log("hello from edit Task")
+                this.selected.name = this.editTask.priority  
+                this.selected.id = this.editTask.priority_id
+
             }
         }
 
     },
     mounted(){
-
-        this.selected.id = null
+        
+        /* this.selected.id = null
         this.selected.name =""
         console.log(this.selected)
-        setTimeout(()=>{
-            this.setEditName();
+       setTimeout(()=>{
+            if(this.editProject != null){
+                this.setEditProject();
+            }else if(this.editTask !=null){
+                this.setEditTask()
+            }
+            
+            
            
-        },15)
+        },15)*/
         
         
     }

@@ -24,6 +24,7 @@
         data(){
             return{
                 p_name:"",
+                p_id:null,
                 selectedManager:{
                     id: "",
                     name: "",
@@ -41,7 +42,8 @@
             },
 
             createProject(){
-                this.$emit("create-project", { p_name: this.p_name, manager:this.selectedManager, date: this.date})
+                console.log(this.p_name, "hello from createProject()")
+                this.$emit("create-project", { p_name: this.p_name, manager:this.selectedManager, date: this.date, p_id: this.p_id})
             },
 
 
@@ -56,7 +58,12 @@
             if(this.EditData && this.EditMode=== true){
                 console.log(this.EditData, "solution", this.getusers, "getuser")
                 this.p_name= this.EditData.name;
-                this.date = this.EditData.deadline.replace(/-/g, ".")                
+                this.selectedManager.id = this.EditData.manager_id,
+                this.selectedManager.name = this.EditData.manager,
+                this.selectedManager.email = this.EditData.manager_email
+                this.date = this.EditData.deadline.replace(/-/g, ".")
+                this.p_id = this.EditData.project_id
+                console.log(this.p_name, "p_name?")            
             }
        
         },
@@ -86,7 +93,7 @@
                                 <input type="text" name="name" placeholder="Name" v-model="p_name">
                             </div>
                             <div class="field"><label>Select a Manager</label></div>
-                            <SelectComponents :VforArray="this.getusers.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" :editname="this.EditData.manager" @select="makeSelection"></SelectComponents>
+                            <SelectComponents :VforArray="this.getusers.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" :editProject="this.EditData" @select="makeSelection"></SelectComponents>
                             <div class="field">
                                 <label>Enter Deadline</label>
                                 <VueDatePicker v-model="this.date"

@@ -94,9 +94,9 @@ import VueClickAway from "vue3-click-away";
             <div class="item" v-if="component === 'Tasks'"><button class="ui normal green button item " @click="Attach_ModalEmit()"><i class="user plus icon"></i>Attach To<br> Employee</button></div>
             <div class="item" v-if="component === 'Tasks'"><button class="ui normal green button item" @click=" AttachMyselfEmit()"><i class="user plus icon"></i>Attach To<br> Myself</button></div>
             <div class="item"><button class="ui normal violet button item" @click=" EditEmit()"><i class="edit icon"></i>Edit</button></div>
-            <div class="item" v-if="component === 'Users'"><button class="ui small red button item" @click="DataSaveEmit()"><i class="close icon"></i>Ban user</button></div>
+            <!--<div class="item" v-if="component === 'Users'"><button class="ui small red button item" @click="DataSaveEmit()"><i class="close icon"></i>Ban user</button></div>
             <div class="item" v-if="component === 'Users'"><button class="ui small purple button item" @click="DataSaveRolesEmit()"><i class="balance scale icon"></i>Roles</button></div>
-            <div class="item" v-if="component === 'Users'"><button class="ui small orange button item" @click="DataSaveResetPasswordEmit()"><i class="key icon"></i>Reset<br> password</button></div>
+            <div class="item" v-if="component === 'Users'"><button class="ui small orange button item" @click="DataSaveResetPasswordEmit()"><i class="key icon"></i>Reset<br> password</button></div>-->
             <div class="item" v-if="component === 'Projects' || component === 'Tasks'"><button class="ui small blue button item" @click="CommentEmit()"><i class="comments icon"></i>Comments<i class="ui red bell icon"></i></button></div>
         </div>
     </button>

@@ -23,7 +23,9 @@
         },
         data(){
             return{
+                SelectCompData:{},
                 Task_Details:{
+                    id:null,
                     name: "",
                     deadline: "",
                     description:"",
@@ -36,12 +38,23 @@
                 
             }
         },
+        watch:{
+            'EditData':{
+                immediate:true,
+                handler(newValue){
+                    this.SelectCompData = newValue
+                    console.log("hello from createTask comp", this.SelectCompData)
+                }
+            }
+        },
         methods: {
             toggleDrop(){
                 this.$emit("toggleDrop")
             },
             cancelModal() {
+                this.SelectCompData ={}
                 this.$emit("cancel-modal");
+                console.log(this.SelectCompData , "empty??")
             },
 
             createTask(){
@@ -67,8 +80,10 @@
                 this.Task_Details.name= this.EditData.task_name;
                 this.Task_Details.deadline = this.EditData.dedadline.replace(/-/g, ".")
                 this.Task_Details.description = this.EditData.description
-                this.Task_Details.priority = this.EditData.priority
-                console.log(this.Task_Details, "solution finish")
+                this.Task_Details.priority = this.EditData.priority_id
+                this.Task_Details.id = this.EditData.task_id
+
+                console.log(this.Task_Details, "solution finish", this.EditData)
                 
             }
        
@@ -117,7 +132,7 @@
                             <div class="field">
                                 <label>Select Priority</label>
                             </div>
-                            <SelectComponents :VforArray="this.priorities" :editname="this.Task_Details.priority" @select="makeSelection"></SelectComponents>
+                            <SelectComponents :VforArray="this.priorities" :editTask="this.SelectCompData" @select="makeSelection"></SelectComponents>
 
                             <button class="ui green button" type="submit">Create</button>
                         </form>
@@ -130,7 +145,10 @@
       </div>
 </template>
 
-<style scoped> 
+<style scoped>
+    .dp__outer_menu_wrap {
+        position:unset !important
+    }
     .ui.form textarea:not([rows]){
         height: auto;
         min-height: 9em;

@@ -41,6 +41,8 @@
         watch:{
             'EditData':{
                 immediate:true,
+                deep:true,
+                flush:true,
                 handler(newValue){
                     this.SelectCompData = newValue
                     console.log("hello from createTask comp", this.SelectCompData)

@@ -41,6 +41,7 @@ import CircularMenu from './Common/CircularMenu.vue';
             triggerValue: null,
             dataSave:[],
             func:'',
+            adminbuttons:{}
         }
     },
    
@@ -324,6 +325,32 @@ import CircularMenu from './Common/CircularMenu.vue';
                 this.triggerModal= true
 
             },
+            getUsersButton(user){
+               
+                let url="http://127.0.0.1:8000/api/get-users-buttons"
+                ServiceClient.post(url).then(response => {
+                    if (response.status == 200){
+                        for(let i in response.data){
+                            this.adminbuttons = response.data[i]
+                           
+                        }
+                        this.adminbuttons = this.adminbuttons.admin.slice(0,3)
+                    }
+                
+                }).catch((error) => {
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message = error.response.data.message
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message = ""
+                            }, 2000)
+
+                        }
+                    }
+                });
+            }
 
 
         
@@ -379,6 +406,8 @@ import CircularMenu from './Common/CircularMenu.vue';
                             <td>{{user.roles}}</td>
                             <td>
                                 <CircularMenu
+                                @click="getUsersButton(user)"
+                                :buttons="this.adminbuttons"
                                 :data="user"
                                 :component="this.$route.name"
                                 @DataSaveEmit="DataSave"

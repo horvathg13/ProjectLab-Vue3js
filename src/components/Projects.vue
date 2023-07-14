@@ -70,7 +70,7 @@
         },
 
         updateModal(){
-            
+            this.Editdata = null
             if(this.showModal==false){
                 this.showModal = true
             }

@@ -11,7 +11,7 @@ export default{
     data(){
         return{
             selected:{
-                id: "",
+                id: null,
                 name: "",
             },
             isDropdownOpen:false,
@@ -22,31 +22,43 @@ export default{
         'editTask':{
             immediate:true,
             handler(newValue){
+                
                 if(this.editTask != null){
-                    this.selected.name = newValue.priority  
-                    this.selected.id = newValue.priority_id
-                    console.log(this.selected, "hello from watch",newValue )
+                    setTimeout(()=>{
+                        this.selected.id = newValue.priority_id
+                        this.selected.name = newValue.priority 
+                        console.log(this.selected, "hello from watch",newValue )
+                    },100)
+                    
                 }else{
-                    this.selected.name = null
-                    this.selected.id = null
-                    console.log("its run else")
+                    this.$nextTick(()=>{
+                        this.selected.name = null
+                        this.selected.id = null
+                        console.log("its run else")
+                    })
+                    
                 }
                
             },
             deep:true
+            
             
         },
         'editProject':{
             immediate:true,
             handler(newValue){
                 if(this.editProject != null){
-                    console.log("hello from setEditName")
-                    this.selected.name = newValue.manager
-                    this.selected.id = newValue.manager_id
-                    console.log(this.selected.id, this.selected.name, "hello from setEditname final line")
+                    this.$nextTick(()=>{
+                        console.log("hello from setEditName")
+                        this.selected.name = newValue.manager
+                        this.selected.id = newValue.manager_id
+                        console.log(this.selected.id, this.selected.name, "hello from setEditname final line")
+                    })
                 }else{
-                    this.selected.name = null
-                    this.selected.id = null
+                    this.$nextTick(()=>{
+                        this.selected.name = null
+                        this.selected.id = null
+                    });
                 }
             },
             deep:true
@@ -121,7 +133,7 @@ export default{
     <div class="ui fluid selection dropdown" @click="toggleDrop" :class="{ active: selected.name }">
         <i class="dropdown icon"></i>
         <input type="hidden" name="user" v-model="selected.id">
-            <div class="selected-text">{{ selected.name ? selected.name : "" }} </div>
+            <div class="selected-text">{{ selected.name ? selected.name:""  }} </div>
             <div class="menu" :class="{ active: isDropdownOpen }" >
                 <div class="item" v-for="v in VforArray" :key="v.id" @click="select(v)">
                     {{ v.name }}

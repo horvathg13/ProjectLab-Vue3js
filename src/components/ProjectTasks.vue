@@ -48,7 +48,7 @@
             getActiveTaskEmployee:Array,
             show_Comment_Modal: false,
             taskDataTravel:Array,
-            EditData:{},
+            Editdata:{},
             EditMode:false,
 
         }
@@ -91,7 +91,8 @@
                 });
         },
         showCreateTaskModal(){
-           
+           this.Editdata = null
+           console.log(this.Editdata, "edit data is set null?")
             if(this.show_Create_Task_Modal==false){
                 this.show_Create_Task_Modal = true
             }
@@ -103,7 +104,7 @@
             this.show_Create_Task_Modal = false
             this.show_Attach_Modal = false
             this.show_Comment_Modal = false
-            this.EditData={},
+            this.Editdata={},
             this.EditMode = false
             this.getTasks(this.p_id)
             console.log("Bezártad a Modalt")

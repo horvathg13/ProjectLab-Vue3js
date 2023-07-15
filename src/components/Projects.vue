@@ -51,6 +51,7 @@
             unreadMessage:{},
             projectButtons:{},
             mergedButtons:[],
+            newMessage:false,
         }
     },
     watch: {
@@ -391,6 +392,28 @@
                                 }
                                
                                 console.log(this.mergedButtons, "merged");
+                                console.log(this.unreadMessage, "unreadPro")
+                                for (let item of this.unreadMessage.Project) {
+                                    console.log(item);
+                                    const keys = Object.keys(item);
+                                    for (let key of keys) {
+                                        if (item[key] === project.project_id) {
+                                            this.newMessage = true;
+                                            console.log("match", this.newMessage);
+                                        }
+                                    }
+                                }
+                                
+                                /*for(let item in this.unreadMessage.Project){
+                                    console.log(this.unreadMessage.Project[item])
+                                    if(item.UnreadProject_Project_id === project.project_id){
+                                        this.newMessage=true
+                                        console.log("match",this.newMessage)
+                                    }else{
+                                        this.newMessage=false
+                                        console.log("unmatch")
+                                    }   
+                                }*/
                                
                             }
                         
@@ -470,6 +493,7 @@
                                         :data="project"
                                         :buttons="this.mergedButtons"
                                         :component="this.$route.name"
+                                        :newMessage="this.newMessage"
                                         @redirect="this.redirect"
                                         @showParticipantModal="this.showParticipantModal"
                                         @edit="this.EditingModeSwitch"

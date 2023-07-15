@@ -16,7 +16,9 @@ import VueClickAway from "vue3-click-away";
             return{
                 circulardrop:false,
                 //dropdownClasses:false,
-                componentButtons:[]
+                componentButtons:[],
+                setNewMessage:false
+                
             
             }
         },
@@ -25,8 +27,17 @@ import VueClickAway from "vue3-click-away";
                 immediate:true,
                 handler(newValue){
                     this.componentButtons = newValue
-                    console.log("Hello from watcher", this.componentButtons)
+                    
+                    //console.log("Hello from watcher", this.componentButtons)
                 }
+            },
+            'newMessage':{
+                immediate:true,
+                handler(newValue){
+                    this.setNewMessage = newValue
+                    //console.log("Hello from watcher", this.componentButtons)
+                }
+
             }
         },
         methods:{
@@ -107,7 +118,7 @@ import VueClickAway from "vue3-click-away";
     <button  class="circular ui scrolling dropdown blue icon button" :class="{active: this.circulardrop}" @click="circularMenuDropdown" v-click-away="onClickAway" >
         <i class="ellipsis horizontal icon"></i>
         <div ref="dropdown" class="menu"  :class="{ active: this.circulardrop }" >
-            <div  class="item" v-for="button in componentButtons" :key="button.label"><button :class="button.class" @click="handleClick(button.onclick)"><i :class="button.icon.primary ? button.icon.primary:button.icon"></i><div v-html="button.label"></div><i :class="button.icon.secoundary ? button.icon.secoundary:none" v-if="newMessage==true"></i></button></div>
+            <div  class="item" v-for="button in componentButtons" :key="button.label"><button :class="button.class" @click="handleClick(button.onclick)"><i :class="button.icon.primary ? button.icon.primary:button.icon"></i><div v-html="button.label"></div><i :class="button.icon.secoundary ? button.icon.secoundary:none" v-if="setNewMessage==true"></i></button></div>
             <!--<div  class="item" v-if="component === 'Projects'"><button class="ui small orange button item" @click="redirectEmit()"><i class="tasks icon"></i>View Tasks</button></div>
             <div class="item" v-if="component === 'Projects'"><button class="ui small green button item" @click="showParticipantModalEmit()"><i class="user plus icon"></i>Employees</button></div>
             <div class="item" v-if="component === 'Tasks'"><button class="ui normal green button item " @click="Attach_ModalEmit()"><i class="user plus icon"></i>Attach To<br> Employee</button></div>

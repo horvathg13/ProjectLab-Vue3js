@@ -111,10 +111,10 @@ export default{
         </div>
         <div class="ui teal buttons">
             <div class="ui button" @click="editProfile"><i class="user circle icon"></i>{{username}}</div>
-            <div class="ui floating dropdown icon button" ref="dropdown" @click="toggleDropdown">
+            <div class="ui floating dropdown icon button"  @click="toggleDropdown">
                 <i class="dropdown icon"></i>
                 <div class="menu" :class="{ active: isDropdownOpen }">
-                   <div class="item"><button class="ui small orange button item" @click="logOut"><i class="sign-out alternate icon"></i> Log out</button></div>
+                   <button class="ui orange button" @click="logOut"><i class="sign-out alternate icon"></i> Log out</button>
                 </div>
             </div>
         </div>
@@ -163,7 +163,11 @@ export default{
         color:black;
     }
 
-
-   
+    .ui.button{
+        background-color: #3277cd !important;
+    }
+    .dropdown .menu.active{
+        border:none
+    }
 
 </style>

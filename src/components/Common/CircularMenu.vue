@@ -36,7 +36,7 @@ import VueClickAway from "vue3-click-away";
             },
             onClickAway(){
                 this.circulardrop = false
-                
+                this.componentButtons = []
                 
             },
             /*async circularMenuDropdown(){

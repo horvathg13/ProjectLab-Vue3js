@@ -49,6 +49,8 @@
             show_Comment_Modal:false,
             projectParticipants:Array,
             unreadMessage:{},
+            projectButtons:{},
+            mergedButtons:[],
         }
     },
     watch: {
@@ -91,6 +93,8 @@
             this.show_participant_modal = false
             this.EditMode = false
             this.show_Comment_Modal = false
+            this.projectButtons = {},
+            this.mergedButtons = []
             
         },
 
@@ -341,6 +345,66 @@
                             });
 
                     },
+                    getButtons(project){
+               
+                        let url=`http://127.0.0.1:8000/api/get-buttons/${project.project_id}`
+                        ServiceClient.post(url).then(response => {
+                            if (response.status == 200){
+                                this.projectButtons = {};
+                                this.mergedButtons = [];
+
+                                for(let i in response.data){
+                                    for(let item in response.data[i]){
+                                       
+                                        if(item == "employee"){
+                                            this.projectButtons.employee= response.data[i][item]
+                                        }else if(item == "manager"){
+                                            this.projectButtons.manager= response.data[i][item]
+                                        }else if(item=="admin"){
+                                            this.projectButtons.admin= response.data[i][item]
+                                        }
+                                    }
+                                }
+                                
+                                if(this.projectButtons.employee && this.projectButtons.employee.length>0){
+                                    this.projectButtons.employee = this.projectButtons.employee.slice(0,2)
+                                    for(let item in this.projectButtons.employee){
+                                        this.mergedButtons.push(this.projectButtons.employee[item])
+                                    } 
+                                   
+                                }
+                                if(this.projectButtons.admin && this.projectButtons.admin.length>0){
+                                    this.projectButtons.admin = this.projectButtons.admin.slice(-1)
+                                    for(let item in this.projectButtons.admin){
+                                        this.mergedButtons.push(this.projectButtons.admin[item])
+                                    }
+                                
+                                    
+                                }
+                                if(this.projectButtons.manager && this.projectButtons.manager.length>0){
+                                    for(let item in this.projectButtons.manager){
+                                        this.mergedButtons.push(this.projectButtons.manager[item])
+                                    }
+                                }
+                               
+                                console.log(this.mergedButtons, "merged");
+                               
+                            }
+                        
+                        }).catch((error) => {
+                            if (error.response && error.response.status) {
+                                if (error.response.data && error.response.data.message) {
+                                    this.message = error.response.data.message
+                                    this.show_error_popup = true
+                                    setTimeout(() => {
+                                        this.show_error_popup = false
+                                        this.message = ""
+                                    }, 2000)
+
+                                }
+                            }
+                        });
+                    }
 
                 
                 
@@ -399,7 +463,9 @@
                                 <td>
                                    
                                     <CircularMenu
+                                        @click="getButtons(project)"
                                         :data="project"
+                                        :buttons="this.mergedButtons"
                                         :component="this.$route.name"
                                         @redirect="this.redirect"
                                         @showParticipantModal="this.showParticipantModal"

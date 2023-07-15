@@ -363,11 +363,14 @@
                                         }else if(item=="admin"){
                                             this.projectButtons.admin= response.data[i][item]
                                         }
+                                        console.log(item, "projectBtns")
                                     }
+                                    console.log(response.data)
                                 }
                                 
                                 if(this.projectButtons.employee && this.projectButtons.employee.length>0){
                                     this.projectButtons.employee = this.projectButtons.employee.slice(0,2)
+                                    console.log("entered in the hook")
                                     for(let item in this.projectButtons.employee){
                                         this.mergedButtons.push(this.projectButtons.employee[item])
                                     } 

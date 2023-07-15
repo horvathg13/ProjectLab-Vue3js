@@ -50,6 +50,8 @@
             taskDataTravel:Array,
             Editdata:{},
             EditMode:false,
+            projectButtons:{},
+            mergedButtons:[]
 
         }
     },
@@ -107,6 +109,8 @@
             this.Editdata={},
             this.EditMode = false
             this.getTasks(this.p_id)
+            this.projectButtons = {},
+            this.mergedButtons=[],
             console.log("Bezártad a Modalt")
         },
 
@@ -433,6 +437,57 @@
                         }
                     });
 
+            },
+            getButtons(){
+               
+               let url=`http://127.0.0.1:8000/api/get-buttons/${this.$route.params.id}`
+               ServiceClient.post(url).then(response => {
+                   if (response.status == 200){
+                       this.projectButtons = {};
+                       this.mergedButtons = [];
+
+                       for(let i in response.data){
+                           for(let item in response.data[i]){
+                              
+                               if(item == "employee"){
+                                   this.projectButtons.employee= response.data[i][item]
+                               }else if(item == "manager"){
+                                   this.projectButtons.manager= response.data[i][item]
+                               }
+                           }
+                       }
+                       
+                       if(this.projectButtons.employee && this.projectButtons.employee.length>0){
+                           this.projectButtons.employee = this.projectButtons.employee.slice(1,3)
+                           for(let item in this.projectButtons.employee){
+                               this.mergedButtons.push(this.projectButtons.employee[item])
+                           } 
+                        }  
+                       
+                       if(this.projectButtons.manager && this.projectButtons.manager.length>0){
+                            this.projectButtons.manager = this.projectButtons.manager.slice(1)
+                           for(let item in this.projectButtons.manager){
+                               this.mergedButtons.push(this.projectButtons.manager[item])
+                           }
+                        }
+                      
+                       console.log(this.mergedButtons, "merged");
+                    }  
+                }).catch((error) => {
+                   if (error.response && error.response.status) {
+                       if (error.response.data && error.response.data.message) {
+                           this.message = error.response.data.message
+                           this.show_error_popup = true
+                           setTimeout(() => {
+                               this.show_error_popup = false
+                               this.message = ""
+                           }, 2000)
+
+                       }
+                   }
+               });   
+               
+               
             }
 
 
@@ -496,6 +551,8 @@
                                 <CircularMenu
                                   :data="task"
                                   :component="this.$route.name"
+                                  :buttons="this.mergedButtons"
+                                  @click="getButtons(task)"
                                   @Attach_Modal="this.Attach_Modal"
                                   @AttachMyself="this.AttachMyself"
                                   @edit="this.EditingModeSwitch"

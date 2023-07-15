@@ -1,40 +1,83 @@
 <script>
 import ServiceClient from '../ServiceClient';
 import { store } from '../VuexStore';
+import Success from './Common/Success_Popup.vue';
+import Error from './Common/ErrorPopup.vue'
 
 export default{
     name: 'Header',
     
     
-    methods: {
-       
+    components: {
+       Success,
+       Error
     },
+
     data() {
         return {
             isDropdownOpen: false,
-            
+            username:"",
+            message:"",
+            showPopup:false,
+            showErrorPopup:false
         };
+    },
+    watch: {
+        '$store.state.userData'(newValue) {
+            this.username = newValue.name;
+            console.log(this.username, "hello from header watch");
+        }
     },
     computed: {
        hasToken(){
             console.log("token", !!localStorage.getItem("token"))
             return !!this.$store.state.userData.id
-        }
+        },
+        
+       /* username() {
+            console.log(this.$store.state)
+            return this.$store.state.userData.name;
+        }*/
     },
     methods:{
       
         toggleDropdown() {
             this.isDropdownOpen = !this.isDropdownOpen;
         },
-        async logOut(){
+        logOut(){
             let url ="http://127.0.0.1:8000/api/logout";
-            ServiceClient.post(url)
-            localStorage.removeItem("token");
-            store.commit("deleteUserData");
-            store.commit("deleteUserRole");
-            this.$router.push({path: "/login"});
-            alert("Logged Out Successful!");
-        }
+            ServiceClient.post(url).then(response => {
+                localStorage.removeItem("token");
+                store.commit("deleteUserData");
+                store.commit("deleteUserRole");
+                this.$router.push({path: "/login"});
+                this.message="Logged Out Successful!"
+                this.showPopup=true
+                setTimeout(()=>{
+                    this.showPopup=false
+                },1600)
+            }).catch((error) => {
+                        
+                if (error.response.status === 401) {
+                if (error.response.data.message) {
+                    this.message= error.response.data.message
+                    this.showErrorPopup=true
+                    setTimeout(()=>{
+                        this.showErrorPopup=false
+                    },4000)
+                    
+                }else {
+                    this.message = ["Server error occurred"];
+                    this.showErrorPopup=true
+                    setTimeout(()=>{
+                        this.showErrorPopup=false
+                    },4000)
+                }
+            
+                }
+            })
+        
+        },      
     },
    
 
@@ -50,6 +93,12 @@ export default{
             <img src="../assets/RegP_icons/lab-nobg.png">
             <h1><span>Pro</span>ject-Lab</h1>
         </div>
+        <Transition name="drop">
+            <Success v-if="showPopup == true" :message="message"></Success>
+        </Transition>
+        <Transition name="drop">
+            <Error v-if="showErrorPopup == true" :message="message"></Error>
+        </Transition>
         <div class="header-items">
             <ul>
                 <li><a href="/home">Home</a></li>
@@ -61,11 +110,11 @@ export default{
             </ul>
         </div>
         <div class="ui teal buttons">
-            <div class="ui button" @click="editProfile"><i class="user circle icon"></i>Profile</div>
+            <div class="ui button" @click="editProfile"><i class="user circle icon"></i>{{username}}</div>
             <div class="ui floating dropdown icon button" ref="dropdown" @click="toggleDropdown">
                 <i class="dropdown icon"></i>
                 <div class="menu" :class="{ active: isDropdownOpen }">
-                    <div class="item" @click="logOut"><i class="sign-out alternate icon"></i> Log out</div>
+                   <div class="item"><button class="ui small orange button item" @click="logOut"><i class="sign-out alternate icon"></i> Log out</button></div>
                 </div>
             </div>
         </div>

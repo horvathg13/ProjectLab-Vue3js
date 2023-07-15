@@ -143,7 +143,6 @@ export default{
         },
         setMessageBackgroundColor(message){
            let findParticipant = this.NewParticipants.find((participant)=>participant.id === message.sender_id);
-           console.log(findParticipant, "findparticipant")
            if(findParticipant){
                 return {
                     backgroundColor: findParticipant.color

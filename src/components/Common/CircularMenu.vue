@@ -106,7 +106,7 @@ import VueClickAway from "vue3-click-away";
     <button  class="circular ui scrolling dropdown blue icon button" :class="{active: this.circulardrop}" @click="circularMenuDropdown" v-click-away="onClickAway" >
         <i class="ellipsis horizontal icon"></i>
         <div ref="dropdown" class="menu"  :class="{ active: this.circulardrop }" >
-            <div  class="item" v-for="button in componentButtons" :key="button.label"><button :class="button.class" @click="handleClick(button.onclick)"><i :class="button.icon"></i><div v-html="button.label"></div></button></div>
+            <div  class="item" v-for="button in componentButtons" :key="button.label"><button :class="button.class" @click="handleClick(button.onclick)"><i :class="button.icon.primary ? button.icon.primary:button.icon"></i><div v-html="button.label"></div><i :class="button.icon.secoundary ? button.icon.secoundary:none"></i></button></div>
             <!--<div  class="item" v-if="component === 'Projects'"><button class="ui small orange button item" @click="redirectEmit()"><i class="tasks icon"></i>View Tasks</button></div>
             <div class="item" v-if="component === 'Projects'"><button class="ui small green button item" @click="showParticipantModalEmit()"><i class="user plus icon"></i>Employees</button></div>
             <div class="item" v-if="component === 'Tasks'"><button class="ui normal green button item " @click="Attach_ModalEmit()"><i class="user plus icon"></i>Attach To<br> Employee</button></div>
@@ -131,8 +131,9 @@ import VueClickAway from "vue3-click-away";
         width: 120px !important;
     }
     i.red.icon{
-        bottom:5px;
-        left:5px;
+        /*bottom:5px;
+        left:5px;*/
+        top:5px;
         opacity: 1 !important;
     }
 

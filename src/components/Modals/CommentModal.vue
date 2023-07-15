@@ -26,6 +26,7 @@ export default{
             messages:Array,
             errorMessage:'',
             show_error_popup:false,
+            loader:true
             
         }
         
@@ -109,6 +110,7 @@ export default{
             ServiceClient.post(url).then((response) =>{
                     console.log(response);
                     if (response.status == 200){
+                        this.loader=false
                         this.messages = response.data
                         console.log( this.messages , "chat is here!")
                         this.currentUserId = this.messages.currentUser_id,
@@ -158,7 +160,10 @@ export default{
         console.log(this.taskData, "taskdata")
         this.ParticipantDataManipulation()
         this.ArrayManipulation()
+       
         this.getMessages()
+     
+        
         //console.log("Hello from mounted", this.messages)
     }
     
@@ -194,6 +199,12 @@ export default{
                     
             <div class="messagebox">
                 <div class="message content">
+                    <div class="ui segment" v-if="loader == true">
+                        <div class="ui active dimmer">
+                        <div class="ui text loader">Loading</div>
+                        </div>
+                        <p></p>
+                    </div>
                     <div class="message" v-for="message in messageData" :key="message.sender_id"
                     :class="{'message': message.sender_id !== currentUserId,
                             'message response': message.sender_id === currentUserId
@@ -208,15 +219,7 @@ export default{
                             </div>
                         </div>
                     </div>
-                    
-                    <!--<div class="message response"  v-for="message in messageData" :key="message.sender_id">
-                        <div class="avatar response"><h1>R</h1></div>
-                        <div class="message bubble ui right pointing label">
-                            <div class="message bubble content">
-                                <h3>Lilló</h3>
-                            </div>
-                        </div>
-                    </div>-->
+                   
                     
 
                 </div>

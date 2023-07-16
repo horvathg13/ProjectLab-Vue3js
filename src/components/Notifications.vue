@@ -19,8 +19,7 @@
                                 <th>Title</th>
                                 <th>Status</th>
                                 <th>Deadline</th>
-                                <th>
-                                <button class="ui right floated small primary labeled icon button" @click="updateModal"><i class="comment icon"></i>New Chat</button></th>
+                                <th>Message</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -5,7 +5,7 @@ export default{
        VforArray:Array,
        editProject:{},
        editTask:{},
-
+       disable:null
        
     },
     data(){
@@ -15,7 +15,7 @@ export default{
                 name: "",
             },
             isDropdownOpen:false,
-                
+            dropdownDisbale:false,
         }
     },
     watch:{
@@ -62,6 +62,13 @@ export default{
                 }
             },
             deep:true
+        },
+        'disable':{
+            immediate:true,
+            handler(newValue){
+                this.dropdownDisbale= newValue
+            }
+            
         }
     },
     /*computed:{
@@ -130,9 +137,9 @@ export default{
 
 <template>
 
-    <div class="ui fluid selection dropdown" @click="toggleDrop" :class="{ active: selected.name }">
+    <div class="ui fluid selection dropdown" @click="toggleDrop" :class="{ active: selected.name, disabled:dropdownDisbale }">
         <i class="dropdown icon"></i>
-        <input type="hidden" name="user" v-model="selected.id">
+        <input type="hidden" name="user" v-model="selected.id" >
             <div class="selected-text">{{ selected.name ? selected.name:""  }} </div>
             <div class="menu" :class="{ active: isDropdownOpen }" >
                 <div class="item" v-for="v in VforArray" :key="v.id" @click="select(v)">

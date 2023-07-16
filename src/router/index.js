@@ -8,7 +8,7 @@ import ResetPassword from "../components/ResetPassword.vue"
 import RolePermission from "../components/RolePermission.vue"
 import Projects from "../components/Projects.vue"
 import ProjectTasks from "../components/ProjectTasks.vue"
-import Messages from "../components/Messages.vue"
+import Notifications from "../components/Notifications.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -83,9 +83,9 @@ const router = createRouter({
       ]
     },
     {
-      path:"/messages",
-      name:"Messages",
-      component: Messages,
+      path:"/notifications",
+      name:"Notifications",
+      component: Notifications,
       meta:
       [
         {

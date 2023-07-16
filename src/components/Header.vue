@@ -103,7 +103,7 @@ export default{
             <ul>
                 <li><a href="/home">Home</a></li>
                 <li><a href="/users">Users</a></li>
-                <li>Notifications</li>
+                <li><a href="/notifications">Notifications</a></li>
                 <li><a href="/projects">Projects</a></li>
                 <li>My Tasks</li>
                 <li>Statistics</li>
@@ -129,7 +129,7 @@ export default{
     }
     .logo{
         display: flex;
-        background-color: yellowgreen;
+        /*background-color: yellowgreen;*/
         color:white;
         min-width: 230px;
         border-radius:5px;
@@ -142,7 +142,7 @@ export default{
     .header img{
         max-width: 70px;
         max-height:60px;
-        background-color: yellowgreen;
+        /*background-color: yellowgreen;*/
     }
 
     .header-items ul li{
@@ -168,6 +168,12 @@ export default{
     }
     .dropdown .menu.active{
         border:none
+    }
+    .ui.button:hover{
+       background-color:rgb(83, 199, 237) !important;
+       border: 1.5px solid rgba(20, 102, 118, 0.677);
+       border-radius:5px
+       
     }
 
 </style>

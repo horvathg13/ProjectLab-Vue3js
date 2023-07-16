@@ -9,7 +9,8 @@
   import ContentTitle from './Common/ContentTitle.vue';
   import CircularMenu from './Common/CircularMenu.vue';
   import CommentModal from './Modals/CommentModal.vue';
-  import {store} from "../VuexStore"
+  import {store} from "../VuexStore";
+  import Status from './Modals/Status.vue'
   export default {
     components: {
         CreateProjectModal,
@@ -21,6 +22,7 @@
         ContentTitle,
         CircularMenu,
         CommentModal,
+        Status,
     },
 
     data() {
@@ -52,6 +54,8 @@
             projectButtons:{},
             mergedButtons:[],
             newMessage:false,
+            showStatusModal:false,
+            statusDataTravel:[],
         }
     },
     watch: {
@@ -95,7 +99,8 @@
             this.EditMode = false
             this.show_Comment_Modal = false
             this.projectButtons = {},
-            this.mergedButtons = []
+            this.mergedButtons = [],
+            this.showStatusModal = false
             
         },
 
@@ -430,6 +435,44 @@
                                 }
                             }
                         });
+                    },
+                    SwitchStatusModal(statusData){
+                        const{data}=statusData
+                        console.log(statusData, "statusData")
+                        let TaskId=null
+                        let url=`http://127.0.0.1:8000/api/get-status/${statusData.data.project_id}/${TaskId}`;
+
+                        ServiceClient.post(url).then((response) =>{
+                            if (response.status == 200){
+                                console.log(response.data, "responseDATA")
+                                for(let item in response.data){
+                                    this.statusDataTravel= response.data[item]
+                                }
+                               
+                                this.showStatusModal = true;
+                                console.log(this.statusDataTravel, "statusDataTravel", )
+                            }
+                        }).catch((error) => {
+                            if (error.response && error.response.status) {
+                                if (error.response.data && error.response.data.message) {
+                                    this.message = error.response.data.message
+                                    this.show_error_popup = true
+                                    setTimeout(() => {
+                                        this.show_error_popup = false
+                                        this.message = ""
+                                    }, 2000)
+
+                                }
+                            }
+                        });
+
+                        
+                        console.log("namizu")
+
+                    },
+                    SetStatus(set){
+                        const{data}=set
+                        console.log(set, "SET")
                     }
 
                 
@@ -497,7 +540,8 @@
                                         @redirect="this.redirect"
                                         @showParticipantModal="this.showParticipantModal"
                                         @edit="this.EditingModeSwitch"
-                                        @CommentEmit="this.commentModalSwitch">
+                                        @CommentEmit="this.commentModalSwitch"
+                                        @SwitchModal="SwitchStatusModal">
                                     </CircularMenu>
                                 </td>
                             
@@ -521,6 +565,7 @@
             </div>
             </div>
         </div>
+        
         <Transition>
                 <CreateProjectModal v-if="showModal==true" 
                 @cancel-modal="cancelModal" 
@@ -546,6 +591,10 @@
         :Participants="this.projectParticipants"
         :projectData="this.projectData"
         ></CommentModal>
+        <Status v-if="this.showStatusModal == true"
+        @cancel-modal="cancelModal"
+        :data="this.statusDataTravel"
+        @set-status="SetStatus"></Status>
     </div>
 </template>
 

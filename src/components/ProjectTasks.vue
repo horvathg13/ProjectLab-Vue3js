@@ -51,8 +51,16 @@
             Editdata:{},
             EditMode:false,
             projectButtons:{},
-            mergedButtons:[]
+            mergedButtons:[],
+            unreadMessage:{},
+            newMessage:false,
 
+        }
+    },
+    watch: {
+        '$store.state.unreadMessages'(newValue) {
+            this.unreadMessage = newValue;
+            console.log(this.unreadMessage, "hello from watch");
         }
     },
    
@@ -438,7 +446,7 @@
                     });
 
             },
-            getButtons(){
+            getButtons(task){
                
                let url=`http://127.0.0.1:8000/api/get-buttons/${this.$route.params.id}`
                ServiceClient.post(url).then(response => {
@@ -472,6 +480,35 @@
                         }
                       
                        console.log(this.mergedButtons, "merged");
+                       for (let item in this.unreadMessage.Task) {
+                            console.log(this.unreadMessage.Task[item]);
+                            const keys = Object.keys(this.unreadMessage.Task[item]);
+                            console.log(keys, "object.keys(this.unreadMessage.Task[item])");
+                        
+                            if (
+                                this.unreadMessage.Task[item][keys[0]] === task.task_id &&
+                                this.unreadMessage.Task[item][keys[1]] == this.$route.params.id
+                            ) {
+                                this.newMessage = true;
+                                console.log("match", this.newMessage);
+                            } else {
+                                this.newMessage = false;
+                                console.log("something went wrong",  this.$route.params.id);
+                            }
+                        }
+                       /*for (let item of this.unreadMessage.Task) {
+                            console.log(item);
+                            const keys = Object.keys(item);
+                            console.log(keys, "object.keys(item)")
+                            for (let key of keys) {
+                                if (this.unreadMessage.Task[item][keys[0]] == task.task_id && this.unreadMessage.Task[item][keys[1]] == this.$route.params.id) {
+                                    this.newMessage = true;
+                                    console.log("match", this.newMessage);
+                                }else{
+                                    console.log("something went wrong", this.unreadMessage.Task[item][keys[0]])
+                                }
+                            }
+                        }*/
                     }  
                 }).catch((error) => {
                    if (error.response && error.response.status) {
@@ -552,6 +589,7 @@
                                   :data="task"
                                   :component="this.$route.name"
                                   :buttons="this.mergedButtons"
+                                  :newMessage="this.newMessage"
                                   @click="getButtons(task)"
                                   @Attach_Modal="this.Attach_Modal"
                                   @AttachMyself="this.AttachMyself"

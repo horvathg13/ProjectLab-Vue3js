@@ -88,7 +88,6 @@ export default{
         select(v) {
             this.selected.id = v.id;
             this.selected.name = v.name;
-
             this.$emit("select", {select:this.selected})
         },
         setEditProject(){

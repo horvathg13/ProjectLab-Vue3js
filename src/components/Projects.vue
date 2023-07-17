@@ -236,9 +236,9 @@
                             this.show_popup = true;
                             this.finalData= [];
                             setTimeout(() => {
-                            this.show_popup = false;
-                            this.cancelModal();
-                            this.message = "";
+                                this.show_popup = false;
+                                this.cancelModal();
+                                this.message = "";
                             }, 1500);
                             console.log(response);
                         }
@@ -352,7 +352,7 @@
 
                     },
                     getButtons(project){
-               
+                        this.projectData = project
                         let url=`http://127.0.0.1:8000/api/get-buttons/${project.project_id}`
                         ServiceClient.post(url).then(response => {
                             if (response.status == 200){
@@ -472,7 +472,35 @@
                     },
                     SetStatus(set){
                         const{data}=set
-                        console.log(set, "SET")
+                        console.log(set, "SET", this.projectData)
+                       
+                        let url=`http://127.0.0.1:8000/api/set-status/${this.projectData.project_id}/null/${set.data.id}/null/null/null`;
+                        ServiceClient.post(url).then((response) =>{
+                            if (response.status == 200){
+                                console.log(response.data, "responseDATA")
+                                this.message = response.data.message;
+                               
+                                this.show_popup = true;
+                                setTimeout(() => {
+                                    this.show_popup = false
+                                    this.message = ""
+                                    this.cancelModal()
+                                },  1500)
+                                
+                            }
+                        }).catch((error) => {
+                            if (error.response && error.response.status) {
+                                if (error.response.data && error.response.data.message) {
+                                    this.message = error.response.data.message
+                                    this.show_error_popup = true
+                                    setTimeout(() => {
+                                        this.show_error_popup = false
+                                        this.message = ""
+                                    }, 2000)
+
+                                }
+                            }
+                        });
                     }
 
                 
@@ -594,6 +622,7 @@
         <Status v-if="this.showStatusModal == true"
         @cancel-modal="cancelModal"
         :data="this.statusDataTravel"
+        :task="false"
         @set-status="SetStatus"></Status>
     </div>
 </template>

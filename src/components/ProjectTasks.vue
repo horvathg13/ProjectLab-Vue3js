@@ -7,6 +7,7 @@
   import TaskAttachModal from './Modals/TaskAttachModal.vue';
   import CircularMenu from './Common/CircularMenu.vue';
   import CommentModal from './Modals/CommentModal.vue'
+  import Status from './Modals/Status.vue'
   
   
 
@@ -20,6 +21,7 @@
         TaskAttachModal,
         CircularMenu,
         CommentModal,
+        Status,
     },
     props:{
         
@@ -54,7 +56,9 @@
             mergedButtons:[],
             unreadMessage:{},
             newMessage:false,
-
+            statusDataTravel:{},
+            showStatusModal:false,
+            ActualTaskData:{},
         }
     },
     watch: {
@@ -119,6 +123,7 @@
             this.getTasks(this.p_id)
             this.projectButtons = {},
             this.mergedButtons=[],
+            this.showStatusModal =false,
             console.log("Bezártad a Modalt")
         },
 
@@ -447,7 +452,8 @@
 
             },
             getButtons(task){
-               
+               this.ActualTaskData = task;
+               console.log(this.ActualTaskData, "TASKDATA")
                let url=`http://127.0.0.1:8000/api/get-buttons/${this.$route.params.id}`
                ServiceClient.post(url).then(response => {
                    if (response.status == 200){
@@ -525,6 +531,75 @@
                });   
                
                
+            },
+            SwitchStatusModal(statusData){
+                const{data}=statusData
+                console.log(statusData, "statusData")
+                
+                let url=`http://127.0.0.1:8000/api/get-status/${this.$route.params.id}/${statusData.data.task_id}`;
+
+                ServiceClient.post(url).then((response) =>{
+                    if (response.status == 200){
+                        console.log(response.data, "responseDATA")
+                        for(let item in response.data){
+                            this.statusDataTravel= response.data[item]
+                        }
+                        this.statusDataTravel.priority = this.priorities
+                        this.showStatusModal = true;
+                        console.log(this.statusDataTravel, "statusDataTravel", )
+                    }
+                }).catch((error) => {
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message = error.response.data.message
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message = ""
+                            }, 2000)
+
+                        }
+                    }
+                });
+
+                
+                console.log("namizu")
+
+            },
+            SetStatus(set){
+                const{data}=set
+                console.log(set, "SET");
+                if(Object.keys(set.priority).length == 0){
+                    set.priority.id = null
+                }
+                
+                let url=`http://127.0.0.1:8000/api/set-status/${this.$route.params.id}/${this.ActualTaskData.task_id}/${set.data.id}/${set.priority.id}/${JSON.stringify(set.setAllTask)}/${JSON.stringify(set.setAllPriority)}`;
+                ServiceClient.post(url).then((response) =>{
+                    if (response.status == 200){
+                        console.log(response.data, "responseDATA")
+                        this.message = response.data.message;
+                        
+                        this.show_popup = true;
+                        setTimeout(() => {
+                            this.show_popup = false
+                            this.message = ""
+                            this.cancelModal()
+                        },  1500)
+                        
+                    }
+                }).catch((error) => {
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message = error.response.data.message
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message = ""
+                            }, 2000)
+
+                        }
+                    }
+                });
             }
 
 
@@ -594,7 +669,8 @@
                                   @Attach_Modal="this.Attach_Modal"
                                   @AttachMyself="this.AttachMyself"
                                   @edit="this.EditingModeSwitch"
-                                  @CommentEmit="this.commentModalSwitch">
+                                  @CommentEmit="this.commentModalSwitch"
+                                  @SwitchModal="SwitchStatusModal">
                                 </CircularMenu>
                                 
                             </td>
@@ -643,7 +719,13 @@
     @sendEmit="SendMessage"
     :taskData="this.taskDataTravel"
     :Participants="this.getActiveTaskEmployee"
-    :projectId ="this.$route.params.id"></CommentModal>
+    :projectId ="this.$route.params.id"
+    ></CommentModal>
+    <Status v-if="this.showStatusModal == true"
+    @cancel-modal="cancelModal"
+    :data="this.statusDataTravel"
+    :task="true"
+    @set-status="SetStatus"></Status>
 </div>
 </template>
 

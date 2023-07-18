@@ -11,6 +11,7 @@
   import CommentModal from './Modals/CommentModal.vue';
   import {store} from "../VuexStore";
   import Status from './Modals/Status.vue'
+  import Filter from './Common/FilterButton.vue'
   export default {
     components: {
         CreateProjectModal,
@@ -23,6 +24,7 @@
         CircularMenu,
         CommentModal,
         Status,
+        Filter,
     },
 
     data() {
@@ -383,7 +385,7 @@
                                    
                                 }
                                 if(this.projectButtons.admin && this.projectButtons.admin.length>0){
-                                    this.projectButtons.admin = this.projectButtons.admin.slice(-1)
+                                    this.projectButtons.admin = this.projectButtons.admin.slice(-2)
                                     for(let item in this.projectButtons.admin){
                                         this.mergedButtons.push(this.projectButtons.admin[item])
                                     }
@@ -501,6 +503,68 @@
                                 }
                             }
                         });
+                    },
+                    getFilterData(){
+                        let TaskId=null;
+                        let ProjectId = null;
+                        let url=`http://127.0.0.1:8000/api/get-status/${ProjectId}/${TaskId}`;
+
+                        ServiceClient.post(url).then((response) =>{
+                            if (response.status == 200){
+                                console.log(response.data, "responseDATA")
+                                for(let item in response.data){
+                                    this.statusDataTravel= response.data[item].status.map(u=>({id:u.id, name:u.p_status}))
+                                }
+                               
+                                
+                                console.log(this.statusDataTravel, "statusDataTravel", )
+                            }
+                        }).catch((error) => {
+                            if (error.response && error.response.status) {
+                                if (error.response.data && error.response.data.message) {
+                                    this.message = error.response.data.message
+                                    this.show_error_popup = true
+                                    setTimeout(() => {
+                                        this.show_error_popup = false
+                                        this.message = ""
+                                    }, 2000)
+
+                                }
+                            }
+                        });
+
+                    },
+                    filter(selectData){
+                        const{select}=selectData
+                        let Task = null;
+                        let Project = null;
+                        console.log("I got the data from filter", selectData)
+                        let url = `http://127.0.0.1:8000/api/filter-status/${JSON.stringify(Project)}/${JSON.stringify(Task)}/${selectData.select.id}`;
+
+                        ServiceClient.post(url).then((response) =>{
+                        
+                            if (response.status == 200){
+                                
+                                this.getprojects=response.data
+                                console.log(response.data, "here")
+                            }
+                        }).catch((error) => {
+                                
+                            if (error.response && error.response.status) {
+                                if (error.response.data && error.response.data.message) {
+                                    this.message= error.response.data.message
+                                    this.show_error_popup = true
+                                    setTimeout(() => {
+                                        this.show_error_popup = false
+                                        this.message = "";
+                                    },  4500)
+                                    
+                                }
+                            }
+                        });
+                    },
+                    clearFilter(){
+                        this.getProjects();
                     }
 
                 
@@ -544,7 +608,7 @@
                                 <th>ID</th>
                                 <th>Manager</th>
                                 <th>Title</th>
-                                <th>Status</th>
+                                <th>Status <Filter :data="this.statusDataTravel" @select="filter" @deleteSelected="clearFilter" @click="getFilterData"></Filter></th>
                                 <th>Deadline</th>
                                 <th>
                                 <button class="ui right floated small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>

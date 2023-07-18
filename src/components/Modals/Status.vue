@@ -25,7 +25,6 @@ export default{
         'data':{
             immediate:true,
             deep:true,
-            flush:true,
             handler(newValue){
                 this.SelectCompData = newValue.status
                 this.selectPriority = newValue.priority ? newValue.priority:null
@@ -119,7 +118,7 @@ export default{
                 
 
                 <div class="buttonContainer"  :class="{disabled:buttonDisbale}">
-                    <button class="ui green button" type="submit" :disabled="buttonDisbale">Create</button>
+                    <button class="ui green button" type="submit" :disabled="buttonDisbale">OK</button>
                 </div>
                 
             </form>
@@ -139,15 +138,13 @@ export default{
 
 <style scoped>
     .checkboxContainer{
-         top:20px;
+        top:20px;
         display:flex
     }
     .upper{
         z-index:99999
     }
-    .ui.checkbox{
-       
-    }
+
     .selected-text{
         color: black;
         
@@ -199,7 +196,7 @@ export default{
     .form{
         top:0px;
         margin:0px ;
-        padding:20px;
+        padding:16px;
         height: 0px;
     }
     

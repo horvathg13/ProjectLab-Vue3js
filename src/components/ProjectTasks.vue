@@ -8,7 +8,7 @@
   import CircularMenu from './Common/CircularMenu.vue';
   import CommentModal from './Modals/CommentModal.vue'
   import Status from './Modals/Status.vue'
-  
+  import Filter from './Common/FilterButton.vue'
   
 
   export default {
@@ -22,6 +22,7 @@
         CircularMenu,
         CommentModal,
         Status,
+        Filter,
     },
     props:{
         
@@ -600,6 +601,66 @@
                         }
                     }
                 });
+            },
+            getFilterData(){
+                let Task=true;
+                let url=`http://127.0.0.1:8000/api/get-status/${this.$route.params.id}/${Task}`;
+
+                ServiceClient.post(url).then((response) =>{
+                    if (response.status == 200){
+                        console.log(response.data, "responseDATA")
+                        for(let item in response.data){
+                            this.statusDataTravel= response.data[item].status.map(u=>({id:u.id, name:u.task_status}))
+                        }
+                        
+                        
+                        console.log(this.statusDataTravel, "statusDataTravel", )
+                    }
+                }).catch((error) => {
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message = error.response.data.message
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message = ""
+                            }, 2000)
+
+                        }
+                    }
+                });
+
+            },
+            filter(selectData){
+                const{select}=selectData
+                let Task = true;
+                console.log("I got the data from filter", selectData)
+                let url = `http://127.0.0.1:8000/api/filter-status/${this.$route.params.id}/${JSON.stringify(Task)}/${selectData.select.id}`;
+
+                ServiceClient.post(url).then((response) =>{
+                
+                    if (response.status == 200){
+                        
+                        this.taskData=response.data
+                        console.log(response.data, "here")
+                    }
+                }).catch((error) => {
+                        
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message= error.response.data.message
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message = "";
+                            },  4500)
+                            
+                        }
+                    }
+                });
+            },
+            clearFilter(){
+                this.getTasks();
             }
 
 
@@ -645,7 +706,7 @@
                             <th>ID</th>
                             <th>Task name</th>
                             <th>Deadline</th>
-                            <th>Task Status</th>
+                            <th>Task Status <Filter :data="this.statusDataTravel" @select="filter" @deleteSelected="clearFilter" @click="getFilterData"></Filter></th>
                             <th>Task Priority</th>
                             <th>
                             <button class="ui right floated small primary labeled icon button" @click="showCreateTaskModal()"><i class="tasks icon"></i>New Task</button></th>

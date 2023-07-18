@@ -568,7 +568,7 @@
             },
             SetStatus(set){
                 const{data}=set
-                console.log(set, "SET");
+                console.log(set, "SET",JSON.stringify(set.setAllTask));
                 if(Object.keys(set.priority).length == 0){
                     set.priority.id = null
                 }

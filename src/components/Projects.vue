@@ -479,7 +479,7 @@
                             if (response.status == 200){
                                 console.log(response.data, "responseDATA")
                                 this.message = response.data.message;
-                               
+                                this.getProjects();
                                 this.show_popup = true;
                                 setTimeout(() => {
                                     this.show_popup = false

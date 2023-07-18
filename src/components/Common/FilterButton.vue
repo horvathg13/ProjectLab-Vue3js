@@ -33,6 +33,9 @@ export default{
                 this.loader = true
             }
             this.isDropdownOpen = !this.isDropdownOpen
+            if(this.isDropdownOpen == false){
+                this.SelectCompData = []
+            }
         },
         select(v) {
             this.selected.id = v.id;

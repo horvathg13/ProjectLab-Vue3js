@@ -20,6 +20,11 @@ setInterval(() => {
   });
 }, 30000);
 
+ServiceClient.post('http://127.0.0.1:8000/api/notifications').then(response => {
+  console.log(response.data)
+}).catch(error =>{
+  console.log(error);
+});
 </script>
 
 <template>

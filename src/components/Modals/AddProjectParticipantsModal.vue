@@ -14,7 +14,7 @@
         },
         props:{
             getusers:Array,
-            projectData:Array
+            projectData:{}
         },
         data(){
             return{
@@ -64,9 +64,9 @@
                     <h1>Add Employee To Project</h1>
                     
                 </div>
-                <div class="title" v-for="project in projectData" :key="project.id">
-                    <h3>Selected Project: {{ project.name }}</h3>
-                    <h3>Manager: {{ project.manager }}</h3>
+                <div class="title">
+                    <h3>Selected Project: {{ projectData.name ? projectData.name:"" }}</h3>
+                    <h3>Manager: {{ projectData.manager ? projectData.manager:"" }}</h3>
                 </div>
           
               
@@ -128,7 +128,7 @@
 
     .modal {
     background-color: white;
-    height: calc(100% - 25%);
+    height: 450px;
     width: auto;
     margin: auto;
     border-radius: 20px;

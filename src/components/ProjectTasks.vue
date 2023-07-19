@@ -60,6 +60,7 @@
             statusDataTravel:{},
             showStatusModal:false,
             ActualTaskData:{},
+            loader:false
         }
     },
     watch: {
@@ -296,6 +297,7 @@
             },
 
             getTasks(){
+                this.loader=true;
                 let url =`http://127.0.0.1:8000/api/projects/${this.$route.params.id}/tasks`
 
                 ServiceClient.post(url).then((response) =>{
@@ -303,6 +305,7 @@
                     if (response.status == 200){
                         this.taskData=response.data
                         console.log(this.taskData, "szegény legény")
+                        this.loader=false;
                     }
                 }).catch((error) => {
                         
@@ -310,6 +313,7 @@
                         if (error.response.data && error.response.data.message) {
                             this.message = error.response.data.message
                             this.show_error_popup = true
+                            this.loader=false;
                             setTimeout(() => {
                                 this.show_error_popup = false
                                 this.message = "";
@@ -420,12 +424,12 @@
                 const{participants,message,data} = emitData
                 let projectId = null;
                 for(let p in this.projectData){
-                projectId = this.projectData[p].project_id;
+                    projectId = this.projectData[p].project_id;
                 }
-                console.log(emitData, "emitData", projectId, "p_id")
-                let url=`http://127.0.0.1:8000/api/send-message/${encodeURIComponent(JSON.stringify(emitData))}/${projectId}`;
-
-                ServiceClient.post(url).then((response) =>{
+                emitData.projectId = projectId
+                console.log(emitData, "emitData",projectId);
+                let url='http://127.0.0.1:8000/api/send-message';
+                ServiceClient.post(url,emitData).then((response) =>{
                         console.log(response);
                         if (response.status == 200){
                             this.message = response.data.message;
@@ -573,9 +577,16 @@
                 if(Object.keys(set.priority).length == 0){
                     set.priority.id = null
                 }
-                
-                let url=`http://127.0.0.1:8000/api/set-status/${this.$route.params.id}/${this.ActualTaskData.task_id}/${set.data.id}/${set.priority.id}/${JSON.stringify(set.setAllTask)}/${JSON.stringify(set.setAllPriority)}`;
-                ServiceClient.post(url).then((response) =>{
+                let dataTravel={}
+                dataTravel.projectId =this.$route.params.id;
+                dataTravel.taskId = this.ActualTaskData.task_id;
+                dataTravel.StatusId= set.data.id;
+                dataTravel.priorityId = set.priority.id;
+                dataTravel.setAllTask = set.setAllTask;
+                dataTravel.setAllPriority = set.setAllPriority;
+
+                let url='http://127.0.0.1:8000/api/set-status';
+                ServiceClient.post(url,dataTravel).then((response) =>{
                     if (response.status == 200){
                         console.log(response.data, "responseDATA")
                         this.message = response.data.message;
@@ -633,6 +644,7 @@
             },
             filter(selectData){
                 const{select}=selectData
+                this.loader=true
                 let Task = true;
                 console.log("I got the data from filter", selectData)
                 let url = `http://127.0.0.1:8000/api/filter-status/${this.$route.params.id}/${JSON.stringify(Task)}/${selectData.select.id}`;
@@ -643,6 +655,7 @@
                         
                         this.taskData=response.data
                         console.log(response.data, "here")
+                        this.loader=false
                     }
                 }).catch((error) => {
                         
@@ -650,6 +663,7 @@
                         if (error.response.data && error.response.data.message) {
                             this.message= error.response.data.message
                             this.show_error_popup = true
+                            this.loader=false
                             setTimeout(() => {
                                 this.show_error_popup = false
                                 this.message = "";
@@ -694,13 +708,13 @@
     <div class="content-container">
         
     
-        <div class="centerd-component-container">
+        <div class="centerd-component-container" >
             <div class="content-title task" v-for="project in this.projectData" :key="project.id">
             <h1>{{project.name}}</h1>
             <h2>{{ project.manager }}</h2>
             </div>
             <div class="scrolling-table-container">
-                <table class="ui selectable striped table">
+                <table class="ui selectable striped table" >
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -712,8 +726,17 @@
                             <button class="ui right floated small primary labeled icon button" @click="showCreateTaskModal()"><i class="tasks icon"></i>New Task</button></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr v-for="task in taskData" :key="task.task_id">
+                    <tbody v-if="loader==true">
+                            <div class="ui segment" >
+                                <div class="ui active dimmer">
+                                    <div class="ui small text loader">Loading</div>
+                                </div>
+                                <p></p>
+                            </div>
+                    </tbody>
+                    <tbody v-if="loader==false">
+
+                        <tr v-for="task in taskData" :key="task.task_id" >
                             <td>{{ task.task_id }}</td>
                             <td>{{task.task_name }}</td>
                             <td>{{task.dedadline }}</td>
@@ -741,7 +764,7 @@
                         
                         </tr>
                     </tbody>
-                    <tfoot class="full-width">
+                    <tfoot class="full-width" v-if="this.loader == false">
                         <tr>
                             <th></th>
                             <th></th>
@@ -790,3 +813,11 @@
 </div>
 </template>
 
+<style scoped>
+    .ui.segment{
+        position: absolute;
+        width:100%;
+        height: 100px !important;
+       
+    }
+</style>

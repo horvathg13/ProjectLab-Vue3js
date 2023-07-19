@@ -58,6 +58,7 @@
             newMessage:false,
             showStatusModal:false,
             statusDataTravel:[],
+            loader:false,
         }
     },
     watch: {
@@ -154,13 +155,14 @@
                    
 
             getProjects(){
+                this.loader=true;
                 let url ="http://127.0.0.1:8000/api/getprojects";
                 ServiceClient.post(url).then((response) =>{
                         
                         if (response.status == 200){
                             
                             this.getprojects=response.data
-                            
+                            this.loader=false;
                         }
                     }).catch((error) => {
                             
@@ -168,6 +170,7 @@
                             if (error.response.data && error.response.data.message) {
                                 this.message= error.response.data.message
                                 this.show_error_popup = true
+                                this.loader=false;
                                 setTimeout(() => {
                                     this.show_error_popup = false
                                     this.message = "";
@@ -318,11 +321,11 @@
             },
             SendMessage(emitData){
                 const{participants,message,data} = emitData
-                let projectId = this.projectData.project_id;
-                console.log(emitData, "emitData", projectId)
-                let url=`http://127.0.0.1:8000/api/send-message/${encodeURIComponent(JSON.stringify(emitData))}/${projectId}`;
-
-                ServiceClient.post(url).then((response) =>{
+                
+                emitData.projectId=this.projectData.project_id;
+                console.log(emitData, "emitData", )
+                let url='http://127.0.0.1:8000/api/send-message';
+                ServiceClient.post(url, emitData).then((response) =>{
                         console.log(response);
                         if (response.status == 200){
                             this.show_popup=true
@@ -470,9 +473,15 @@
             SetStatus(set){
                 const{data}=set
                 console.log(set, "SET", this.projectData)
-                
-                let url=`http://127.0.0.1:8000/api/set-status/${this.projectData.project_id}/null/${set.data.id}/null/null/null`;
-                ServiceClient.post(url).then((response) =>{
+                let dataTravel={}
+                dataTravel.projectId = this.projectData.project_id;
+                dataTravel.taskId = null;
+                dataTravel.StatusId= set.data.id;
+                dataTravel.priorityId = null;
+                dataTravel.setAllTask = null;
+                dataTravel.setAllPriority = null;
+                let url='http://127.0.0.1:8000/api/set-status';
+                ServiceClient.post(url,dataTravel).then((response) =>{
                     if (response.status == 200){
                         console.log(response.data, "responseDATA")
                         this.message = response.data.message;
@@ -531,6 +540,7 @@
             },
             filter(selectData){
                 const{select}=selectData
+                this.loader = true;
                 let Task = null;
                 let Project = null;
                 console.log("I got the data from filter", selectData)
@@ -542,6 +552,7 @@
                         
                         this.getprojects=response.data
                         console.log(response.data, "here")
+                        this.loader= false
                     }
                 }).catch((error) => {
                         
@@ -549,6 +560,7 @@
                         if (error.response.data && error.response.data.message) {
                             this.message= error.response.data.message
                             this.show_error_popup = true
+                            this.loader=false
                             setTimeout(() => {
                                 this.show_error_popup = false
                                 this.message = "";
@@ -560,6 +572,7 @@
             },
             clearFilter(){
                 this.getProjects();
+
             }
 
                 
@@ -609,7 +622,15 @@
                                 <button class="ui right floated small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="loader==true">
+                            <div class="ui segment" >
+                                <div class="ui active dimmer">
+                                    <div class="ui small text loader">Loading</div>
+                                </div>
+                                <p></p>
+                            </div>
+                        </tbody>
+                        <tbody v-if="loader==false">
                             <tr v-for="project in getprojects" :key="project.id">
                                 <td>{{project.project_id}}</td>
                                 <td>{{project.manager}}</td>
@@ -637,7 +658,7 @@
                             
                             </tr>
                         </tbody>
-                        <tfoot class="full-width">
+                        <tfoot class="full-width" v-if="loader==false">
                             <tr>
                                 <th></th>
                                 <th></th>
@@ -687,5 +708,10 @@
 </template>
 
 <style scoped>
-
+ .ui.segment{
+        position: absolute;
+        width:100%;
+        height: 100px !important;
+       
+    }
 </style>

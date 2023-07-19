@@ -123,33 +123,34 @@
             formData.append("date",this.date);
             formData.append("p_id",this.p_id);
             let url ="http://127.0.0.1:8000/api/createproject";
-                ServiceClient.post(url,formData).then((response) =>{
-                    console.log(response);
-                    if (response.status == 200){
+            ServiceClient.post(url,formData).then((response) =>{
+                console.log(response);
+                if (response.status == 200){
 
-                        this.message= response.data.message
-                        this.show_popup = true
+                    this.message= response.data.message
+                    this.show_popup = true
+                    setTimeout(() => {
+                        this.show_popup = false
+                        this.cancelModal()
+                        this.message = "";
+                    },  1500)
+                    console.log(response)
+                }
+            }).catch((error) => {
+                    
+                if (error.response && error.response.status) {
+                    if (error.response.data && error.response.data.message) {
+                        this.message= Object.values(error.response.data.message).flatMap(y => y)
+                        this.show_error_popup = true
                         setTimeout(() => {
-                            this.show_popup = false
-                            this.cancelModal()
+                            this.show_error_popup = false
                             this.message = "";
-                        },  1500)
-                        console.log(response)
-                    }
-                }).catch((error) => {
+                        },  2000)
                         
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message= Object.values(error.response.data.message).flatMap(y => y)
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = "";
-                            },  2000)
-                            
-                        }
                     }
-                });
+                }
+            });
+            this.getProjects();
             
         },
                    
@@ -383,7 +384,7 @@
                             
                         }
                         if(this.projectButtons.admin && this.projectButtons.admin.length>0){
-                            this.projectButtons.admin = this.projectButtons.admin.slice(-2)
+                            this.projectButtons.admin = this.projectButtons.admin.slice(-3)
                             for(let item in this.projectButtons.admin){
                                 this.mergedButtons.push(this.projectButtons.admin[item])
                             }

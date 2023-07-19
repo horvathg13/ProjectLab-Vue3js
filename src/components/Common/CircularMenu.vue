@@ -94,6 +94,9 @@ import VueClickAway from "vue3-click-away";
             SwitchModal(){
                 this.$emit("SwitchModal",{data: this.data})
                 console.log("hello from circle modal")
+            },
+            CompletedEmit(){
+                this.$emit("CompletedEmit",{data:this.data})
             }
             /*dropdownDynamicDirection(){
                 return new Promise((resolve) => {

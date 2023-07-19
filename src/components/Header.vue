@@ -26,7 +26,8 @@ export default{
         '$store.state.userData'(newValue) {
             this.username = newValue.name;
             console.log(this.username, "hello from header watch");
-        }
+        },
+
     },
     computed: {
        hasToken(){

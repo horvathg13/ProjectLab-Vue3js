@@ -477,7 +477,7 @@
                        }
                        
                        if(this.projectButtons.employee && this.projectButtons.employee.length>0){
-                           this.projectButtons.employee = this.projectButtons.employee.slice(1,3)
+                           this.projectButtons.employee = this.projectButtons.employee.slice(1,4)
                            for(let item in this.projectButtons.employee){
                                this.mergedButtons.push(this.projectButtons.employee[item])
                            } 
@@ -675,6 +675,44 @@
             },
             clearFilter(){
                 this.getTasks();
+            },
+            Completed(emit){
+                const{data}=emit;
+                
+                let dataTravel={};
+                dataTravel.projectId = this.$route.params.id
+                dataTravel.taskData = emit.data
+                dataTravel.taskData.status = "Completed";
+                console.log(emit, "EMMI")
+                let url='http://127.0.0.1:8000/api/completed';
+
+                ServiceClient.post(url,dataTravel).then((response) =>{
+                    if (response.status == 200){
+                        console.log(response.data, "responseDATA")
+                        this.message = response.data[0].message;
+                        
+                        this.show_popup = true;
+                        setTimeout(() => {
+                            this.show_popup = false
+                            this.message = ""
+                            this.cancelModal()
+                        },  1500)
+                        
+                    }
+                }).catch((error) => {
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message = error.response.data.message
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message = ""
+                            }, 2000)
+
+                        }
+                    }
+                });
+
             }
 
 
@@ -754,7 +792,8 @@
                                   @AttachMyself="this.AttachMyself"
                                   @edit="this.EditingModeSwitch"
                                   @CommentEmit="this.commentModalSwitch"
-                                  @SwitchModal="SwitchStatusModal">
+                                  @SwitchModal="SwitchStatusModal"
+                                  @CompletedEmit="Completed">
                                 </CircularMenu>
                                 
                             </td>

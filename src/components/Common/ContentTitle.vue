@@ -2,16 +2,21 @@
 export default{
     props:{
         h1Title:"",
-        message:{
-            type:Number,
-            default:0
-        },
+       
         route:"",
         meta:[]
     },
     data(){
         return{
+            message:null,
         }
+    },
+    watch:{
+        '$store.state.notifications'(newValue) {
+            console.log(newValue.length,"kakakaokspd")
+            this.message = newValue.length;
+            console.log(newValue.length, "hello notifica watch");
+        },
     },
     computed: {
         breadcrumbs() {
@@ -70,7 +75,12 @@ export default{
         
         display: flex;
     }
-
+    .message-container a {
+        opacity: unset;
+    }
+    .message-container:hover{
+        opacity: .8;
+    }
     .message-container:hover {
         animation: shake 0.4s;
         animation-iteration-count: 1;

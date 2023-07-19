@@ -139,9 +139,12 @@ form{
   max-width: max-content;
   
 }
-
+.content-title.task h1{
+  font-size: 35px;
+}
 .content-title.task h2{
-  color:white
+  color:white;
+  font-size:25px
 }
 /*Header*/
 .ui.buttons:not(.basic):not(.inverted){

@@ -106,7 +106,7 @@ export default{
                 <li><a href="/users">Users</a></li>
                 <li><a href="/notifications">Notifications</a></li>
                 <li><a href="/projects">Projects</a></li>
-                <li>My Tasks</li>
+                <li><a href="/my-tasks">My Tasks</a></li>
                 <li>Statistics</li>
             </ul>
         </div>

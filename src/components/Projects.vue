@@ -160,26 +160,26 @@
                 let url ="http://127.0.0.1:8000/api/getprojects";
                 ServiceClient.post(url).then((response) =>{
                         
-                        if (response.status == 200){
-                            
-                            this.getprojects=response.data
+                    if (response.status == 200){
+                        
+                        this.getprojects=response.data
+                        this.loader=false;
+                    }
+                }).catch((error) => {
+                        
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message= error.response.data.message
+                            this.show_error_popup = true
                             this.loader=false;
-                        }
-                    }).catch((error) => {
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message = "";
+                            },  4500)
                             
-                        if (error.response && error.response.status) {
-                            if (error.response.data && error.response.data.message) {
-                                this.message= error.response.data.message
-                                this.show_error_popup = true
-                                this.loader=false;
-                                setTimeout(() => {
-                                    this.show_error_popup = false
-                                    this.message = "";
-                                },  4500)
-                                
-                            }
                         }
-                    });
+                    }
+                });
             },
 
             getUsers(){
@@ -384,7 +384,7 @@
                             
                         }
                         if(this.projectButtons.admin && this.projectButtons.admin.length>0){
-                            this.projectButtons.admin = this.projectButtons.admin.slice(-3)
+                            this.projectButtons.admin = this.projectButtons.admin.slice(-4)
                             for(let item in this.projectButtons.admin){
                                 this.mergedButtons.push(this.projectButtons.admin[item])
                             }

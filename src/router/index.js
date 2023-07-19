@@ -9,6 +9,7 @@ import RolePermission from "../components/RolePermission.vue"
 import Projects from "../components/Projects.vue"
 import ProjectTasks from "../components/ProjectTasks.vue"
 import Notifications from "../components/Notifications.vue"
+import MyTasks from "../components/MyTasks.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -86,6 +87,20 @@ const router = createRouter({
       path:"/notifications",
       name:"Notifications",
       component: Notifications,
+      meta:
+      [
+        {
+          breadcrumb: "Home",
+          path: "/home",
+        },
+
+      ]
+
+    },
+    {
+      path:"/my-tasks",
+      name:"My Tasks",
+      component: MyTasks,
       meta:
       [
         {

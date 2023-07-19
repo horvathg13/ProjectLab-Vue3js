@@ -73,7 +73,7 @@ export default{
                 <img src="../assets/HomeP_icons/tasks.png">
                 </div>
                 <div class="content">
-                    <div class="header">My tasks</div>
+                    <div class="header"><a href="/my-tasks">My tasks</a></div>
                    
                 </div>
             </div>

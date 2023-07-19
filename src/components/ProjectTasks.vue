@@ -678,7 +678,7 @@
             },
             Completed(emit){
                 const{data}=emit;
-                
+                this.loader = true;
                 let dataTravel={};
                 dataTravel.projectId = this.$route.params.id
                 dataTravel.taskData = emit.data
@@ -692,6 +692,7 @@
                         this.message = response.data[0].message;
                         
                         this.show_popup = true;
+                        
                         setTimeout(() => {
                             this.show_popup = false
                             this.message = ""
@@ -704,6 +705,8 @@
                         if (error.response.data && error.response.data.message) {
                             this.message = error.response.data.message
                             this.show_error_popup = true
+                            this.getTasks();
+                            
                             setTimeout(() => {
                                 this.show_error_popup = false
                                 this.message = ""

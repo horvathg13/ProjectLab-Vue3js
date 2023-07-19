@@ -713,6 +713,19 @@
                     }
                 });
 
+            },
+            rowBackground(task){
+                let color = "";
+                if(task.status=="Urgent"){
+                    color="warning"
+                }else if(task.status=="Suspended"){
+                    color="error"
+                }else if(task.status=="Completed"){
+                    color="warning"
+                }else if(task.status=="Accepted"){
+                    color="positive"
+                }
+                return color
             }
 
 
@@ -774,7 +787,7 @@
                     </tbody>
                     <tbody v-if="loader==false">
 
-                        <tr v-for="task in taskData" :key="task.task_id" >
+                        <tr v-for="task in taskData" :key="task.task_id" :class="rowBackground(task)">
                             <td>{{ task.task_id }}</td>
                             <td>{{task.task_name }}</td>
                             <td>{{task.dedadline }}</td>

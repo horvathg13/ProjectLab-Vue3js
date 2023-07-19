@@ -71,7 +71,7 @@ export default{
                         </thead>
                         
                         <tbody>
-                            <tr v-for="n in notifications" :key="n.id">
+                            <tr v-for="n in notifications" :key="n.id" class="warning">
                                 <td>{{n.id}}</td>
                                 <td>{{n.type}}</td>
                                 <td>{{n.title}}</td>

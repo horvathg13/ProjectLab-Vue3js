@@ -574,6 +574,19 @@
             clearFilter(){
                 this.getProjects();
 
+            },
+            rowBackground(project){
+                let color = "";
+                if(project.status=="Urgent"){
+                    color="warning"
+                }else if(project.status=="Suspended"){
+                    color="error"
+                }else if(project.status=="Completed"){
+                    color="positive"
+                }else if(project.status=="Deleted"){
+                    color="error"
+                }
+                return color
             }
 
                 
@@ -632,7 +645,7 @@
                             </div>
                         </tbody>
                         <tbody v-if="loader==false">
-                            <tr v-for="project in getprojects" :key="project.id">
+                            <tr v-for="project in getprojects" :key="project.id" :class="rowBackground(project)">
                                 <td>{{project.project_id}}</td>
                                 <td>{{project.manager}}</td>
                                 <td>{{project.name}}</td>

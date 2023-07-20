@@ -2,6 +2,7 @@
     import ServiceClient from '../ServiceClient';
     import Success_Popup from './Common/Success_Popup.vue';
     import ErrorPopup from './Common/ErrorPopup.vue';
+import router from '../router';
     
 export default{
     data(){
@@ -57,6 +58,9 @@ export default{
                 color="positive"
             }
             return color
+        },
+        jump(task){
+            router.push(`/projects/${task.projectId}/tasks`)
         }
     },
     mounted(){
@@ -113,7 +117,7 @@ export default{
                                 <td>{{ task.priority}}</td>
                                 <td>{{ task.deadline}}</td>
                                 <td>
-                                   <i class="arrow large alternate circle right icon"></i>
+                                   <i class="arrow large alternate circle right icon" @click="jump(task)"></i>
                                     <!--<CircularMenu
                                         @click="getButtons(task)"
                                         :data="project"

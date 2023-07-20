@@ -208,7 +208,7 @@ export default{
                     :class="{'message': message.sender_id !== currentUserId,
                             'message response': message.sender_id === currentUserId
                             }">
-                        <div class="avatar" :style="setMessageBackgroundColor(message)"><h1>{{message.sender_name.charAt(0).toUpperCase() }}</h1></div>
+                        <div class="avatar" :class="{'avatar response':message.sender_id === currentUserId, 'avatar message':message.sender_id !== currentUserId }" :style="setMessageBackgroundColor(message)"><h1>{{message.sender_name.charAt(0).toUpperCase() }}</h1></div>
                         <div class="message bubble ui left pointing label"
                         :class="{'message bubble ui left pointing label': message.sender_id !== currentUserId,
                             'message bubble ui right pointing label': message.sender_id === currentUserId
@@ -251,6 +251,8 @@ export default{
         color: #fff;
         text-align: center;
         line-height: 40px;
+        top:calc(100% - 60%);
+        z-index: 9;
     }
     .avatar.response{
         width: 40px;
@@ -262,6 +264,16 @@ export default{
         line-height: 40px;
         left: auto;
         right: 0;
+       /** transform:translate(-50%, -50%);
+        top:50%;
+        left:4%**/
+    }
+    .avatar.message{
+        transform:translate(-50%, -50%);
+        top:45%;
+        left:3%;
+        display: flex;
+        justify-content: center;
     }
     .ui.input{
         height: 40px !important;
@@ -287,7 +299,7 @@ export default{
     .messagebox{
         height:calc(100% - 25%);
         width: auto;
-       
+        max-width: 700px;
         /*overflow: auto;*/
         
     }
@@ -299,7 +311,6 @@ export default{
         height: 100%;
         border-radius: 5px;
         display: grid;
-        
     }
     .message.bubble{
         background-color: white;
@@ -308,14 +319,21 @@ export default{
         margin: 5px;
         padding: 5px;
         border-radius: 10px;
+        max-height: 200px;
+    }
+    .message.bubble h3{
+        max-width: 300px;
+        max-height: 150px;
     }
     .message{
         display: inline-flex;
-        margin:5px
+        margin:5px;
+        max-width: 650px;
     }
     .message.response{
         display: flex;
         flex-direction: row-reverse;
+        height: max-content;
     }
     .header{
         margin-bottom: 0;

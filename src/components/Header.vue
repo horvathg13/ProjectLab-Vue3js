@@ -90,10 +90,10 @@ export default{
 
 <template>
     <div class="header"> <!--v-if="hasToken"-->
-        <div class="logo">
+        <a href="/home"><div class="logo">
             <img src="../assets/RegP_icons/lab-nobg.png">
             <h1><span>Pro</span>ject-Lab</h1>
-        </div>
+        </div></a>
         <Transition name="drop">
             <Success v-if="showPopup == true" :message="message"></Success>
         </Transition>

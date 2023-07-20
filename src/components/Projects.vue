@@ -59,21 +59,35 @@
             showStatusModal:false,
             statusDataTravel:[],
             loader:false,
+            AddNewUser:false,
+            userRole:{},
         }
     },
     watch: {
         '$store.state.unreadMessages'(newValue) {
             this.unreadMessage = newValue;
             console.log(this.unreadMessage, "hello from watch");
+        },
+        
+        '$store.state.userRole'(newValue) {
+            this.userRole = newValue;
+            console.log( this.userRole, "hello from user watcher");
+            this.SetAddNewUser()
         }
     },
+
     computed:{
-        vuexStore(){
-            this.unreadMessage= this.$store.state.unreadMessages 
-            console.log(this.unreadMessage, "hello from computed")
-        }
+       
     },
     methods:{
+        SetAddNewUser(){
+           for(let i in this.userRole){
+                if(this.userRole[i].role=="Admin"){
+                    this.AddNewUser=true
+                    console.log("CIAO", this.AddNewUser);
+                }
+            }
+        },
         unreadMessages(){
             this.unreadMessage= store.state.unreadMessages
             console.log(this.unreadMessage, "hello from Vuex")
@@ -140,7 +154,7 @@
                     
                 if (error.response && error.response.status) {
                     if (error.response.data && error.response.data.message) {
-                        this.message= Object.values(error.response.data.message).flatMap(y => y)
+                        this.message= error.response.data.message//Object.values(error.response.data.message).flatMap(y => y)
                         this.show_error_popup = true
                         setTimeout(() => {
                             this.show_error_popup = false
@@ -577,9 +591,7 @@
             },
             rowBackground(project){
                 let color = "";
-                if(project.status=="Urgent"){
-                    color="warning"
-                }else if(project.status=="Suspended"){
+                if(project.status=="Suspended"){
                     color="error"
                 }else if(project.status=="Completed"){
                     color="positive"
@@ -633,7 +645,7 @@
                                 <th>Status <Filter :data="this.statusDataTravel" @select="filter" @deleteSelected="clearFilter" @click="getFilterData"></Filter></th>
                                 <th>Deadline</th>
                                 <th>
-                                <button class="ui right floated small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>
+                                <button v-if="this.AddNewUser == true" class="ui right floated small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>
                             </tr>
                         </thead>
                         <tbody v-if="loader==true">

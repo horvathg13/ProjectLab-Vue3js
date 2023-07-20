@@ -41,11 +41,27 @@ import CircularMenu from './Common/CircularMenu.vue';
             triggerValue: null,
             dataSave:[],
             func:'',
-            adminbuttons:{}
+            adminbuttons:{},
+            userRole:{},
+            AddNewUser:false,
         }
     },
-   
+    watch:{
+        '$store.state.userRole'(newValue) {
+            this.userRole = newValue;
+            console.log( this.userRole, "hello from user watcher");
+            this.SetAddNewUser()
+        }
+    },
     methods:{
+        SetAddNewUser(){
+           for(let i in this.userRole){
+                if(this.userRole[i].role=="Admin"){
+                    this.AddNewUser=true
+                    console.log("CIAO", this.AddNewUser);
+                }
+            }
+        },
         trigger(data){
             const{trigger} = data
             this.triggerValue = trigger
@@ -393,7 +409,7 @@ import CircularMenu from './Common/CircularMenu.vue';
                             <th>E-mail</th>
                             <th>Role</th>
                             <th>Actions
-                            <button class="ui right floated small primary labeled icon button" @click="updateModal"><i class="user plus icon"></i>Add</button>
+                            <button v-if="this.AddNewUser == true" class="ui right floated small primary labeled icon button" @click="updateModal"><i class="user plus icon"></i>Add</button>
                             </th>
                             
                         </tr>

@@ -60,7 +60,8 @@
             statusDataTravel:{},
             showStatusModal:false,
             ActualTaskData:{},
-            loader:false
+            loader:false,
+            managerRole:false,
         }
     },
     watch: {
@@ -140,9 +141,9 @@
             this.task_id = task.id;
             console.log(this.deadline, this.task_name, this.description, this.t_priority)
             
-            for(let p in this.projectData){
-                this.p_id= this.projectData[p].project_id;
-            }
+           
+            this.p_id= this.projectData.project_id;
+            
             
             
             let formData = new FormData();
@@ -232,7 +233,7 @@
                         if (response.status == 200){
                             
                             this.projectData=response.data
-                            console.log(this.projectData)
+                            console.log(this.projectData, "ProjectData")
                         }
                     }).catch((error) => {
                             
@@ -304,6 +305,7 @@
                         
                     if (response.status == 200){
                         this.taskData=response.data
+                        this.managerRole = response.data[0].haveManagerRole
                         console.log(this.taskData, "szegény legény")
                         this.loader=false;
                     }
@@ -352,9 +354,9 @@
                 const {data} = task
                 let taskId = task.data.task_id;
                 let projectId = null;
-                for(let p in this.projectData){
-                projectId = this.projectData[p].project_id;
-                }
+               
+                projectId = this.projectData.project_id;
+                
                
                 console.log(taskId, projectId, "lolo")
                 let url = `http://127.0.0.1:8000/api/projects/${projectId}/tasks/${taskId}`;
@@ -423,9 +425,9 @@
             SendMessage(emitData){
                 const{participants,message,data} = emitData
                 let projectId = null;
-                for(let p in this.projectData){
-                    projectId = this.projectData[p].project_id;
-                }
+               
+                projectId = this.projectData.project_id;
+                
                 emitData.projectId = projectId
                 console.log(emitData, "emitData",projectId);
                 let url='http://127.0.0.1:8000/api/send-message';
@@ -719,9 +721,7 @@
             },
             rowBackground(task){
                 let color = "";
-                if(task.status=="Urgent"){
-                    color="warning"
-                }else if(task.status=="Suspended"){
+                if(task.status=="Suspended"){
                     color="error"
                 }else if(task.status=="Completed"){
                     color="warning"
@@ -763,9 +763,9 @@
         
     
         <div class="centerd-component-container" >
-            <div class="content-title task" v-for="project in this.projectData" :key="project.id">
-            <h1>{{project.name}}</h1>
-            <h2>{{ project.manager }}</h2>
+            <div class="content-title task" >
+            <h1>{{projectData.name}}</h1>
+            <h2>{{ projectData.manager }}</h2>
             </div>
             <div class="scrolling-table-container">
                 <table class="ui selectable striped table" >
@@ -777,7 +777,7 @@
                             <th>Task Status <Filter :data="this.statusDataTravel" @select="filter" @deleteSelected="clearFilter" @click="getFilterData"></Filter></th>
                             <th>Task Priority</th>
                             <th>
-                            <button class="ui right floated small primary labeled icon button" @click="showCreateTaskModal()"><i class="tasks icon"></i>New Task</button></th>
+                            <button v-if="this.managerRole==true" class="ui right floated small primary labeled icon button" @click="showCreateTaskModal()"><i class="tasks icon"></i>New Task</button></th>
                         </tr>
                     </thead>
                     <tbody v-if="loader==true">
@@ -800,7 +800,6 @@
                             <td>
                                 <CircularMenu
                                   :data="task"
-                                  :component="this.$route.name"
                                   :buttons="this.mergedButtons"
                                   :newMessage="this.newMessage"
                                   @click="getButtons(task)"

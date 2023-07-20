@@ -26,6 +26,13 @@ ServiceClient.post('http://127.0.0.1:8000/api/notifications').then(response => {
 }).catch(error =>{
   console.log(error);
 });
+ServiceClient.post('http://127.0.0.1:8000/api/getUserRole').then(response => {
+  store.commit("setuserRole",response.data)
+  console.log(response.data, "getUserRole");
+}).catch(error =>{
+  console.log(error);
+});
+
 </script>
 
 <template>

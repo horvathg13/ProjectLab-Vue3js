@@ -44,7 +44,7 @@ export default{
             let index = this.VforActiveArray.indexOf(user);
             this.VforActiveArray.splice(index, 1);
 
-            
+            this.$emit("detach-user", {remove:this.remove})
         }
 
     },

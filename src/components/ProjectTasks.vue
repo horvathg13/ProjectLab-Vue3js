@@ -62,6 +62,8 @@
             ActualTaskData:{},
             loader:false,
             managerRole:false,
+            RemoveData:[],
+            finalData:{},
         }
     },
     watch: {
@@ -80,9 +82,9 @@
         Attach_Modal(task){
             const{data} = task
             this.AttachTask = task.data
-            console.log(this.AttachTask.task_id,"attach_is active")
+            console.log("attach_is active", task.data)
 
-            let url=`http://127.0.0.1:8000/api/getActiveEmployees/${this.AttachTask.task_id}`;
+            let url=`http://127.0.0.1:8000/api/getActiveEmployees/${task.data.task_id}`;
             ServiceClient.post(url).then((response) =>{
                     console.log(response);
                     if (response.status == 200){
@@ -183,39 +185,54 @@
             
             },
             AssignEmployeeToTask(data){
-                const {selected_employee}=data
-                this.assignEmployee=data.selected_employee.select;
+                const {selected_employee, remove_employee}=data
+               
                 console.log(this.assignEmployee, "mackó", this.AttachTask)
                 
-                this.RequestData = this.assignEmployee.map(employee => {
-                    return {
-                        id: employee.id,
-                        name: employee.name,
-                        deadline: this.AttachTask.dedadline,
-                        description: this.AttachTask.description,
-                        task_status: this.AttachTask.status,
-                        task_id: this.AttachTask.task_id,
-                        task_name: this.AttachTask.task_name
-                    };
-                });
-
+                if(data.selected_employee.select !== undefined){
+                     this.assignEmployee=data.selected_employee.select;
+                     this.RequestData = this.assignEmployee.map(employee => {
+                        return {
+                            id: employee.id,
+                            name: employee.name,
+                            deadline: this.AttachTask.dedadline,
+                            description: this.AttachTask.description,
+                            task_status: this.AttachTask.status,
+                            task_id: this.AttachTask.task_id,
+                            task_name: this.AttachTask.task_name
+                        };
+                    });
+                }
+                if(data.remove_employee !== null){
+                    this.RemoveData=data.remove_employee;
+                    console.log(this.RemoveData, "REMOVEDATA")
+                }
+                let dataTravel={};
+                dataTravel.requestData = this.RequestData,
+                dataTravel.removeData = this.RemoveData,
+                dataTravel.task_id = this.AttachTask.task_id
+                dataTravel.project_id = this.$route.params.id
                 let url ="http://127.0.0.1:8000/api/assign-employee-to-task";
-                ServiceClient.post(url,this.RequestData, {headers:{ 'Content-Type': 'application/json'}}).then((response) =>{
+                ServiceClient.post(url,dataTravel).then((response) =>{
                     console.log(response);
                     if (response.status == 200){
+                        this.message =response.data.message
                         this.show_popup = true
                         setTimeout(() => {
                             this.show_popup = false
                             this.cancelModal()
+                            this.message=""
                         },  1500)
                     }
                 }).catch((error) => {
                         
                     if (error.response && error.response.status) {
                         if (error.response.data && error.response.data.message) {
+                            this.message=error.response.data.message
                             this.show_error_popup = true
                             setTimeout(() => {
                                 this.show_error_popup = false
+                                this.message="";
                             },  2000)
                             
                         }

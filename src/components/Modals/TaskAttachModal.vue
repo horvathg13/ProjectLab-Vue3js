@@ -21,7 +21,7 @@
         data(){
             return{
                 selected_employee:[],
-                
+                remove_employee:[]
                 
             }
         },
@@ -31,7 +31,7 @@
             },
 
             attach(){
-                this.$emit("attach-user", {selected_employee: this.selected_employee})
+                this.$emit("attach-user", {selected_employee: this.selected_employee, remove_employee:this.remove_employee})
             },
 
             makeSelection(data){
@@ -41,9 +41,9 @@
             },
             detach(data){
                 const{detach} = data;
-                console.log(data.detach.id)
                 
-                
+                this.remove_employee = data.remove
+                console.log(this.remove_employee, "DETACH")
             }
             
 
@@ -59,7 +59,7 @@
 <template>
         <div class="modal-overlay">
             
-            <div class="modal" v-click-away="cancelModal"> 
+            <div class="modal"> 
                 <div class="close">
                     <i class="close large red icon" @click="cancelModal"></i>
                 </div>

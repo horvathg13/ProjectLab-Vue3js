@@ -82,10 +82,10 @@ export default{
                 console.log(this.taskData, "this.taskData")
 
                     this.NewData={
-                        id: this.taskData.task_id,
-                        name: this.taskData.task_name,
+                        id: this.taskData.task_id ? this.taskData.task_id: this.taskData.id,
+                        name: this.taskData.task_name ? this.taskData.task_name: this.taskData.name,
                         status: this.taskData.status,
-                        deadline: this.taskData.dedadline,
+                        deadline: this.taskData.dedadline ? this.taskData.dedadline: this.taskData.deadline,
                     };
 
                     console.log(this.NewData, "newdata")
@@ -100,7 +100,7 @@ export default{
             if(this.projectId == null){
                 this.taskId = 0;
             }else{
-                this.taskId = this.taskData.task_id
+                this.taskId = this.taskData.task_id ? this.taskData.task_id: this.taskData.id
                 this.project_id = this.projectId
             }
             

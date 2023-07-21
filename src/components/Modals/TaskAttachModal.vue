@@ -21,8 +21,23 @@
         data(){
             return{
                 selected_employee:[],
-                remove_employee:[]
-                
+                remove_employee:[],
+                SelectComp_getProjectParticipants:[],
+                SelectComp_getActiveTaskParticipants:[]
+            }
+        },
+        watch:{
+            'getProjectParticipants':{
+                immediate:true,
+                handler(newValue){
+                   this.SelectComp_getProjectParticipants = newValue
+                }
+            },
+            'getActiveTaskParticipants':{
+                immediate:true,
+                handler(newValue){
+                    this.SelectComp_getActiveTaskParticipants = newValue
+                }
             }
         },
         methods: {
@@ -32,6 +47,11 @@
 
             attach(){
                 this.$emit("attach-user", {selected_employee: this.selected_employee, remove_employee:this.remove_employee})
+                this.selected_employee=[];
+                this.remove_employee=[];
+                this.SelectComp_getActiveTaskParticipants=[];
+                this.SelectComp_getProjectParticipants=[];
+                console.log(this.SelectComp_getActiveTaskParticipants,  this.SelectComp_getProjectParticipants, "EMPTY?!")
             },
 
             makeSelection(data){
@@ -77,8 +97,8 @@
                         <form class="ui form" @submit.prevent="attach" novalidate>
                            
                             <div class="field"><label>Remove or Add Active Employee(s)</label></div>
-                            <MultipleSelectComponents :VforArray="this.getProjectParticipants.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" 
-                            :VforActiveArray="this.getActiveTaskParticipants.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" 
+                            <MultipleSelectComponents :VforArray="this.SelectComp_getProjectParticipants.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" 
+                            :VforActiveArray="this.SelectComp_getActiveTaskParticipants.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" 
                             @select="makeSelection"
                             @detach-user="detach"></MultipleSelectComponents>
                             

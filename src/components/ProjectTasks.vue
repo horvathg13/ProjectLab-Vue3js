@@ -129,6 +129,9 @@
             this.projectButtons = {},
             this.mergedButtons=[],
             this.showStatusModal =false,
+            this.assignEmployee=[],
+            this.RequestData=[],
+            this.RemoveData=[];
             console.log("Bezártad a Modalt")
         },
 

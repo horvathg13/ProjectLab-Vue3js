@@ -79,11 +79,11 @@
         mounted(){
             if(this.EditData!== null && this.EditMode=== true){
                 console.log(this.EditData, "solution")
-                this.Task_Details.name= this.EditData.task_name;
-                this.Task_Details.deadline = this.EditData.dedadline.replace(/-/g, ".")
+                this.Task_Details.name= this.EditData.task_name?this.EditData.task_name:this.EditData.name;
+                this.Task_Details.deadline = this.EditData.dedadline ? this.EditData.dedadline: this.EditData.deadline
                 this.Task_Details.description = this.EditData.description
-                this.Task_Details.priority = this.EditData.priority_id
-                this.Task_Details.id = this.EditData.task_id
+                this.Task_Details.priority = this.EditData.priority_id ? this.EditData.priority_id: this.EditData.priorityId
+                this.Task_Details.id = this.EditData.task_id?this.EditData.task_id:this.EditData.id
 
                 console.log(this.Task_Details, "solution finish", this.EditData)
                 
@@ -123,7 +123,7 @@
                                 <label>Task Deadline</label>
                                 <VueDatePicker v-model="Task_Details.deadline"
                                 :enable-time-picker="false"
-                                model-type="yyyy.MM.dd"
+                                model-type="yyyy-MM-dd"
                                 format="yyyy-MM-dd"
                                 >{{ Task_Details.deadline }}</VueDatePicker>
                             </div>

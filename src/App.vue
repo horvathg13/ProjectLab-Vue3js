@@ -37,7 +37,7 @@ ServiceClient.post('http://127.0.0.1:8000/api/getUserRole').then(response => {
 
 <template>
   <Header />
-  <ContentTitle  :h1Title="$route.name" :route="$route.path" :meta="$route.meta"/>
+  <ContentTitle  :h1Title="$route.name" :route="$route.path" :meta="$route.meta.breadcrumbs"/>
   <router-view></router-view>
 </template>
 

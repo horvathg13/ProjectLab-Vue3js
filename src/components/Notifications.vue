@@ -66,7 +66,7 @@ export default{
                                 <th>Title</th>
                                 <th>Status</th>
                                 <th>Deadline</th>
-                                <th>Days left</th>
+                                <!--<th>Days left</th>-->
                             </tr>
                         </thead>
                         
@@ -77,7 +77,7 @@ export default{
                                 <td>{{n.title}}</td>
                                 <td>{{n.status}}</td>
                                 <td>{{n.deadline}}</td>
-                                <td>{{ n.days }} </td>     
+                                <!--<td>{{ n.days }} </td>-->     
                             </tr>
                         </tbody>
                         <tfoot class="full-width">

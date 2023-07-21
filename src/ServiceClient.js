@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {store} from "./VuexStore"
 
 class ServiceClient {
 
@@ -9,6 +10,14 @@ class ServiceClient {
                 ...config.headers,
                 Authorization: 'Bearer ' +  window.localStorage.getItem('token') || '',
             }
+        }).catch(error=>{
+            if(error?.response?.data?.message === "Token has expired"){
+                localStorage.removeItem("token");
+                store.commit("deleteUserData");
+                store.commit("deleteUserRole");
+
+            }
+            throw error
         })
     }
 
@@ -19,6 +28,14 @@ class ServiceClient {
                 ...config.headers,
                 Authorization: 'Bearer ' +  window.localStorage.getItem('token') || '',
             }
+        }).catch(error=>{
+            if(error?.response?.data?.message === "Token has expired"){
+                localStorage.removeItem("token");
+                store.commit("deleteUserData");
+                store.commit("deleteUserRole");
+
+            }
+            throw error
         })
     }
 
@@ -29,6 +46,14 @@ class ServiceClient {
                 ...config.headers,
                 Authorization: 'Bearer ' +  window.localStorage.getItem('token') || '',
             }
+        }).catch(error=>{
+            if(error?.response?.data?.message === "Token has expired"){
+                localStorage.removeItem("token");
+                store.commit("deleteUserData");
+                store.commit("deleteUserRole");
+
+            }
+            throw error
         })
     }
 }

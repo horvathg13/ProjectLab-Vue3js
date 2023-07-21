@@ -19,7 +19,8 @@ export default{
             username:"",
             message:"",
             showPopup:false,
-            showErrorPopup:false
+            showErrorPopup:false,
+           
         };
     },
     watch: {
@@ -78,8 +79,11 @@ export default{
                 }
             })
         
-        },      
+        },
     },
+    mounted(){
+       
+    }
    
 
   
@@ -110,11 +114,11 @@ export default{
                 <li>Statistics</li>
             </ul>
         </div>
-        <div class="ui teal buttons">
+        <div class="ui teal buttons" >
             <div class="ui button" @click="editProfile"><i class="user circle icon"></i>{{username}}</div>
             <div class="ui floating dropdown icon button"  @click="toggleDropdown">
                 <i class="dropdown icon"></i>
-                <div class="menu" :class="{ active: isDropdownOpen }">
+                <div  class="menu" :class="{ active: isDropdownOpen }" >
                    <button class="ui orange button" @click="logOut"><i class="sign-out alternate icon"></i> Log out</button>
                 </div>
             </div>

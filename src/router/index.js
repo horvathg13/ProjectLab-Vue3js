@@ -17,7 +17,9 @@ const router = createRouter({
     {
       path: '/',
       name: 'Greeting',
-      component: Greeting
+      component: Greeting,
+      meta:{requiresAuth: true}
+
     },
     {
       path: "/register",
@@ -33,16 +35,21 @@ const router = createRouter({
       path: "/home",
       name:"Homepage",
       component: Home,
+      meta:{requiresAuth: true}
     },
     {
       path: "/users",
       name:"Users",
       component: Users,
-      meta: 
-      [{
+      meta: {breadcrumbs:[
+        {
         breadcrumb: 'Home',
         path:'/home'
-      }]
+        }
+      ],
+      requiresAuth: true
+      }
+      
     },
     {
       path: "/reset-password/:token?",
@@ -59,19 +66,21 @@ const router = createRouter({
       name:"Projects",
       component: Projects,
       props:true,
-      meta: 
-      [{
+      meta:{breadcrumbs:[
+        {
         breadcrumb: 'Home',
         path:'/home'
-      }]
+        }
+      ],
+      requiresAuth: true}
+      
     },
     {
       path: "/projects/:id?/tasks",
       name:"Tasks",
       component: ProjectTasks,
       props:true,
-      meta: 
-      [
+      meta:{breadcrumbs:[
         {
           breadcrumb: 'Home',
           path:'/home'
@@ -80,40 +89,49 @@ const router = createRouter({
         breadcrumb: 'Project',
         path: '/projects'
         }
-        
-      ]
+      ],
+      requiresAuth: true}
+      
     },
     {
       path:"/notifications",
       name:"Notifications",
       component: Notifications,
-      meta:
-      [
+      meta:{breadcrumbs:[
         {
           breadcrumb: "Home",
           path: "/home",
         },
-
-      ]
+      ],
+      requiresAuth: true}
+      
 
     },
     {
       path:"/my-tasks",
       name:"My Tasks",
       component: MyTasks,
-      meta:
-      [
+      meta: {breadcrumbs:[
         {
           breadcrumb: "Home",
           path: "/home",
         },
-
-      ]
+      
+      ],
+      requiresAuth: true}
+      
 
     },
+    
     
   
   ]
 })
+
+router.beforeEach((to, from) => {
+  if ( to.meta.requiresAuth && !localStorage.getItem("token")) {
+    return {path: "/login"}
+  } 
+});
 
 export default router

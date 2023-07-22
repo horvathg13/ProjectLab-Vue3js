@@ -1,8 +1,12 @@
 @import './base.css';
 
 
+html{
+  background-color: #17351a;
+}
+
 #app {
-  background-color: #333;
+  background-color: #17351a;
   min-height: 100vh;
 }
 
@@ -22,7 +26,7 @@
   width: 100%;
   background-position: center;
   height: 100vh;
-  filter: blur(21px) grayscale(0.35) hue-rotate(1091deg);
+  filter: blur(21px) grayscale(0.35) hue-rotate(1091deg) brightness(0.85);
   position: fixed;
   top: 0;
   background-size: 100%;
@@ -84,7 +88,7 @@ form{
   min-width: 50%;
   width: 100%;
   /*height: calc(100% - 90px);*/
-  background-color: #00000050;
+  /*background-color: #00000050;*/
   height: 100%;
 
 }

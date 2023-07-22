@@ -198,27 +198,29 @@ export default{
                     
             <div class="messagebox">
                 <div class="message content">
+                    
                     <div class="ui segment" v-if="loader == true">
                         <div class="ui active dimmer">
                         <div class="ui text loader">Loading</div>
                         </div>
                         <p></p>
                     </div>
-                    <div class="message" v-for="message in messageData" :key="message.sender_id"
-                    :class="{'message': message.sender_id !== currentUserId,
-                            'message response': message.sender_id === currentUserId
-                            }">
-                        <div class="avatar" :class="{'avatar response':message.sender_id === currentUserId, 'avatar message':message.sender_id !== currentUserId }" :style="setMessageBackgroundColor(message)"><h1>{{message.sender_name.charAt(0).toUpperCase() }}</h1></div>
-                        <div class="message bubble ui left pointing label"
-                        :class="{'message bubble ui left pointing label': message.sender_id !== currentUserId,
-                            'message bubble ui right pointing label': message.sender_id === currentUserId
-                            }">
-                            <div class="message bubble content">
-                                <h3>{{message.message}}</h3>
+                    <div  v-if="loader == false">
+                        <div  v-for="message in messageData" :key="message.sender_id"
+                        :class="{'message': message.sender_id !== currentUserId,
+                                'message response': message.sender_id === currentUserId
+                                }">
+                            <div  :title="message.sender_name" :class="{'avatar response':message.sender_id === currentUserId, 'avatar message':message.sender_id !== currentUserId }" :style="setMessageBackgroundColor(message)"><h1>{{message.sender_name.charAt(0).toUpperCase() }}</h1></div>
+                            <div
+                            :class="{'message bubble ui left pointing label': message.sender_id !== currentUserId,
+                                'message bubble ui right pointing label': message.sender_id === currentUserId
+                                }">
+                                <div class="message bubble content">
+                                    <h3>{{message.message}}</h3>
+                                </div>
                             </div>
                         </div>
                     </div>
-                   
                     
 
                 </div>
@@ -251,7 +253,7 @@ export default{
         color: #fff;
         text-align: center;
         line-height: 40px;
-        top:calc(100% - 60%);
+        
         z-index: 9;
     }
     .avatar.response{
@@ -269,9 +271,8 @@ export default{
         left:4%**/
     }
     .avatar.message{
-        transform:translate(-50%, -50%);
-        top:45%;
-        left:3%;
+        
+        transform:translate(0,50%);
         display: flex;
         justify-content: center;
     }
@@ -326,7 +327,7 @@ export default{
         max-height: 150px;
     }
     .message{
-        display: inline-flex;
+        display: flex;
         margin:5px;
         max-width: 650px;
     }

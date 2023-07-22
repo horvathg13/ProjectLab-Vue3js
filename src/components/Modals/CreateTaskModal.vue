@@ -33,7 +33,7 @@
                     p_id: null,
                 },
                 priority_name:"",
-                
+                buttonDisable:false,
                 
                 
             }
@@ -60,7 +60,7 @@
             },
 
             createTask(){
-                
+                this.buttonDisable = true
                 this.$emit("create-task", { task: this.Task_Details})
             },
 
@@ -116,12 +116,12 @@
                         <form class="ui form" @submit.prevent="createTask" novalidate>
                             <div class="field">
                                 <label>Task Name</label>
-                                <input type="text" name="name" placeholder="Name" v-model="Task_Details.name">
+                                <input :disabled="buttonDisable" type="text" name="name" placeholder="Name" v-model="Task_Details.name">
                             </div>
                            
                             <div class="field">
                                 <label>Task Deadline</label>
-                                <VueDatePicker v-model="Task_Details.deadline"
+                                <VueDatePicker :disabled="buttonDisable" v-model="Task_Details.deadline"
                                 :enable-time-picker="false"
                                 model-type="yyyy-MM-dd"
                                 format="yyyy-MM-dd"
@@ -129,14 +129,14 @@
                             </div>
                             <div class="field">
                                 <label>Description</label>
-                                <textarea type="texarea" name="description" placeholder="Details" v-model="Task_Details.description"></textarea>
+                                <textarea :disabled="buttonDisable" type="texarea" name="description" placeholder="Details" v-model="Task_Details.description"></textarea>
                             </div>
                             <div class="field">
                                 <label>Select Priority</label>
                             </div>
-                            <SelectComponents :VforArray="this.priorities" :editTask="this.SelectCompData" @select="makeSelection"></SelectComponents>
+                            <SelectComponents :disable="buttonDisable" :VforArray="this.priorities" :editTask="this.SelectCompData" @select="makeSelection"></SelectComponents>
 
-                            <button class="ui green button" type="submit">Create</button>
+                            <button :disabled="buttonDisable" class="ui green button" type="submit">Create</button>
                         </form>
                     </div>
                     

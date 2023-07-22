@@ -74,6 +74,7 @@ export default{
         z-index: 999;
         
         display: flex;
+        background-color: #00000019;
     }
     .message-container a {
         opacity: unset;

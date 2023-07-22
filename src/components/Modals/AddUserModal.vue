@@ -9,6 +9,7 @@ import VueClickAway from "vue3-click-away";
             return{
                 name:"",
                 email:"",
+                buttonDisable:false,
             }
         },
         directives:{
@@ -20,6 +21,7 @@ import VueClickAway from "vue3-click-away";
             },
 
             createUser(){
+                this.buttonDisable = true
                 this.$emit("create-user", { name: this.name, email: this.email })
             },
 
@@ -51,14 +53,14 @@ import VueClickAway from "vue3-click-away";
                         <form class="ui form" @submit.prevent="createUser" novalidate>
                             <div class="field">
                                 <label>Name</label>
-                                <input type="text" name="name" placeholder="Name" v-model="name">
+                                <input :disabled="buttonDisable" type="text" name="name" placeholder="Name" v-model="name">
                             </div>
                             <div class="field">
                                 <label>Email</label>
-                                <input type="email" name="email" placeholder="Email" v-model="email">
+                                <input :disabled="buttonDisable" type="email" name="email" placeholder="Email" v-model="email">
                             </div>
                     
-                            <button class="ui green button" type="submit" >Generate</button>
+                            <button :disabled="buttonDisable" class="ui green button" type="submit" >Generate</button>
                         </form>
                     </div>
                     <div class="ui action input">

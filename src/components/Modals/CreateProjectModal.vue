@@ -30,7 +30,8 @@
                     name: "",
                     email: "",
                 },
-                date: '',              
+                date: '',
+                buttonDisable:false  
                 
             }
         },
@@ -42,6 +43,7 @@
             },
 
             createProject(){
+                this.buttonDisable=true
                 console.log(this.p_name, "hello from createProject()")
                 this.$emit("create-project", { p_name: this.p_name, manager:this.selectedManager, date: this.date, p_id: this.p_id})
             },
@@ -90,13 +92,13 @@
                         <form class="ui form" @submit.prevent="createProject" novalidate>
                             <div class="field">
                                 <label>Project Name</label>
-                                <input type="text" name="name" placeholder="Name" v-model="p_name">
+                                <input :disabled="buttonDisable" type="text" name="name" placeholder="Name" v-model="p_name">
                             </div>
                             <div class="field"><label>Select a Manager</label></div>
-                            <SelectComponents :VforArray="this.getusers.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" :editProject="this.EditData" @select="makeSelection"></SelectComponents>
-                            <div class="field">
+                            <SelectComponents :disable="buttonDisable" :VforArray="this.getusers.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" :editProject="this.EditData" @select="makeSelection"></SelectComponents>
+                            <div class="field" >
                                 <label>Enter Deadline</label>
-                                <VueDatePicker v-model="this.date"
+                                <VueDatePicker :disabled="buttonDisable" v-model="this.date"
                                 :enable-time-picker="false"
                                 model-type="yyyy.MM.dd"
                                 format="yyyy-MM-dd"                            
@@ -104,7 +106,7 @@
                                 
                             </div>
                     
-                            <button class="ui green button" type="submit">Create</button>
+                            <button :disabled="buttonDisable" class="ui green button" type="submit">Create</button>
                         </form>
                     </div>
                     

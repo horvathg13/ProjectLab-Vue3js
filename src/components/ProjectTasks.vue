@@ -64,6 +64,7 @@
             managerRole:false,
             RemoveData:[],
             finalData:{},
+            errorArray:[],
         }
     },
     watch: {
@@ -174,8 +175,18 @@
                 }).catch((error) => {
                         
                     if (error.response && error.response.status) {
+                        if(error.response.data.validatorError){
+                            this.errorArray=error.response.data.validatorError
+                            console.log( this.errorArray)
+                            this.show_error_popup=true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.errorArray=[];
+                            },  2000)
+                        }
                         if (error.response.data && error.response.data.message) {
                             this.message= error.response.data.message
+                            console.log(this.message, "ERRORMESSAGE")
                             this.show_error_popup = true
                             setTimeout(() => {
                                 this.show_error_popup = false
@@ -775,7 +786,7 @@
         <Success_Popup v-if="show_popup==true" :message = "this.message"></Success_Popup>
     </Transition>
     <Transition name="drop">
-        <ErrorPopup v-if="show_error_popup==true" :message="this.message"></ErrorPopup>
+        <ErrorPopup v-if="show_error_popup==true" :message="this.message" :errorarray="this.errorArray"></ErrorPopup>
     </Transition>
     <Transition name="drop">
         <AreYouSureModal v-if="show_areyousure_popup==true"></AreYouSureModal>

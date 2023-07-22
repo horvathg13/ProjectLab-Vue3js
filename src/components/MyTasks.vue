@@ -61,7 +61,7 @@ export default{
     methods:{
         getMyTasks(){
             //this.loader=true;
-            let url ="http://127.0.0.1:8000/api/get-my-tasks";
+            let url ="/api/get-my-tasks";
             ServiceClient.post(url).then((response) =>{
                     
                 if (response.status == 200){
@@ -108,7 +108,7 @@ export default{
             this.AttachTask = task.data
             console.log(this.AttachTask.id,"attach_is active")
 
-            let url=`http://127.0.0.1:8000/api/getActiveEmployees/${this.AttachTask.id}`;
+            let url=`/api/getActiveEmployees/${this.AttachTask.id}`;
             ServiceClient.post(url).then((response) =>{
                 console.log(response);
                 if (response.status == 200){
@@ -184,7 +184,7 @@ export default{
             
             
 
-            let url ="http://127.0.0.1:8000/api/createtask";
+            let url ="/api/createtask";
                 ServiceClient.post(url,formData).then((response) =>{
                     console.log(response);
                     if (response.status == 200){
@@ -241,7 +241,7 @@ export default{
             dataTravel.task_id = this.AttachTask.id
             dataTravel.project_id = this.ActualTaskData.projectId
             console.log(dataTravel, "TRAVEL")
-            let url ="http://127.0.0.1:8000/api/assign-employee-to-task";
+            let url ="/api/assign-employee-to-task";
             ServiceClient.post(url,dataTravel).then((response) =>{
                 console.log(response);
                 if (response.status == 200){
@@ -274,7 +274,7 @@ export default{
         },
             
         getPriorities(){
-            let url ="http://127.0.0.1:8000/api/getpriorities";
+            let url ="/api/getpriorities";
             ServiceClient.post(url).then((response) =>{
                     
                 if (response.status == 200){
@@ -299,7 +299,7 @@ export default{
         },
 
         getProjectParticipants(){
-            let url =`http://127.0.0.1:8000/api/getprojectparticipants/${this.ActualTaskData.projectId}`;
+            let url =`/api/getprojectparticipants/${this.ActualTaskData.projectId}`;
             ServiceClient.post(url).then((response) =>{
                     
                     if (response.status == 200){
@@ -334,7 +334,7 @@ export default{
             const{data} = kismacska
             this.taskDataTravel = kismacska.data
             console.log(this.taskDataTravel, "kismacskaTaskData")
-            let url=`http://127.0.0.1:8000/api/getActiveEmployees/${kismacska.data.id}`;
+            let url=`/api/getActiveEmployees/${kismacska.data.id}`;
             ServiceClient.post(url).then((response) =>{
                     console.log(response);
                     if (response.status == 200){
@@ -366,7 +366,7 @@ export default{
             
             emitData.projectId = projectId
             console.log(emitData, "emitData",projectId);
-            let url='http://127.0.0.1:8000/api/send-message';
+            let url='/api/send-message';
             ServiceClient.post(url,emitData).then((response) =>{
                     console.log(response);
                     if (response.status == 200){
@@ -397,7 +397,7 @@ export default{
         getButtons(task){
             this.ActualTaskData = task;
             console.log(this.ActualTaskData, "TASKDATA")
-            let url=`http://127.0.0.1:8000/api/get-buttons/${task.projectId}`
+            let url=`/api/get-buttons/${task.projectId}`
             ServiceClient.post(url).then(response => {
                 if (response.status == 200){
                     this.projectButtons = {};
@@ -475,7 +475,7 @@ export default{
             const{data}=statusData
             console.log(statusData, "statusData")
             
-            let url=`http://127.0.0.1:8000/api/get-status/${this.ActualTaskData.projectId}/${statusData.data.task_id}`;
+            let url=`/api/get-status/${this.ActualTaskData.projectId}/${statusData.data.task_id}`;
 
             ServiceClient.post(url).then((response) =>{
                 if (response.status == 200){
@@ -519,7 +519,7 @@ export default{
             dataTravel.setAllTask = set.setAllTask;
             dataTravel.setAllPriority = set.setAllPriority;
             console.log(dataTravel, "travel")
-            let url='http://127.0.0.1:8000/api/set-status';
+            let url='/api/set-status';
             ServiceClient.post(url,dataTravel).then((response) =>{
                 if (response.status == 200){
                     console.log(response.data, "responseDATA")
@@ -558,7 +558,7 @@ export default{
             dataTravel.taskData = emit.data
             dataTravel.taskData.status = "Completed";
             console.log(emit, "EMMI")
-            let url='http://127.0.0.1:8000/api/completed';
+            let url='/api/completed';
 
             ServiceClient.post(url,dataTravel).then((response) =>{
                 if (response.status == 200){

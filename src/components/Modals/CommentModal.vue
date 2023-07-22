@@ -105,7 +105,7 @@ export default{
             }
             
             console.log( "parti")
-            let url=`http://127.0.0.1:8000/api/get-messages/project-id/${this.project_id}/task-id/${this.taskId}/participants/${encodeURIComponent(JSON.stringify(this.NewParticipants))}`;
+            let url=`/api/get-messages/project-id/${this.project_id}/task-id/${this.taskId}/participants/${encodeURIComponent(JSON.stringify(this.NewParticipants))}`;
 
             ServiceClient.post(url).then((response) =>{
                     console.log(response);

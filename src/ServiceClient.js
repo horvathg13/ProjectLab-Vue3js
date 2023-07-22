@@ -4,7 +4,7 @@ import {store} from "./VuexStore"
 class ServiceClient {
 
     static get(url, config = {}) {
-        return axios.get(url, {
+        return axios.get(import.meta.env.VITE_SERVICE_URL+url, {
             ...config,
             headers: {
                 ...config.headers,
@@ -22,7 +22,7 @@ class ServiceClient {
     }
 
     static post(url, data = undefined, config = {}) {
-        return axios.post(url, data, {
+        return axios.post(import.meta.env.VITE_SERVICE_URL+url, data, {
             ...config,
             headers: {
                 ...config.headers,
@@ -40,7 +40,7 @@ class ServiceClient {
     }
 
     static delete(url, config = {}) {
-        return axios.delete(url, {
+        return axios.delete(import.meta.env.VITE_SERVICE_URL+url, {
             ...config,
             headers: {
                 ...config.headers,

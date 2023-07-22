@@ -5,14 +5,14 @@ import {store} from "./VuexStore"
 import ContentTitle from './components/Common/ContentTitle.vue'
  
 
-ServiceClient.post('http://127.0.0.1:8000/api/getUserData').then(response => {
+ServiceClient.post('/api/getUserData').then(response => {
   store.commit("setUserData",response.data);
 }).catch(error =>{
   console.log(error);
 });
 
 setInterval(() => {
-  ServiceClient.post('http://127.0.0.1:8000/api/get-unread-messages').then(response => {
+  ServiceClient.post('/api/get-unread-messages').then(response => {
     console.log("getUnreadMessages",response.data);
     store.commit("getUnreadMessages", response.data);
   }).catch(error =>{
@@ -20,13 +20,13 @@ setInterval(() => {
   });
 }, 30000);
 
-ServiceClient.post('http://127.0.0.1:8000/api/notifications').then(response => {
+ServiceClient.post('/api/notifications').then(response => {
   store.commit("getNotifications",response.data);
   console.log(response.data, "notifica");
 }).catch(error =>{
   console.log(error);
 });
-ServiceClient.post('http://127.0.0.1:8000/api/getUserRole').then(response => {
+ServiceClient.post('/api/getUserRole').then(response => {
   store.commit("setuserRole",response.data)
   console.log(response.data, "getUserRole");
 }).catch(error =>{

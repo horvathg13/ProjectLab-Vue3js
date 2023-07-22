@@ -46,7 +46,7 @@
             let formData = new FormData();
             formData.append("name", this.name);
             formData.append("slug", this.slug);
-            let url ="http://127.0.0.1:8000/api/createrole";
+            let url ="/api/createrole";
                 ServiceClient.post(url,formData).then((response) =>{
                     console.log(response);
                     if (response.status == 200){
@@ -71,7 +71,7 @@
         },
 
         getRoles(){
-            let url ="http://127.0.0.1:8000/api/getroles";
+            let url ="/api/getroles";
             ServiceClient.post(url).then((response) =>{
                     
                     if (response.status == 200){

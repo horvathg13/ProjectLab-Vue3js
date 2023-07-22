@@ -50,7 +50,7 @@ export default{
                 formData.append("password", this.password);
                 formData.append("c_password", this.c_password);
                 
-                let url ="http://127.0.0.1:8000/api/register";
+                let url ="/api/register";
                 ServiceClient.post(url,formData).then((response) =>{
                     console.log(response);
                     if (response.status == 200){

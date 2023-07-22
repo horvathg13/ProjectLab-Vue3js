@@ -119,7 +119,7 @@ import CircularMenu from './Common/CircularMenu.vue';
             let formData = new FormData();
             formData.append("name", this.name);
             formData.append("email", this.email);
-            let url ="http://127.0.0.1:8000/api/createuser";
+            let url ="/api/createuser";
                 ServiceClient.post(url,formData).then((response) =>{
                     console.log(response);
                     if (response.status == 200){
@@ -179,7 +179,7 @@ import CircularMenu from './Common/CircularMenu.vue';
         },
 
             getUsers(){
-                let url ="http://127.0.0.1:8000/api/getusers";
+                let url ="/api/getusers";
                 ServiceClient.post(url).then((response) =>{
                         
                         if (response.status == 200){
@@ -206,7 +206,7 @@ import CircularMenu from './Common/CircularMenu.vue';
             },
 
             getRoles(){
-                let url ="http://127.0.0.1:8000/api/getroles";
+                let url ="/api/getroles";
                 ServiceClient.post(url).then((response) =>{
                         
                         if (response.status == 200){
@@ -236,7 +236,7 @@ import CircularMenu from './Common/CircularMenu.vue';
                 this.triggerModal = false;
                 this.triggerValue = null;
 
-                let url = `http://127.0.0.1:8000/api/bann-user/${this.dataSave.id}`;
+                let url = `/api/bann-user/${this.dataSave.id}`;
                 ServiceClient.post(url)
                     .then((response) => {
                         if (response.status === 200) {
@@ -268,7 +268,7 @@ import CircularMenu from './Common/CircularMenu.vue';
                 this.triggerModal = false;
                 this.triggerValue = null;
 
-                let url = `http://127.0.0.1:8000/api/password-reset-manual/${this.dataSave.id}`;
+                let url = `/api/password-reset-manual/${this.dataSave.id}`;
                 ServiceClient.post(url).then((response) => {
 
                     if (response.status == 200) {
@@ -305,7 +305,7 @@ import CircularMenu from './Common/CircularMenu.vue';
                 this.role_id = role_id,
                     this.role_name = role_name
 
-                let url = `http://127.0.0.1:8000/api/user-to-role/${user_id}/${role_name}`;
+                let url = `/api/user-to-role/${user_id}/${role_name}`;
                 ServiceClient.post(url).then((response) => {
                     if (response.status == 200) {
 
@@ -343,7 +343,7 @@ import CircularMenu from './Common/CircularMenu.vue';
             },
             getUsersButton(user){
                
-                let url="http://127.0.0.1:8000/api/get-users-buttons"
+                let url="/api/get-users-buttons"
                 ServiceClient.post(url).then(response => {
                     if (response.status == 200){
                         for(let i in response.data){

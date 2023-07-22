@@ -24,7 +24,7 @@ export default{
     methods: {
 
         findUser(){
-            let url=`http://127.0.0.1:8000/api/findUser/${this.$route.params.token}`
+            let url=`/api/findUser/${this.$route.params.token}`
             ServiceClient.get(url).then((response)=>{
                 if(response.data.success==true){
                     this.name = response.data.name,
@@ -44,7 +44,7 @@ export default{
             formData.append("email", this.email);
             formData.append("password", this.password);
             formData.append("c_password", this.c_password);
-            let url = "http://127.0.0.1:8000/api/resetpassword";
+            let url = "/api/resetpassword";
             this.disablefield = true;
 
             ServiceClient.post(url, formData).then(response => {
@@ -72,7 +72,7 @@ export default{
                 }
                 }
             });
-            /*ServiceClient.post("http://127.0.0.1:8000/api/getUserPermission").then(response => {
+            /*ServiceClient.post("/api/getUserPermission").then(response => {
             store.commit("setuserRole",response.data);
             }).catch(error =>{
             console.log(error);

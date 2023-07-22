@@ -84,7 +84,7 @@
             this.AttachTask = task.data
             console.log("attach_is active", task.data)
 
-            let url=`http://127.0.0.1:8000/api/getActiveEmployees/${task.data.task_id}`;
+            let url=`/api/getActiveEmployees/${task.data.task_id}`;
             ServiceClient.post(url).then((response) =>{
                     console.log(response);
                     if (response.status == 200){
@@ -161,7 +161,7 @@
             
             
 
-            let url ="http://127.0.0.1:8000/api/createtask";
+            let url ="/api/createtask";
                 ServiceClient.post(url,formData).then((response) =>{
                     console.log(response);
                     if (response.status == 200){
@@ -215,7 +215,7 @@
                 dataTravel.removeData = this.RemoveData,
                 dataTravel.task_id = this.AttachTask.task_id
                 dataTravel.project_id = this.$route.params.id
-                let url ="http://127.0.0.1:8000/api/assign-employee-to-task";
+                let url ="/api/assign-employee-to-task";
                 ServiceClient.post(url,dataTravel).then((response) =>{
                     console.log(response);
                     if (response.status == 200){
@@ -247,7 +247,7 @@
         
 
             getProjectsById(){
-                let url =`http://127.0.0.1:8000/api/projects/${this.$route.params.id}`;
+                let url =`/api/projects/${this.$route.params.id}`;
                 ServiceClient.post(url).then((response) =>{
                         
                         if (response.status == 200){
@@ -272,7 +272,7 @@
             },
 
             /*getTaskEmployee(){
-                let url ="http://127.0.0.1:8000/api/get-task-employee";
+                let url ="/api/get-task-employee";
                 ServiceClient.post(url).then((response) =>{
                         
                         if (response.status == 200){
@@ -293,7 +293,7 @@
             },*/
 
             getPriorities(){
-                let url ="http://127.0.0.1:8000/api/getpriorities";
+                let url ="/api/getpriorities";
                 ServiceClient.post(url).then((response) =>{
                         
                     if (response.status == 200){
@@ -316,10 +316,10 @@
                 });
 
             },
-
+           
             getTasks(){
                 this.loader=true;
-                let url =`http://127.0.0.1:8000/api/projects/${this.$route.params.id}/tasks`
+                let url =`/api/projects/${this.$route.params.id}/tasks`
 
                 ServiceClient.post(url).then((response) =>{
                         
@@ -334,6 +334,8 @@
                     if (error.response && error.response.status) {
                         if (error.response.data && error.response.data.message) {
                             this.message = error.response.data.message
+                            this.managerRole = error.response.data.haveManagerRole
+                            console.log(error.response.data)
                             this.show_error_popup = true
                             this.loader=false;
                             setTimeout(() => {
@@ -347,7 +349,7 @@
 
             },
             getProjectParticipants(){
-                let url =`http://127.0.0.1:8000/api/getprojectparticipants/${this.$route.params.id}`;
+                let url =`/api/getprojectparticipants/${this.$route.params.id}`;
                 ServiceClient.post(url).then((response) =>{
                         
                         if (response.status == 200){
@@ -379,7 +381,7 @@
                 
                
                 console.log(taskId, projectId, "lolo")
-                let url = `http://127.0.0.1:8000/api/projects/${projectId}/tasks/${taskId}`;
+                let url = `/api/projects/${projectId}/tasks/${taskId}`;
 
                 ServiceClient.post(url).then((response) =>{
                         
@@ -418,7 +420,7 @@
                 const{data} = kismacska
                 this.taskDataTravel = kismacska.data
                 console.log(this.taskData, "kismacskaTaskData")
-                let url=`http://127.0.0.1:8000/api/getActiveEmployees/${kismacska.data.task_id}`;
+                let url=`/api/getActiveEmployees/${kismacska.data.task_id}`;
                 ServiceClient.post(url).then((response) =>{
                         console.log(response);
                         if (response.status == 200){
@@ -450,7 +452,7 @@
                 
                 emitData.projectId = projectId
                 console.log(emitData, "emitData",projectId);
-                let url='http://127.0.0.1:8000/api/send-message';
+                let url='/api/send-message';
                 ServiceClient.post(url,emitData).then((response) =>{
                         console.log(response);
                         if (response.status == 200){
@@ -481,7 +483,7 @@
             getButtons(task){
                this.ActualTaskData = task;
                console.log(this.ActualTaskData, "TASKDATA")
-               let url=`http://127.0.0.1:8000/api/get-buttons/${this.$route.params.id}`
+               let url=`/api/get-buttons/${this.$route.params.id}`
                ServiceClient.post(url).then(response => {
                    if (response.status == 200){
                        this.projectButtons = {};
@@ -563,7 +565,7 @@
                 const{data}=statusData
                 console.log(statusData, "statusData")
                 
-                let url=`http://127.0.0.1:8000/api/get-status/${this.$route.params.id}/${statusData.data.task_id}`;
+                let url=`/api/get-status/${this.$route.params.id}/${statusData.data.task_id}`;
 
                 ServiceClient.post(url).then((response) =>{
                     if (response.status == 200){
@@ -607,7 +609,7 @@
                 dataTravel.setAllTask = set.setAllTask;
                 dataTravel.setAllPriority = set.setAllPriority;
 
-                let url='http://127.0.0.1:8000/api/set-status';
+                let url='/api/set-status';
                 ServiceClient.post(url,dataTravel).then((response) =>{
                     if (response.status == 200){
                         console.log(response.data, "responseDATA")
@@ -637,7 +639,7 @@
             },
             getFilterData(){
                 let Task=true;
-                let url=`http://127.0.0.1:8000/api/get-status/${this.$route.params.id}/${Task}`;
+                let url=`/api/get-status/${this.$route.params.id}/${Task}`;
 
                 ServiceClient.post(url).then((response) =>{
                     if (response.status == 200){
@@ -669,7 +671,7 @@
                 this.loader=true
                 let Task = true;
                 console.log("I got the data from filter", selectData)
-                let url = `http://127.0.0.1:8000/api/filter-status/${this.$route.params.id}/${JSON.stringify(Task)}/${selectData.select.id}`;
+                let url = `/api/filter-status/${this.$route.params.id}/${JSON.stringify(Task)}/${selectData.select.id}`;
 
                 ServiceClient.post(url).then((response) =>{
                 
@@ -706,7 +708,7 @@
                 dataTravel.taskData = emit.data
                 dataTravel.taskData.status = "Completed";
                 console.log(emit, "EMMI")
-                let url='http://127.0.0.1:8000/api/completed';
+                let url='/api/completed';
 
                 ServiceClient.post(url,dataTravel).then((response) =>{
                     if (response.status == 200){

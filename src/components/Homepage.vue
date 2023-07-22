@@ -55,7 +55,7 @@ export default{
                 <img src="../assets/HomeP_icons/request_v2.png">
                 </div>
                 <div class="content">
-                    <div class="header">Notifications</div>
+                    <div class="header"><a href="/notifications">Notifications</a></div>
                     
                 </div>
             </div>

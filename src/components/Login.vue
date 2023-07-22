@@ -30,7 +30,7 @@
                 let formData = new FormData();
                 formData.append("email", this.email);
                 formData.append("password", this.password);
-                let url = "http://127.0.0.1:8000/api/login";
+                let url = "/api/login";
                 this.disablefield = true;
 
                 ServiceClient.post(url, formData).then(response => {
@@ -59,7 +59,7 @@
                     }
                     }
                 });
-                /*ServiceClient.post("http://127.0.0.1:8000/api/getUserPermission").then(response => {
+                /*ServiceClient.post("/api/getUserPermission").then(response => {
                 store.commit("setuserRole",response.data);
                 }).catch(error =>{
                 console.log(error);

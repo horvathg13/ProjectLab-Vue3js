@@ -19,6 +19,7 @@
            projectData:Array,
            EditMode:false,
            EditData:{},
+           readOnlyMode:false,
             
         },
         data(){
@@ -47,9 +48,22 @@
                     this.SelectCompData = newValue
                     console.log("hello from createTask comp", this.SelectCompData)
                 }
+            },
+            'readOnlyMode':{
+                immediate:true,
+                handler(newValue){
+                    this.buttonDisable = newValue
+                    console.log("readonly hello")
+                    //this.visible();
+                }
+                
             }
         },
         methods: {
+           /* visible(){
+                const visibility = hidden
+                return visibility
+            },*/
             toggleDrop(){
                 this.$emit("toggleDrop")
             },
@@ -77,7 +91,7 @@
           
         },
         mounted(){
-            if(this.EditData!== null && this.EditMode=== true){
+            if(this.EditData!== null && this.EditMode=== true || this.EditData!== null && this.readOnlyMode=== true){
                 console.log(this.EditData, "solution")
                 this.Task_Details.name= this.EditData.task_name?this.EditData.task_name:this.EditData.name;
                 this.Task_Details.deadline = this.EditData.deadline ? this.EditData.deadline: this.EditData.deadline
@@ -103,8 +117,9 @@
                 </div>
                 <div class="header">
                     
-                    <h1 v-if="this.EditMode=== false">Let's create a task!</h1>
+                    <h1 v-if="this.EditMode=== false && this.readOnlyMode === false">Let's create a task!</h1>
                     <h1 v-if="this.EditMode=== true">Edit Mode</h1>
+                    <h1 v-if="this.readOnlyMode === true">Task Details</h1>
                     
                     
                 </div>
@@ -131,12 +146,12 @@
                                 <label>Description</label>
                                 <textarea :disabled="buttonDisable" type="texarea" name="description" placeholder="Details" v-model="Task_Details.description"></textarea>
                             </div>
-                            <div class="field">
-                                <label>Select Priority</label>
+                            <div class="field" >
+                                <label> Priority</label>
                             </div>
-                            <SelectComponents :disable="buttonDisable" :VforArray="this.priorities" :editTask="this.SelectCompData" @select="makeSelection"></SelectComponents>
+                            <SelectComponents  :disable="buttonDisable" :VforArray="this.priorities" :editTask="this.SelectCompData" @select="makeSelection"></SelectComponents>
 
-                            <button :disabled="buttonDisable" class="ui green button" type="submit">Create</button>
+                            <button v-if="this.readOnlyMode === false"  :disabled="buttonDisable" class="ui green button" type="submit">Create</button>
                         </form>
                     </div>
                     
@@ -148,6 +163,10 @@
 </template>
 
 <style scoped>
+    .ui.form .field :disabled{
+        opacity: 1;
+    }
+
     .dp__outer_menu_wrap {
         position:unset !important
     }

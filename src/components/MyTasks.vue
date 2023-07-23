@@ -7,6 +7,7 @@
     import CircularMenu from './Common/CircularMenu.vue';
     import CommentModal from './Modals/CommentModal.vue'
     import Status from './Modals/Status.vue'
+    import Sort from './Common/SortButton.vue'
     
 export default{
     data(){
@@ -57,6 +58,7 @@ export default{
         CircularMenu,
         CommentModal,
         Status,
+        Sort,
     },
     methods:{
         getMyTasks(){
@@ -591,6 +593,49 @@ export default{
             });
 
         },
+        Sort(sortData){
+            const{selected, key} = sortData
+            
+            let url='/api/sort'
+            let dataTravel={};
+            dataTravel.type=sortData.selected.id,
+            dataTravel.key=sortData.key,
+            dataTravel.data=this.myTasks
+            ServiceClient.post(url,dataTravel).then((response) =>{
+                if (response.status == 200){
+                    console.log(response.data, "responseDATA")
+                    this.myTasks = response.data
+                    
+                    /*this.show_popup = true;
+                    
+                    setTimeout(() => {
+                        this.show_popup = false
+                        this.message = ""
+                        this.cancelModal()
+                    },  1500)*/
+                    
+                }
+            }).catch((error) => {
+                if (error.response && error.response.status) {
+                    if (error.response.data && error.response.data.message) {
+                        this.message = error.response.data.message
+                        this.show_error_popup = true
+                        this.getTasks();
+                        
+                        setTimeout(() => {
+                            this.show_error_popup = false
+                            this.message = ""
+                        }, 2000)
+
+                    }
+                }
+            });
+
+
+        },
+        clearFilter(){
+            this.getProjects();
+        },
     },
     mounted(){
         this.getMyTasks();
@@ -626,8 +671,8 @@ export default{
                                 <th>Project</th>
                                 <th>Task name</th>
                                 <th>Status </th>
-                                <th>Priority</th>
-                                <th>Deadline</th>
+                                <th>Priority <Sort :data="this.taskData" :sortKey="'priority_id'" @sorted="Sort" @deleteSelected="clearFilter"></Sort></th>
+                                <th>Deadline <Sort :data="this.taskData" :sortKey="'deadline'" @sorted="Sort" @deleteSelected="clearFilter"></Sort></th>
                                 <th></th>
                                
                             </tr>

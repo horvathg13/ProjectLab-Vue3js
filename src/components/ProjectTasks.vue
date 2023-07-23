@@ -66,6 +66,7 @@
             RemoveData:[],
             finalData:{},
             errorArray:[],
+            readOnlyMode:false,
         }
     },
     watch: {
@@ -428,6 +429,13 @@
                 console.log(this.Editdata, "editmode")
                 this.show_Create_Task_Modal =true
             },
+            TaskDetails(readOnlydata){
+                const{data,readOnlyMode}=readOnlydata
+                console.log(readOnlydata.data, "READONLY")
+                this.Editdata = readOnlydata.data,
+                this.readOnlyMode = readOnlydata.readOnlyMode,
+                this.show_Create_Task_Modal =true
+            },
             commentModalSwitch(kismacska){
                 const{data} = kismacska
                 this.taskDataTravel = kismacska.data
@@ -513,7 +521,7 @@
                        }
                        
                        if(this.projectButtons.employee && this.projectButtons.employee.length>0){
-                           this.projectButtons.employee = this.projectButtons.employee.slice(1,4)
+                           this.projectButtons.employee = this.projectButtons.employee.slice(1,5)
                            for(let item in this.projectButtons.employee){
                                this.mergedButtons.push(this.projectButtons.employee[item])
                            } 
@@ -882,7 +890,8 @@
                                   @edit="this.EditingModeSwitch"
                                   @CommentEmit="this.commentModalSwitch"
                                   @SwitchModal="SwitchStatusModal"
-                                  @CompletedEmit="Completed">
+                                  @CompletedEmit="Completed"
+                                  @TaskDetailsEmit="TaskDetails">
                                 </CircularMenu>
                                 
                             </td>
@@ -915,7 +924,8 @@
             :priorities="this.priorities"
             :projectData="this.projectData"
             :EditMode="this.EditMode"
-            :EditData="this.Editdata"></CreateTaskModal>
+            :EditData="this.Editdata"
+            :readOnlyMode="this.readOnlyMode"></CreateTaskModal>
     </Transition> 
     <Transition>
             <TaskAttachModal v-if="show_Attach_Modal == true"

@@ -12,6 +12,8 @@
   import {store} from "../VuexStore";
   import Status from './Modals/Status.vue'
   import Filter from './Common/FilterButton.vue'
+  import Sort from './Common/SortButton.vue'
+
   export default {
     components: {
         CreateProjectModal,
@@ -25,6 +27,7 @@
         CommentModal,
         Status,
         Filter,
+        Sort
     },
 
     data() {
@@ -628,8 +631,47 @@
                     color="error"
                 }
                 return color
-            }
+            },
+            Sort(sortData){
+                const{selected, key} = sortData
+               
+                let url='/api/sort'
+                let dataTravel={};
+                dataTravel.type=sortData.selected.id,
+                dataTravel.key=sortData.key,
+                dataTravel.data=this.getprojects
+                ServiceClient.post(url,dataTravel).then((response) =>{
+                    if (response.status == 200){
+                        console.log(response.data, "responseDATA")
+                        this.getprojects = response.data
+                        
+                        /*this.show_popup = true;
+                        
+                        setTimeout(() => {
+                            this.show_popup = false
+                            this.message = ""
+                            this.cancelModal()
+                        },  1500)*/
+                        
+                    }
+                }).catch((error) => {
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message = error.response.data.message
+                            this.show_error_popup = true
+                            this.getTasks();
+                            
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message = ""
+                            }, 2000)
 
+                        }
+                    }
+                });
+
+
+            }
                 
                 
 
@@ -672,7 +714,7 @@
                                 <th>Manager</th>
                                 <th>Title</th>
                                 <th>Status <Filter :data="this.statusDataTravel" @select="filter" @deleteSelected="clearFilter" @click="getFilterData"></Filter></th>
-                                <th>Deadline</th>
+                                <th>Deadline <Sort :data="this.taskData" :sortKey="'deadline'" @sorted="Sort" @deleteSelected="clearFilter"></Sort></th>
                                 <th>
                                 <button v-if="this.AddNewProject == true" class="ui right floated small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>
                             </tr>

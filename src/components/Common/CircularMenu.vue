@@ -97,6 +97,9 @@ import VueClickAway from "vue3-click-away";
             },
             CompletedEmit(){
                 this.$emit("CompletedEmit",{data:this.data})
+            },
+            TaskDetailsEmit(){
+                this.$emit("TaskDetailsEmit",{data:this.data, readOnlyMode:true})
             }
             /*dropdownDynamicDirection(){
                 return new Promise((resolve) => {

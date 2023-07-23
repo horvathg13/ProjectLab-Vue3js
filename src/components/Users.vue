@@ -55,12 +55,25 @@ import CircularMenu from './Common/CircularMenu.vue';
     },
     methods:{
         SetAddNewUser(){
-           for(let i in this.userRole){
-                if(this.userRole[i].role=="Admin"){
+            if(this.userRole.code !== 404){
+                const isAdmin= this.userRole.some(item=>item.role === "Admin");
+                
+                if(isAdmin == true){
                     this.AddNewUser=true
-                    console.log("CIAO", this.AddNewUser);
+                    console.log("CIAO", this.userRole);
+                }else{
+                    this.$router.push("/accessdenied")
                 }
+            }else{
+                this.$router.push("/accessdenied")
             }
+            
+            
+                   
+                   
+                
+                
+            
         },
         trigger(data){
             const{trigger} = data

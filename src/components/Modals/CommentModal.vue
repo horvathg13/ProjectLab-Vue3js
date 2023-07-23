@@ -26,7 +26,8 @@ export default{
             messages:Array,
             errorMessage:'',
             show_error_popup:false,
-            loader:true
+            loader:true,
+            buttonDisable:false,
             
         }
         
@@ -94,6 +95,7 @@ export default{
            
         },
         Send(){
+            this.buttonDisable=true,
             this.$emit("sendEmit", {participants: this.NewParticipants, message:this.InputMessage, data:this.NewData})
         },
         getMessages(){
@@ -224,9 +226,9 @@ export default{
                     
 
                 </div>
-                <div class="ui large icon input">
-                    <input  type="text" placeholder="Type message" v-model="InputMessage">
-                    <i class="ui large paper plane outline icon" @click="Send"></i>
+                <div class="ui large  input" :class="{disabled:buttonDisable}">
+                    <input :class="{disabled:buttonDisable}"  type="text" placeholder="Type message" v-model="InputMessage">
+                    <button class="ui primary button" @click="Send" :class="{disabled:buttonDisable}"><i class="ui large paper plane outline icon"></i></button>
                     
                 </div>
             </div>
@@ -237,6 +239,13 @@ export default{
 </template>
 
 <style scoped>
+    i.large.icon{
+        margin: 0 auto !important;
+    }
+    .ui.button:hover .icon{
+        opacity: .85 !important;
+        
+    }
     .ui.label{
         border-color: #00000063;
     }

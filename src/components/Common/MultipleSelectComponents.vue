@@ -4,13 +4,25 @@ export default{
     props:{
        VforArray:Array,
        VforActiveArray:Array,
+       disable:true
     },
     data(){
         return{
             selected:[],
             remove:[],
             isDropdownOpen:false,
+            dropdownDisbale:false,
                 
+        }
+    },
+    watch:{
+        'disable':{
+            immediate:true,
+            handler(newValue){
+                this.dropdownDisbale= newValue
+                console.log(this.dropdownDisbale, "DISABLE")
+            }
+            
         }
     },
     methods:{
@@ -58,15 +70,15 @@ export default{
 
 <template>
 
-    <div class=" ui fluid dropdown selection multiple" @click="toggleDrop" :class="{ active: selected.name }">
+    <div class=" ui fluid dropdown selection multiple" @click="toggleDrop" :class="{ active: selected.name,disabled:dropdownDisbale }">
         
         <i class="dropdown icon"></i>
-        <input type="hidden"  v-model="selected.id">
+        <input type="hidden"  v-model="selected.id" :class="{}" >
             <div class="selected-items">
             <a class="ui label transition activeEmployee" v-if="VforActiveArray" v-for="user in VforActiveArray" :key="user.id">{{ user.name ? user.name: "" }}<i class="delete icon" @click="removeActiveUser(user)"></i></a>
             <a class="ui label transition" v-for="user in selected" :key="user.id">{{ user.name ? user.name: "" }}<i class="delete icon" @click="removeUser(user)"></i></a>
             </div>
-            <div class="menu" :class="{ active: isDropdownOpen }" >
+            <div class="menu" :class="{ active: isDropdownOpen}" >
                 <div class="item" v-for="v in VforArray" :key="v.id" @click="select(v)">
                     {{ v.name }}
                 </div>

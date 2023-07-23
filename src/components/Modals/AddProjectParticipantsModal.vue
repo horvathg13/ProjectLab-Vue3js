@@ -18,8 +18,8 @@
         },
         data(){
             return{
-                selected_user:[]
-                
+                selected_user:[],
+                buttonDisable:false
                 
             }
         },
@@ -33,6 +33,7 @@
             },
 
             createParticipant(){
+                this.buttonDisable=true,
                 this.$emit("create-participants", { selected: this.selected_user})
                 
             },
@@ -76,10 +77,10 @@
                         <form class="ui form" @submit.prevent="createParticipant" novalidate>
                            
                             <div class="field"><label>Employees</label></div>
-                            <MultipleSelectComponents :VforArray="this.getusers.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" @select="makeSelection"></MultipleSelectComponents>
+                            <MultipleSelectComponents :disable="buttonDisable" :VforArray="this.getusers.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" @select="makeSelection"></MultipleSelectComponents>
                             
                     
-                            <button class="ui green button create" type="submit">Create</button>
+                            <button :disabled="buttonDisable" class="ui green button create" type="submit">Create</button>
                         </form>
                     </div>
                     

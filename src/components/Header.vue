@@ -20,6 +20,8 @@ export default{
             message:"",
             showPopup:false,
             showErrorPopup:false,
+            userRole:{},
+            userButton:false,
            
         };
     },
@@ -28,6 +30,11 @@ export default{
             this.username = newValue.name;
             console.log(this.username, "hello from header watch");
         },
+        '$store.state.userRole'(newValue) {
+            this.userRole = newValue;
+            console.log( this.userRole, "hello from user watcher");
+            this.SetUserButton();
+        }
 
     },
     computed: {
@@ -35,6 +42,7 @@ export default{
             console.log("token", !!localStorage.getItem("token"))
             return !!this.$store.state.userData.id
         },
+       
         
        /* username() {
             console.log(this.$store.state)
@@ -42,7 +50,14 @@ export default{
         }*/
     },
     methods:{
-      
+        SetUserButton(){
+           for(let i in this.userRole){
+                if(this.userRole[i].role=="Admin"){
+                    this.userButton=true
+                }
+                
+            }
+        },
         toggleDropdown() {
             this.isDropdownOpen = !this.isDropdownOpen;
         },
@@ -107,7 +122,7 @@ export default{
         <div class="header-items">
             <ul>
                 <li><a href="/home">Home</a></li>
-                <li><a href="/users">Users</a></li>
+                <li v-if="userButton == true"><a href="/users">Users</a></li>
                 <li><a href="/notifications">Notifications</a></li>
                 <li><a href="/projects">Projects</a></li>
                 <li><a href="/my-tasks">My Tasks</a></li>

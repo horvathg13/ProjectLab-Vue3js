@@ -59,8 +59,9 @@
             showStatusModal:false,
             statusDataTravel:[],
             loader:false,
-            AddNewUser:false,
+            AddNewProject:false,
             userRole:{},
+            errorArray:[],
         }
     },
     watch: {
@@ -81,12 +82,17 @@
     },
     methods:{
         SetAddNewUser(){
-           for(let i in this.userRole){
-                if(this.userRole[i].role=="Admin"){
-                    this.AddNewUser=true
-                    console.log("CIAO", this.AddNewUser);
+            if(this.userRole.code !== 404){
+                const isAdmin= this.userRole.some(item=>item.role === "Admin");
+                
+                if(isAdmin == true){
+                    this.AddNewProject=true
+                    console.log("CIAO", this.userRole);
                 }
+            }else{
+                this.$router.push("/accessdenied")
             }
+            
         },
         unreadMessages(){
             this.unreadMessage= store.state.unreadMessages
@@ -153,6 +159,16 @@
             }).catch((error) => {
                     
                 if (error.response && error.response.status) {
+                    if(error.response.data.validatorError){
+                            this.errorArray=error.response.data.validatorError
+                            console.log( this.errorArray)
+                            this.show_error_popup=true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.errorArray=[];
+                                this.cancelModal()
+                            },  2000)
+                        }
                     if (error.response.data && error.response.data.message) {
                         this.message= error.response.data.message//Object.values(error.response.data.message).flatMap(y => y)
                         this.show_error_popup = true
@@ -258,6 +274,16 @@
                     }
                 }).catch((error) => {
                     if (error.response && error.response.status) {
+                        if(error.response.data.validatorError){
+                            this.errorArray=error.response.data.validatorError
+                            console.log( this.errorArray)
+                            this.show_error_popup=true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.errorArray=[];
+                                this.cancelModal();
+                            },  2000)
+                        }
                         if (error.response.data && error.response.data.message) {
                             this.message=error.response.data.message
                         /*this.message = Object.values(error.response.data.message).flatMap(
@@ -629,7 +655,7 @@
             <Success_Popup v-if="show_popup==true" :message="this.message"></Success_Popup>
         </Transition>
         <Transition name="drop">
-            <ErrorPopup v-if="show_error_popup==true" :message="this.message"></ErrorPopup>
+            <ErrorPopup v-if="show_error_popup==true" :message="this.message" :errorarray="this.errorArray"></ErrorPopup>
         </Transition>
         <Transition name="drop">
             <AreYouSureModal v-if="show_areyousure_popup==true"></AreYouSureModal>
@@ -648,7 +674,7 @@
                                 <th>Status <Filter :data="this.statusDataTravel" @select="filter" @deleteSelected="clearFilter" @click="getFilterData"></Filter></th>
                                 <th>Deadline</th>
                                 <th>
-                                <button v-if="this.AddNewUser == true" class="ui right floated small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>
+                                <button v-if="this.AddNewProject == true" class="ui right floated small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>
                             </tr>
                         </thead>
                         <tbody v-if="loader==true">

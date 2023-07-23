@@ -7,7 +7,10 @@ export default{
     data(){
         return{
             store,
-            
+            userRole:{},
+            userCard:false,
+            showCards:false,
+            temporaryMessage:false,
         }
     },
     computed: {
@@ -16,6 +19,27 @@ export default{
             return this.$store.state.userData.name;
         }
     },
+    watch:{
+        '$store.state.userRole'(newValue) {
+            this.userRole = newValue;
+            console.log( this.userRole, "hello from user watcher");
+            this.SetUserCard();
+        }
+    },
+   
+    methods:{
+        SetUserCard(){
+            if(this.userRole.code !==404){
+                this.userRole.forEach(item=> {if(item.role ==="Admin"){ this.userCard=true}else{this.showCards = true}})
+            }else if(this.userRole.code==404){
+                this.temporaryMessage = true
+            }
+            
+        },
+    },
+    mounted(){
+       
+    }
 }
 </script>
 
@@ -27,12 +51,13 @@ export default{
         <div class="content-container">
         <div class="HP-title">
             <h1>Welcome {{ username }}</h1>
-            <h3>Let's work on something!</h3>
+            <h3 v-if="this.temporaryMessage == false">Let's work on something!</h3>
+            <h3 v-if="this.temporaryMessage == true">Please contact the admin to give roles to you!</h3>
         </div>
         
         <div class="ui link cards">
             
-            <div class="card">
+            <div class="card" v-if="userCard == true">
                 <div class="image">
                 <img src="../assets/HomeP_icons/users.png">
                 </div>
@@ -50,7 +75,7 @@ export default{
                    
                 </div>
             </div>-->
-            <div class="card">
+            <div class="card" v-if="showCards == true">
                 <div class="image">
                 <img src="../assets/HomeP_icons/request_v2.png">
                 </div>
@@ -59,7 +84,7 @@ export default{
                     
                 </div>
             </div>
-            <div class="card">
+            <div class="card" v-if="showCards == true">
                 <div class="image">
                 <img src="../assets/HomeP_icons/my_projects.png">
                 </div>
@@ -68,7 +93,7 @@ export default{
                     
                 </div>
             </div>
-            <div class="card">
+            <div class="card" v-if="showCards == true">
                 <div class="image">
                 <img src="../assets/HomeP_icons/tasks.png">
                 </div>
@@ -77,7 +102,7 @@ export default{
                    
                 </div>
             </div>
-            <div class="card">
+            <div class="card" v-if="showCards == true">
                 <div class="image">
                 <img src="../assets/HomeP_icons/stat_v3.png">
                 </div>

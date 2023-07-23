@@ -9,7 +9,7 @@
   import CommentModal from './Modals/CommentModal.vue'
   import Status from './Modals/Status.vue'
   import Filter from './Common/FilterButton.vue'
-  
+  import Sort from './Common/SortButton.vue'
 
   export default {
     name: "ProjectTasks",
@@ -23,6 +23,7 @@
         CommentModal,
         Status,
         Filter,
+        Sort,
     },
     props:{
         
@@ -209,7 +210,7 @@
                         return {
                             id: employee.id,
                             name: employee.name,
-                            deadline: this.AttachTask.dedadline,
+                            deadline: this.AttachTask.deadline,
                             description: this.AttachTask.description,
                             task_status: this.AttachTask.status,
                             task_id: this.AttachTask.task_id,
@@ -762,6 +763,46 @@
                     color="positive"
                 }
                 return color
+            },
+            Sort(sortData){
+                const{selected, key} = sortData
+                console.log(this.taskData)
+                let url='/api/sort'
+                let dataTravel={};
+                dataTravel.type=sortData.selected.id,
+                dataTravel.key=sortData.key,
+                dataTravel.data=this.taskData
+                ServiceClient.post(url,dataTravel).then((response) =>{
+                    if (response.status == 200){
+                        console.log(response.data, "responseDATA")
+                        this.taskData = response.data
+                        
+                        /*this.show_popup = true;
+                        
+                        setTimeout(() => {
+                            this.show_popup = false
+                            this.message = ""
+                            this.cancelModal()
+                        },  1500)*/
+                        
+                    }
+                }).catch((error) => {
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message = error.response.data.message
+                            this.show_error_popup = true
+                            this.getTasks();
+                            
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message = ""
+                            }, 2000)
+
+                        }
+                    }
+                });
+
+
             }
 
 
@@ -806,9 +847,9 @@
                         <tr>
                             <th>ID</th>
                             <th>Task name</th>
-                            <th>Deadline</th>
+                            <th>Deadline <Sort :data="this.taskData" :sortKey="'deadline'" @sorted="Sort" @deleteSelected="clearFilter"></Sort></th>
                             <th>Task Status <Filter :data="this.statusDataTravel" @select="filter" @deleteSelected="clearFilter" @click="getFilterData"></Filter></th>
-                            <th>Task Priority</th>
+                            <th>Task Priority <Sort :data="this.taskData" :sortKey="'priority_id'" @sorted="Sort" @deleteSelected="clearFilter"></Sort></th>
                             <th>
                             <button v-if="this.managerRole==true" class="ui right floated small primary labeled icon button" @click="showCreateTaskModal()"><i class="tasks icon"></i>New Task</button></th>
                         </tr>
@@ -826,7 +867,7 @@
                         <tr v-for="task in taskData" :key="task.task_id" :class="rowBackground(task)">
                             <td>{{ task.task_id }}</td>
                             <td>{{task.task_name }}</td>
-                            <td>{{task.dedadline }}</td>
+                            <td>{{task.deadline }}</td>
                             <td>{{task.status }}</td>
                             <td>{{ task.priority}}</td>
                         

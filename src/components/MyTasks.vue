@@ -223,7 +223,7 @@ export default{
                     return {
                         id: employee.id,
                         name: employee.name,
-                        deadline: this.AttachTask.dedadline,
+                        deadline: this.AttachTask.deadline,
                         description: this.AttachTask.description,
                         task_status: this.AttachTask.status,
                         task_id: this.AttachTask.id,

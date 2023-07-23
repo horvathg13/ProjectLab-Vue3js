@@ -86,7 +86,7 @@ export default{
                         id: this.taskData.task_id ? this.taskData.task_id: this.taskData.id,
                         name: this.taskData.task_name ? this.taskData.task_name: this.taskData.name,
                         status: this.taskData.status,
-                        deadline: this.taskData.dedadline ? this.taskData.dedadline: this.taskData.deadline,
+                        deadline: this.taskData.deadline ? this.taskData.deadline: this.taskData.deadline,
                     };
 
                     console.log(this.NewData, "newdata")

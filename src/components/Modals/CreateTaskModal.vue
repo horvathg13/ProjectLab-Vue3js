@@ -80,7 +80,7 @@
             if(this.EditData!== null && this.EditMode=== true){
                 console.log(this.EditData, "solution")
                 this.Task_Details.name= this.EditData.task_name?this.EditData.task_name:this.EditData.name;
-                this.Task_Details.deadline = this.EditData.dedadline ? this.EditData.dedadline: this.EditData.deadline
+                this.Task_Details.deadline = this.EditData.deadline ? this.EditData.deadline: this.EditData.deadline
                 this.Task_Details.description = this.EditData.description
                 this.Task_Details.priority = this.EditData.priority_id ? this.EditData.priority_id: this.EditData.priorityId
                 this.Task_Details.id = this.EditData.task_id?this.EditData.task_id:this.EditData.id

@@ -15,11 +15,13 @@ export default{
                 {
                     id:1,
                     name:"Ascending",
+                    abridgement:'ASC',
                     icon:"sort amount up icon"
                 },
                 {
                     id:2,
                     name:"Descending",
+                    abridgement:'DESC',
                     icon:"sort amount down icon"
                 }
             ],
@@ -49,13 +51,15 @@ export default{
         select(v) {
             this.selected.id = v.id;
             this.selected.name = v.name;
+            this.selected.abridgement = v.abridgement;
+            this.selected.key = this.sortKey
             this.$emit("sorted", {selected:this.selected, key:this.sortKey})
             console.log(this.sortKey)
         },
 
         deleteSelected(){
             this.selected = {}
-            this.$emit("deleteSelected")
+            this.$emit("deleteSelected", {key:this.sortKey})
         },
        
 

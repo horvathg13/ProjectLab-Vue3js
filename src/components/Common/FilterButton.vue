@@ -12,7 +12,7 @@ export default{
         return{
             isDropdownOpen:false,
             SelectCompData:[],
-            selected:{},
+            selected:[],
             loader:false
         }
     },
@@ -38,12 +38,22 @@ export default{
             }
         },
         select(v) {
-            this.selected.id = v.id;
-            this.selected.name = v.name;
-            this.$emit("select", {select:this.selected})
+            const selectedFilter = {
+                id: v.id,
+                name: v.name
+            };
+            console.log(selectedFilter)
+            let exist = this.selected.some(d => d.id === selectedFilter.id)
+            console.log(exist)
+            if(!exist){
+                this.selected.push(selectedFilter);
+                console.log(this.selected, "SELECTED")
+                this.$emit("select", {select:this.selected})
+            }
+            
         },
         deleteSelected(){
-            this.selected = {}
+            this.selected = []
             this.$emit("deleteSelected")
         }
     }
@@ -54,7 +64,7 @@ export default{
    
     <div class="ui floating small icon dropdown button" :class="{labeled:Object.keys(selected).length>0, loading:loader}" @click="toggleDropdown" >
         <i class="filter icon"></i>
-        <label><div class="selected-text">{{ selected.name ? selected.name:""  }} </div></label>
+        <label><div class="selected-text" v-for="select in selected" :key="select.id">{{ select.name ? select.name:""  }} </div></label>
         <!--<span class="text">Filter</span>-->
         <div class=" menu" :class="{active:isDropdownOpen}"  >
             <div class="header item" @click="deleteSelected" v-if="this.SelectCompData.length>0">

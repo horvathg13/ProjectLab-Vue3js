@@ -67,6 +67,8 @@
             finalData:{},
             errorArray:[],
             readOnlyMode:false,
+            setSortData:[],
+            setFilterData:[],
         }
     },
     watch: {
@@ -135,6 +137,7 @@
             this.assignEmployee=[],
             this.RequestData=[],
             this.RemoveData=[];
+            this.readOnlyMode=false
             console.log("Bezártad a Modalt")
         },
 
@@ -332,9 +335,13 @@
            
             getTasks(){
                 this.loader=true;
+                let dataTravel={};
+                dataTravel.projectId=this.$route.params.id;
+                dataTravel.sortData = this.setSortData,
+                dataTravel.filterData=this.setFilterData
                 let url =`/api/projects/${this.$route.params.id}/tasks`
 
-                ServiceClient.post(url).then((response) =>{
+                ServiceClient.post(url,dataTravel).then((response) =>{
                         
                     if (response.status == 200){
                         this.taskData=response.data
@@ -688,37 +695,22 @@
             },
             filter(selectData){
                 const{select}=selectData
-                this.loader=true
-                let Task = true;
-                console.log("I got the data from filter", selectData)
-                let url = `/api/filter-status/${this.$route.params.id}/${JSON.stringify(Task)}/${selectData.select.id}`;
-
-                ServiceClient.post(url).then((response) =>{
                 
-                    if (response.status == 200){
-                        
-                        this.taskData=response.data
-                        console.log(response.data, "here")
-                        this.loader=false
+                for(let e in this.setFilterData){
+                    if(this.setFilterData[e].name === selectData.select.name){
+                        const index = this.setSortData.indexOf(this.setFilterData[e]);
+                        this.setFilterData.splice(index, 1);
                     }
-                }).catch((error) => {
-                        
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message= error.response.data.message
-                            this.show_error_popup = true
-                            this.loader=false
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = "";
-                            },  4500)
-                            
-                        }
-                    }
-                });
+                }
+                this.setFilterData.push(selectData.select);
+                this.getTasks();
+                console.log(this.setFilterData, "SORTDA")
+
             },
             clearFilter(){
+                this.setFilterData=[]
                 this.getTasks();
+                console.log(this.setFilterData, "SORTDA")
             },
             Completed(emit){
                 const{data}=emit;
@@ -774,44 +766,32 @@
             },
             Sort(sortData){
                 const{selected, key} = sortData
-                console.log(this.taskData)
-                let url='/api/sort'
-                let dataTravel={};
-                dataTravel.type=sortData.selected.id,
-                dataTravel.key=sortData.key,
-                dataTravel.data=this.taskData
-                ServiceClient.post(url,dataTravel).then((response) =>{
-                    if (response.status == 200){
-                        console.log(response.data, "responseDATA")
-                        this.taskData = response.data
-                        
-                        /*this.show_popup = true;
-                        
-                        setTimeout(() => {
-                            this.show_popup = false
-                            this.message = ""
-                            this.cancelModal()
-                        },  1500)*/
-                        
+                for(let e in this.setSortData){
+                   if(this.setSortData[e].key === sortData.selected.key){
+                    const index = this.setSortData.indexOf(this.setSortData[e]);
+                    this.setSortData.splice(index, 1);
+                   }
+                }
+                this.setSortData.push(sortData.selected)
+              
+                console.log(this.setSortData, "SORTDA")
+                this.getTasks()
+         
+
+
+            },
+            clearSort(clearKey){
+               
+                for(let e in this.setSortData){
+                    if(this.setSortData[e].key === clearKey.key){
+                        const index = this.setSortData.indexOf(this.setSortData[e]);
+                        this.setSortData.splice(index, 1);
                     }
-                }).catch((error) => {
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message = error.response.data.message
-                            this.show_error_popup = true
-                            this.getTasks();
-                            
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = ""
-                            }, 2000)
+                }
+                console.log(this.setSortData, "SORTDA")
+                this.getTasks()
 
-                        }
-                    }
-                });
-
-
-            }
+            },
 
 
             
@@ -855,9 +835,9 @@
                         <tr>
                             <th>ID</th>
                             <th>Task name</th>
-                            <th>Deadline <Sort :data="this.taskData" :sortKey="'deadline'" @sorted="Sort" @deleteSelected="clearFilter"></Sort></th>
+                            <th>Deadline <Sort :data="this.taskData" :sortKey="'deadline'" @sorted="Sort" @deleteSelected="clearSort"></Sort></th>
                             <th>Task Status <Filter :data="this.statusDataTravel" @select="filter" @deleteSelected="clearFilter" @click="getFilterData"></Filter></th>
-                            <th>Task Priority <Sort :data="this.taskData" :sortKey="'priority_id'" @sorted="Sort" @deleteSelected="clearFilter"></Sort></th>
+                            <th>Task Priority <Sort :data="this.taskData" :sortKey="'t_priority'" @sorted="Sort" @deleteSelected="clearSort"></Sort></th>
                             <th>
                             <button v-if="this.managerRole==true" class="ui right floated small primary labeled icon button" @click="showCreateTaskModal()"><i class="tasks icon"></i>New Task</button></th>
                         </tr>

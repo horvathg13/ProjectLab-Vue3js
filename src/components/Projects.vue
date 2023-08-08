@@ -435,8 +435,9 @@
                             
                         }
                         if(this.projectButtons.manager && this.projectButtons.manager.length>0){
-                            
-                            this.projectButtons.manager=this.projectButtons.manager.slice(1)
+                            //console.log(this.projectButtons.manager, "MANAGER BTN")
+                            this.mergedButtons.push(this.projectButtons.manager[0])
+                            this.projectButtons.manager=this.projectButtons.manager.slice(2)
                             for(let item in this.projectButtons.manager){
                                 this.mergedButtons.push(this.projectButtons.manager[item])
                             }

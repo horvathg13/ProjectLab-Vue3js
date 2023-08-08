@@ -48,6 +48,7 @@ export default{
             ActualTaskData:{},
             loader:false,
             RemoveData:[],
+            setSortData:[],
         }
     },
     components:{
@@ -63,8 +64,10 @@ export default{
     methods:{
         getMyTasks(){
             //this.loader=true;
+            let dataTravel={};
+            dataTravel.sortData = this.setSortData;
             let url ="/api/get-my-tasks";
-            ServiceClient.post(url).then((response) =>{
+            ServiceClient.post(url,dataTravel).then((response) =>{
                     
                 if (response.status == 200){
                     
@@ -101,9 +104,7 @@ export default{
             }
             return color
         },
-        /*jump(task){
-            router.push(`/projects/${task.projectId}/tasks`)
-        }*/
+       
         Attach_Modal(task){
             this.getProjectParticipants();
             const{data} = task
@@ -595,8 +596,17 @@ export default{
         },
         Sort(sortData){
             const{selected, key} = sortData
+            for(let e in this.setSortData){
+                if(this.setSortData[e].key === sortData.selected.key){
+                const index = this.setSortData.indexOf(this.setSortData[e]);
+                this.setSortData.splice(index, 1);
+                }
+            }
+            this.setSortData.push(sortData.selected)
+            this.getMyTasks();
+            console.log(this.setSortData, "SORTDA")
             
-            let url='/api/sort'
+            /*let url='/api/sort'
             let dataTravel={};
             dataTravel.type=sortData.selected.id,
             dataTravel.key=sortData.key,
@@ -614,7 +624,7 @@ export default{
                         this.cancelModal()
                     },  1500)*/
                     
-                }
+           /*     }
             }).catch((error) => {
                 if (error.response && error.response.status) {
                     if (error.response.data && error.response.data.message) {
@@ -629,12 +639,14 @@ export default{
 
                     }
                 }
-            });
+            });*/
 
 
         },
         clearFilter(){
-            this.getProjects();
+            this.setSortData=[];
+            this.getMyTasks();
+            console.log(this.setSortData, "SORTDA")
         },
     },
     mounted(){
@@ -671,7 +683,7 @@ export default{
                                 <th>Project</th>
                                 <th>Task name</th>
                                 <th>Status </th>
-                                <th>Priority <Sort :data="this.taskData" :sortKey="'priority_id'" @sorted="Sort" @deleteSelected="clearFilter"></Sort></th>
+                                <th>Priority <Sort :data="this.taskData" :sortKey="'t_priority'" @sorted="Sort" @deleteSelected="clearFilter"></Sort></th>
                                 <th>Deadline <Sort :data="this.taskData" :sortKey="'deadline'" @sorted="Sort" @deleteSelected="clearFilter"></Sort></th>
                                 <th></th>
                                

@@ -65,6 +65,8 @@
             AddNewProject:false,
             userRole:{},
             errorArray:[],
+            setSortData:[],
+            setFilterData:[],
         }
     },
     watch: {
@@ -191,7 +193,10 @@
             getProjects(){
                 this.loader=true;
                 let url ="/api/getprojects";
-                ServiceClient.post(url).then((response) =>{
+                let dataTravel={};
+                dataTravel.sortData = this.setSortData,
+                dataTravel.filterData=this.setFilterData
+                ServiceClient.post(url,dataTravel).then((response) =>{
                         
                     if (response.status == 200){
                         
@@ -588,7 +593,16 @@
             },
             filter(selectData){
                 const{select}=selectData
-                this.loader = true;
+                for(let e in this.setFilterData){
+                    if(this.setFilterData[e].name === selectData.select.name){
+                        const index = this.setSortData.indexOf(this.setFilterData[e]);
+                        this.setFilterData.splice(index, 1);
+                    }
+                }
+                this.setFilterData.push(selectData.select);
+                this.getProjects();
+                console.log(this.setFilterData, "SORTDA")
+               /* this.loader = true;
                 let Task = null;
                 let Project = null;
                 console.log("I got the data from filter", selectData)
@@ -616,10 +630,12 @@
                             
                         }
                     }
-                });
+                });*/
             },
             clearFilter(){
+                this.setFilterData=[];
                 this.getProjects();
+                console.log(this.setFilterData, "SORTDA")
 
             },
             rowBackground(project){
@@ -635,8 +651,17 @@
             },
             Sort(sortData){
                 const{selected, key} = sortData
+                for(let e in this.setSortData){
+                   if(this.setSortData[e].key === sortData.selected.key){
+                    const index = this.setSortData.indexOf(this.setSortData[e]);
+                    this.setSortData.splice(index, 1);
+                   }
+                }
+                this.setSortData.push(sortData.selected)
+                this.getProjects();
+                console.log(this.setSortData, "SORTDA")
                
-                let url='/api/sort'
+                /*let url='/api/sort'
                 let dataTravel={};
                 dataTravel.type=sortData.selected.id,
                 dataTravel.key=sortData.key,
@@ -654,7 +679,7 @@
                             this.cancelModal()
                         },  1500)*/
                         
-                    }
+                   /* }
                 }).catch((error) => {
                     if (error.response && error.response.status) {
                         if (error.response.data && error.response.data.message) {
@@ -669,7 +694,7 @@
 
                         }
                     }
-                });
+                });*/
 
 
             }

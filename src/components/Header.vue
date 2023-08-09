@@ -22,6 +22,7 @@ export default{
             showErrorPopup:false,
             userRole:{},
             userButton:false,
+            lockMode:false,
            
         };
     },
@@ -51,12 +52,21 @@ export default{
     },
     methods:{
         SetUserButton(){
-           for(let i in this.userRole){
-                if(this.userRole[i].role=="Admin"){
-                    this.userButton=true
-                }
+            if(this.userRole.code ?? this.userRole.code == 404){
+                this.lockMode = true
                 
+            }else{
+                for(let i in this.userRole){
+                    if(this.userRole[i].role=="Admin"){
+                        this.lockMode = false
+                        this.userButton=true
+                    }
+            
+                }
             }
+            
+           
+            
         },
         toggleDropdown() {
             this.isDropdownOpen = !this.isDropdownOpen;
@@ -67,9 +77,11 @@ export default{
                 localStorage.removeItem("token");
                 store.commit("deleteUserData");
                 store.commit("deleteUserRole");
+                store.commit("deleteNotifications");
                 this.$router.push({path: "/login"});
                 this.message="Logged Out Successful!"
                 this.showPopup=true
+                this.lockMode=true
                 setTimeout(()=>{
                     this.showPopup=false
                 },1600)
@@ -95,6 +107,17 @@ export default{
             })
         
         },
+        getUserRoles(){
+            ServiceClient.post('/api/getUserRole').then(response => {
+                store.commit("setuserRole",response.data)
+                console.log(response.data, "getUserRole");
+            }).catch(error =>{
+            console.log(error);
+            });
+        }
+    },
+    beforeMount() {
+        this.SetUserButton();
     },
     mounted(){
        
@@ -121,12 +144,12 @@ export default{
         </Transition>
         <div class="header-items">
             <ul>
-                <li><a href="/home">Home</a></li>
-                <li v-if="userButton == true"><a href="/users">Users</a></li>
-                <li><a href="/notifications">Notifications</a></li>
-                <li><a href="/projects">Projects</a></li>
-                <li><a href="/my-tasks">My Tasks</a></li>
-                <li>Statistics</li>
+                <li v-if="lockMode==false"><a href="/home">Home</a></li>
+                <li v-if="userButton == true && lockMode==false"><a href="/users">Users</a></li>
+                <li v-if="lockMode==false"><a href="/notifications">Notifications</a></li>
+                <li v-if="lockMode==false"><a href="/projects">Projects</a></li>
+                <li v-if="lockMode==false"><a href="/my-tasks">My Tasks</a></li>
+                <li v-if="lockMode==false">Statistics</li>
             </ul>
         </div>
         <div class="ui teal buttons" >

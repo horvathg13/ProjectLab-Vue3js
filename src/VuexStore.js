@@ -31,7 +31,9 @@ export const store = createStore({
             state.username = ""
             state.userID = {}
         },
-  
+        deleteNotifications(state){
+            state.notifications = []
+        },
         deleteUsername(state){
             state.username=""
         },

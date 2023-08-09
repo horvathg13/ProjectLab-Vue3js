@@ -49,6 +49,7 @@ export default{
             loader:false,
             RemoveData:[],
             setSortData:[],
+            readOnlyMode:false,
         }
     },
     components:{
@@ -429,6 +430,7 @@ export default{
                         } */
                         this.mergedButtons.push(this.projectButtons.employee[1])
                         this.mergedButtons.push(this.projectButtons.employee[3])
+                        this.mergedButtons.push(this.projectButtons.employee[4])
 
                     }  
                     
@@ -574,6 +576,7 @@ export default{
                         this.show_popup = false
                         this.message = ""
                         this.cancelModal()
+                        this.getMyTasks();
                     },  1500)
                     
                 }
@@ -648,6 +651,13 @@ export default{
             this.getMyTasks();
             console.log(this.setSortData, "SORTDA")
         },
+        TaskDetails(readOnlydata){
+            const{data,readOnlyMode}=readOnlydata
+            console.log(readOnlydata.data, "READONLY")
+            this.Editdata = readOnlydata.data,
+            this.readOnlyMode = readOnlydata.readOnlyMode,
+            this.show_Create_Task_Modal =true
+        },
     },
     mounted(){
         this.getMyTasks();
@@ -718,7 +728,8 @@ export default{
                                         @edit="this.EditingModeSwitch"
                                         @CommentEmit="this.commentModalSwitch"
                                         @SwitchModal="SwitchStatusModal"
-                                        @CompletedEmit="Completed">
+                                        @CompletedEmit="Completed"
+                                        @TaskDetailsEmit="TaskDetails">
                                     </CircularMenu>
                                 </td>
                             
@@ -750,7 +761,8 @@ export default{
             :priorities="this.priorities"
             :projectData="this.projectData"
             :EditMode="this.EditMode"
-            :EditData="this.Editdata"></CreateTaskModal>
+            :EditData="this.Editdata"
+            :readOnlyMode="this.readOnlyMode"></CreateTaskModal>
         </Transition> 
         <Transition>
             <TaskAttachModal v-if="show_Attach_Modal == true"

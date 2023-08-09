@@ -1,5 +1,8 @@
 <script>
+import ServiceClient from '../../ServiceClient';
+import {store} from "../../VuexStore"
 export default{
+    
     props:{
         h1Title:"",
        
@@ -9,6 +12,8 @@ export default{
     data(){
         return{
             message:null,
+            userRole:{},
+            lockMode:false,
         }
     },
     watch:{
@@ -17,6 +22,11 @@ export default{
             this.message = newValue.length;
             console.log(newValue.length, "hello notifica watch");
         },
+        '$store.state.userRole'(newValue) {
+            this.userRole = newValue;
+            console.log( this.userRole, "hello from user watcher");
+            this.lock();
+        }
     },
     computed: {
         breadcrumbs() {
@@ -27,7 +37,20 @@ export default{
         
     }, 
     methods:{
-       
+        lock(){
+            if(this.userRole.code ?? this.userRole.code == 404){
+                this.lockMode = true
+                    
+            }else{
+                this.lockMode = false
+            }   
+        },
+        
+    },
+   
+    beforeMount() {
+        this.lock();
+        
     },
     mounted() {
         
@@ -49,7 +72,7 @@ export default{
             <i class="right chevron icon divider"></i>
         </div>
        <div class="ui large breadcrumb section" v-if="h1Title != 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && h1Title !=='Homepage'" :class="{active: h1Title}"> {{ h1Title }}</div>
-        <div class="message-container" v-if="h1Title != 'Greeting' && h1Title !=='Register' && h1Title !=='Login'">
+        <div class="message-container" v-if="h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && this.lockMode==false">
             <div class="ui large red left pointing label"><a href="/notifications">
                 <i class="bullhorn icon" v-if="message !== 0 && message !== null"></i>
                 <i class="bullhorn open icon" v-else></i>{{ message ? message: 0 }}</a></div>

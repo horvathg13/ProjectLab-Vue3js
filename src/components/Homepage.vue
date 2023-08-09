@@ -1,6 +1,7 @@
 <script>
 import { store } from "../VuexStore";
 import { toRaw} from "vue";
+import ServiceClient from '../ServiceClient'
 export default{
     name:"Home",
 
@@ -11,6 +12,7 @@ export default{
             userCard:false,
             showCards:false,
             temporaryMessage:false,
+            temporaryCard:false,
         }
     },
     computed: {
@@ -21,23 +23,39 @@ export default{
     },
     watch:{
         '$store.state.userRole'(newValue) {
+            
             this.userRole = newValue;
             console.log( this.userRole, "hello from user watcher");
             this.SetUserCard();
+            
+            
         }
     },
    
     methods:{
         SetUserCard(){
-            if(this.userRole.code !==404){
+            if(this.userRole && this.userRole.code !==404){
                 this.userRole.forEach(item=> {if(item.role ==="Admin"){ this.userCard=true}else{this.showCards = true}})
             }else if(this.userRole.code==404){
                 this.temporaryMessage = true
+                this.temporaryCard=true
             }
             
         },
+        getUserRoles(){
+            ServiceClient.post('/api/getUserRole').then(response => {
+                store.commit("setuserRole",response.data)
+                console.log(response.data, "getUserRole");
+            }).catch(error =>{
+            console.log(error);
+            });
+        }
+    },
+    beforeMount() {
+        this.getUserRoles();
     },
     mounted(){
+       
        
     }
 }
@@ -56,7 +74,15 @@ export default{
         </div>
         
         <div class="ui link cards">
-            
+            <div class="card temporary" v-if="temporaryCard == true">
+                <div class="image">
+                <img src="../assets/HomeP_icons/temporary_lock.jpg">
+                </div>
+                <div class="content">
+                    <div class="header">STOP!</div>
+                   
+                </div>
+            </div>
             <div class="card" v-if="userCard == true">
                 <div class="image">
                 <img src="../assets/HomeP_icons/users.png">
@@ -115,3 +141,11 @@ export default{
         </div>
     </div>
 </template>
+
+<style scoped>
+    .ui.link.cards > .card.temporary{
+        width: auto;
+        height: auto;
+        cursor: not-allowed;
+    }
+</style>

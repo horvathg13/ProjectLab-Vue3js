@@ -42,9 +42,10 @@
                         setTimeout(() => {
                             store.commit("setUserData", response.data.data)
                             localStorage.setItem("token", response.data.data.token);
+                            this.getNotifications();
                             this.$router.push({path: "/home"});
 
-                        }, 1300);
+                        }, 1400);
                         
                     
                     }
@@ -65,6 +66,16 @@
                 console.log(error);
                 });
                 */
+            },
+            getNotifications(){
+                ServiceClient.post('/api/notifications').then(response => {
+                    store.commit("getNotifications",response.data);
+                    console.log(response.data, "before");
+                
+                }).catch(error =>{
+                    console.log(error);
+                
+                });
             },
             close(){
                 this.errors=[]

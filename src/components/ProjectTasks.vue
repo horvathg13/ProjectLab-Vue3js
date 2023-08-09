@@ -890,7 +890,7 @@
                             <td>{{task.status }}</td>
                             <td>{{ task.priority}}</td>
                             <td>{{ task.employees }}</td>
-                            <td v-if="task.mytask === true"><i class="green check icon"></i></td>
+                            <td v-if="task.mytask === true"><i class="green lock open icon"></i></td>
                             <td v-else></td>
                             <td>
                                 <CircularMenu

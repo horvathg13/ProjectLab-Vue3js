@@ -63,6 +63,8 @@
             ActualTaskData:{},
             loader:false,
             managerRole:false,
+            adminRole:false,
+            participantRole:false,
             RemoveData:[],
             finalData:{},
             errorArray:[],
@@ -346,6 +348,8 @@
                     if (response.status == 200){
                         this.taskData=response.data
                         this.managerRole = response.data[0].haveManagerRole
+                        this.adminRole = response.data[0].haveAdminRole,
+                        this.participantRole = response.data[0].haveParticipantRole,
                         console.log(this.taskData, "szegény legény")
                         this.loader=false;
                     }
@@ -841,7 +845,7 @@
                             <th>Employees</th>
                             <th></th>
                             <th>
-                            <button v-if="this.managerRole==true" class="ui right floated small primary labeled icon button" @click="showCreateTaskModal()"><i class="tasks icon"></i>New Task</button></th>
+                            <button v-if="this.managerRole==true || this.adminRole==true || this.participantRole==true" class="ui right floated small primary labeled icon button" @click="showCreateTaskModal()"><i class="tasks icon"></i>New Task</button></th>
                             
                         </tr>
                     </thead>

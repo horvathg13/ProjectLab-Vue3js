@@ -451,15 +451,34 @@
                         
                         console.log(this.mergedButtons, "merged");
                         console.log(this.unreadMessage, "unreadPro")
+                        let foundMatch=false
                         for (let item of this.unreadMessage.Project) {
-                            console.log(item);
-                            const keys = Object.keys(item);
+                            //console.log(Object.values(item), "unreadPro");
+                            for(let i in Object.values(item)){
+                                if(Object.values(item)[i] == project.project_id){
+                                    this.newMessage = true;
+                                    foundMatch=true
+                                    console.log("match", this.newMessage);
+                                    break;
+                                }else{
+                                    this.newMessage = false;
+                                    console.log("match", this.newMessage);
+                                }
+                                if(foundMatch==true){
+                                    break;
+                                }
+                            }
+                            if(foundMatch==true){
+                                break;
+                            }
+                            
+                            /*const keys = Object.keys(item);
                             for (let key of keys) {
                                 if (item[key] === project.project_id) {
                                     this.newMessage = true;
                                     console.log("match", this.newMessage);
                                 }
-                            }
+                            }*/
                         }
                         
                         /*for(let item in this.unreadMessage.Project){

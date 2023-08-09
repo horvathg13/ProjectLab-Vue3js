@@ -100,16 +100,20 @@ export default{
         },
         getMessages(){
             if(this.projectId == null){
-                this.taskId = 0;
+                this.taskId = null;
             }else{
                 this.taskId = this.taskData.task_id ? this.taskData.task_id: this.taskData.id
                 this.project_id = this.projectId
             }
             
             console.log( "parti")
-            let url=`/api/get-messages/project-id/${this.project_id}/task-id/${this.taskId}/participants/${encodeURIComponent(JSON.stringify(this.NewParticipants))}`;
+            let dataTravel={};
+            dataTravel.projectId = this.project_id
+            dataTravel.taskId = this.taskId
+            dataTravel.participants = this.NewParticipants
+            let url='/api/get-messages/';
 
-            ServiceClient.post(url).then((response) =>{
+            ServiceClient.post(url, dataTravel).then((response) =>{
                     console.log(response);
                     if (response.status == 200){
                         this.loader=false

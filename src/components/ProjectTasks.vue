@@ -546,7 +546,31 @@
                         }
                       
                        console.log(this.mergedButtons, "merged");
-                       for (let item in this.unreadMessage.Task) {
+                       let foundMatch = false;
+                        for (let item of this.unreadMessage.Task) {
+                            console.log(Object.values(item), "unreadPro");
+                            const values = Object.values(item);
+                            for (let i = 0; i < values.length - 1; i++) {
+                                console.log(values[i], "unreadPro")
+                                if (values[i] == task.task_id && values[i + 1] == this.$route.params.id) {
+                                    this.newMessage = true;
+                                    foundMatch = true
+                                    console.log("match", values[i], this.newMessage);
+                                    break;
+                                }else{
+                                    this.newMessage = false;
+                                    console.log("match", this.newMessage,Object.values(item)[i],task.task_id );
+                                }
+                                if(foundMatch == true){
+                                    break;
+                                }
+                            }
+                            if(foundMatch == true){
+                                break;
+                            }
+                            
+                        }
+                       /*for (let item in this.unreadMessage.Task) {
                             console.log(this.unreadMessage.Task[item]);
                             const keys = Object.keys(this.unreadMessage.Task[item]);
                             console.log(keys, "object.keys(this.unreadMessage.Task[item])");
@@ -561,7 +585,7 @@
                                 this.newMessage = false;
                                 console.log("something went wrong",  this.$route.params.id);
                             }
-                        }
+                        }*/
                        /*for (let item of this.unreadMessage.Task) {
                             console.log(item);
                             const keys = Object.keys(item);

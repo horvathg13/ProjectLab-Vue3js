@@ -838,8 +838,11 @@
                             <th>Deadline <Sort :data="this.taskData" :sortKey="'deadline'" @sorted="Sort" @deleteSelected="clearSort"></Sort></th>
                             <th>Task Status <Filter :data="this.statusDataTravel" @select="filter" @deleteSelected="clearFilter" @click="getFilterData"></Filter></th>
                             <th>Task Priority <Sort :data="this.taskData" :sortKey="'t_priority'" @sorted="Sort" @deleteSelected="clearSort"></Sort></th>
+                            <th>Employees</th>
+                            <th></th>
                             <th>
                             <button v-if="this.managerRole==true" class="ui right floated small primary labeled icon button" @click="showCreateTaskModal()"><i class="tasks icon"></i>New Task</button></th>
+                            
                         </tr>
                     </thead>
                     <tbody v-if="loader==true">
@@ -858,7 +861,9 @@
                             <td>{{task.deadline }}</td>
                             <td>{{task.status }}</td>
                             <td>{{ task.priority}}</td>
-                        
+                            <td>{{ task.employees }}</td>
+                            <td v-if="task.mytask === true"><i class="green check icon"></i></td>
+                            <td v-else></td>
                             <td>
                                 <CircularMenu
                                   :data="task"
@@ -883,6 +888,7 @@
                     </tbody>
                     <tfoot class="full-width" v-if="this.loader == false">
                         <tr>
+                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>

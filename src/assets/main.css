@@ -109,10 +109,11 @@ form{
 .ui.table td{
   padding: 0.7em ;
   text-align: center;
-  max-width: 150px;
-  min-width: 100px;
+  max-width: 300px;
+  /*min-width: 100px;*/
   overflow: auto;
   text-overflow: ellipsis;
+  padding:15px
 }
 
 .dp__action_buttons{

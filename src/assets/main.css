@@ -11,6 +11,7 @@ html{
 }
 
 /*General CSS Rules*/
+
 .header{
   min-height: 55px;
   z-index: 2;
@@ -108,6 +109,10 @@ form{
 .ui.table td{
   padding: 0.7em ;
   text-align: center;
+  max-width: 150px;
+  min-width: 100px;
+  overflow: auto;
+  text-overflow: ellipsis;
 }
 
 .dp__action_buttons{

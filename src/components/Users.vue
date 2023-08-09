@@ -412,56 +412,56 @@ import CircularMenu from './Common/CircularMenu.vue';
                 <h1>Users</h1>
             </div>-->
         
-        <div class="centerd-component-container">
-            <div class="scrolling-table-container">
-                <table class="ui striped table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>E-mail</th>
-                            <th>Role</th>
-                            <th>Actions
-                            <button v-if="this.AddNewUser == true" class="ui right floated small primary labeled icon button" @click="updateModal"><i class="user plus icon"></i>Add</button>
-                            </th>
+            <div class="centerd-component-container">
+                <div class="scrolling-table-container">
+                    <table class="ui selectable striped table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>E-mail</th>
+                                <th>Role</th>
+                                <th>
+                                <button v-if="this.AddNewUser == true" class="ui right floated small primary labeled icon button" @click="updateModal"><i class="user plus icon"></i>Add</button>
+                                </th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="user in getusers" :key="user.id">
+                                <td>{{user.id}}</td>
+                                <td>{{user.name}}</td>
+                                <td>{{user.email}}</td>
+                                <td>{{user.roles}}</td>
+                                <td>
+                                    <CircularMenu
+                                    @click="getUsersButton(user)"
+                                    :buttons="this.adminbuttons"
+                                    :data="user"
+                                    :component="this.$route.name"
+                                    @DataSaveEmit="DataSave"
+                                    @DataSaveRolesEmit="DataSave"
+                                    @DataSaveResetPassword="DataSave"></CircularMenu>
+                                    <!--<button class="ui small yellow button"><i class="edit icon"></i>Edit</button>
+                                    <button class="ui small red button" @click="DataSave(user, 'BannUser')"><i class="close icon"></i>Ban user</button>
+                                    <button class="ui small purple button" @click="DataSave(user, 'open_show_role_selector_modal')"><i class="balance scale icon"></i>Roles</button>
+                                    <button class="ui small orange button" @click="DataSave(user, 'PasswordResetManual')"><i class="key icon"></i>Reset password</button>-->
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="full-width">
+                            <tr>
+                                
+                                <th></th>
+                                <th colspan="4">
                             
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="user in getusers" :key="user.id">
-                            <td>{{user.id}}</td>
-                            <td>{{user.name}}</td>
-                            <td>{{user.email}}</td>
-                            <td>{{user.roles}}</td>
-                            <td>
-                                <CircularMenu
-                                @click="getUsersButton(user)"
-                                :buttons="this.adminbuttons"
-                                :data="user"
-                                :component="this.$route.name"
-                                @DataSaveEmit="DataSave"
-                                @DataSaveRolesEmit="DataSave"
-                                @DataSaveResetPassword="DataSave"></CircularMenu>
-                                <!--<button class="ui small yellow button"><i class="edit icon"></i>Edit</button>
-                                <button class="ui small red button" @click="DataSave(user, 'BannUser')"><i class="close icon"></i>Ban user</button>
-                                <button class="ui small purple button" @click="DataSave(user, 'open_show_role_selector_modal')"><i class="balance scale icon"></i>Roles</button>
-                                <button class="ui small orange button" @click="DataSave(user, 'PasswordResetManual')"><i class="key icon"></i>Reset password</button>-->
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot class="full-width">
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th colspan="4">
-                        
-                            </th>
-                        </tr>
-                        
-                    </tfoot>
-                </table>
-           </div>
-        </div>
+                                </th>
+                            </tr>
+                            
+                        </tfoot>
+                    </table>
+            </div>
+            </div>
         </div>
         <Transition>
                 <AddUserModal v-if="showModal==true" @cancel-modal="cancelModal"

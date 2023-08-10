@@ -149,7 +149,7 @@ export default{
                 <li v-if="lockMode==false"><a href="/notifications">Notifications</a></li>
                 <li v-if="lockMode==false"><a href="/projects">Projects</a></li>
                 <li v-if="lockMode==false"><a href="/my-tasks">My Tasks</a></li>
-                <li v-if="lockMode==false">Statistics</li>
+                <!--<li v-if="lockMode==false">Statistics</li>-->
             </ul>
         </div>
         <div class="ui teal buttons" >

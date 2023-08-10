@@ -146,6 +146,7 @@ import VueClickAway from "vue3-click-away";
 <style scoped>
     .ui.button.dropdown .menu.active{
         display: block !important;
+        scrollbar-width: thin;
 
     }
 

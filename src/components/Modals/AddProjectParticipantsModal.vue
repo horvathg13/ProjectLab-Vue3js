@@ -14,13 +14,23 @@
         },
         props:{
             getusers:Array,
-            projectData:{}
+            projectData:{},
+            participants:Array,
         },
         data(){
             return{
                 selected_user:[],
-                buttonDisable:false
-                
+                buttonDisable:false,
+                SelectComp_getActiveTaskParticipants:[],
+                remove_employee:[],
+            }
+        },
+        watch:{
+            'participants':{
+                immediate:true,
+                handler(newValue){
+                    this.SelectComp_getActiveTaskParticipants = newValue
+                }
             }
         },
         methods: {
@@ -34,7 +44,7 @@
 
             createParticipant(){
                 this.buttonDisable=true,
-                this.$emit("create-participants", { selected: this.selected_user})
+                this.$emit("add-participants", { selected: this.selected_user, remove_employee:this.remove_employee})
                 
             },
 
@@ -42,6 +52,12 @@
                 const {select} = data
                 this.selected_user=data
             },
+            detach(data){
+                const{detach} = data;
+                
+                this.remove_employee = data.remove
+                console.log(this.remove_employee, "DETACH")
+            }
            
 
           
@@ -56,7 +72,7 @@
 <template>
         <div  class="modal-overlay"  >
             
-            <div class="modal" v-click-away="cancelModal"> 
+            <div class="modal" ><!--v-click-away="cancelModal"--> 
                 <div class="close">
                     <i class="close large red icon" @click="cancelModal" ></i>
                 </div>
@@ -77,14 +93,19 @@
                         <form class="ui form" @submit.prevent="createParticipant" novalidate>
                            
                             <div class="field"><label>Employees</label></div>
-                            <MultipleSelectComponents :disable="buttonDisable" :VforArray="this.getusers.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" @select="makeSelection"></MultipleSelectComponents>
+                            <MultipleSelectComponents 
+                            :disable="buttonDisable" 
+                            :VforArray="this.getusers.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))"
+                            :VforActiveArray="this.SelectComp_getActiveTaskParticipants.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" 
+                            @select="makeSelection"
+                            @detach-user="detach"></MultipleSelectComponents>
                             
                     
-                            <button :disabled="buttonDisable" class="ui green button create" type="submit">Create</button>
+                            <button :disabled="buttonDisable" class="ui green button create" type="submit">Done</button>
                         </form>
                     </div>
                     
-              </div>
+                </div>
               
             </div>
             

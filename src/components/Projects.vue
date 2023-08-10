@@ -67,6 +67,7 @@
             errorArray:[],
             setSortData:[],
             setFilterData:[],
+            removeData:[],
         }
     },
     watch: {
@@ -114,11 +115,42 @@
 
         showParticipantModal(project){
             const{data} = project
-            if(this.show_participant_modal==false){
-                this.show_participant_modal = true
-            }
-            this.projectData = project.data
-            console.log("parti", project)
+            let url =`/api/getprojectparticipants/${project.data.project_id}`;
+            ServiceClient.post(url).then((response) =>{
+                if(response.status == 200){
+                    this.participants = response.data
+                    
+                }
+                if(this.show_participant_modal==false){
+                    this.show_participant_modal = true
+                }
+                this.projectData = project.data
+                console.log("parti", project, this.participant)
+
+            }).catch((error) => {
+                if (error.response && error.response.status) {
+                    if(error.response.data.validatorError){
+                        this.errorArray=error.response.data.validatorError
+                        console.log( this.errorArray)
+                        this.show_error_popup=true
+                        setTimeout(() => {
+                            this.show_error_popup = false
+                            this.errorArray=[];
+                            this.cancelModal()
+                        },  2000)
+                    }
+                    if (error.response.data && error.response.data.message) {
+                        this.message= error.response.data.message//Object.values(error.response.data.message).flatMap(y => y)
+                        this.show_error_popup = true
+                        setTimeout(() => {
+                            this.show_error_popup = false
+                            this.message = "";
+                        },  2000)
+                        
+                    }
+                }
+            });
+            
         },
 
         cancelModal(){
@@ -255,14 +287,16 @@
             },
 
             createParticipants(data){
-                const { select } = data;
+                const { selected, remove_employee } = data;
+                //console.log(data, "DATAAA")
                 this.participants = data.selected.select;
-                
-                console.log(this.participants, "partiparti")
+                this.removeData = data.remove_employee
+                console.log(this.participants,this.removeData, "partiparti")
                
                 const finalData={};
                 finalData.participants = this.participants;
                 finalData.project = this.projectData;
+                finalData.remove = this.removeData
                 console.log(finalData, "hullapelyhes");
 
                 
@@ -874,9 +908,10 @@
         <Transition>
             <AddProjectParticipantsModal v-if="show_participant_modal == true"
             @cancel-modal="cancelModal"  
-            @create-participants="createParticipants"
+            @add-participants="createParticipants"
             :getusers="this.getusers"
-            :projectData="this.projectData"></AddProjectParticipantsModal>
+            :projectData="this.projectData"
+            :participants = this.participants></AddProjectParticipantsModal>
         </Transition>
         <CommentModal v-if="this.show_Comment_Modal == true"
         @cancel-modal="cancelModal"

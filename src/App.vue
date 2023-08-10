@@ -20,14 +20,14 @@ setInterval(() => {
   });
 }, 30000);
 
-setInterval(() => {
-  ServiceClient.post('/api/notifications').then(response => {
-    store.commit("getNotifications",response.data);
-    console.log(response.data, "notifica");
-  }).catch(error =>{
-    console.log(error);
-  });
-}, 30000);
+
+ServiceClient.post('/api/notifications').then(response => {
+  store.commit("getNotifications",response.data);
+  console.log(response.data, "notifica");
+}).catch(error =>{
+  console.log(error);
+});
+
 ServiceClient.post('/api/getUserRole').then(response => {
   store.commit("setuserRole",response.data)
   console.log(response.data, "getUserRole");

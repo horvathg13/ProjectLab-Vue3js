@@ -107,14 +107,14 @@ export default{
             })
         
         },
-        getUserRoles(){
+        /*getUserRoles(){
             ServiceClient.post('/api/getUserRole').then(response => {
                 store.commit("setuserRole",response.data)
                 console.log(response.data, "getUserRole");
             }).catch(error =>{
             console.log(error);
             });
-        }
+        }*/
     },
     beforeMount() {
         this.SetUserButton();

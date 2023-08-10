@@ -151,7 +151,8 @@
                             </div>
                             <SelectComponents  :disable="buttonDisable" :VforArray="this.priorities" :editTask="this.SelectCompData" @select="makeSelection"></SelectComponents>
 
-                            <button v-if="this.readOnlyMode === false"  :disabled="buttonDisable" class="ui green button" type="submit">Create</button>
+                            <button v-if="this.readOnlyMode === false && this.EditMode=== false"  :disabled="buttonDisable" class="ui green button" type="submit">Create</button>
+                            <button v-if="this.readOnlyMode === false && this.EditMode=== true"  :disabled="buttonDisable" class="ui green button" type="submit">Edit</button>
                         </form>
                     </div>
                     

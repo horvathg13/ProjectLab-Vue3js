@@ -1,6 +1,7 @@
 <script>
   import {store} from "../VuexStore";
   import Error from './Common/ErrorPopup.vue';
+  import ServiceClient from '../ServiceClient';
 export default{
     props:{
 
@@ -13,12 +14,12 @@ export default{
             notifications:{},
             message:"",
             showErrorPopup:false,
+            unreadMessage:{}
         }
     },
     watch: {
         '$store.state.notifications'(newValue) {
             this.notifications = newValue
-            
             console.log(newValue.length, "hello notifica watch");
         },
         notifications(newValue){
@@ -34,14 +35,77 @@ export default{
             
        
             
-        }
+        },
+        
     },
     computed:{
 
         
     },
+    methods:{
+        getUnreadMessages(){
+            ServiceClient.post('/api/get-unread-messages').then(response => {
+                console.log("getUnreadMessages",response.data);
+                store.commit("getUnreadMessages", response.data);
+                this.unreadMessage = response.data
+            }).catch(error =>{
+                console.log(error);
+            });
+        },
+        ShoudShowEnvelope(n){
+            let foundMatch=false
+            if(this.unreadMessage.Project !== undefined && n.type == 'Project'){
+                for (let item of this.unreadMessage.Project) {
+                    //console.log(Object.values(item), "unreadPro");
+                    for(let i in Object.values(item)){
+                        if(Object.values(item)[i] == n.id){
+                            
+                            foundMatch=true
+                            console.log("match");
+                            return foundMatch;
+                        }else{
+                            foundMatch=false
+                            console.log("match");
+                        }
+                        if(foundMatch==true){
+                            break;
+                        }
+                    }
+                    if(foundMatch==true){
+                        break;
+                    }
+                }
+            }
+            if(this.unreadMessage && this.unreadMessage.Task !== undefined && n.type == 'Task'){
+                for (let item of this.unreadMessage.Task) {
+                    //console.log(Object.values(item), "unreadPro");
+                    const values = Object.values(item);
+                    for (let i = 0; i < values.length - 1; i++) {
+                        //console.log(values[i], "unreadPro")
+                        if (values[i] == n.id) {
+                            return foundMatch = true
+                        
+                        }else{
+                            foundMatch = false;;
+                            console.log("match");
+                        }
+                        
+                    }
+                
+                
+                }
+            }        
+                    
+                
+                
+        },
+
+    },
+    beforeMount() {
+        
+    },
     mounted(){
-       
+        this.getUnreadMessages();
     },
 }
 </script>
@@ -66,6 +130,7 @@ export default{
                                 <th>Title</th>
                                 <th>Status</th>
                                 <th>Deadline</th>
+                                <th></th>
                                 <!--<th>Days left</th>-->
                             </tr>
                         </thead>
@@ -77,6 +142,8 @@ export default{
                                 <td>{{n.title}}</td>
                                 <td>{{n.status}}</td>
                                 <td>{{n.deadline}}</td>
+                                <td ><i v-if="ShoudShowEnvelope(n)" class="red envelope icon"></i></td>
+
                                 <!--<td>{{ n.days }} </td>-->     
                             </tr>
                         </tbody>

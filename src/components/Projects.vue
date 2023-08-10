@@ -99,10 +99,10 @@
             }
             
         },
-        unreadMessages(){
+        /*unreadMessages(){
             this.unreadMessage= store.state.unreadMessages
             console.log(this.unreadMessage, "hello from Vuex")
-        },
+        },*/
 
         updateModal(){
             this.Editdata = null
@@ -716,6 +716,44 @@
                 });*/
 
 
+            },
+            ShoudShowEnvelope(project){
+                let foundMatch=false
+                if(this.unreadMessage.Project !== undefined){
+                    for (let item of this.unreadMessage.Project) {
+                        //console.log(Object.values(item), "unreadPro");
+                        for(let i in Object.values(item)){
+                            if(Object.values(item)[i] == project.project_id){
+                                
+                                foundMatch=true
+                                console.log("match");
+                                return foundMatch;
+                            }else{
+                                foundMatch=false
+                                console.log("match");
+                            }
+                            if(foundMatch==true){
+                                break;
+                            }
+                        }
+                        if(foundMatch==true){
+                            break;
+                        }
+                    }
+                }
+                    
+                    
+                
+                
+            },
+            getUnreadMessages(){
+                ServiceClient.post('/api/get-unread-messages').then(response => {
+                    console.log("getUnreadMessages",response.data);
+                    store.commit("getUnreadMessages", response.data);
+                    this.unreadMessage = response.data
+                }).catch(error =>{
+                    console.log(error);
+                });
             }
                 
                 
@@ -723,10 +761,11 @@
             
         },
         mounted(){
+            this.getUnreadMessages();
             this.getProjects()
             this.getUsers()
             this.contentTitle();
-           
+            
             
         }
     }
@@ -760,8 +799,10 @@
                                 <th>Title</th>
                                 <th>Status <Filter :data="this.statusDataTravel" @select="filter" @deleteSelected="clearFilter" @click="getFilterData"></Filter></th>
                                 <th>Deadline <Sort :data="this.taskData" :sortKey="'deadline'" @sorted="Sort" @deleteSelected="clearFilter"></Sort></th>
+                                <th></th>
                                 <th>
                                 <button v-if="this.AddNewProject == true" class="ui right floated small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>
+                                
                             </tr>
                         </thead>
                         <tbody v-if="loader==true">
@@ -779,6 +820,8 @@
                                 <td>{{project.name}}</td>
                                 <td>{{ project.status}}</td>
                                 <td>{{ project.deadline}}</td>
+                                <td ><i v-if="ShoudShowEnvelope(project)" class="red envelope icon"></i></td>
+                                
                                 <td>
                                    
                                     <CircularMenu

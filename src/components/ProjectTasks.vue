@@ -820,11 +820,51 @@
                 this.getTasks()
 
             },
+            getUnreadMessages(){
+                ServiceClient.post('/api/get-unread-messages').then(response => {
+                    console.log("getUnreadMessages",response.data);
+                   // store.commit("getUnreadMessages", response.data);
+                    this.unreadMessage = response.data
+                }).catch(error =>{
+                    console.log(error);
+                });
+            },
+            ShoudShowEnvelope(task){
+                let foundMatch = false;
+                if(this.unreadMessage && this.unreadMessage !== undefined){
+                    for (let item of this.unreadMessage.Task) {
+                        //console.log(Object.values(item), "unreadPro");
+                        const values = Object.values(item);
+                        for (let i = 0; i < values.length - 1; i++) {
+                            //console.log(values[i], "unreadPro")
+                            if (values[i] == task.task_id && values[i + 1] == this.$route.params.id) {
+                                return foundMatch = true
+                            
+                            }else{
+                                foundMatch = false;;
+                                console.log("match", this.newMessage,Object.values(item)[i],task.task_id );
+                            }
+                            
+                        }
+                    
+                    
+                    }
+                }
+              
+                    
+                    
+                
+                
+            },
 
 
             
         },
+        beforeMount(){
+            this.getUnreadMessages();
+        },
         mounted(){
+            
             this.getPriorities()
             this.getProjectsById()
             this.getProjectParticipants()
@@ -868,6 +908,7 @@
                             <th>Priority <Sort :data="this.taskData" :sortKey="'t_priority'" @sorted="Sort" @deleteSelected="clearSort"></Sort></th>
                             <th>Employees</th>
                             <th></th>
+                            
                             <th>
                             <button v-if="this.managerRole==true || this.adminRole==true || this.participantRole==true" class="ui right floated small primary labeled icon button" @click="showCreateTaskModal()"><i class="tasks icon"></i>New Task</button></th>
                             
@@ -890,8 +931,12 @@
                             <td>{{task.status }}</td>
                             <td>{{ task.priority}}</td>
                             <td>{{ task.employees }}</td>
-                            <td v-if="task.mytask === true"><i class="green lock open icon"></i></td>
-                            <td v-else></td>
+                            <td >
+                                <i v-if="task.mytask === true" class="green lock open icon"></i>
+                                <i v-if="ShoudShowEnvelope(task)" class="red envelope icon"></i>
+                            </td>
+                            
+                            
                             <td>
                                 <CircularMenu
                                   :data="task"
@@ -920,6 +965,7 @@
                             <th></th>
                             <th></th>
                             <th></th>
+                            
                             <th colspan="4">
                         
                             </th>

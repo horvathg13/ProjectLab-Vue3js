@@ -325,6 +325,8 @@ export default{
         height: 100%;
         border-radius: 5px;
         display: grid;
+        scrollbar-width: thin;
+        scrollbar-gutter: stable;
     }
     .message.bubble{
         background-color: white;
@@ -351,6 +353,9 @@ export default{
     }
     .header{
         margin-bottom: 0;
+        overflow: auto;
+        scrollbar-width: thin;
+        scrollbar-gutter: auto ;
     }
     .ui.green.button.create{
         top:15px

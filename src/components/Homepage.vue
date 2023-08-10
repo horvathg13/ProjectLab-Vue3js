@@ -121,6 +121,15 @@ export default{
             </div>
             <div class="card" v-if="showCards == true">
                 <div class="image">
+                <img src="../assets/HomeP_icons/favorite-book.png">
+                </div>
+                <div class="content">
+                    <div class="header"><a href="/favorite-projects">Favorite Projects</a></div>
+                    
+                </div>
+            </div>
+            <div class="card" v-if="showCards == true">
+                <div class="image">
                 <img src="../assets/HomeP_icons/tasks.png">
                 </div>
                 <div class="content">
@@ -128,7 +137,7 @@ export default{
                    
                 </div>
             </div>
-            <div class="card" v-if="showCards == true">
+            <!--<div class="card" v-if="showCards == true">
                 <div class="image">
                 <img src="../assets/HomeP_icons/stat_v3.png">
                 </div>
@@ -136,7 +145,7 @@ export default{
                     <div class="header">Statistics</div>
                     
                 </div>
-            </div>
+            </div>-->
         </div>
         </div>
     </div>

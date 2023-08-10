@@ -11,6 +11,7 @@ import ProjectTasks from "../components/ProjectTasks.vue"
 import Notifications from "../components/Notifications.vue"
 import MyTasks from "../components/MyTasks.vue"
 import Denied from "../components/AccessDenied.vue"
+import FavoriteProjects from "../components/FavoriteProjects.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -127,6 +128,21 @@ const router = createRouter({
       path:"/accessdenied",
       name:"Denied",
       component:Denied,
+      meta: {breadcrumbs:[
+        {
+          breadcrumb: "Home",
+          path: "/home",
+        },
+      
+      ],
+      requiresAuth: true}
+      
+
+    },
+    {
+      path:"/favorite-projects",
+      name:"Favorite Projects",
+      component: FavoriteProjects,
       meta: {breadcrumbs:[
         {
           breadcrumb: "Home",

@@ -12,6 +12,7 @@ import Notifications from "../components/Notifications.vue"
 import MyTasks from "../components/MyTasks.vue"
 import Denied from "../components/AccessDenied.vue"
 import FavoriteProjects from "../components/FavoriteProjects.vue"
+import ManagerDashboard from "../components/ManagerDashboard.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -143,6 +144,21 @@ const router = createRouter({
       path:"/favorite-projects",
       name:"Favorite Projects",
       component: FavoriteProjects,
+      meta: {breadcrumbs:[
+        {
+          breadcrumb: "Home",
+          path: "/home",
+        },
+      
+      ],
+      requiresAuth: true}
+      
+
+    },
+    {
+      path:"/manager-dashboard",
+      name:"Manager Dashboard",
+      component:ManagerDashboard,
       meta: {breadcrumbs:[
         {
           breadcrumb: "Home",

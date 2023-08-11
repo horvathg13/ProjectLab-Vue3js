@@ -11,6 +11,7 @@ export default{
             userRole:{},
             userCard:false,
             showCards:false,
+            managerCard:false,
             temporaryMessage:false,
             temporaryCard:false,
         }
@@ -35,7 +36,7 @@ export default{
     methods:{
         SetUserCard(){
             if(this.userRole && this.userRole.code !==404){
-                this.userRole.forEach(item=> {if(item.role ==="Admin"){ this.userCard=true}else{this.showCards = true}})
+                this.userRole.forEach(item=> {if(item.role ==="Admin"){ this.userCard=true}else if(item.role ==="Manager"){this.managerCard=true}else{this.showCards = true}})
             }else if(this.userRole.code==404){
                 this.temporaryMessage = true
                 this.temporaryCard=true
@@ -49,7 +50,26 @@ export default{
             }).catch(error =>{
             console.log(error);
             });
-        }
+        },
+        users(){
+            this.$router.push('/users')
+        },
+        notifications(){
+            this.$router.push('/notifications')
+        },
+        projects(){
+            this.$router.push('/projects')
+        },
+        fprojects(){
+            this.$router.push('/favorite-projects')
+        },
+        mytasks(){
+            this.$router.push('/my-tasks')
+        },
+        managerDb(){
+            this.$router.push('/manager-dashboard')
+        },
+
     },
     beforeMount() {
         this.getUserRoles();
@@ -83,7 +103,7 @@ export default{
                    
                 </div>
             </div>
-            <div class="card" v-if="userCard == true">
+            <div class="card" v-if="userCard == true" @click="users">
                 <div class="image">
                 <img src="../assets/HomeP_icons/users.png">
                 </div>
@@ -101,7 +121,7 @@ export default{
                    
                 </div>
             </div>-->
-            <div class="card" v-if="showCards == true">
+            <div class="card" v-if="showCards == true" @click="notifications">
                 <div class="image">
                 <img src="../assets/HomeP_icons/request_v2.png">
                 </div>
@@ -110,7 +130,7 @@ export default{
                     
                 </div>
             </div>
-            <div class="card" v-if="showCards == true">
+            <div class="card" v-if="showCards == true" @click="projects">
                 <div class="image">
                 <img src="../assets/HomeP_icons/my_projects.png">
                 </div>
@@ -119,7 +139,7 @@ export default{
                     
                 </div>
             </div>
-            <div class="card" v-if="showCards == true">
+            <div class="card" v-if="showCards == true" @click="fprojects">
                 <div class="image">
                 <img src="../assets/HomeP_icons/favorite-book.png">
                 </div>
@@ -128,12 +148,21 @@ export default{
                     
                 </div>
             </div>
-            <div class="card" v-if="showCards == true">
+            <div class="card" v-if="showCards == true" @click="mytasks">
                 <div class="image">
                 <img src="../assets/HomeP_icons/tasks.png">
                 </div>
                 <div class="content">
                     <div class="header"><a href="/my-tasks">My tasks</a></div>
+                   
+                </div>
+            </div>
+            <div class="card" v-if="managerCard == true" @click="managerDb">
+                <div class="image">
+                <img src="../assets/HomeP_icons/manager.png">
+                </div>
+                <div class="content">
+                    <div class="header"><a href="/manager-dashboard">Manager Dashboard</a></div>
                    
                 </div>
             </div>

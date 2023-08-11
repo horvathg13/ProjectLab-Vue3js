@@ -52,6 +52,14 @@ export default{
                 console.log(error);
             });
         },
+        getNotifications(){
+            ServiceClient.post('/api/notifications').then(response => {
+                store.commit("getNotifications",response.data);
+                console.log(response.data, "notifica");
+            }).catch(error =>{
+                console.log(error);
+            });
+        },
         ShoudShowEnvelope(n){
             let foundMatch=false
             if(this.unreadMessage.Project !== undefined && n.type == 'Project'){
@@ -102,9 +110,10 @@ export default{
 
     },
     beforeMount() {
-        
+       
     },
     mounted(){
+        this.getNotifications();
         this.getUnreadMessages();
     },
 }

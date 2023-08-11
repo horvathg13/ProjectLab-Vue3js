@@ -87,113 +87,46 @@
        
     },
     methods:{
-        SetAddNewUser(){
-            if(this.userRole.code !== 404){
-                const isAdmin= this.userRole.some(item=>item.role === "Admin");
-                
-                if(isAdmin == true){
-                    this.AddNewProject=true
-                    console.log("CIAO", this.userRole);
-                }
-            }else{
-                this.$router.push("/accessdenied")
-            }
-            
-        },
-       
-
-        updateModal(){
-            this.Editdata = null
-            if(this.showModal==false){
-                this.showModal = true
-            }
-            
-        },
-
-        showParticipantModal(project){
-            const{data} = project
-            let url =`/api/getprojectparticipants/${project.data.project_id}`;
-            ServiceClient.post(url).then((response) =>{
-                if(response.status == 200){
-                    this.participants = response.data
+            SetAddNewUser(){
+                if(this.userRole.code !== 404){
+                    const isAdmin= this.userRole.some(item=>item.role === "Admin");
                     
-                }
-                if(this.show_participant_modal==false){
-                    this.show_participant_modal = true
-                }
-                this.projectData = project.data
-                console.log("parti", project, this.participant)
-
-            }).catch((error) => {
-                if (error.response && error.response.status) {
-                    if(error.response.data.validatorError){
-                        this.errorArray=error.response.data.validatorError
-                        console.log( this.errorArray)
-                        this.show_error_popup=true
-                        setTimeout(() => {
-                            this.show_error_popup = false
-                            this.errorArray=[];
-                            this.cancelModal()
-                        },  2000)
+                    if(isAdmin == true){
+                        this.AddNewProject=true
+                        console.log("CIAO", this.userRole);
                     }
-                    if (error.response.data && error.response.data.message) {
-                        this.message= error.response.data.message//Object.values(error.response.data.message).flatMap(y => y)
-                        this.show_error_popup = true
-                        setTimeout(() => {
-                            this.show_error_popup = false
-                            this.message = "";
-                        },  2000)
+                }else{
+                    this.$router.push("/accessdenied")
+                }
+                
+            },
+        
+
+            updateModal(){
+                this.Editdata = null
+                if(this.showModal==false){
+                    this.showModal = true
+                }
+                
+            },
+
+            showParticipantModal(project){
+                const{data} = project
+                let url =`/api/getprojectparticipants/${project.data.project_id}`;
+                ServiceClient.post(url).then((response) =>{
+                    if(response.status == 200){
+                        this.participants = response.data
                         
                     }
-                }
-            });
-            
-        },
+                    if(this.show_participant_modal==false){
+                        this.show_participant_modal = true
+                    }
+                    this.projectData = project.data
+                    console.log("parti", project, this.participant)
 
-        cancelModal(){
-            this.showModal = false
-            this.show_participant_modal = false
-            this.EditMode = false
-            this.show_Comment_Modal = false
-            this.projectButtons = {},
-            this.mergedButtons = [],
-            this.showStatusModal = false
-            
-        },
-
-        createProjects(data){
-            
-            const { p_name, manager, date, p_id } = data;
-            
-            this.p_name = p_name ;
-            this.selectedManager = manager;
-            this.date = date;
-            this.p_id = p_id;
-            console.log(this.selectedManager, this.date, p_name)
-            
-            let formData = new FormData();
-            formData.append("p_name", this.p_name);
-            formData.append("p_manager_id", this.selectedManager.id);
-            formData.append("date",this.date);
-            formData.append("p_id",this.p_id);
-            let url ="/api/createproject";
-            ServiceClient.post(url,formData).then((response) =>{
-                console.log(response);
-                if (response.status == 200){
-
-                    this.message= response.data.message
-                    this.show_popup = true
-                    setTimeout(() => {
-                        this.show_popup = false
-                        this.cancelModal()
-                        this.message = "";
-                    },  1500)
-                    console.log(response)
-                }
-            }).catch((error) => {
-                    
-                if (error.response && error.response.status) {
-                    if(error.response.data.validatorError){
+                }).catch((error) => {
+                    if (error.response && error.response.status) {
+                        if(error.response.data.validatorError){
                             this.errorArray=error.response.data.validatorError
                             console.log( this.errorArray)
                             this.show_error_popup=true
@@ -203,25 +136,92 @@
                                 this.cancelModal()
                             },  2000)
                         }
-                    if (error.response.data && error.response.data.message) {
-                        this.message= error.response.data.message//Object.values(error.response.data.message).flatMap(y => y)
-                        this.show_error_popup = true
-                        setTimeout(() => {
-                            this.show_error_popup = false
-                            this.message = "";
-                        },  2000)
-                        
+                        if (error.response.data && error.response.data.message) {
+                            this.message= error.response.data.message//Object.values(error.response.data.message).flatMap(y => y)
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message = "";
+                            },  2000)
+                            
+                        }
                     }
-                }
-            });
-            this.getProjects();
-            
-        },
+                });
+                
+            },
+
+            cancelModal(){
+                this.showModal = false
+                this.show_participant_modal = false
+                this.EditMode = false
+                this.show_Comment_Modal = false
+                this.projectButtons = {},
+                this.mergedButtons = [],
+                this.showStatusModal = false
+                
+            },
+
+            createProjects(data){
+                
+                const { p_name, manager, date, p_id } = data;
+                
+                this.p_name = p_name ;
+                this.selectedManager = manager;
+                this.date = date;
+                this.p_id = p_id;
+                console.log(this.selectedManager, this.date, p_name)
+                
+                let formData = new FormData();
+                formData.append("p_name", this.p_name);
+                formData.append("p_manager_id", this.selectedManager.id);
+                formData.append("date",this.date);
+                formData.append("p_id",this.p_id);
+                let url ="/api/createproject";
+                ServiceClient.post(url,formData).then((response) =>{
+                    console.log(response);
+                    if (response.status == 200){
+
+                        this.message= response.data.message
+                        this.show_popup = true
+                        setTimeout(() => {
+                            this.show_popup = false
+                            this.cancelModal()
+                            this.message = "";
+                        },  1500)
+                        console.log(response)
+                    }
+                }).catch((error) => {
+                        
+                    if (error.response && error.response.status) {
+                        if(error.response.data.validatorError){
+                                this.errorArray=error.response.data.validatorError
+                                console.log( this.errorArray)
+                                this.show_error_popup=true
+                                setTimeout(() => {
+                                    this.show_error_popup = false
+                                    this.errorArray=[];
+                                    this.cancelModal()
+                                },  2000)
+                            }
+                        if (error.response.data && error.response.data.message) {
+                            this.message= error.response.data.message//Object.values(error.response.data.message).flatMap(y => y)
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message = "";
+                            },  2000)
+                            
+                        }
+                    }
+                });
+                this.getFavoriteProjects();
+                
+            },
                    
 
-            getProjects(){
+            getFavoriteProjects(){
                 this.loader=true;
-                let url ="/api/getprojects";
+                let url ="/api/get-favorite-projects";
                 let dataTravel={};
                 dataTravel.sortData = this.setSortData,
                 dataTravel.filterData=this.setFilterData
@@ -573,7 +573,7 @@
                     if (response.status == 200){
                         console.log(response.data, "responseDATA")
                         this.message = response.data.message;
-                        this.getProjects();
+                        this.getprojects();
                         this.show_popup = true;
                         setTimeout(() => {
                             this.show_popup = false
@@ -635,13 +635,13 @@
                     }
                 }
                 this.setFilterData.push(selectData.select);
-                this.getProjects();
+                this.getFavoriteProjects();
                 console.log(this.setFilterData, "SORTDA")
                
             },
             clearFilter(){
                 this.setFilterData=[];
-                this.getProjects();
+                this.getFavoriteProjects();
                 console.log(this.setFilterData, "SORTDA")
 
             },
@@ -665,7 +665,7 @@
                    }
                 }
                 this.setSortData.push(sortData.selected)
-                this.getProjects();
+                this.getFavoriteProjects();
                 console.log(this.setSortData, "SORTDA")
                
                 
@@ -717,7 +717,7 @@
         },
         mounted(){
             this.getUnreadMessages();
-            this.getProjects()
+            this.getFavoriteProjects()
             this.getUsers()
             this.contentTitle();
             
@@ -755,8 +755,7 @@
                                 <th>Status <Filter :data="this.statusDataTravel" @select="filter" @deleteSelected="clearFilter" @click="getFilterData"></Filter></th>
                                 <th>Deadline <Sort :data="this.taskData" :sortKey="'deadline'" @sorted="Sort" @deleteSelected="clearFilter"></Sort></th>
                                 <th></th>
-                                <th>
-                                <button v-if="this.AddNewProject == true" class="ui right floated small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>
+                                <th></th>
                                 
                             </tr>
                         </thead>
@@ -769,7 +768,7 @@
                             </div>
                         </tbody>
                         <tbody v-if="loader==false">
-                            <tr v-for="project in getprojects" :key="project.id" :class="rowBackground(project)">
+                            <tr v-for="project in this.getprojects" :key="project.id" :class="rowBackground(project)">
                                 <td>{{project.project_id}}</td>
                                 <td>{{project.manager}}</td>
                                 <td>{{project.name}}</td>

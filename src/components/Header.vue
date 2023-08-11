@@ -148,6 +148,7 @@ export default{
                 <li v-if="userButton == true && lockMode==false"><a href="/users">Users</a></li>
                 <li v-if="lockMode==false"><a href="/notifications">Notifications</a></li>
                 <li v-if="lockMode==false"><a href="/projects">Projects</a></li>
+                <li v-if="lockMode==false"><a href="/favorite-projects">Favorite Projects</a></li>
                 <li v-if="lockMode==false"><a href="/my-tasks">My Tasks</a></li>
                 <!--<li v-if="lockMode==false">Statistics</li>-->
             </ul>

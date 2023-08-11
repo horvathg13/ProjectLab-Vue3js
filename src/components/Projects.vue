@@ -788,6 +788,43 @@
                 }).catch(error =>{
                     console.log(error);
                 });
+            },
+            favoriteStar(project){
+                let dataTravel={};
+                dataTravel.project= project
+                console.log(dataTravel,"dataTravel")
+                let url = ''
+                if(project.favorite==true){
+                    url ='/api/remove-favorite-project';
+                }else{
+                    url='/api/add-favorite-project';
+                }   
+                ServiceClient.post(url,dataTravel).then(response => {
+                    if(response.status === 200){
+                        this.message = response.data.message
+                        this.show_popup = true
+                        setTimeout(() => {
+                            this.show_popup = false
+                            this.message = ""
+                            this.getProjects()
+                        },  1500)
+                    }
+                }).catch(error =>{
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message = error.response.data.message
+                            this.show_error_popup = true
+                            
+                            
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message = ""
+                            }, 2000)
+
+                        }
+                    }
+                });
+                
             }
                 
                 
@@ -834,6 +871,7 @@
                                 <th>Status <Filter :data="this.statusDataTravel" @select="filter" @deleteSelected="clearFilter" @click="getFilterData"></Filter></th>
                                 <th>Deadline <Sort :data="this.taskData" :sortKey="'deadline'" @sorted="Sort" @deleteSelected="clearFilter"></Sort></th>
                                 <th></th>
+                                <th></th>
                                 <th>
                                 <button v-if="this.AddNewProject == true" class="ui right floated small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>
                                 
@@ -870,6 +908,12 @@
                                         @CommentEmit="this.commentModalSwitch"
                                         @SwitchModal="SwitchStatusModal">
                                     </CircularMenu>
+                                </td>
+                                <td>
+                                    <button class="ui icon button" @click="favoriteStar(project)">
+                                        <i v-if="project.favorite === true" class="yellow star icon"></i>
+                                        <i v-else class="star outline icon"></i>
+                                    </button>
                                 </td>
                             
                                 

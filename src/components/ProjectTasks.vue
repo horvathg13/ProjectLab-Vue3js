@@ -932,7 +932,7 @@
                             <td>{{ task.priority}}</td>
                             <td>{{ task.employees }}</td>
                             <td >
-                                <i v-if="task.mytask === true" class="green lock open icon"></i>
+                                <i v-if="task.mytask === true" class="assigned-icon"></i>
                                 <i v-if="ShoudShowEnvelope(task)" class="red envelope icon"></i>
                             </td>
                             
@@ -1018,6 +1018,6 @@
         height: 100px !important;
        
     }
-
+    
   
 </style>

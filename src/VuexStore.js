@@ -9,10 +9,13 @@ export const store = createStore({
       selectedRows:[],
       unreadMessages:{},
       notifications:[],
-      
+      managerNotifications:[],
 
     },
     mutations:{
+        getManagerNotifications(state,data){
+            state.managerNotifications = data
+        },
         getNotifications(state,data){
             state.notifications = data
         },

@@ -28,6 +28,13 @@ ServiceClient.post('/api/notifications').then(response => {
   console.log(error);
 });
 
+ServiceClient.post('/api/get-manager-notification').then(response => {
+  store.commit("getManagerNotifications",response.data);
+  console.log(response.data, "ManagerNotifica");
+}).catch(error =>{
+  console.log(error);
+});
+
 ServiceClient.post('/api/getUserRole').then(response => {
   store.commit("setuserRole",response.data)
   console.log(response.data, "getUserRole");

@@ -5,7 +5,7 @@ export default{
     
     props:{
         h1Title:"",
-       
+        
         route:"",
         meta:[]
     },
@@ -14,6 +14,7 @@ export default{
             message:null,
             userRole:{},
             lockMode:false,
+            manager:null,
         }
     },
     watch:{
@@ -26,7 +27,12 @@ export default{
             this.userRole = newValue;
             console.log( this.userRole, "hello from user watcher");
             this.lock();
-        }
+        },
+        '$store.state.managerNotifications'(newValue) {
+            console.log(newValue,"kakakaokspd")
+            this.manager = newValue;
+            console.log(newValue, "hello ManagerNotifica watch");
+        },
     },
     computed: {
         breadcrumbs() {
@@ -75,8 +81,16 @@ export default{
         <div class="message-container" v-if="h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && this.lockMode==false">
             <div class="ui large red left pointing label"><a href="/notifications">
                 <i class="bullhorn icon" v-if="message !== 0 && message !== null"></i>
-                <i class="bullhorn open icon" v-else></i>{{ message ? message: 0 }}</a></div>
+                <i class="bullhorn open icon" v-else></i>{{ message ? message: 0 }}</a>
+            </div>
+             
         </div>
+        <div class="message-container manager">
+            <div class="ui large red label"><a href="/manager-tasks">
+                <i class="binoculars icon" ></i>{{ manager ? manager: 0 }}</a>
+            </div>
+        </div>
+       
     </div>
 </template>
 
@@ -91,6 +105,9 @@ export default{
     }
     .message-container{
         left:calc(100% - 50%);
+    }
+    .message-container.manager{
+        left:calc(100% - 48%);
     }
     .content-title-container{
         width: 100%;

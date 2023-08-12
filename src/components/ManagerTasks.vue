@@ -90,7 +90,7 @@
             const{data} = task
             this.AttachTask = task.data
             console.log("attach_is active", task.data)
-
+            this.getProjectParticipants();
             let url=`/api/getActiveEmployees/${task.data.task_id}`;
             ServiceClient.post(url).then((response) =>{
                     console.log(response);
@@ -232,7 +232,7 @@
                 dataTravel.requestData = this.RequestData,
                 dataTravel.removeData = this.RemoveData,
                 dataTravel.task_id = this.AttachTask.task_id
-                dataTravel.project_id = this.$route.params.id
+                dataTravel.project_id = this.projectData.project_id
                 let url ="/api/assign-employee-to-task";
                 ServiceClient.post(url,dataTravel).then((response) =>{
                     console.log(response);
@@ -265,7 +265,7 @@
         
 
             getProjectsById(){
-                let url =`/api/projects/${this.$route.params.id}`;
+                let url =`/api/projects/${this.projectData.project_id}`;
                 ServiceClient.post(url).then((response) =>{
                         
                         if (response.status == 200){
@@ -338,11 +338,11 @@
             getTasks(){
                 this.loader=true;
                 let dataTravel={};
-                dataTravel.projectId=this.$route.params.id;
+                dataTravel.projectId=this.projectData.project_id;
                 dataTravel.sortData = this.setSortData,
                 dataTravel.filterData=this.setFilterData
                 console.log(dataTravel, "travel");
-                let url =`/api/projects/${this.$route.params.id}/tasks`
+                let url =`/api/get-manager-tasks`
 
                 ServiceClient.post(url,dataTravel).then((response) =>{
                         
@@ -374,7 +374,7 @@
 
             },
             getProjectParticipants(){
-                let url =`/api/getprojectparticipants/${this.$route.params.id}`;
+                let url =`/api/getprojectparticipants/${this.projectData.project_id}`;
                 ServiceClient.post(url).then((response) =>{
                         
                         if (response.status == 200){
@@ -514,8 +514,9 @@
             },
             getButtons(task){
                this.ActualTaskData = task;
+               this.projectData.project_id= task.p_id
                console.log(this.ActualTaskData, "TASKDATA")
-               let url=`/api/get-buttons/${this.$route.params.id}`
+               let url=`/api/get-buttons/${task.p_id}`
                ServiceClient.post(url).then(response => {
                    if (response.status == 200){
                        this.projectButtons = {};
@@ -553,7 +554,7 @@
                             const values = Object.values(item);
                             for (let i = 0; i < values.length - 1; i++) {
                                 console.log(values[i], "unreadPro")
-                                if (values[i] == task.task_id && values[i + 1] == this.$route.params.id) {
+                                if (values[i] == task.task_id && values[i + 1] == this.projectData.project_id) {
                                     this.newMessage = true;
                                     foundMatch = true
                                     console.log("match", values[i], this.newMessage);
@@ -621,7 +622,7 @@
                 const{data}=statusData
                 console.log(statusData, "statusData")
                 
-                let url=`/api/get-status/${this.$route.params.id}/${statusData.data.task_id}`;
+                let url=`/api/get-status/${this.projectData.project_id}/${statusData.data.task_id}`;
 
                 ServiceClient.post(url).then((response) =>{
                     if (response.status == 200){
@@ -658,13 +659,13 @@
                     set.priority.id = null
                 }
                 let dataTravel={}
-                dataTravel.projectId =this.$route.params.id;
+                dataTravel.projectId =this.projectData.project_id;
                 dataTravel.taskId = this.ActualTaskData.task_id;
                 dataTravel.StatusId= set.data.id;
                 dataTravel.priorityId = set.priority.id;
                 dataTravel.setAllTask = set.setAllTask;
                 dataTravel.setAllPriority = set.setAllPriority;
-
+                console.log(dataTravel, "STATUS")
                 let url='/api/set-status';
                 ServiceClient.post(url,dataTravel).then((response) =>{
                     if (response.status == 200){
@@ -695,7 +696,7 @@
             },
             getFilterData(){
                 let Task=true;
-                let url=`/api/get-status/${this.$route.params.id}/${Task}`;
+                let url=`/api/get-status/${this.projectData.project_id}/${Task}`;
 
                 ServiceClient.post(url).then((response) =>{
                     if (response.status == 200){
@@ -745,7 +746,7 @@
                 const{data}=emit;
                 this.loader = true;
                 let dataTravel={};
-                dataTravel.projectId = this.$route.params.id
+                dataTravel.projectId = this.projectData.project_id
                 dataTravel.taskData = emit.data
                 dataTravel.taskData.status = "Completed";
                 console.log(emit, "EMMI")
@@ -838,7 +839,7 @@
                         const values = Object.values(item);
                         for (let i = 0; i < values.length - 1; i++) {
                             //console.log(values[i], "unreadPro")
-                            if (values[i] == task.task_id && values[i + 1] == this.$route.params.id) {
+                            if (values[i] == task.task_id && values[i + 1] == this.projectData.project_id) {
                                 return foundMatch = true
                             
                             }else{
@@ -867,8 +868,8 @@
         mounted(){
             
             this.getPriorities()
-            this.getProjectsById()
-            this.getProjectParticipants()
+            /*this.getProjectsById()
+            this.getProjectParticipants()*/
             this.getTasks()
             console.log(this.$route)
         }
@@ -894,10 +895,7 @@
         
     
         <div class="centerd-component-container" >
-            <div class="content-title task" >
-            <h1>{{projectData.name}}</h1>
-            <h2>{{ projectData.manager }}</h2>
-            </div>
+            
             <div class="scrolling-table-container">
                 <table class="ui selectable striped table" >
                     <thead>
@@ -910,8 +908,8 @@
                             <th>Employees</th>
                             <th></th>
                             
-                            <th>
-                            <button v-if="this.managerRole==true || this.adminRole==true || this.participantRole==true" class="ui right floated small primary labeled icon button" @click="showCreateTaskModal()"><i class="tasks icon"></i>New Task</button></th>
+                            <th></th>
+                           
                             
                         </tr>
                     </thead>
@@ -1002,7 +1000,7 @@
     @sendEmit="SendMessage"
     :taskData="this.taskDataTravel"
     :Participants="this.getActiveTaskEmployee"
-    :projectId ="this.$route.params.id"
+    :projectId ="this.projectData.project_id"
     ></CommentModal>
     <Status v-if="this.showStatusModal == true"
     @cancel-modal="cancelModal"

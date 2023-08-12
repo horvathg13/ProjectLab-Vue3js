@@ -23,6 +23,7 @@ export default{
             userRole:{},
             userButton:false,
             lockMode:false,
+            managerButton:false
            
         };
     },
@@ -60,6 +61,9 @@ export default{
                     if(this.userRole[i].role=="Admin"){
                         this.lockMode = false
                         this.userButton=true
+                    }else if(this.userRole[i].role=="Manager"){
+                        this.lockMode = false
+                        this.managerButton=true
                     }
             
                 }
@@ -115,6 +119,27 @@ export default{
             console.log(error);
             });
         }*/
+        home(){
+            this.$router.push('/home')
+        },
+        users(){
+            this.$router.push('/users')
+        },
+        notifications(){
+            this.$router.push('/notifications')
+        },
+        projects(){
+            this.$router.push('/projects')
+        },
+        fprojects(){
+            this.$router.push('/favorite-projects')
+        },
+        mytasks(){
+            this.$router.push('/my-tasks')
+        },
+        managerDb(){
+            this.$router.push('/manager-dashboard')
+        },
     },
     beforeMount() {
         this.SetUserButton();
@@ -144,12 +169,13 @@ export default{
         </Transition>
         <div class="header-items">
             <ul>
-                <li v-if="lockMode==false"><a href="/home">Home</a></li>
-                <li v-if="userButton == true && lockMode==false"><a href="/users">Users</a></li>
-                <li v-if="lockMode==false"><a href="/notifications">Notifications</a></li>
-                <li v-if="lockMode==false"><a href="/projects">Projects</a></li>
-                <li v-if="lockMode==false"><a href="/favorite-projects">Favorite Projects</a></li>
-                <li v-if="lockMode==false"><a href="/my-tasks">My Tasks</a></li>
+                <li v-if="lockMode==false" @click="home">Home</li>
+                <li v-if="userButton == true && lockMode==false" @click="users">Users</li>
+                <li v-if="lockMode==false" @click="notifications">Notifications</li>
+                <li v-if="lockMode==false" @click="projects">Projects</li>
+                <li v-if="lockMode==false" @click="fprojects">Favorite Projects</li>
+                <li v-if="lockMode==false" @click="mytasks">My Tasks</li>
+                <li v-if="managerButton===true && lockMode==false" @click="managerDb">Manager Dashboard</li>
                 <!--<li v-if="lockMode==false">Statistics</li>-->
             </ul>
         </div>

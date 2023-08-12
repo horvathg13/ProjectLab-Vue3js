@@ -108,7 +108,7 @@ export default{
                 <img src="../assets/HomeP_icons/users.png">
                 </div>
                 <div class="content">
-                    <div class="header"><a href="/users">Users</a></div>
+                    <div class="header">Users</div>
                    
                 </div>
             </div>
@@ -126,7 +126,7 @@ export default{
                 <img src="../assets/HomeP_icons/request_v2.png">
                 </div>
                 <div class="content">
-                    <div class="header"><a href="/notifications">Notifications</a></div>
+                    <div class="header">Notifications</div>
                     
                 </div>
             </div>
@@ -135,7 +135,7 @@ export default{
                 <img src="../assets/HomeP_icons/my_projects.png">
                 </div>
                 <div class="content">
-                    <div class="header"><a href="/projects">Projects</a></div>
+                    <div class="header">Projects</div>
                     
                 </div>
             </div>
@@ -144,7 +144,7 @@ export default{
                 <img src="../assets/HomeP_icons/favorite-book.png">
                 </div>
                 <div class="content">
-                    <div class="header"><a href="/favorite-projects">Favorite Projects</a></div>
+                    <div class="header">Favorite Projects</div>
                     
                 </div>
             </div>
@@ -153,7 +153,7 @@ export default{
                 <img src="../assets/HomeP_icons/tasks.png">
                 </div>
                 <div class="content">
-                    <div class="header"><a href="/my-tasks">My tasks</a></div>
+                    <div class="header">My tasks</div>
                    
                 </div>
             </div>
@@ -162,7 +162,7 @@ export default{
                 <img src="../assets/HomeP_icons/manager.png">
                 </div>
                 <div class="content">
-                    <div class="header"><a href="/manager-dashboard">Manager Dashboard</a></div>
+                    <div class="header">Manager Dashboard</div>
                    
                 </div>
             </div>

@@ -48,10 +48,11 @@ export default{
             });
         },
         managerProjects(){
-
+            this.$router.push("/manager-projects")
         },
 
         managerTasks(){
+            this.$router.push("/manager-tasks")
 
         }
 
@@ -83,7 +84,7 @@ export default{
                 <img src="../assets/ManagerDashboard/manager_projects_v6.png">
                 </div>
                 <div class="content">
-                    <div class="header"><a href="">Projects</a></div>
+                    <div class="header">Projects</div>
                    
                 </div>
             </div>
@@ -93,7 +94,7 @@ export default{
                 <img src="../assets/ManagerDashboard/manager_tasks_v2.png">
                 </div>
                 <div class="content">
-                    <div class="header"><a href="">Tasks</a></div>
+                    <div class="header">Tasks</div>
                    
                 </div>
             </div>

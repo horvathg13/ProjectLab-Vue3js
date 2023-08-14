@@ -40,7 +40,9 @@ export const store = createStore({
         deleteUsername(state){
             state.username=""
         },
-  
+        deleteManagerNotifications(state){
+            state.managerNotifications=[];
+        },
         setuserRole(state,userRole){
             state.userRole=userRole
         },

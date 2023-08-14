@@ -53,21 +53,26 @@ export default{
     },
     methods:{
         SetUserButton(){
-            if(this.userRole.code ?? this.userRole.code == 404){
+            if(localStorage.getItem("token")){
+                if(this.userRole.code ?? this.userRole.code == 404){
                 this.lockMode = true
+                }else{
+                    for(let i in this.userRole){
+                        if(this.userRole[i].role=="Admin"){
+                            this.lockMode = false
+                            this.userButton=true
+                        }else if(this.userRole[i].role=="Manager"){
+                            this.lockMode = false
+                            this.managerButton=true
+                        }
                 
-            }else{
-                for(let i in this.userRole){
-                    if(this.userRole[i].role=="Admin"){
-                        this.lockMode = false
-                        this.userButton=true
-                    }else if(this.userRole[i].role=="Manager"){
-                        this.lockMode = false
-                        this.managerButton=true
                     }
-            
                 }
+            }else{
+                this.lockMode = true
+
             }
+            
             
            
             
@@ -82,6 +87,7 @@ export default{
                 store.commit("deleteUserData");
                 store.commit("deleteUserRole");
                 store.commit("deleteNotifications");
+                store.commit("deleteManagerNotifications");
                 this.$router.push({path: "/login"});
                 this.message="Logged Out Successful!"
                 this.showPopup=true
@@ -91,7 +97,7 @@ export default{
                 },1600)
             }).catch((error) => {
                         
-                if (error.response.status === 401) {
+                if (error.response ?? error.response.status === 401) {
                 if (error.response.data.message) {
                     this.message= error.response.data.message
                     this.showErrorPopup=true
@@ -145,7 +151,7 @@ export default{
         this.SetUserButton();
     },
     mounted(){
-       
+        
     }
    
 
@@ -175,7 +181,7 @@ export default{
                 <li v-if="lockMode==false" @click="projects">Projects</li>
                 <li v-if="lockMode==false" @click="fprojects">Favorite Projects</li>
                 <li v-if="lockMode==false" @click="mytasks">My Tasks</li>
-                <li v-if="managerButton===true && lockMode==false" @click="managerDb">Manager Dashboard</li>
+                <li v-if="managerButton===true && lockMode==false" @click="managerDb">Manager</li>
                 <!--<li v-if="lockMode==false">Statistics</li>-->
             </ul>
         </div>

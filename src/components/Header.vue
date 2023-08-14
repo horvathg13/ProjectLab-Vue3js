@@ -135,7 +135,7 @@ export default{
             this.$router.push('/notifications')
         },
         projects(){
-            this.$router.push('/projects')
+            this.$router.push({name:'Projects', path:'/projects'})
         },
         fprojects(){
             this.$router.push('/favorite-projects')

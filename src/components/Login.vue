@@ -43,6 +43,7 @@
                             store.commit("setUserData", response.data.data)
                             localStorage.setItem("token", response.data.data.token);
                             this.getNotifications();
+                            this.getManaganerNotifications();
                             this.$router.push({path: "/home"});
 
                         }, 1400);
@@ -75,6 +76,14 @@
                 }).catch(error =>{
                     console.log(error);
                 
+                });
+            },
+            getManaganerNotifications(){
+                ServiceClient.post('/api/get-manager-notification').then(response => {
+                    store.commit("getManagerNotifications",response.data);
+                    console.log(response.data, "ManagerNotifica");
+                }).catch(error =>{
+                console.log(error);
                 });
             },
             close(){

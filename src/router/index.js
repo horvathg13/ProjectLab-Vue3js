@@ -159,7 +159,7 @@ const router = createRouter({
     },
     {
       path:"/manager-dashboard",
-      name:"Manager Dashboard",
+      name:"Manager",
       component:ManagerDashboard,
       meta: {breadcrumbs:[
         {
@@ -174,7 +174,7 @@ const router = createRouter({
     },
     {
       path:"/manager-projects",
-      name:"Manager Projects",
+      name:"Projects",
       component:ManagerProjects,
       meta: {breadcrumbs:[
         {
@@ -182,7 +182,7 @@ const router = createRouter({
           path: "/home",
         },
         {
-          breadcrumb: "Manager Dashboard",
+          breadcrumb: "Manager",
           path: "/manager-dashboard",
         },
       
@@ -193,7 +193,7 @@ const router = createRouter({
     },
     {
       path:"/manager-tasks",
-      name:"Manager Tasks",
+      name:"Tasks",
       component:ManagerTasks,
       meta: {breadcrumbs:[
         {
@@ -201,7 +201,7 @@ const router = createRouter({
           path: "/home",
         },
         {
-          breadcrumb: "Manager Dashboard",
+          breadcrumb: "Manager",
           path: "/manager-dashboard",
         },
       

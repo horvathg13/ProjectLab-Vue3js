@@ -85,9 +85,9 @@ export default{
             </div>
              
         </div>
-        <div class="message-container manager">
+        <div class="message-container manager" v-if="h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && this.lockMode==false">
             <div class="ui large red label"><a href="/manager-tasks">
-                <i class="binoculars icon" ></i>{{ manager ? manager: 0 }}</a>
+                <i class="binoculars icon" v-if="message !== 0 && message !== null"></i>{{ manager ? manager: 0 }}</a>
             </div>
         </div>
        

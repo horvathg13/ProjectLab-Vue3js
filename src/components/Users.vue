@@ -314,12 +314,13 @@ import CircularMenu from './Common/CircularMenu.vue';
             userToRole(data) {
 
                 const { role_id, role_name, user_id } = data
-                this.user_id = user_id
-                this.role_id = role_id,
-                    this.role_name = role_name
+                let dataTravel = {}
+                dataTravel.user_id = user_id
+                dataTravel.role_id = role_id,
+                dataTravel.role_name = role_name
 
-                let url = `/api/user-to-role/${user_id}/${role_name}`;
-                ServiceClient.post(url).then((response) => {
+                let url = '/api/user-to-role/';
+                ServiceClient.post(url,dataTravel).then((response) => {
                     if (response.status == 200) {
 
                         console.log(response)
@@ -336,9 +337,13 @@ import CircularMenu from './Common/CircularMenu.vue';
 
                     if (error.response && error.response.status) {
                         if (error.response.data && error.response.data.message) {
+                            this.message=error.response.data.message
                             this.show_error_popup = true
+                           
                             setTimeout(() => {
+                                this.cancelModal();
                                 this.show_error_popup = false
+                                this.message=""
                             }, 2000)
 
                         }

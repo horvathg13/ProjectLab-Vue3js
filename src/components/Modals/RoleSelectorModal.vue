@@ -13,7 +13,7 @@
                     id: "",
                     name: "",
                 },
-                
+                buttonDisable:false,
             }
         },
         methods: {
@@ -21,10 +21,12 @@
                 this.$emit("toggleDrop")
             },
             cancelModal() {
-                this.$emit("cancel-modal");
+                this.$emit("cancel-modal")
+                this.buttonDisable=false
             },
 
             attachRole(){
+                this.buttonDisable=true,
                 this.$emit("attachRole", { role_id: this.selectedRole.id, role_name: this.selectedRole.name, user_id: this.user.id })
             },
 
@@ -70,7 +72,7 @@
                             </div>
                     </div>
                     
-                    <button class="ui green button" type="submit">Create</button>
+                    <button class="ui green button" type="submit" :disabled="buttonDisable">Create</button>
                 </form>
                
                     

@@ -834,11 +834,12 @@
                 let foundMatch = false;
                 if(this.unreadMessage && this.unreadMessage !== undefined){
                     for (let item of this.unreadMessage.Task) {
-                        //console.log(Object.values(item), "unreadPro");
+                        console.log(Object.values(item), "unreadPro");
                         const values = Object.values(item);
                         for (let i = 0; i < values.length - 1; i++) {
                             //console.log(values[i], "unreadPro")
                             if (values[i] == task.task_id && values[i + 1] == this.$route.params.id) {
+                                console.log(values);
                                 return foundMatch = true
                             
                             }else{
@@ -847,9 +848,11 @@
                             }
                             
                         }
-                    
+                        
+                        
                     
                     }
+                   
                 }
               
                     

@@ -655,35 +655,7 @@
                 this.setFilterData.push(selectData.select);
                 this.getProjects();
                 console.log(this.setFilterData, "SORTDA")
-               /* this.loader = true;
-                let Task = null;
-                let Project = null;
-                console.log("I got the data from filter", selectData)
-                let url = `/api/filter-status/${JSON.stringify(Project)}/${JSON.stringify(Task)}/${selectData.select.id}`;
-
-                ServiceClient.post(url).then((response) =>{
-                
-                    if (response.status == 200){
-                        
-                        this.getprojects=response.data
-                        console.log(response.data, "here")
-                        this.loader= false
-                    }
-                }).catch((error) => {
-                        
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message= error.response.data.message
-                            this.show_error_popup = true
-                            this.loader=false
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = "";
-                            },  4500)
-                            
-                        }
-                    }
-                });*/
+              
             },
             clearFilter(){
                 this.setFilterData=[];
@@ -714,40 +686,6 @@
                 this.getProjects();
                 console.log(this.setSortData, "SORTDA")
                
-                /*let url='/api/sort'
-                let dataTravel={};
-                dataTravel.type=sortData.selected.id,
-                dataTravel.key=sortData.key,
-                dataTravel.data=this.getprojects
-                ServiceClient.post(url,dataTravel).then((response) =>{
-                    if (response.status == 200){
-                        console.log(response.data, "responseDATA")
-                        this.getprojects = response.data
-                        
-                        /*this.show_popup = true;
-                        
-                        setTimeout(() => {
-                            this.show_popup = false
-                            this.message = ""
-                            this.cancelModal()
-                        },  1500)*/
-                        
-                   /* }
-                }).catch((error) => {
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message = error.response.data.message
-                            this.show_error_popup = true
-                            this.getTasks();
-                            
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = ""
-                            }, 2000)
-
-                        }
-                    }
-                });*/
 
 
             },

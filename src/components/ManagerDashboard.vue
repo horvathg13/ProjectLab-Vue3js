@@ -47,7 +47,12 @@ export default{
     methods:{
         SetUserCard(){
             if(this.userRole && this.userRole.code !==404){
-                this.userRole.forEach(item=> {if(item.role ==="Manager"){this.temporaryCard = false, this.managerCard=true} else{this.temporaryCard = true}})
+                if(this.userRole.filter(item=> item.role ==="Manager")){
+                    this.temporaryCard = false
+                    this.managerCard=true
+                }else{
+                    this.temporaryCard = true
+                }
             }else if(this.userRole.code==404){
                 this.$router.push('/accessdenied');
             }

@@ -11,6 +11,7 @@ export default{
             userRole:{},
             managerCard:false,
             temporaryCard:false,
+            needToCheck:null,
         }
     },
     computed: {
@@ -27,9 +28,22 @@ export default{
             this.SetUserCard();
             
             
+        },
+        '$store.state.managerNotifications'(newValue) {
+            this.needToCheck = newValue;
+            
         }
     },
    
+    computed:{
+        needToCheck(){
+            if(this.needToCheck !== null || this.needToCheck !==0){
+                return "big orange binoculars icon"
+            }else{
+                return "big green binoculars icon"
+            }
+        }
+    },
     methods:{
         SetUserCard(){
             if(this.userRole && this.userRole.code !==404){
@@ -80,18 +94,24 @@ export default{
         <div class="ui link cards">
             
             <div class="card" v-if="this.temporaryCard == false" @click="managerProjects">
+                
                 <div class="image">
-                <img src="../assets/ManagerDashboard/manager_projects_v6.png">
+                <div class="card-icon"><i class="big green binoculars icon"></i></div>
+    
+                <img src="../assets/HomeP_icons/my_projects.png">
                 </div>
                 <div class="content">
                     <div class="header">Projects</div>
-                   
+                
                 </div>
             </div>
+ 
            
             <div class="card"  v-if="this.temporaryCard == false" @click="managerTasks">
+                <div class="card-icon"><i :class="needToCheck"></i></div>
+
                 <div class="image">
-                <img src="../assets/ManagerDashboard/manager_tasks_v2.png">
+                <img src="../assets/HomeP_icons/tasks.png">
                 </div>
                 <div class="content">
                     <div class="header">Tasks</div>
@@ -118,5 +138,17 @@ export default{
         width: auto;
         height: auto;
         cursor: not-allowed;
+    }
+    .card-icon{
+       position: absolute;
+       z-index: 9;
+       left: calc(180px - 19.5%);
+       background-color: black;
+       height: 35px;
+       border-radius: 3px !important;
+       margin:0 !important;
+    }
+    i.icon{
+        margin:0 !important
     }
 </style>

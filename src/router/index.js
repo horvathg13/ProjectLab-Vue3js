@@ -15,6 +15,7 @@ import FavoriteProjects from "../components/FavoriteProjects.vue"
 import ManagerDashboard from "../components/ManagerDashboard.vue"
 import ManagerProjects from "../components/ManagerProjects.vue"
 import ManagerTasks from "../components/ManagerTasks.vue"
+import ManagerNotifications from "../components/ManagerNotifications.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -174,7 +175,7 @@ const router = createRouter({
     },
     {
       path:"/manager-projects",
-      name:"Projects",
+      name:"Managed Projects",
       component:ManagerProjects,
       meta: {breadcrumbs:[
         {
@@ -193,8 +194,27 @@ const router = createRouter({
     },
     {
       path:"/manager-tasks",
-      name:"Tasks",
+      name:"Managed Tasks",
       component:ManagerTasks,
+      meta: {breadcrumbs:[
+        {
+          breadcrumb: "Home",
+          path: "/home",
+        },
+        {
+          breadcrumb: "Manager",
+          path: "/manager-dashboard",
+        },
+      
+      ],
+      requiresAuth: true}
+      
+
+    },
+    {
+      path:"/manager-notifications",
+      name:"Completed Tasks",
+      component:ManagerNotifications,
       meta: {breadcrumbs:[
         {
           breadcrumb: "Home",

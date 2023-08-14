@@ -51,6 +51,12 @@ export default{
                 this.lockMode = false
             }   
         },
+        redirectToNotifications(){
+            this.$router.push('/notifications')
+        },
+        redirectToManagerNotifications(){
+            this.$router.push('/manager-notifications')
+        }
         
     },
    
@@ -78,18 +84,20 @@ export default{
             <i class="right chevron icon divider"></i>
         </div>
        <div class="ui large breadcrumb section" v-if="h1Title != 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && h1Title !=='Homepage'" :class="{active: h1Title}"> {{ h1Title }}</div>
-        <div class="message-container" v-if="h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && this.lockMode==false">
-            <div class="ui large red left pointing label"><a href="/notifications">
-                <i class="bullhorn icon" v-if="message !== 0 && message !== null"></i>
-                <i class="bullhorn open icon" v-else></i>{{ message ? message: 0 }}</a>
+        <div class="notifications-container">
+            <div class="message-container" v-if="h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && this.lockMode==false" >
+                <div class="ui large red left pointing label"><a href="/notifications" @click="redirectToNotifications">
+                    <i class="bullhorn icon" v-if="message !== 0 && message !== null"></i>
+                    <i class="bullhorn open icon" v-else></i>{{ message ? message: 0 }}</a>
+                </div>
             </div>
-             
-        </div>
-        <div class="message-container manager" v-if="h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && this.lockMode==false">
-            <div class="ui large red label"><a href="/manager-tasks">
-                <i class="binoculars icon" v-if="message !== 0 && message !== null"></i>{{ manager ? manager: 0 }}</a>
+            <div class="message-container manager" v-if="h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && this.lockMode==false" >
+                <div class="ui large red label"><a href="/manager-notifications" @click="redirectToManagerNotifications">
+                    <i class="binoculars icon" v-if="message !== 0 && message !== null"></i>{{ manager ? manager: 0 }}</a>
+                </div>
             </div>
         </div>
+
        
     </div>
 </template>
@@ -104,10 +112,15 @@ export default{
         
     }
     .message-container{
-        left:calc(100% - 50%);
+        margin-right: 5px;
     }
-    .message-container.manager{
-        left:calc(100% - 48%);
+    /*.message-container.manager{
+        left:42%;
+    }*/
+    .notifications-container{
+        display: inline-flex;
+        left:43%;
+        justify-content:space-between;
     }
     .content-title-container{
         width: 100%;

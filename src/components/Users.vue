@@ -8,6 +8,7 @@ import Success_Popup from './Common/Success_Popup.vue';
 import ResetPasswordManualModal from './Modals/ResetPasswordManualModal.vue';
 import ContentTitle from './Common/ContentTitle.vue';
 import CircularMenu from './Common/CircularMenu.vue';
+import {store} from '../VuexStore'
 
   export default {
     components: {
@@ -384,13 +385,23 @@ import CircularMenu from './Common/CircularMenu.vue';
                         }
                     }
                 });
+            },
+            setUserRole(){
+                ServiceClient.post('/api/getUserRole').then(response => {
+                    store.commit("setuserRole",response.data)
+                    console.log(response.data, "getUserRole");
+                }).catch(error =>{
+                    console.log(error);
+                });
             }
 
 
         
 
         },
-        
+        beforeMount(){
+            this.setUserRole();
+        },
         mounted(){
             this.getUsers()
             this.getRoles()

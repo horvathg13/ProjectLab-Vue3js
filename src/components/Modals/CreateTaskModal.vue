@@ -131,7 +131,7 @@
                         <form class="ui form" @submit.prevent="createTask" novalidate>
                             <div class="field">
                                 <label>Task Name</label>
-                                <input :disabled="buttonDisable" type="text" name="name" placeholder="Name" v-model="Task_Details.name">
+                                <input :readonly="buttonDisable" type="text" name="name" placeholder="Name" v-model="Task_Details.name">
                             </div>
                            
                             <div class="field">
@@ -144,7 +144,7 @@
                             </div>
                             <div class="field">
                                 <label>Description</label>
-                                <textarea :disabled="buttonDisable" type="texarea" name="description" placeholder="Details" v-model="Task_Details.description"></textarea>
+                                <textarea :readonly="buttonDisable" type="texarea" name="description" placeholder="Details" v-model="Task_Details.description"></textarea>
                             </div>
                             <div class="field" >
                                 <label> Priority</label>

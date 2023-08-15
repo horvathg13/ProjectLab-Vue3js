@@ -11,6 +11,9 @@ html{
 }
 
 /*General CSS Rules*/
+.ui.disabled.dropdown{
+  opacity: 1;
+}
 .assigned-icon{
   background-image: url('../assets/user.png');
   background-size: 100%;

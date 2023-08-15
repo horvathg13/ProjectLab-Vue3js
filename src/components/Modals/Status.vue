@@ -105,7 +105,7 @@ export default{
                     :disable="this.buttonDisbale"
                     @select="makePrioritySelection"></SelectComponents>
                 </div>
-                <div class="checkboxContainer" v-if="task == true">
+                <!--<div class="checkboxContainer" v-if="task == true">
                     <div class="ui  toggle  checkbox" :class="{disabled:buttonDisbale}" >
                         <input type="checkbox" name="public" :disabled="buttonDisbale" v-model="setAllTask">
                         <label>Set this status to all task</label>
@@ -114,7 +114,7 @@ export default{
                         <input type="checkbox" name="public" :disabled="buttonDisbale" v-model="setAllPriority">
                         <label>Set this priority to all task</label>
                     </div>
-                </div>
+                </div>-->
                 
 
                 <div class="buttonContainer"  :class="{disabled:buttonDisbale}">

@@ -186,7 +186,8 @@ export default{
             </ul>
         </div>
         <div class="ui teal buttons" >
-            <div class="ui button" @click="editProfile"><i class="user circle icon"></i>{{username}}</div>
+            <div class="ui button" @click="editProfile"><i class="user circle icon"></i>
+                <div class="username">{{username}}</div></div>
             <div class="ui floating dropdown icon button"  @click="toggleDropdown">
                 <i class="dropdown icon"></i>
                 <div  class="menu" :class="{ active: isDropdownOpen }" >
@@ -241,6 +242,7 @@ export default{
 
     .ui.button{
         background-color: #3277cd !important;
+        
     }
     .dropdown .menu.active{
         border:none
@@ -252,4 +254,15 @@ export default{
        
     }
 
+    .ui.buttons .button:first-child{
+        max-width: 150px;
+        padding: 9px;
+    }
+    .username{
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .ui.buttons{
+        height: fit-content;
+    }
 </style>

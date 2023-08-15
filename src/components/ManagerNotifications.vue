@@ -310,7 +310,7 @@
                     });
             },*/
 
-            /*getPriorities(){
+            getPriorities(){
                 let url ="/api/getpriorities";
                 ServiceClient.post(url).then((response) =>{
                         
@@ -333,7 +333,7 @@
                     }
                 });
 
-            },*/
+            },
            
             getTasks(){
                 this.loader=true;
@@ -891,8 +891,8 @@
         },
         mounted(){
             
-            /*this.getPriorities()
-            this.getProjectsById()
+            this.getPriorities()
+            /*this.getProjectsById()
             this.getProjectParticipants()*/
             this.getTasks()
             console.log(this.$route)
@@ -919,10 +919,7 @@
         
     
         <div class="centerd-component-container" >
-            <div class="content-title task" >
-            <h1>{{projectData.name}}</h1>
-            <h2>{{ projectData.manager }}</h2>
-            </div>
+            
             <div class="scrolling-table-container">
                 <table class="ui selectable striped table" >
                     <thead>

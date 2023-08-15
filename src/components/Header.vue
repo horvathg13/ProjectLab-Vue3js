@@ -187,7 +187,7 @@ export default{
         </div>
         <div class="ui teal buttons" >
             <div class="ui button" @click="editProfile"><i class="user circle icon"></i>
-                <div class="username">{{username}}</div></div>
+                <div class="username"><h5>{{username}}</h5></div></div>
             <div class="ui floating dropdown icon button"  @click="toggleDropdown">
                 <i class="dropdown icon"></i>
                 <div  class="menu" :class="{ active: isDropdownOpen }" >
@@ -256,13 +256,17 @@ export default{
 
     .ui.buttons .button:first-child{
         max-width: 150px;
-        padding: 9px;
+        
+        display: inline-flex;
     }
     .username{
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    .ui.buttons{
-        height: fit-content;
+    .username h5{
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
+
 </style>

@@ -100,7 +100,7 @@ import VueClickAway from "vue3-click-away";
             },
             TaskDetailsEmit(){
                 this.$emit("TaskDetailsEmit",{data:this.data, readOnlyMode:true})
-            }
+            },
             /*dropdownDynamicDirection(){
                 return new Promise((resolve) => {
                     setTimeout(() => {
@@ -117,6 +117,9 @@ import VueClickAway from "vue3-click-away";
                 
                 
             }*/
+            LeaveProjectEmit(){
+                this.$emit("LeaveProjectEmit",{data:this.data})
+            }
         },
         mounted(){
            

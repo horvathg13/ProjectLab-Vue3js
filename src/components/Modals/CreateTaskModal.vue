@@ -20,7 +20,8 @@
            EditMode:false,
            EditData:{},
            readOnlyMode:false,
-            
+          // tryAgain:true,
+
         },
         data(){
             return{
@@ -51,13 +52,23 @@
             },
             'readOnlyMode':{
                 immediate:true,
+                deep:true,
                 handler(newValue){
-                    this.buttonDisable = newValue
+                    this.buttonDisable=newValue
                     console.log("readonly hello")
-                    //this.visible();
+                    
                 }
                 
-            }
+            },
+           /* 'TryAgain':{
+                immediate:true,
+                deep:true,
+                handler(newValue){
+                    this.buttonDisable=newValue
+                    console.log("try hello",newValue)
+                    
+                }
+            }*/
         },
         methods: {
            /* visible(){

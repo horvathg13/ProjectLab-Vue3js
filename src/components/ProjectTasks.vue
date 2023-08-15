@@ -71,6 +71,7 @@
             readOnlyMode:false,
             setSortData:[],
             setFilterData:[],
+            tryAgain:null,
         }
     },
     watch: {
@@ -139,7 +140,8 @@
             this.assignEmployee=[],
             this.RequestData=[],
             this.RemoveData=[];
-            this.readOnlyMode=false
+            this.readOnlyMode=null,
+            this.tryAgain=null,
             console.log("Bezártad a Modalt")
         },
 
@@ -177,6 +179,7 @@
                         setTimeout(() => {
                             this.show_popup = false
                             this.getTasks();
+                            this.cancelModal();
                         },  1500)
                     }
                 }).catch((error) => {
@@ -189,6 +192,7 @@
                             setTimeout(() => {
                                 this.show_error_popup = false
                                 this.errorArray=[];
+                                this.tryAgain=false;
                             },  2000)
                         }
                         if (error.response.data && error.response.data.message) {
@@ -700,7 +704,7 @@
 
                 ServiceClient.post(url).then((response) =>{
                     if (response.status == 200){
-                        console.log(response.data, "responseDATA")
+                        //console.log(response.data, "responseDATA")
                         for(let item in response.data){
                             this.statusDataTravel= response.data[item].status.map(u=>({id:u.id, name:u.task_status}))
                         }
@@ -734,13 +738,13 @@
                 }
                 this.setFilterData.push(selectData.select);
                 this.getTasks();
-                console.log(this.setFilterData, "SORTDA")
+                //console.log(this.setFilterData, "SORTDA")
 
             },
             clearFilter(){
                 this.setFilterData=[]
                 this.getTasks();
-                console.log(this.setFilterData, "SORTDA")
+                //console.log(this.setFilterData, "SORTDA")
             },
             Completed(emit){
                 const{data}=emit;
@@ -835,17 +839,17 @@
                 let foundMatch = false;
                 if(this.unreadMessage && this.unreadMessage !== undefined){
                     for (let item of this.unreadMessage.Task) {
-                        console.log(Object.values(item), "unreadPro");
+                        //console.log(Object.values(item), "unreadPro");
                         const values = Object.values(item);
                         for (let i = 0; i < values.length - 1; i++) {
                             //console.log(values[i], "unreadPro")
                             if (values[i] == task.task_id && values[i + 1] == this.$route.params.id) {
-                                console.log(values);
+                               // console.log(values);
                                 return foundMatch = true
                             
                             }else{
                                 foundMatch = false;;
-                                console.log("match", this.newMessage,Object.values(item)[i],task.task_id );
+                               // console.log("match", this.newMessage,Object.values(item)[i],task.task_id );
                             }
                             
                         }
@@ -990,7 +994,8 @@
             :projectData="this.projectData"
             :EditMode="this.EditMode"
             :EditData="this.Editdata"
-            :readOnlyMode="this.readOnlyMode"></CreateTaskModal>
+            :readOnlyMode="this.readOnlyMode"
+            :tryAgain="this.tryAgain"></CreateTaskModal>
     </Transition> 
     <Transition>
             <TaskAttachModal v-if="show_Attach_Modal == true"

@@ -132,7 +132,7 @@
             this.show_Comment_Modal = false
             this.Editdata={},
             this.EditMode = false
-            this.getTasks(this.p_id)
+            //this.getTasks(this.p_id)
             this.projectButtons = {},
             this.mergedButtons=[],
             this.showStatusModal =false,
@@ -176,7 +176,7 @@
                         this.show_popup = true
                         setTimeout(() => {
                             this.show_popup = false
-                            this.cancelModal()
+                            this.getTasks();
                         },  1500)
                     }
                 }).catch((error) => {
@@ -241,7 +241,8 @@
                         this.show_popup = true
                         setTimeout(() => {
                             this.show_popup = false
-                            this.cancelModal()
+                            this.getTasks();
+                            this.cancelModal();
                             this.message=""
                         },  1500)
                     }
@@ -415,7 +416,7 @@
                         this.show_popup = true
                         setTimeout(() => {
                             this.show_popup = false
-                            this.cancelModal()
+                            this.getTasks();
                             this.message="";
                         },  1500)
                     }
@@ -549,10 +550,10 @@
                        console.log(this.mergedButtons, "merged");
                        let foundMatch = false;
                         for (let item of this.unreadMessage.Task) {
-                            console.log(Object.values(item), "unreadPro");
+                            //console.log(Object.values(item), "unreadPro");
                             const values = Object.values(item);
                             for (let i = 0; i < values.length - 1; i++) {
-                                console.log(values[i], "unreadPro")
+                                //console.log(values[i], "unreadPro")
                                 if (values[i] == task.task_id && values[i + 1] == this.$route.params.id) {
                                     this.newMessage = true;
                                     foundMatch = true
@@ -675,7 +676,7 @@
                         setTimeout(() => {
                             this.show_popup = false
                             this.message = ""
-                            this.cancelModal()
+                            this.getTasks();
                         },  1500)
                         
                     }
@@ -761,7 +762,7 @@
                         setTimeout(() => {
                             this.show_popup = false
                             this.message = ""
-                            this.cancelModal()
+                            this.getTasks();
                         },  1500)
                         
                     }

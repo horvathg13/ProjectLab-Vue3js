@@ -116,4 +116,10 @@
         left:84%;
         cursor: pointer;
     }
+
+    .HP-title{
+        width: auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>

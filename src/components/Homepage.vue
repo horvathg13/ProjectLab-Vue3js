@@ -186,4 +186,14 @@ export default{
         height: auto;
         cursor: not-allowed;
     }
+    .HP-title{
+        text-align: center;
+        width: auto;
+        max-width: 800px;
+    }
+    .HP-title h1{
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+    }
 </style>

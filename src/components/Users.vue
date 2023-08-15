@@ -142,6 +142,7 @@ import {store} from '../VuexStore'
                         this.url = response.data.data.url
                         console.log(response.data.data.url)
                         setTimeout(() => {
+                            this.getUsers();
                             this.show_popup = false
                             this.message = "";
                         },  2000)

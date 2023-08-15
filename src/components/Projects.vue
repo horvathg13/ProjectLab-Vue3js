@@ -458,8 +458,10 @@
                         }
                         
                         if(this.projectButtons.employee && this.projectButtons.employee.length>0){
+                            this.mergedButtons.push(this.projectButtons.employee[5])
                             this.projectButtons.employee = this.projectButtons.employee.slice(0,2)
-                            console.log("entered in the hook")
+                            //console.log("entered in the hook",this.projectButtons.employee)
+                           
                             for(let item in this.projectButtons.employee){
                                 this.mergedButtons.push(this.projectButtons.employee[item])
                             } 
@@ -825,6 +827,38 @@
                     }
                 });
                 
+            },
+            leaveProject(project){
+                let dataTravel={};
+                dataTravel.projectId= project.project_id
+                console.log(dataTravel,"dataTravel")
+                let url = '/api/leave-project'
+              
+                ServiceClient.post(url,dataTravel).then(response => {
+                    if(response.status === 200){
+                        this.message = response.data.message
+                        this.show_popup = true
+                        setTimeout(() => {
+                            this.show_popup = false
+                            this.message = ""
+                            this.getProjects()
+                        },  1500)
+                    }
+                }).catch(error =>{
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message = error.response.data.message
+                            this.show_error_popup = true
+                            
+                            
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message = ""
+                            }, 2000)
+
+                        }
+                    }
+                });
             }
                 
                 
@@ -906,7 +940,8 @@
                                         @showParticipantModal="this.showParticipantModal"
                                         @edit="this.EditingModeSwitch"
                                         @CommentEmit="this.commentModalSwitch"
-                                        @SwitchModal="SwitchStatusModal">
+                                        @SwitchModal="SwitchStatusModal"
+                                        @LeaveProjectEmit="leaveProject(project)">
                                     </CircularMenu>
                                 </td>
                                 <td>

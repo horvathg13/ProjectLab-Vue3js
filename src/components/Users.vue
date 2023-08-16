@@ -68,13 +68,6 @@ import {store} from '../VuexStore'
             }else{
                 this.$router.push("/accessdenied")
             }
-            
-            
-                   
-                   
-                
-                
-            
         },
         trigger(data){
             const{trigger} = data

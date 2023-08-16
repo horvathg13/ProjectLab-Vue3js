@@ -156,6 +156,8 @@ form{
   width: auto;
   min-width: auto;
   max-width: max-content;
+  left: 0;
+  padding: 0;
   
 }
 .content-title.task h1{

@@ -906,9 +906,9 @@
         
     
         <div class="centerd-component-container" >
-            <div class="content-title task" >
-            <h1>{{projectData.name}}</h1>
-            <h2>{{ projectData.manager }}</h2>
+            <div class="content-title task" v-if="this.loader===false">
+                <h1>{{projectData.name}}</h1>
+                <!--<h2>{{ projectData.manager }}</h2>-->
             </div>
             <div class="scrolling-table-container">
                 <table class="ui selectable striped table" >
@@ -923,7 +923,7 @@
                             <th></th>
                             
                             <th>
-                            <button v-if="this.managerRole==true || this.adminRole==true || this.participantRole==true" class="ui right floated small primary labeled icon button" @click="showCreateTaskModal()"><i class="tasks icon"></i>New Task</button></th>
+                            <button v-if="this.managerRole==true || this.adminRole==true || this.participantRole==true" class="ui right floated small primary labeled icon button" @click="showCreateTaskModal()"><i class="tasks icon"></i>New</button></th>
                             
                         </tr>
                     </thead>

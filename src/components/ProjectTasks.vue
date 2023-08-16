@@ -72,7 +72,6 @@
             setSortData:[],
             setFilterData:[],
             tryAgain:null,
-            createNewTask:false
         }
     },
     watch: {
@@ -146,6 +145,7 @@
             this.readOnlyMode=null,
             this.tryAgai=null,
             this.createNewTask=false
+            this.newMessage=false,
             console.log("Bezártad a Modalt")
         },
 
@@ -851,28 +851,18 @@
                             if (values[i] == task.task_id && values[i + 1] == this.$route.params.id) {
                                // console.log(values);
                                 return foundMatch = true
+                               
                             
                             }else{
                                 foundMatch = false;;
                                // console.log("match", this.newMessage,Object.values(item)[i],task.task_id );
                             }
-                            
                         }
                         
-                        
-                    
                     }
-                   
                 }
               
-                    
-                    
-                
-                
             },
-
-
-            
         },
         beforeMount(){
             this.getUnreadMessages();

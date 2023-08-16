@@ -35,7 +35,7 @@ import VueClickAway from "vue3-click-away";
                 immediate:true,
                 handler(newValue){
                     this.setNewMessage = newValue
-                    //console.log("Hello from watcher", this.componentButtons)
+                    //console.log("Hello from watcher_newMessage",newValue)
                 }
 
             }
@@ -49,7 +49,7 @@ import VueClickAway from "vue3-click-away";
             onClickAway(){
                 this.circulardrop = false
                 this.componentButtons = []
-                this.setNewMessage=false
+                //this.setNewMessage=false
             },
             /*async circularMenuDropdown(){
                 this.circulardrop = !this.circulardrop

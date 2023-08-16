@@ -86,14 +86,14 @@ export default{
        <div class="ui large breadcrumb section" v-if="h1Title != 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && h1Title !=='Homepage'" :class="{active: h1Title}"> {{ h1Title }}</div>
         <div class="notifications-container">
             <div class="message-container" v-if="h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && this.lockMode==false" >
-                <div class="ui large red left pointing label"><a href="/notifications" @click="redirectToNotifications">
+                <div class="ui large red left pointing label" @click="redirectToNotifications"> 
                     <i class="bullhorn icon" v-if="message !== 0 && message !== null"></i>
-                    <i class="bullhorn open icon" v-else></i>{{ message ? message: 0 }}</a>
+                    <i class="bullhorn open icon" v-else></i>{{ message ? message: 0 }}
                 </div>
             </div>
             <div class="message-container manager" v-if="h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && this.lockMode==false" >
-                <div class="ui large red label"><a href="/manager-notifications" @click="redirectToManagerNotifications">
-                    <i class="binoculars icon" v-if="message !== 0 && message !== null"></i>{{ manager ? manager: 0 }}</a>
+                <div class="ui large red label" @click="redirectToManagerNotifications"> 
+                    <i class="binoculars icon" v-if="message !== 0 && message !== null"></i>{{ manager ? manager: 0 }}
                 </div>
             </div>
         </div>

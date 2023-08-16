@@ -71,7 +71,7 @@
                         this.buttonDisable=false
                     }
                     
-                    console.log("try hello",newValue,this.buttonDisable)
+                    console.log("try hello",newValue,this.buttonDisable, this.createNewTask,  this.EditMode)
                     
                 }
             }
@@ -168,8 +168,8 @@
                             </div>
                             <SelectComponents  :disable="buttonDisable" :VforArray="this.priorities" :editTask="this.SelectCompData" @select="makeSelection"></SelectComponents>
 
-                            <button v-if="this.readOnlyMode === false || this.readOnlyMode === null && this.EditMode=== false || this.EditMode=== null && this.createNewTask===true"  :disabled="buttonDisable" class="ui green button" type="submit">Create</button>
-                            <button v-if="this.readOnlyMode === false || this.readOnlyMode === null && this.EditMode=== true"  :disabled="buttonDisable" class="ui green button" type="submit">Edit</button>
+                            <button v-if="(this.readOnlyMode === false || this.readOnlyMode === null) && (this.EditMode=== false || this.EditMode=== null) && (this.createNewTask===true)"  :disabled="buttonDisable" class="ui green button" type="submit">Create</button>
+                            <button v-if="(this.readOnlyMode === false || this.readOnlyMode === null) && (this.EditMode=== true) && (this.createNewTask===false || this.createNewTask===null) "  :disabled="buttonDisable" class="ui green button" type="submit">Edit</button>
                         </form>
                     </div>
                     

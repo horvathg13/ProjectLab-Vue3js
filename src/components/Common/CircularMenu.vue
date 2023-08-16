@@ -117,9 +117,10 @@ import VueClickAway from "vue3-click-away";
                 
                 
             }*/
-            LeaveProjectEmit(){
-                this.$emit("LeaveProjectEmit",{data:this.data})
-            }
+            
+            DataSaveLeaveProjectEmit(){
+                this.$emit("DataSaveLeaveProjectEmit",{data:this.data, str:'leaveProject'})
+            },
         },
         mounted(){
            

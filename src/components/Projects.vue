@@ -13,7 +13,7 @@
   import Status from './Modals/Status.vue'
   import Filter from './Common/FilterButton.vue'
   import Sort from './Common/SortButton.vue'
-
+  import AreYouSureModal from './Modals/AreYouSureModal.vue';
   export default {
     components: {
         CreateProjectModal,
@@ -27,7 +27,8 @@
         CommentModal,
         Status,
         Filter,
-        Sort
+        Sort,
+        AreYouSureModal,
     },
 
     data() {
@@ -68,6 +69,9 @@
             setSortData:[],
             setFilterData:[],
             removeData:[],
+            triggerModal:false,
+            triggerValue:null,
+            dataSave:[],
         }
     },
     watch: {
@@ -87,6 +91,20 @@
        
     },
     methods:{
+        triggerfunction(data){
+            const{trigger} = data
+            this.triggerValue = trigger
+            console.log(this.triggerValue)
+            
+            if(this.triggerValue === true){
+                if(this.func === 'leaveProject'){
+                    this.leaveProject();
+                }
+            }else if(this.triggerValue===false){
+                this.triggerModal=false;
+                this.triggerValue=null;
+            }
+        },
         SetAddNewUser(){
             if(this.userRole.code !== 404){
                 const isAdmin= this.userRole.some(item=>item.role === "Admin");
@@ -828,9 +846,18 @@
                 });
                 
             },
-            leaveProject(project){
+            DataSave(kiskutya){
+                const {data, str} = kiskutya
+                this.dataSave = kiskutya.data;
+                this.func = kiskutya.str
+                console.log(kiskutya)
+                this.triggerModal= true
+
+            },
+            leaveProject(){
+                this.triggerModal=false;
                 let dataTravel={};
-                dataTravel.projectId= project.project_id
+                dataTravel.projectId= this.dataSave.project_id
                 console.log(dataTravel,"dataTravel")
                 let url = '/api/leave-project'
               
@@ -941,7 +968,7 @@
                                         @edit="this.EditingModeSwitch"
                                         @CommentEmit="this.commentModalSwitch"
                                         @SwitchModal="SwitchStatusModal"
-                                        @LeaveProjectEmit="leaveProject(project)">
+                                        @DataSaveLeaveProjectEmit="DataSave">
                                     </CircularMenu>
                                 </td>
                                 <td>
@@ -1003,6 +1030,7 @@
         :data="this.statusDataTravel"
         :task="false"
         @set-status="SetStatus"></Status>
+        <AreYouSureModal v-if="triggerModal==true" @trigger="triggerfunction"></AreYouSureModal>
     </div>
 </template>
 

@@ -517,12 +517,12 @@
                this.projectData.project_id= task.p_id
                console.log(this.ActualTaskData, "TASKDATA")
                let url=`/api/get-buttons/${task.p_id}`
-               ServiceClient.post(url).then(response => {
+                ServiceClient.post(url).then(response => {
                    if (response.status == 200){
                        this.projectButtons = {};
                        this.mergedButtons = [];
 
-                       for(let i in response.data){
+                        for(let i in response.data){
                            for(let item in response.data[i]){
                               
                                if(item == "employee"){
@@ -531,16 +531,23 @@
                                    this.projectButtons.manager= response.data[i][item]
                                }
                            }
-                       }
+                        }
                        
-                       if(this.projectButtons.employee && this.projectButtons.employee.length>0){
+                        if(this.projectButtons.employee && this.projectButtons.employee.length>0){
                            this.projectButtons.employee = this.projectButtons.employee.slice(1,5)
-                           for(let item in this.projectButtons.employee){
-                               this.mergedButtons.push(this.projectButtons.employee[item])
-                           } 
+                            for(let item in this.projectButtons.employee){
+                                if(this.projectButtons.employee[item].label === 'Completed' && task.status === 'Completed'){
+                                    let findButton =this.projectButtons.employee.indexOf(this.projectButtons.employee[item]);
+                                    this.projectButtons.employee.splice(findButton,1)
+                                    //console.log(findButton)
+                                }   
+                            } 
+                            for(let item in this.projectButtons.employee){
+                                this.mergedButtons.push(this.projectButtons.employee[item])
+                            } 
                         }  
                        
-                       if(this.projectButtons.manager && this.projectButtons.manager.length>0){
+                        if(this.projectButtons.manager && this.projectButtons.manager.length>0){
                             this.projectButtons.manager = this.projectButtons.manager.slice(1)
                            for(let item in this.projectButtons.manager){
                                this.mergedButtons.push(this.projectButtons.manager[item])

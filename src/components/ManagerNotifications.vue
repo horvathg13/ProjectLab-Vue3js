@@ -533,6 +533,7 @@
                        
                        if(this.projectButtons.employee && this.projectButtons.employee.length>0){
                             this.mergedButtons.push(this.projectButtons.employee[1])
+                            this.mergedButtons.push(this.projectButtons.employee[4])
                            
                         }  
                        

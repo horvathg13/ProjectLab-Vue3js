@@ -72,6 +72,7 @@
             setSortData:[],
             setFilterData:[],
             tryAgain:null,
+            createNewTask:false
         }
     },
     watch: {
@@ -119,6 +120,8 @@
         },
         showCreateTaskModal(){
            this.Editdata = null
+           this.tryAgain=null
+           this.createNewTask=true
            console.log(this.Editdata, "edit data is set null?")
             if(this.show_Create_Task_Modal==false){
                 this.show_Create_Task_Modal = true
@@ -141,12 +144,13 @@
             this.RequestData=[],
             this.RemoveData=[];
             this.readOnlyMode=null,
-            this.tryAgain=null,
+            this.tryAgai=null,
+            this.createNewTask=false
             console.log("Bezártad a Modalt")
         },
 
         createTask(data){
-            
+            this.tryAgain=null;
             const { task } = data;
             //a task statust szerver oldalon állítom be, minden automatikusan aktiv lesz.
             this.task_name = task.name ;
@@ -173,6 +177,7 @@
 
             let url ="/api/createtask";
                 ServiceClient.post(url,formData).then((response) =>{
+                   
                     console.log(response);
                     if (response.status == 200){
                         this.show_popup = true
@@ -995,7 +1000,8 @@
             :EditMode="this.EditMode"
             :EditData="this.Editdata"
             :readOnlyMode="this.readOnlyMode"
-            :tryAgain="this.tryAgain"></CreateTaskModal>
+            :tryAgain="this.tryAgain"
+            :createNewTask="this.createNewTask"></CreateTaskModal>
     </Transition> 
     <Transition>
             <TaskAttachModal v-if="show_Attach_Modal == true"

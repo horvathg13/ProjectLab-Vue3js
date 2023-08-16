@@ -20,7 +20,8 @@
            EditMode:false,
            EditData:{},
            readOnlyMode:false,
-          // tryAgain:true,
+           tryAgain:null,
+           createNewTask:Boolean,
 
         },
         data(){
@@ -55,20 +56,25 @@
                 deep:true,
                 handler(newValue){
                     this.buttonDisable=newValue
-                    console.log("readonly hello")
+                    console.log("readonly hello", newValue)
                     
                 }
                 
             },
-           /* 'TryAgain':{
+            'tryAgain':{
                 immediate:true,
                 deep:true,
                 handler(newValue){
-                    this.buttonDisable=newValue
-                    console.log("try hello",newValue)
+                    if(newValue==false){
+                        this.buttonDisable=newValue
+                    }else if(newValue === null){
+                        this.buttonDisable=false
+                    }
+                    
+                    console.log("try hello",newValue,this.buttonDisable)
                     
                 }
-            }*/
+            }
         },
         methods: {
            /* visible(){
@@ -128,7 +134,7 @@
                 </div>
                 <div class="header">
                     
-                    <h1 v-if="this.EditMode=== false && this.readOnlyMode === false">Let's create a task!</h1>
+                    <h1 v-if="this.EditMode=== false || this.EditMode=== null && this.readOnlyMode === false || this.readOnlyMode === null && this.createNewTask===true">Let's create a task!</h1>
                     <h1 v-if="this.EditMode=== true">Edit Mode</h1>
                     <h1 v-if="this.readOnlyMode === true">Task Details</h1>
                     
@@ -162,8 +168,8 @@
                             </div>
                             <SelectComponents  :disable="buttonDisable" :VforArray="this.priorities" :editTask="this.SelectCompData" @select="makeSelection"></SelectComponents>
 
-                            <button v-if="this.readOnlyMode === false && this.EditMode=== false"  :disabled="buttonDisable" class="ui green button" type="submit">Create</button>
-                            <button v-if="this.readOnlyMode === false && this.EditMode=== true"  :disabled="buttonDisable" class="ui green button" type="submit">Edit</button>
+                            <button v-if="this.readOnlyMode === false || this.readOnlyMode === null && this.EditMode=== false || this.EditMode=== null && this.createNewTask===true"  :disabled="buttonDisable" class="ui green button" type="submit">Create</button>
+                            <button v-if="this.readOnlyMode === false || this.readOnlyMode === null && this.EditMode=== true"  :disabled="buttonDisable" class="ui green button" type="submit">Edit</button>
                         </form>
                     </div>
                     

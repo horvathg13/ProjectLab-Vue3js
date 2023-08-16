@@ -438,14 +438,14 @@
                 this.EditMode = kiskutya.switching;
                 console.log(this.Editdata, "editmode")
                 this.show_Create_Task_Modal =true
-            },
+            },*/
             TaskDetails(readOnlydata){
                 const{data,readOnlyMode}=readOnlydata
                 console.log(readOnlydata.data, "READONLY")
                 this.Editdata = readOnlydata.data,
                 this.readOnlyMode = readOnlydata.readOnlyMode,
                 this.show_Create_Task_Modal =true
-            },*/
+            },
             commentModalSwitch(kismacska){
                 const{data} = kismacska
                 this.taskDataTravel = kismacska.data

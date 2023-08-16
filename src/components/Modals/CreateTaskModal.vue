@@ -134,7 +134,7 @@
                 </div>
                 <div class="header">
                     
-                    <h1 v-if="this.EditMode=== false || this.EditMode=== null && this.readOnlyMode === false || this.readOnlyMode === null && this.createNewTask===true">Let's create a task!</h1>
+                    <h1 v-if="(this.EditMode=== false || this.EditMode=== null) && (this.readOnlyMode === false || this.readOnlyMode === null) && (this.createNewTask===true)">Let's create a task!</h1>
                     <h1 v-if="this.EditMode=== true">Edit Mode</h1>
                     <h1 v-if="this.readOnlyMode === true">Task Details</h1>
                     

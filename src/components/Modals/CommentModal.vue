@@ -224,15 +224,20 @@ export default{
                         :class="{'message': message.sender_id !== currentUserId,
                                 'message response': message.sender_id === currentUserId
                                 }">
+                            
                             <div  :title="message.sender_name" :class="{'avatar response':message.sender_id === currentUserId, 'avatar message':message.sender_id !== currentUserId }" :style="setMessageBackgroundColor(message)"><h1>{{message.sender_name.charAt(0).toUpperCase() }}</h1></div>
+                            
                             <div
                             :class="{'message bubble ui left pointing label': message.sender_id !== currentUserId,
                                 'message bubble ui right pointing label': message.sender_id === currentUserId
                                 }">
                                 <div class="message bubble content">
+                                    <h5>{{message.created_at}}</h5>
                                     <h3>{{message.message}}</h3>
+                                    
                                 </div>
                             </div>
+                            
                         </div>
                     </div>
                     
@@ -251,6 +256,13 @@ export default{
 </template>
 
 <style scoped>
+    .message h5{
+        margin-bottom: 0;
+    }
+    .message h3{
+        margin-top: 10px;
+    }
+    .message-response
     i.large.icon{
         margin: 0 auto !important;
     }

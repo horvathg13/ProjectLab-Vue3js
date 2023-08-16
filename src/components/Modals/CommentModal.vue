@@ -376,6 +376,7 @@ export default{
         overflow: auto;
         scrollbar-width: thin;
         scrollbar-gutter: auto ;
+        max-height: 80px;
     }
     .ui.green.button.create{
         top:15px

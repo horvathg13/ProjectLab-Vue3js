@@ -544,9 +544,16 @@
                        
                        if(this.projectButtons.employee && this.projectButtons.employee.length>0){
                            this.projectButtons.employee = this.projectButtons.employee.slice(1,5)
-                           for(let item in this.projectButtons.employee){
+                            for(let item in this.projectButtons.employee){
+                                if(this.projectButtons.employee[item].label === 'Completed' && task.status === 'Completed'){
+                                    let findButton =this.projectButtons.employee.indexOf(this.projectButtons.employee[item]);
+                                    this.projectButtons.employee.splice(findButton,1)
+                                    //console.log(findButton)
+                                }   
+                            }
+                            for(let item in this.projectButtons.employee){
                                this.mergedButtons.push(this.projectButtons.employee[item])
-                           } 
+                            } 
                         }  
                        
                        if(this.projectButtons.manager && this.projectButtons.manager.length>0){

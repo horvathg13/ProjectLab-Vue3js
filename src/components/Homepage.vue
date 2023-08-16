@@ -14,6 +14,7 @@ export default{
             managerCard:false,
             temporaryMessage:false,
             temporaryCard:false,
+            countOfMyActiveTasks:0
         }
     },
     computed: {
@@ -69,10 +70,23 @@ export default{
         managerDb(){
             this.$router.push('/manager-dashboard')
         },
+        countofTasks(){
+
+            ServiceClient.post('/api/count-of-my-active-tasks').then(response => {
+                console.log(response.data, "countofTasks");
+                if(response.status === 200){
+                    this.countOfMyActiveTasks = response.data
+                    return "star icon"
+                }
+            }).catch(error =>{
+                console.log(error);
+            });
+        }
 
     },
     beforeMount() {
         this.getUserRoles();
+        this.countofTasks();
     },
     mounted(){
        
@@ -149,6 +163,7 @@ export default{
                 </div>
             </div>
             <div class="card" v-if="showCards == true" @click="mytasks">
+                <div class="new-icon" v-if="this.countOfMyActiveTasks>0"><h3>{{ countOfMyActiveTasks }}</h3></div>
                 <div class="image">
                 <img src="../assets/HomeP_icons/tasks.png">
                 </div>
@@ -195,5 +210,22 @@ export default{
         overflow: hidden;
         text-overflow: ellipsis;
 
+    }
+    .new-icon{
+       position: absolute;
+       z-index: 9;
+       left: calc(180px - 19.5%);
+       background-color: #68ff000f;
+       color:lime;
+       height: 35px;
+       width: 35px;
+       margin:0 auto !important;
+    }
+    .new-icon h3{
+        margin: 5px auto !important;
+        padding-left:12px
+    }
+    .ui.card > :first-child{
+        border-radius:50px !important
     }
 </style>

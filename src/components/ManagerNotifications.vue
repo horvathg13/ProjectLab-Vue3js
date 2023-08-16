@@ -926,6 +926,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Project</th>
                             <th>Name</th>
                             <th>Deadline</th>
                             <th>Status</th>
@@ -950,6 +951,7 @@
 
                         <tr v-for="task in taskData" :key="task.task_id" :class="rowBackground(task)">
                             <td>{{ task.task_id }}</td>
+                            <td>{{ task.p_name }}</td>
                             <td>{{task.task_name }}</td>
                             <td>{{task.deadline }}</td>
                             <td>{{task.status }}</td>

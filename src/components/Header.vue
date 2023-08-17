@@ -40,7 +40,7 @@ export default{
         '$store.state.userRole'(newValue) {
             this.userRole = newValue;
             console.log( this.userRole, "hello from user watcher");
-            this.SetUserButton();
+            //this.SetUserButton();
         }
 
     },
@@ -50,14 +50,26 @@ export default{
             return !!this.$store.state.userData.id
         },
        
+        buttonLockControll(){
+            const haveToken = localStorage.getItem("token");
+            const lock = this.userRole.code ? this.userRole.code === 404:false;
+            const controll = !haveToken || (haveToken && lock);
+            console.log(controll, "BTN")
+            return controll
+        },
+        managerButtonControll(){
+            const userRoles = Object.values(this.userRole);
+            return  userRoles.some((role)=>role.role==='Manager');
+        },
+        adminButtonControll(){
+            const userRoles = Object.values(this.userRole);
+            return  userRoles.some((role)=>role.role==='Admin');
+        },
+       
         
-       /* username() {
-            console.log(this.$store.state)
-            return this.$store.state.userData.name;
-        }*/
     },
     methods:{
-        SetUserButton(){
+        /*SetUserButton(){
             if(localStorage.getItem("token")){
                 if(this.userRole.code ?? this.userRole.code == 404){
                     this.lockMode = true
@@ -78,7 +90,7 @@ export default{
                 this.lockMode = true
 
             }
-        },
+        },*/
         toggleDropdown() {
             this.isDropdownOpen = !this.isDropdownOpen;
         },
@@ -119,14 +131,7 @@ export default{
             })
         
         },
-        /*getUserRoles(){
-            ServiceClient.post('/api/getUserRole').then(response => {
-                store.commit("setuserRole",response.data)
-                console.log(response.data, "getUserRole");
-            }).catch(error =>{
-            console.log(error);
-            });
-        }*/
+        
         home(){
             this.$router.push('/home')
         },
@@ -189,7 +194,7 @@ export default{
         }
     },
     beforeMount() {
-        this.SetUserButton();
+        //this.SetUserButton();
     },
     mounted(){
         
@@ -216,13 +221,13 @@ export default{
         </Transition>
         <div class="header-items">
             <ul>
-                <li v-if="lockMode==false" @click="home">Home</li>
-                <li v-if="userButton == true && lockMode==false" @click="users">Users</li>
-                <li v-if="lockMode==false" @click="notifications">Notifications</li>
-                <li v-if="lockMode==false" @click="projects">Projects</li>
-                <li v-if="lockMode==false" @click="fprojects">Favorite Projects</li>
-                <li v-if="lockMode==false" @click="mytasks">My Tasks</li>
-                <li v-if="managerButton===true && lockMode==false" @click="managerDb">Manager</li>
+                <li v-if="!buttonLockControll" @click="home">Home</li>
+                <li v-if="!buttonLockControll && adminButtonControll" @click="users">Users</li>
+                <li v-if="!buttonLockControll" @click="notifications">Notifications</li>
+                <li v-if="!buttonLockControll" @click="projects">Projects</li>
+                <li v-if="!buttonLockControll" @click="fprojects">Favorite Projects</li>
+                <li v-if="!buttonLockControll" @click="mytasks">My Tasks</li>
+                <li v-if="!buttonLockControll && managerButtonControll" @click="managerDb">Manager</li>
                 <!--<li v-if="lockMode==false">Statistics</li>-->
             </ul>
         </div>

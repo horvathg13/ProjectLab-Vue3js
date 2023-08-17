@@ -51,23 +51,36 @@ import {store} from '../VuexStore'
         '$store.state.userRole'(newValue) {
             this.userRole = newValue;
             console.log( this.userRole, "hello from user watcher");
-            this.SetAddNewUser()
+            //this.SetAddNewUser()
         }
     },
+    
     methods:{
         SetAddNewUser(){
-            if(this.userRole.code !== 404){
-                const isAdmin= this.userRole.some(item=>item.role === "Admin");
-                
-                if(isAdmin == true){
-                    this.AddNewUser=true
-                    console.log("CIAO", this.userRole);
-                }else{
-                    this.$router.push("/accessdenied")
+            ServiceClient.post('/api/getUserRole').then(response => {
+                if(response.status === 200){
+                    store.commit("setuserRole",response.data)
+                    this.userRole = response.data
+                    console.log(response.data, "getUserRole");
+                    if(this.userRole.code !== 404){
+                        console.log(this.userRole);
+                        const isAdmin= this.userRole.some(item=>item.role === "Admin");
+                        
+                        if(isAdmin == true){
+                            this.AddNewUser=true
+                            console.log("CIAO", this.userRole);
+                        }else{
+                            this.$router.push("/accessdenied")
+                        }
+                    }else{
+                        this.$router.push("/accessdenied")
+                    }
                 }
-            }else{
-                this.$router.push("/accessdenied")
-            }
+                
+            }).catch(error =>{
+                console.log(error);
+            });
+            
         },
         trigger(data){
             const{trigger} = data
@@ -393,9 +406,14 @@ import {store} from '../VuexStore'
         
 
         },
-        beforeMount(){
-            this.setUserRole();
+        beforeRouteEnter(to, from, next) {
+            next(vm => {
+                vm.SetAddNewUser();
+            });
         },
+        /*beforeMount(){
+            this.setUserRole();
+        },*/
         mounted(){
             this.getUsers()
             this.getRoles()

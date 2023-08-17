@@ -342,7 +342,7 @@
                 dataTravel.sortData = this.setSortData,
                 dataTravel.filterData=this.setFilterData
                 console.log(dataTravel, "travel");
-                let url =`/api/get-manager-tasks`
+                let url ='/api/get-manager-tasks'
 
                 ServiceClient.post(url,dataTravel).then((response) =>{
                         

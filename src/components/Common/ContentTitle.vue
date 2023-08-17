@@ -5,7 +5,6 @@ export default{
     
     props:{
         h1Title:"",
-        
         route:"",
         meta:[]
     },
@@ -21,36 +20,55 @@ export default{
         '$store.state.notifications'(newValue) {
             console.log(newValue.length,"kakakaokspd")
             this.message = newValue.length;
-            console.log(newValue.length, "hello notifica watch");
+            //console.log(newValue.length, "hello notifica watch");
         },
-        '$store.state.userRole'(newValue) {
+        '$store.state.userRole'(newValue){
+           
             this.userRole = newValue;
-            console.log( this.userRole, "hello from user watcher");
-            this.lock();
+            console.log(this.userRole, "hello from user watcher");
+            //this.lock();
+          
         },
         '$store.state.managerNotifications'(newValue) {
             console.log(newValue,"kakakaokspd")
             this.manager = newValue;
-            console.log(newValue, "hello ManagerNotifica watch");
+            //console.log(newValue, "hello ManagerNotifica watch");
         },
     },
     computed: {
         breadcrumbs() {
             return Array.isArray(this.meta) ? this.meta : [this.meta];
-            
         },
+        computedLock(){
+            const lock = this.userRole.code ? this.userRole.code === 404:false
+            //console.log(lock)
+            return lock
+        },
+        managerMode(){
+            const managerRoles = Object.values(this.userRole);
+            const findManager = managerRoles.some((role)=>role.role==='Manager')
+            //console.log(managerRoles, findManager);
+            return findManager
+        }
+       
         
-        
-    }, 
+    },
     methods:{
-        lock(){
+        /*lock(){
             if(this.userRole.code ?? this.userRole.code == 404){
                 this.lockMode = true
                     
             }else{
                 this.lockMode = false
+                
+                for(let i in this.userRole){
+                   if(this.userRole[i].role ==='Manager'){
+                    this.managerMode=true
+                    console.log(this.managerMode)
+                   }
+                }
             }   
-        },
+        },*/
         redirectToNotifications(){
             this.$router.push('/notifications')
         },
@@ -61,11 +79,11 @@ export default{
     },
    
     beforeMount() {
-        this.lock();
+        //this.lock()
         
     },
     mounted() {
-        
+        //this.lock();
     },
  
 }
@@ -85,13 +103,13 @@ export default{
         </div>
        <div class="ui large breadcrumb section" v-if="h1Title != 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && h1Title !=='Homepage'" :class="{active: h1Title}"> {{ h1Title }}</div>
         <div class="notifications-container">
-            <div class="message-container" v-if="h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && this.lockMode==false" >
+            <div class="message-container" v-if="(h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && this.computedLock==false)" >
                 <div class="ui large red left pointing label" @click="redirectToNotifications"> 
                     <i class="bullhorn icon" v-if="message !== 0 && message !== null"></i>
                     <i class="bullhorn open icon" v-else></i>{{ message ? message: 0 }}
                 </div>
             </div>
-            <div class="message-container manager" v-if="h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && this.lockMode==false" >
+            <div class="message-container manager" v-if="(h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && this.computedLock==false && this.managerMode === true)" >
                 <div class="ui large red label" @click="redirectToManagerNotifications"> 
                     <i class="binoculars icon" v-if="message !== 0 && message !== null"></i>{{ manager ? manager: 0 }}
                 </div>

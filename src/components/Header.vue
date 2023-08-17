@@ -60,7 +60,7 @@ export default{
         SetUserButton(){
             if(localStorage.getItem("token")){
                 if(this.userRole.code ?? this.userRole.code == 404){
-                this.lockMode = true
+                    this.lockMode = true
                 }else{
                     for(let i in this.userRole){
                         if(this.userRole[i].role=="Admin"){
@@ -69,18 +69,15 @@ export default{
                         }else if(this.userRole[i].role=="Manager"){
                             this.lockMode = false
                             this.managerButton=true
+                        }else{
+                            this.lockMode = false
                         }
-                
                     }
                 }
             }else{
                 this.lockMode = true
 
             }
-            
-            
-           
-            
         },
         toggleDropdown() {
             this.isDropdownOpen = !this.isDropdownOpen;

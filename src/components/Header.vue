@@ -168,6 +168,7 @@ export default{
                 if(response.status===200){
                     this.message=response.data.message
                     this.showPopup=true
+                    this.getUserData();
                     setTimeout(()=>{
                         this.showPopup=false
                         this.show_Profile_Modal=false;
@@ -190,6 +191,13 @@ export default{
                         this.showErrorPopup=false
                     },4000)
                 }
+            });
+        },
+        getUserData(){
+            ServiceClient.post('/api/getUserData').then(response => {
+                store.commit("setUserData",response.data);
+            }).catch(error =>{
+                console.log(error);
             });
         }
     },

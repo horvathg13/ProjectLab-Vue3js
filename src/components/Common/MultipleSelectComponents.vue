@@ -12,7 +12,7 @@ export default{
             remove:[],
             isDropdownOpen:false,
             dropdownDisbale:false,
-                
+            
         }
     },
     watch:{
@@ -73,7 +73,7 @@ export default{
     <div class=" ui fluid dropdown selection multiple" @click="toggleDrop" :class="{ active: selected.name,disabled:dropdownDisbale }">
         
         <i class="dropdown icon"></i>
-        <input type="hidden"  v-model="selected.id" :class="{}" >
+        <input type="hidden">
             <div class="selected-items">
             <a class="ui label transition activeEmployee" v-if="VforActiveArray" v-for="user in VforActiveArray" :key="user.id">{{ user.name ? user.name: "" }}<i class="delete icon" @click="removeActiveUser(user)"></i></a>
             <a class="ui label transition" v-for="user in selected" :key="user.id">{{ user.name ? user.name: "" }}<i class="delete icon" @click="removeUser(user)"></i></a>

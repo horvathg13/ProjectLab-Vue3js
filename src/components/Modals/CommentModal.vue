@@ -148,7 +148,7 @@ export default{
 
         },
         setMessageBackgroundColor(message){
-            if(this.NewParticipants.length>1){
+            if(this.NewParticipants.length !== null || this.NewParticipants.length !== undefined){
                 console.log(this.NewParticipants)
                 let findParticipant = this.NewParticipants.find((participant)=>participant.id === message.sender_id);
                 if(findParticipant){

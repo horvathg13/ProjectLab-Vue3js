@@ -113,7 +113,7 @@ export default{
                 <img src="../assets/HomeP_icons/temporary_lock.jpg">
                 </div>
                 <div class="content">
-                    <div class="header">STOP!</div>
+                    <h3>STOP!</h3>
                    
                 </div>
             </div>
@@ -122,7 +122,7 @@ export default{
                 <img src="../assets/HomeP_icons/users.png">
                 </div>
                 <div class="content">
-                    <div class="header">Users</div>
+                    <h3>Users</h3>
                    
                 </div>
             </div>
@@ -140,7 +140,7 @@ export default{
                 <img src="../assets/HomeP_icons/request_v2.png">
                 </div>
                 <div class="content">
-                    <div class="header">Notifications</div>
+                    <h3>Notifications</h3>
                     
                 </div>
             </div>
@@ -149,7 +149,7 @@ export default{
                 <img src="../assets/HomeP_icons/my_projects.png">
                 </div>
                 <div class="content">
-                    <div class="header">Projects</div>
+                    <h3>Project</h3>
                     
                 </div>
             </div>
@@ -158,7 +158,7 @@ export default{
                 <img src="../assets/HomeP_icons/favorite-book.png">
                 </div>
                 <div class="content">
-                    <div class="header">Favorite Projects</div>
+                    <h3>Favorite Projects</h3>
                     
                 </div>
             </div>
@@ -168,7 +168,7 @@ export default{
                 <img src="../assets/HomeP_icons/tasks.png">
                 </div>
                 <div class="content">
-                    <div class="header">My tasks</div>
+                    <h3>My tasks</h3>
                    
                 </div>
             </div>
@@ -177,7 +177,7 @@ export default{
                 <img src="../assets/HomeP_icons/manager.png">
                 </div>
                 <div class="content">
-                    <div class="header">Manager Dashboard</div>
+                    <h3>Manager Dashboard</h3>
                    
                 </div>
             </div>

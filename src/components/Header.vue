@@ -2,7 +2,8 @@
 import ServiceClient from '../ServiceClient';
 import { store } from '../VuexStore';
 import Success from './Common/Success_Popup.vue';
-import Error from './Common/ErrorPopup.vue'
+import Error from './Common/ErrorPopup.vue';
+import Profile from './Modals/ProfileModal.vue';
 
 export default{
     name: 'Header',
@@ -10,27 +11,31 @@ export default{
     
     components: {
        Success,
-       Error
+       Error,
+       Profile
     },
 
     data() {
         return {
             isDropdownOpen: false,
-            username:"",
+            //username:"",
             message:"",
             showPopup:false,
             showErrorPopup:false,
             userRole:{},
             userButton:false,
             lockMode:false,
-            managerButton:false
+            managerButton:false,
+            show_Profile_Modal:false,
+            userData:{},
            
         };
     },
     watch: {
         '$store.state.userData'(newValue) {
-            this.username = newValue.name;
-            console.log(this.username, "hello from header watch");
+           // this.username = newValue.name;
+            this.userData = newValue;
+            console.log(this.username, newValue, "hello from header watch");
         },
         '$store.state.userRole'(newValue) {
             this.userRole = newValue;
@@ -146,6 +151,45 @@ export default{
         managerDb(){
             this.$router.push('/manager-dashboard')
         },
+        profileModalSwitch(){
+            this.show_Profile_Modal = !this.show_Profile_Modal
+            
+        },
+        saveProfileData(arriveData){
+            const{name, email}=arriveData
+            let dataTravel={};
+            dataTravel.name=arriveData.name,
+            dataTravel.email=arriveData.email
+
+            let url='/api/save-profile-data';
+            ServiceClient.post(url,dataTravel).then(response => {
+                if(response.status===200){
+                    this.message=response.data.message
+                    this.showPopup=true
+                    setTimeout(()=>{
+                        this.showPopup=false
+                        this.show_Profile_Modal=false;
+                        this.message=""
+                    },1600)
+                }
+                
+            }).catch((error) =>{
+                if (error.response && error.response.data.message) {
+                    this.message= error.response.data.message
+                    this.showErrorPopup=true
+                    setTimeout(()=>{
+                        this.showErrorPopup=false
+                    },4000)
+                    
+                }else {
+                    this.message = "Server error occurred";
+                    this.showErrorPopup=true
+                    setTimeout(()=>{
+                        this.showErrorPopup=false
+                    },4000)
+                }
+            });
+        }
     },
     beforeMount() {
         this.SetUserButton();
@@ -186,8 +230,8 @@ export default{
             </ul>
         </div>
         <div class="ui teal buttons" >
-            <div class="ui button" @click="editProfile"><i class="user circle icon"></i>
-                <div class="username"><h5>{{username}}</h5></div></div>
+            <div class="ui button" @click="profileModalSwitch"><i class="user circle icon"></i>
+                <div class="username"><h5>{{userData.name}}</h5></div></div>
             <div class="ui floating dropdown icon button"  @click="toggleDropdown">
                 <i class="dropdown icon"></i>
                 <div  class="menu" :class="{ active: isDropdownOpen }" >
@@ -195,7 +239,12 @@ export default{
                 </div>
             </div>
         </div>
+        <Profile v-if="show_Profile_Modal === true"
+        :userData="this.userData"
+        @cancel-modal="profileModalSwitch"
+        @save-profile="saveProfileData"></Profile>
     </div>
+    
 </template>
 
 <style scoped>

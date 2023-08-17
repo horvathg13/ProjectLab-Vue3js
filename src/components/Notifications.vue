@@ -1,13 +1,13 @@
 <script>
   import {store} from "../VuexStore";
-  import Error from './Common/ErrorPopup.vue';
+  import Success from './Common/Success_Popup.vue';
   import ServiceClient from '../ServiceClient';
 export default{
     props:{
 
     },
     components:{
-        Error,
+        Success,
     },
     data(){
         return{
@@ -124,7 +124,7 @@ export default{
         <div class="background component">
         </div>
         <Transition name="drop">
-            <Error v-if="showErrorPopup == true" :message="this.message"></Error>
+            <Success v-if="showErrorPopup == true" :message="this.message"></Success>
         </Transition>
         <div class="content-container"> 
 

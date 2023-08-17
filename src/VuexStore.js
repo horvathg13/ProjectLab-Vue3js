@@ -46,7 +46,7 @@ export const store = createStore({
         setuserRole(state,userRole){
             state.userRole=userRole
         },
-        deleteUserRole(state,userRole){
+        deleteUserRole(state){
             state.userRole=""
         },
   

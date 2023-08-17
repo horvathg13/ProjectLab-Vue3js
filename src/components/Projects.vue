@@ -151,6 +151,9 @@
                         this.errorArray=error.response.data.validatorError
                         console.log( this.errorArray)
                         this.show_error_popup=true
+                        if(this.show_participant_modal==false){
+                            this.show_participant_modal = true
+                        }
                         setTimeout(() => {
                             this.show_error_popup = false
                             this.errorArray=[];

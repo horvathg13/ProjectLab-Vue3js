@@ -36,7 +36,7 @@
                     p_id: null,
                 },
                 priority_name:"",
-                buttonDisable:false,
+                buttonDisable:Boolean,
                 
                 
             }
@@ -56,7 +56,7 @@
                 deep:true,
                 handler(newValue){
                     this.buttonDisable=newValue
-                    console.log("readonly hello", newValue)
+                    console.log("readonly hello", newValue,this.buttonDisable, this.tryAgain)
                     
                 }
                 
@@ -67,8 +67,6 @@
                 handler(newValue){
                     if(newValue==false){
                         this.buttonDisable=newValue
-                    }else if(newValue === null){
-                        this.buttonDisable=false
                     }
                     
                     console.log("try hello",newValue,this.buttonDisable, this.createNewTask,  this.EditMode)
@@ -77,10 +75,7 @@
             }
         },
         methods: {
-           /* visible(){
-                const visibility = hidden
-                return visibility
-            },*/
+           
             toggleDrop(){
                 this.$emit("toggleDrop")
             },

@@ -835,7 +835,7 @@
                         const values = Object.values(item);
                         for (let i = 0; i < values.length - 1; i++) {
                             //console.log(values[i], "unreadPro")
-                            if (values[i] == task.task_id && values[i + 1] == this.projectData.project_id) {
+                            if (values[i] == task.task_id && values[i + 1] == task.p_id) {
                                 return foundMatch = true
                             
                             }else{
@@ -896,7 +896,7 @@
             /*this.getProjectsById()
             this.getProjectParticipants()*/
             this.getTasks()
-            console.log(this.$route)
+            //console.log(this.$route)
         }
     }
 
@@ -986,6 +986,7 @@
                     </tbody>
                     <tfoot class="full-width" v-if="this.loader == false">
                         <tr>
+                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>

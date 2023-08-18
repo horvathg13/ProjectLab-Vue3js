@@ -64,7 +64,7 @@
             statusDataTravel:[],
             loader:false,
             AddNewProject:false,
-            userRole:{},
+            userRole:[],
             errorArray:[],
             setSortData:[],
             setFilterData:[],
@@ -83,12 +83,17 @@
         '$store.state.userRole'(newValue) {
             this.userRole = newValue;
             console.log( this.userRole, "hello from user watcher");
-            this.SetAddNewUser()
+            //this.SetAddNewUser()
         }
     },
 
     computed:{
-       
+        SetAddNewUser(){
+            console.log(this.userRole)
+            const isAdmin= this.userRole ? this.userRole.some(item=>item.role === "Admin") :false
+            console.log(isAdmin);
+            return isAdmin
+        }
     },
     methods:{
         triggerfunction(data){
@@ -105,7 +110,7 @@
                 this.triggerValue=null;
             }
         },
-        SetAddNewUser(){
+        /*SetAddNewUser(){
             if(this.userRole.code !== 404){
                 const isAdmin= this.userRole.some(item=>item.role === "Admin");
                 
@@ -889,11 +894,23 @@
                         }
                     }
                 });
+            },
+            getUserRoles(){
+                ServiceClient.post('/api/getUserRole').then(response => {
+                    store.commit("setuserRole",response.data)
+                    this.userRole = response.data
+                    console.log(response.data, "getUserRole");
+                }).catch(error =>{
+                    console.log(error);
+                });
             }
                 
                 
 
             
+        },
+        beforeMount(){
+            this.getUserRoles()
         },
         mounted(){
             this.getUnreadMessages();
@@ -937,7 +954,7 @@
                                 <th></th>
                                 <th></th>
                                 <th>
-                                <button v-if="this.AddNewProject == true" class="ui right floated small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>
+                                <button v-if="SetAddNewUser" class="ui right floated small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>
                                 
                             </tr>
                         </thead>

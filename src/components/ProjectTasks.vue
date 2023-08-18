@@ -532,17 +532,19 @@
                        this.mergedButtons = [];
 
                        for(let i in response.data){
-                           for(let item in response.data[i]){
-                              
-                               if(item == "employee"){
+                            for(let item in response.data[i]){
+                                if(item == "employee"){
                                    this.projectButtons.employee= response.data[i][item]
-                               }else if(item == "manager"){
+                                }else if(item == "manager"){
                                    this.projectButtons.manager= response.data[i][item]
-                               }
-                           }
+                                }else if(item == "admin"){
+                                   this.projectButtons.admin= response.data[i][item]
+                                   console.log(this.projectButtons.admin)
+                                }
+                            }
                        }
                        
-                       if(this.projectButtons.employee && this.projectButtons.employee.length>0){
+                        if(this.projectButtons.employee && this.projectButtons.employee.length>0){
                            this.projectButtons.employee = this.projectButtons.employee.slice(1,5)
                             for(let item in this.projectButtons.employee){
                                 if(this.projectButtons.employee[item].label === 'Completed' && task.status === 'Completed'){
@@ -561,11 +563,17 @@
                             } 
                         }  
                        
-                       if(this.projectButtons.manager && this.projectButtons.manager.length>0){
+                        if(this.projectButtons.manager && this.projectButtons.manager.length>0){
                             this.projectButtons.manager = this.projectButtons.manager.slice(1)
                            for(let item in this.projectButtons.manager){
                                this.mergedButtons.push(this.projectButtons.manager[item])
                            }
+                        }
+                        if(this.projectButtons.admin && this.projectButtons.admin.length>0){
+                            this.projectButtons.admin = this.projectButtons.admin.slice(4,7)
+                            for(let item in this.projectButtons.admin){
+                               this.mergedButtons.push(this.projectButtons.admin[item])
+                            }
                         }
                       
                        console.log(this.mergedButtons, "merged");

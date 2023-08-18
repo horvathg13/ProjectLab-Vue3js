@@ -549,7 +549,12 @@
                                     let findButton =this.projectButtons.employee.indexOf(this.projectButtons.employee[item]);
                                     this.projectButtons.employee.splice(findButton,1)
                                     //console.log(findButton)
-                                }   
+                                }
+                                if(this.projectButtons.employee[item].label === 'Attach To<br> Myself' && task.mytask === true){
+                                    let findButton =this.projectButtons.employee.indexOf(this.projectButtons.employee[item]);
+                                    this.projectButtons.employee.splice(findButton,1)
+                                    //console.log(findButton)
+                                } 
                             }
                             for(let item in this.projectButtons.employee){
                                this.mergedButtons.push(this.projectButtons.employee[item])

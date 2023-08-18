@@ -853,17 +853,9 @@
                                 foundMatch = false;;
                                 console.log("match", this.newMessage,Object.values(item)[i],task.task_id );
                             }
-                            
                         }
-                    
-                    
                     }
                 }
-              
-                    
-                    
-                
-                
             },
 
 

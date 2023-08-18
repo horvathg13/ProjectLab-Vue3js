@@ -60,7 +60,7 @@ import VueClickAway from "vue3-click-away";
                                 <input :disabled="buttonDisable" type="email" name="email" placeholder="Email" v-model="email">
                             </div>
                     
-                            <button :disabled="buttonDisable" class="ui green button" type="submit" >Generate</button>
+                            <button :disabled="buttonDisable" class="ui green button" type="submit" >Save</button>
                         </form>
                     </div>
                     <div class="ui action input">

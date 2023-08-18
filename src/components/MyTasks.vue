@@ -81,10 +81,10 @@ export default{
                 if (error.response && error.response.status) {
                     if (error.response.data && error.response.data.message) {
                         this.message= error.response.data.message
-                        this.show_error_popup = true
+                        this.show_popup = true
                         this.loader=false;
                         setTimeout(() => {
-                            this.show_error_popup = false
+                            this.show_popup = false
                             this.message = "";
                         },  4500)
                         

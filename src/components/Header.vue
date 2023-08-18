@@ -30,6 +30,7 @@ export default{
             userData:{},
             errorArray:[],
             tryAgain:Boolean,
+            //hasToken: !!localStorage.getItem("token")
         };
     },
     watch: {
@@ -41,14 +42,15 @@ export default{
         '$store.state.userRole'(newValue) {
             this.userRole = newValue;
             console.log( this.userRole, "hello from user watcher");
-            //this.SetUserButton();
+            
         }
 
     },
+   
     computed: {
-       hasToken(){
-            console.log("token", !!localStorage.getItem("token"))
-            return !!this.$store.state.userData.id
+        hasToken() {
+            return !!localStorage.getItem("token");
+            //return !!this.$store.state.userData.id
         },
        
         buttonLockControll(){
@@ -226,7 +228,7 @@ export default{
 </script>
 
 <template>
-    <div class="header"> <!--v-if="hasToken"-->
+    <div class="header" > <!--v-if="hasToken"-->
         <a href="/home"><div class="logo">
             <img src="../assets/RegP_icons/lab-nobg.png">
             <h1><span>Pro</span>ject-Lab</h1>

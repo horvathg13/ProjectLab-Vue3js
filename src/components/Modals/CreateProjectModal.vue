@@ -106,7 +106,9 @@
                                 
                             </div>
                     
-                            <button :disabled="buttonDisable" class="ui green button" type="submit">Create</button>
+                            <button v-if="EditMode===true" :disabled="buttonDisable" class="ui green button" type="submit">Edit</button>
+                            <button v-else :disabled="buttonDisable" class="ui green button" type="submit">Create</button>
+
                         </form>
                     </div>
                     

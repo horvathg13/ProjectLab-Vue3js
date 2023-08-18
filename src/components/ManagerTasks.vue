@@ -536,7 +536,7 @@
                         if(this.projectButtons.employee && this.projectButtons.employee.length>0){
                            this.projectButtons.employee = this.projectButtons.employee.slice(1,5)
                             for(let item in this.projectButtons.employee){
-                                if(this.projectButtons.employee[item].label === 'Completed' && task.status === 'Completed'){
+                                if(this.projectButtons.employee[item].label === 'Completed'){
                                     let findButton =this.projectButtons.employee.indexOf(this.projectButtons.employee[item]);
                                     this.projectButtons.employee.splice(findButton,1)
                                     //console.log(findButton)
@@ -683,6 +683,7 @@
                         setTimeout(() => {
                             this.show_popup = false
                             this.message = ""
+                            this.getTasks()
                             this.cancelModal()
                         },  1500)
                         
@@ -860,6 +861,30 @@
 
 
             
+        },
+        beforeRouteEnter (to, from, next) {
+            ServiceClient.post('/api/getUserRole').then(response => {
+                if(response.status === 200){
+                    //store.commit("setuserRole",response.data)
+                    const userRole = response.data
+                    //console.log(response.data, "getUserRole");
+                    if(userRole.code !== 404){
+                        //console.log(this.userRole);
+                        const isAdmin= userRole.some(item=>item.role === "Admin" || item.role === "Manager");
+                        //console.log(isAdmin,"AMIN")
+                        if(isAdmin === false){
+                            next('/accessdenied')
+                        }else{
+                            next();
+                        }
+                    }else{
+                        next('/accessdenied')
+                    }
+                }
+                
+            }).catch(error =>{
+                console.log(error);
+            });
         },
         beforeMount(){
             this.getUnreadMessages();

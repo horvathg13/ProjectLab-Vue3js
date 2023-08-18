@@ -28,7 +28,8 @@ export default{
             managerButton:false,
             show_Profile_Modal:false,
             userData:{},
-           
+            errorArray:[],
+            tryAgain:Boolean,
         };
     },
     watch: {
@@ -177,19 +178,28 @@ export default{
                 }
                 
             }).catch((error) =>{
-                if (error.response && error.response.data.message) {
-                    this.message= error.response.data.message
-                    this.showErrorPopup=true
-                    setTimeout(()=>{
-                        this.showErrorPopup=false
-                    },4000)
-                    
-                }else {
-                    this.message = "Server error occurred";
-                    this.showErrorPopup=true
-                    setTimeout(()=>{
-                        this.showErrorPopup=false
-                    },4000)
+                if (error.response && error.response.status) {
+                    if(error.response.data.validatorError){
+                        this.errorArray=error.response.data.validatorError
+                        console.log( this.errorArray)
+                        this.showErrorPopup =true
+                        this.tryAgain=true,
+                        setTimeout(() => {
+                            this.showErrorPopup  = false
+                            this.errorArray=[];
+                            this.tryAgain=false;
+                        },  2000)
+                    }
+                    if (error.response.data && error.response.data.message) {
+                        this.message= error.response.data.message
+                        console.log(this.message, "ERRORMESSAGE")
+                        this.showErrorPopup  = true
+                        setTimeout(() => {
+                            this.showErrorPopup = false
+                            this.message="";
+                        },  2000)
+                        
+                    }
                 }
             });
         },
@@ -225,7 +235,7 @@ export default{
             <Success v-if="showPopup == true" :message="message"></Success>
         </Transition>
         <Transition name="drop">
-            <Error v-if="showErrorPopup == true" :message="message"></Error>
+            <Error v-if="showErrorPopup == true" :message="message" :errorarray="this.errorArray"></Error>
         </Transition>
         <div class="header-items">
             <ul>
@@ -252,7 +262,8 @@ export default{
         <Profile v-if="show_Profile_Modal === true"
         :userData="this.userData"
         @cancel-modal="profileModalSwitch"
-        @save-profile="saveProfileData"></Profile>
+        @save-profile="saveProfileData"
+        :tryAgain="this.tryAgain"></Profile>
     </div>
     
 </template>

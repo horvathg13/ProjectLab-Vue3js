@@ -177,14 +177,16 @@
 
             let url ="/api/createtask";
                 ServiceClient.post(url,formData).then((response) =>{
-                   
-                    console.log(response);
                     if (response.status == 200){
                         this.show_popup = true
+                        if(response.data.message){
+                            this.message = response.data.message
+                        }
                         setTimeout(() => {
                             this.show_popup = false
                             this.getTasks();
                             this.cancelModal();
+                            this.message=""
                         },  1500)
                     }
                 }).catch((error) => {

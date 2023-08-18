@@ -465,6 +465,30 @@ export default{
                             console.log("something went wrong",  this.ActualTaskData.projectId);
                         }
                     }
+                    let foundMatch = false;
+                    for (let item of this.unreadMessage.Task) {
+                        console.log(Object.values(item), "unreadPro");
+                        const values = Object.values(item);
+                        for (let i = 0; i < values.length - 1; i++) {
+                            console.log(values[i], "unreadPro")
+                            if (values[i] == task.id && values[i + 1] == task.projectId) {
+                                this.newMessage = true;
+                                foundMatch = true
+                                console.log("match", values[i], this.newMessage);
+                                break;
+                            }else{
+                                this.newMessage = false;
+                                console.log("match", this.newMessage,Object.values(item)[i],task.id );
+                            }
+                            if(foundMatch == true){
+                                break;
+                            }
+                        }
+                        if(foundMatch == true){
+                            break;
+                        }
+                        
+                    }
                     
                 }  
             }).catch((error) => {
@@ -665,6 +689,37 @@ export default{
             this.readOnlyMode = readOnlydata.readOnlyMode,
             this.show_Create_Task_Modal =true
         },
+        getUnreadMessages(){
+            ServiceClient.post('/api/get-unread-messages').then(response => {
+                console.log("getUnreadMessages",response.data);
+                // store.commit("getUnreadMessages", response.data);
+                this.unreadMessage = response.data
+            }).catch(error =>{
+                console.log(error);
+            });
+        },
+        ShoudShowEnvelope(task){
+            let foundMatch = false;
+            if(this.unreadMessage && this.unreadMessage !== undefined){
+                for (let item of this.unreadMessage.Task) {
+                    //console.log(Object.values(item), "unreadPro");
+                    const values = Object.values(item);
+                    for (let i = 0; i < values.length - 1; i++) {
+                        //console.log(values[i], "unreadPro")
+                        if (values[i] == task.id && values[i + 1] == task.projectId) {
+                            return foundMatch = true
+                        
+                        }else{
+                            foundMatch = false;;
+                            console.log("match", this.newMessage,Object.values(item)[i],task.id );
+                        }
+                    }
+                }
+            }
+        },
+    },
+    beforeMount(){
+        this.getUnreadMessages();
     },
     mounted(){
         this.getMyTasks();
@@ -703,6 +758,7 @@ export default{
                                 <th>Priority <Sort :data="this.taskData" :sortKey="'t_priority'" @sorted="Sort" @deleteSelected="clearFilter"></Sort></th>
                                 <th>Deadline <Sort :data="this.taskData" :sortKey="'deadline'" @sorted="Sort" @deleteSelected="clearFilter"></Sort></th>
                                 <th></th>
+                                <th></th>
                                
                             </tr>
                         </thead>
@@ -722,6 +778,9 @@ export default{
                                 <td>{{ task.status}}</td>
                                 <td>{{ task.priority}}</td>
                                 <td>{{ task.deadline}}</td>
+                                <td>
+                                    <i v-if="ShoudShowEnvelope(task)" class="red envelope icon"></i>
+                                </td>
                                 <td>
                                    <!--<i class="arrow large alternate circle right icon" @click="jump(task)"></i>-->
                                     <CircularMenu
@@ -747,6 +806,7 @@ export default{
                         </tbody>
                         <tfoot class="full-width" v-if="loader==false">
                             <tr>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>

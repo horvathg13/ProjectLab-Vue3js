@@ -578,11 +578,11 @@
                     if (response.status == 200){
                         console.log(response.data, "responseDATA")
                         this.message = response.data.message;
-                        this.getProjects();
                         this.show_popup = true;
                         setTimeout(() => {
                             this.show_popup = false
                             this.message = ""
+                            this.getProjects();
                             this.cancelModal()
                         },  1500)
                         
@@ -817,7 +817,7 @@
                                 <th>ID</th>
                                 <th>Manager</th>
                                 <th>Title</th>
-                                <th>Status <Filter :data="this.statusDataTravel" @select="filter" @deleteSelected="clearFilter" @click="getFilterData"></Filter></th>
+                                <th>Status</th>
                                 <th>Deadline <Sort :data="this.taskData" :sortKey="'deadline'" @sorted="Sort" @deleteSelected="clearFilter"></Sort></th>
                                 <th></th>
                                 <th></th>

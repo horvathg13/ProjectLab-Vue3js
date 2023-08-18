@@ -97,7 +97,7 @@
                     console.log(response.data, "getUserRole");
                     if(this.userRole.code !== 404){
                         console.log(this.userRole);
-                        const isAdmin= this.userRole.some(item=>item.role === "Admin");
+                        const isAdmin= this.userRole.some(item=>item.role === "Admin" || item.role === "Manager");
                         
                         if(isAdmin == true){
                             this.AddNewProject=true

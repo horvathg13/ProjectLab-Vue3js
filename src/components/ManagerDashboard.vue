@@ -29,19 +29,27 @@ export default{
             
             
         },
-        '$store.state.managerNotifications'(newValue) {
-            this.needToCheck = newValue;
+        '$store.state.managerNotifications':{
+            immediate:true,
+            handler(newValue){
+                this.needToCheck = newValue;
+            }
+            
             
         }
     },
    
     computed:{
         needToCheck(){
-            if(this.needToCheck !== null || this.needToCheck !==0){
+            const color = this.needToCheck ? 'big orange binoculars icon':'big green binoculars icon'
+            console.log(color)
+            return color
+            /*if(this.needToCheck !== null || this.needToCheck !==0){
+                console.log(this.needToCheck,"CHECK")
                 return "big orange binoculars icon"
             }else{
                 return "big green binoculars icon"
-            }
+            }*/
         }
     },
     methods:{
@@ -73,12 +81,25 @@ export default{
         managerTasks(){
             this.$router.push("/manager-tasks")
 
+        },
+        getManagerNotifications(){
+            ServiceClient.post('/api/get-manager-notification').then(response => {
+                store.commit("getManagerNotifications",response.data);
+                console.log(response.data, "ManagerNotifica");
+            }).catch(error =>{
+                console.log(error);
+            });
         }
 
     },
-    beforeMount() {
-       
+    beforeRouteEnter (to, from, next) {
+        next(vm => {
+            vm.getManagerNotifications();
+        });
     },
+    /*beforeMount() {
+       this.getManagerNotifications();
+    },*/
     mounted(){
         this.getUserRoles();
        

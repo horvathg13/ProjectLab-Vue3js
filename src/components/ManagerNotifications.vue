@@ -71,6 +71,7 @@
             readOnlyMode:false,
             setSortData:[],
             setFilterData:[],
+            userRole:{}
         }
     },
     watch: {
@@ -81,7 +82,27 @@
     },
    
     methods:{
-       
+        accessControll(){
+            ServiceClient.post('/api/getUserRole').then(response => {
+                if(response.status === 200){
+                    this.userRole = response.data
+                    //console.log(response.data, "getUserRole");
+                    if(this.userRole.code !== 404){
+                        //console.log(this.userRole);
+                        const isAdmin= this.userRole.some(item=>item.role === "Admin" || item.role === "Manager");
+                        //console.log(isAdmin,"AMIN")
+                        if(isAdmin === false){this.$router.push("/accessdenied")}
+                    }else{
+                        this.$router.push("/accessdenied")
+                    }
+                }
+                
+            }).catch(error =>{
+                console.log(error);
+            });
+                
+            
+        },
         toggleDropdownActive(){
             this.isDropdownOpenActive = !this.isDropdownOpenActive;
             console.log("Heyhó Active Dropping")
@@ -886,6 +907,29 @@
 
 
             
+        },
+        beforeRouteEnter (to, from, next) {
+            ServiceClient.post('/api/getUserRole').then(response => {
+                if(response.status === 200){
+                    const userRole = response.data
+                    //console.log(response.data, "getUserRole");
+                    if(userRole.code !== 404){
+                        //console.log(this.userRole);
+                        const isAdmin= userRole.some(item=>item.role === "Admin" || item.role === "Manager");
+                        //console.log(isAdmin,"AMIN")
+                        if(isAdmin === false){
+                            next('/accessdenied')
+                        }else{
+                            next();
+                        }
+                    }else{
+                        next('/accessdenied')
+                    }
+                }
+            
+            }).catch(error =>{
+                console.log(error);
+            });
         },
         beforeMount(){
             this.getUnreadMessages();

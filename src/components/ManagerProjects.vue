@@ -79,42 +79,14 @@
         '$store.state.userRole'(newValue) {
             this.userRole = newValue;
             console.log( this.userRole, "hello from user watcher");
-            this.SetAddNewUser()
+            //this.SetAddNewUser()
         }
     },
 
     computed:{
-       setAddNewUser(){
-
-       }
+       
     },
     methods:{
-        setAddNewProject(){
-            ServiceClient.post('/api/getUserRole').then(response => {
-                if(response.status === 200){
-                    store.commit("setuserRole",response.data)
-                    this.userRole = response.data
-                    console.log(response.data, "getUserRole");
-                    if(this.userRole.code !== 404){
-                        console.log(this.userRole);
-                        const isAdmin= this.userRole.some(item=>item.role === "Admin" || item.role === "Manager");
-                        
-                        if(isAdmin == true){
-                            this.AddNewProject=true
-                            console.log("CIAO", this.userRole);
-                        }else{
-                            this.AddNewProject=false
-                        }
-                    }else{
-                        this.$router.push('/accessdenied')
-                    }
-                }
-                
-            }).catch(error =>{
-                console.log(error);
-            });
-            
-        },
         /*unreadMessages(){
             this.unreadMessage= store.state.unreadMessages
             console.log(this.unreadMessage, "hello from Vuex")
@@ -785,8 +757,27 @@
             
         },
         beforeRouteEnter (to, from, next) {
-            next(vm => {
-                vm.setAddNewProject();
+            ServiceClient.post('/api/getUserRole').then(response => {
+                if(response.status === 200){
+                    store.commit("setuserRole",response.data)
+                    const userRole = response.data
+                    //console.log(response.data, "getUserRole");
+                    if(userRole.code !== 404){
+                        //console.log(this.userRole);
+                        const isAdmin= userRole.some(item=>item.role === "Admin" || item.role === "Manager");
+                        //console.log(isAdmin,"AMIN")
+                        if(isAdmin === false){
+                            next('/accessdenied')
+                        }else{
+                            next()
+                        }
+                    }else{
+                        next('/accessdenied')
+                    }
+                }
+                
+            }).catch(error =>{
+                console.log(error);
             });
         },
         mounted(){
@@ -831,7 +822,7 @@
                                 <th></th>
                                 <th></th>
                                 <th>
-                                <button v-if="this.AddNewProject == true" class="ui right floated small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>
+                                <button class="ui right floated small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>
                                 
                             </tr>
                         </thead>

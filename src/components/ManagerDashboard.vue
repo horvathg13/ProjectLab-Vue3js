@@ -53,6 +53,28 @@ export default{
         }
     },
     methods:{
+        accessControll(){
+            ServiceClient.post('/api/getUserRole').then(response => {
+                if(response.status === 200){
+                    store.commit("setuserRole",response.data)
+                    this.userRole = response.data
+                    //console.log(response.data, "getUserRole");
+                    if(this.userRole.code !== 404){
+                        //console.log(this.userRole);
+                        const isAdmin= this.userRole.some(item=>item.role === "Admin" || item.role === "Manager");
+                        //console.log(isAdmin,"AMIN")
+                        if(isAdmin === false){this.$router.push("/accessdenied")}
+                    }else{
+                        this.$router.push("/accessdenied")
+                    }
+                }
+                
+            }).catch(error =>{
+                console.log(error);
+            });
+                
+            
+        },
         SetUserCard(){
             if(this.userRole && this.userRole.code !==404){
                 if(this.userRole.filter(item=> item.role ==="Manager")){
@@ -65,14 +87,6 @@ export default{
                 this.$router.push('/accessdenied');
             }
             
-        },
-        getUserRoles(){
-            ServiceClient.post('/api/getUserRole').then(response => {
-                store.commit("setuserRole",response.data)
-                console.log(response.data, "getUserRole");
-            }).catch(error =>{
-            console.log(error);
-            });
         },
         managerProjects(){
             this.$router.push("/manager-projects")
@@ -93,15 +107,34 @@ export default{
 
     },
     beforeRouteEnter (to, from, next) {
-        next(vm => {
-            vm.getManagerNotifications();
+        ServiceClient.post('/api/getUserRole').then(response => {
+            if(response.status === 200){
+                store.commit("setuserRole",response.data)
+                const userRole = response.data
+                //console.log(response.data, "getUserRole");
+                if(userRole.code !== 404){
+                    //console.log(this.userRole);
+                    const isAdmin= userRole.some(item=>item.role === "Admin" || item.role === "Manager");
+                    //console.log(isAdmin,"AMIN")
+                    if(isAdmin === false){
+                        next('/accessdenied')
+                    }else{
+                        next();
+                    }
+                }else{
+                    next('/accessdenied')
+                }
+            }
+            
+        }).catch(error =>{
+            console.log(error);
         });
     },
     /*beforeMount() {
        this.getManagerNotifications();
     },*/
     mounted(){
-        this.getUserRoles();
+       
        
     }
 }

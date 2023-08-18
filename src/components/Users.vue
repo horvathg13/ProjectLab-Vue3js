@@ -56,32 +56,6 @@ import {store} from '../VuexStore'
     },
     
     methods:{
-        SetAddNewUser(){
-            ServiceClient.post('/api/getUserRole').then(response => {
-                if(response.status === 200){
-                    store.commit("setuserRole",response.data)
-                    this.userRole = response.data
-                    console.log(response.data, "getUserRole");
-                    if(this.userRole.code !== 404){
-                        console.log(this.userRole);
-                        const isAdmin= this.userRole.some(item=>item.role === "Admin");
-                        
-                        if(isAdmin == true){
-                            this.AddNewUser=true
-                            console.log("CIAO", this.userRole);
-                        }else{
-                            this.$router.push("/accessdenied")
-                        }
-                    }else{
-                        this.$router.push("/accessdenied")
-                    }
-                }
-                
-            }).catch(error =>{
-                console.log(error);
-            });
-            
-        },
         trigger(data){
             const{trigger} = data
             this.triggerValue = trigger
@@ -407,8 +381,27 @@ import {store} from '../VuexStore'
 
         },
         beforeRouteEnter(to, from, next) {
-            next(vm => {
-                vm.SetAddNewUser();
+            ServiceClient.post('/api/getUserRole').then(response => {
+                if(response.status === 200){
+                    store.commit("setuserRole",response.data)
+                    const userRole = response.data
+                    //console.log(response.data, "getUserRole");
+                    if(userRole.code !== 404){
+                        //console.log(this.userRole);
+                        const isAdmin= userRole.some(item=>item.role === "Admin");
+                        //console.log(isAdmin,"AMIN")
+                        if(isAdmin === false){
+                            next('/accessdenied')
+                        }else{
+                            next();
+                        }
+                    }else{
+                        next('/accessdenied')
+                    }
+                }
+                
+            }).catch(error =>{
+                console.log(error);
             });
         },
         /*beforeMount(){
@@ -450,7 +443,7 @@ import {store} from '../VuexStore'
                                 <th>E-mail</th>
                                 <th>Role</th>
                                 <th>
-                                <button v-if="this.AddNewUser == true" class="ui right floated small primary labeled icon button" @click="updateModal"><i class="user plus icon"></i>Add</button>
+                                <button class="ui right floated small primary labeled icon button" @click="updateModal"><i class="user plus icon"></i>Add</button>
                                 </th>
                                 
                             </tr>

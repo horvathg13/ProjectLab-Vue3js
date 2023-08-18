@@ -3,7 +3,8 @@
     export default{
         name: "AddUserModal",
         props:{
-            userData:{}
+            userData:{},
+            tryAgain:Boolean,
         },
         data(){
             return{
@@ -22,6 +23,15 @@
                     this.name = this.userData.name,
                     this.email = this.userData.email
                 }
+            },
+            'tryAgain':{
+                immediate:true,
+                handler(newValue){
+                    if(newValue==false){
+                        this.buttonDisable=newValue
+                    }
+                    //console.log(this.buttonDisable, newValue)
+                }   
             }
         },
         methods: {

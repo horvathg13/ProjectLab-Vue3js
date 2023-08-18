@@ -16,7 +16,7 @@ export default{
     },
     data(){
         return{
-            NewParticipants:Array,
+            NewParticipants:[],
             InputMessage:'',
             NewData:{},
             currentUserId:null,
@@ -148,7 +148,7 @@ export default{
 
         },
         setMessageBackgroundColor(message){
-            if(this.NewParticipants.length !== null || this.NewParticipants.length !== undefined){
+            if(this.NewParticipants.length !== null || this.NewParticipants.length !== undefined || this.NewParticipants.length !== 0){
                 console.log(this.NewParticipants)
                 let findParticipant = this.NewParticipants.find((participant)=>participant.id === message.sender_id);
                 if(findParticipant){

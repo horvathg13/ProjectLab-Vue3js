@@ -162,7 +162,11 @@
     }
     .field label{
         font-weight: bold;
-        color: rgb(0 0 0 / 62%) !important  
+        color: rgb(0 0 0 / 62%) !important;
+        max-height:60px;
+        overflow: auto;
+        scrollbar-width: thin;
+        
     }
 
     .close{

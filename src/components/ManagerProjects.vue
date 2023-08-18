@@ -84,20 +84,35 @@
     },
 
     computed:{
-       
+       setAddNewUser(){
+
+       }
     },
     methods:{
-        SetAddNewUser(){
-            if(this.userRole.code !== 404){
-                const isAdmin= this.userRole.some(item=>item.role === "Admin");
-                
-                if(isAdmin == true){
-                    this.AddNewProject=true
-                    console.log("CIAO", this.userRole);
+        setAddNewProject(){
+            ServiceClient.post('/api/getUserRole').then(response => {
+                if(response.status === 200){
+                    store.commit("setuserRole",response.data)
+                    this.userRole = response.data
+                    console.log(response.data, "getUserRole");
+                    if(this.userRole.code !== 404){
+                        console.log(this.userRole);
+                        const isAdmin= this.userRole.some(item=>item.role === "Admin");
+                        
+                        if(isAdmin == true){
+                            this.AddNewProject=true
+                            console.log("CIAO", this.userRole);
+                        }else{
+                            this.AddNewProject=false
+                        }
+                    }else{
+                        this.$router.push('/accessdenied')
+                    }
                 }
-            }else{
-                this.$router.push("/accessdenied")
-            }
+                
+            }).catch(error =>{
+                console.log(error);
+            });
             
         },
         /*unreadMessages(){
@@ -769,6 +784,11 @@
 
             
         },
+        beforeRouteEnter (to, from, next) {
+            next(vm => {
+                vm.setAddNewProject();
+            });
+        },
         mounted(){
             this.getUnreadMessages();
             this.getProjects()
@@ -861,6 +881,7 @@
                         </tbody>
                         <tfoot class="full-width" v-if="loader==false">
                             <tr>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>

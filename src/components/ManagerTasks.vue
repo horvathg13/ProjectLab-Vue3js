@@ -132,7 +132,7 @@
             this.show_Comment_Modal = false
             this.Editdata={},
             this.EditMode = false
-            this.getTasks(this.p_id)
+            //this.getTasks(this.p_id)
             this.projectButtons = {},
             this.mergedButtons=[],
             this.showStatusModal =false,

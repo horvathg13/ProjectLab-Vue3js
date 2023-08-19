@@ -13,6 +13,7 @@
   import Status from './Modals/Status.vue'
   import Filter from './Common/FilterButton.vue'
   import Sort from './Common/SortButton.vue'
+  import Loader from './Common/Loading.vue';
 
   export default {
     components: {
@@ -27,7 +28,8 @@
         CommentModal,
         Status,
         Filter,
-        Sort
+        Sort,
+        Loader
     },
 
     data() {
@@ -772,6 +774,7 @@
             <div class="centerd-component-container">
                 
                 <div class="scrolling-table-container">
+                    <Loader v-if="loader==true"></Loader>
                     <table class="ui selectable striped table">
                         <thead>
                             <tr>
@@ -787,15 +790,7 @@
                                 
                             </tr>
                         </thead>
-                        <tbody v-if="loader==true">
-                            <div class="ui segment" >
-                                <div class="ui active dimmer">
-                                    <div class="ui small text loader">Loading</div>
-                                </div>
-                                <p></p>
-                            </div>
-                        </tbody>
-                        <tbody v-if="loader==false">
+                        <tbody>
                             <tr v-for="project in getprojects" :key="project.id" :class="rowBackground(project)">
                                 <td>{{project.project_id}}</td>
                                 <td>{{project.manager}}</td>

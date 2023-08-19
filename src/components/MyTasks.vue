@@ -9,6 +9,7 @@
     import Status from './Modals/Status.vue'
     import Sort from './Common/SortButton.vue'
     import {store} from '../VuexStore'
+    import Loader from './Common/Loading.vue'
     
 export default{
     data(){
@@ -62,6 +63,13 @@ export default{
         CommentModal,
         Status,
         Sort,
+        Loader,
+    },
+    watch: {
+        '$store.state.unreadMessages'(newValue) {
+            this.unreadMessage = newValue;
+            console.log(this.unreadMessage, "hello from watch");
+        }
     },
     methods:{
         getMyTasks(){
@@ -690,6 +698,7 @@ export default{
         },
         getUnreadMessages(){
             this.unreadMessage = this.$store.state.unreadMessages
+            console.log(this.unreadMessage, "ITT VAGYOK")
             /*ServiceClient.post('/api/get-unread-messages').then(response => {
                 console.log("getUnreadMessages",response.data);
                 // store.commit("getUnreadMessages", response.data);
@@ -700,7 +709,8 @@ export default{
         },
         ShoudShowEnvelope(task){
             let foundMatch = false;
-            if(this.unreadMessage && this.unreadMessage !== undefined){
+            if(this.unreadMessage && this.unreadMessage !== undefined && this.unreadMessage.Task !== undefined){
+                console.log(this.unreadMessage,"HOL VAGYOK")
                 for (let item of this.unreadMessage.Task) {
                     //console.log(Object.values(item), "unreadPro");
                     const values = Object.values(item);
@@ -719,12 +729,13 @@ export default{
         },
     },
     beforeMount(){
-        this.getUnreadMessages();
+       this.getUnreadMessages();
     },
     mounted(){
+       
         this.getMyTasks();
         this.getPriorities();
-        
+         
         
     },
 }
@@ -748,6 +759,7 @@ export default{
             <div class="centerd-component-container">
                 
                 <div class="scrolling-table-container">
+                    <Loader v-if="loader==true"></Loader>
                     <table class="ui selectable striped table">
                         <thead>
                             <tr>
@@ -762,15 +774,7 @@ export default{
                                
                             </tr>
                         </thead>
-                        <tbody v-if="loader==true">
-                            <div class="ui segment" >
-                                <div class="ui active dimmer">
-                                    <div class="ui small text loader">Loading</div>
-                                </div>
-                                <p></p>
-                            </div>
-                        </tbody>
-                        <tbody v-if="loader==false">
+                        <tbody>
                             <tr v-for="task in myTasks" :key="task.id" :class="rowBackground(task)">
                                 <td>{{task.id}}</td>
                                 <td>{{task.projectName}}</td>

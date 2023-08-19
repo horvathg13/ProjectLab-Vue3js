@@ -74,6 +74,7 @@
             triggerModal:false,
             triggerValue:null,
             dataSave:[],
+            tryAgain:null,
         }
     },
     watch: {
@@ -223,7 +224,7 @@
                     console.log(response)
                 }
             }).catch((error) => {
-                    
+                this.tryAgain=null;    
                 if (error.response && error.response.status) {
                     if(error.response.data.validatorError){
                             this.errorArray=error.response.data.validatorError
@@ -241,6 +242,7 @@
                         setTimeout(() => {
                             this.show_error_popup = false
                             this.message = "";
+                            this.tryAgain=false;
                         },  2000)
                         
                     }
@@ -283,26 +285,19 @@
         getUsers(){
             let url ="/api/getusers";
             ServiceClient.post(url).then((response) =>{
-                    
                     if (response.status == 200){
-                        
                         this.getusers=response.data
-                        
-                        
-                    
                     }
-                }).catch((error) => {
-                        
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                            },  4500)
-                            
-                        }
+            }).catch((error) => {
+                if (error.response && error.response.status) {
+                    if (error.response.data && error.response.data.message) {
+                        this.show_error_popup = true
+                        setTimeout(() => {
+                            this.show_error_popup = false
+                        },  4500)
                     }
-                });
+                }
+            });
         },
             
         redirect(project){
@@ -470,7 +465,7 @@
                             }
                             console.log(item, "projectBtns")
                         }
-                        console.log(response.data)
+                        console.log(response.data, "RESP")
                     }
                     
                     if(this.projectButtons.employee && this.projectButtons.employee.length>0){
@@ -484,7 +479,7 @@
                         
                     }
                     if(this.projectButtons.admin && this.projectButtons.admin.length>0){
-                        this.projectButtons.admin = this.projectButtons.admin.slice(-4)
+                        this.projectButtons.admin = this.projectButtons.admin.slice(3,8)
                         for(let item in this.projectButtons.admin){
                             this.mergedButtons.push(this.projectButtons.admin[item])
                         }
@@ -909,7 +904,8 @@
                 :getusers="this.getusers" 
                 :isDropdownOpen="this.isDropdownOpen"
                 :EditMode="this.EditMode"
-                :EditData="this.Editdata"></CreateProjectModal>
+                :EditData="this.Editdata"
+                :tryAgain="this.tryAgain"></CreateProjectModal>
         </Transition>
         <ProjectTasks v-if="redirectToTasks==true"
         :projectData="this.projectData"></ProjectTasks>

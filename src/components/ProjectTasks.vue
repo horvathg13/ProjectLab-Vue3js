@@ -457,6 +457,7 @@
                 });
             },
             SendMessage(emitData){
+                
                 const{participants,message,data} = emitData
                 let projectId = null;
                 projectId = this.projectData.project_id;
@@ -475,13 +476,17 @@
                         },  1500)
                         }
                 }).catch((error) => {
+                    this.tryAgain=null;
                     if (error.response && error.response.status) {
                         if (error.response.data && error.response.data.message) {
                             this.message=error.response.data.message
                             this.show_error_popup = true
+                           
                             setTimeout(() => {
                                 this.show_error_popup = false
                                 this.message = "";
+                                this.tryAgain=false
+                                console.log("helló")
                             },  2000)
                         }
                     }
@@ -535,14 +540,16 @@
                             }
                         }
                         if(this.projectButtons.admin && this.projectButtons.admin.length>0){
+                            this.mergedButtons.push(this.projectButtons.admin[8]);
                             this.projectButtons.admin = this.projectButtons.admin.slice(4,7)
                             for(let item in this.projectButtons.admin){
                                this.mergedButtons.push(this.projectButtons.admin[item])
                             }
                         }
                       
-                       console.log(this.mergedButtons, "merged");
-                       let foundMatch = false;
+                        console.log(this.mergedButtons, "merged");
+                        
+                        let foundMatch = false;
                         for (let item of this.unreadMessage.Task) {
                             //console.log(Object.values(item), "unreadPro");
                             const values = Object.values(item);
@@ -942,7 +949,7 @@
     :taskData="this.taskDataTravel"
     :Participants="this.getActiveTaskEmployee"
     :projectId ="this.$route.params.id"
-    ></CommentModal>
+    :tryAgain="this.tryAgain"></CommentModal>
     <Status v-if="this.showStatusModal == true"
     @cancel-modal="cancelModal"
     :data="this.statusDataTravel"

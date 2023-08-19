@@ -18,6 +18,7 @@
             selected:{},
             EditMode:false,
             EditData:{},
+            tryAgain:null,
             
             
         },
@@ -33,6 +34,18 @@
                 date: '',
                 buttonDisable:false  
                 
+            }
+        },
+        watch:{
+            'tryAgain':{
+                immediate:true,
+                deep:true,
+                handler(newValue){
+                   //console.log("MÓKA",this.buttonDisable, newValue)
+                    if(newValue== false){
+                        this.buttonDisable=newValue
+                    }
+                }
             }
         },
         

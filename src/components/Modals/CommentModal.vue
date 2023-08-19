@@ -8,12 +8,13 @@ export default{
         Participants:Array,
         projectData:null,
         taskData:null,
-        
+        tryAgain:null,
         projectId:null,
     },
     components:{
         ErrorPopup,
     },
+    
     data(){
         return{
             NewParticipants:[],
@@ -32,6 +33,21 @@ export default{
         }
         
 
+    },
+
+    watch:{
+        'tryAgain':{
+            immediate:true,
+            deep:true,
+            handler(newValue){
+                console.log("MÓKA",this.buttonDisable, newValue)
+                if(newValue== false){
+                    this.buttonDisable=newValue
+                }
+                
+            }
+            
+        }
     },
     created(){
         

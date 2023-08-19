@@ -4,6 +4,12 @@ import ServiceClient from "./ServiceClient";
 import {store} from "./VuexStore"
 import ContentTitle from './components/Common/ContentTitle.vue'
  
+ServiceClient.post('/api/get-unread-messages').then(response => {
+  console.log("getUnreadMessages",response.data);
+  store.commit("getUnreadMessages", response.data);
+}).catch(error =>{
+  console.log(error);
+});
 
 ServiceClient.post('/api/getUserData').then(response => {
   store.commit("setUserData",response.data);
@@ -19,6 +25,7 @@ setInterval(() => {
     console.log(error);
   });
 }, 30000);
+
 
 
 ServiceClient.post('/api/notifications').then(response => {

@@ -10,6 +10,7 @@
   import Status from './Modals/Status.vue'
   import Filter from './Common/FilterButton.vue'
   import Sort from './Common/SortButton.vue'
+  import Loader from './Common/Loading.vue';
 
   export default {
     name: "ProjectTasks",
@@ -24,6 +25,7 @@
         Status,
         Filter,
         Sort,
+        Loader
     },
     props:{
         
@@ -772,6 +774,7 @@
             },
             getUnreadMessages(){
                 this.unreadMessage = this.$store.state.unreadMessages
+                console.log(this.unreadMessage, "ITT VAGYOK")
                 /*ServiceClient.post('/api/get-unread-messages').then(response => {
                     console.log("getUnreadMessages",response.data);
                    // store.commit("getUnreadMessages", response.data);
@@ -782,7 +785,8 @@
             },
             ShoudShowEnvelope(task){
                 let foundMatch = false;
-                if(this.unreadMessage && this.unreadMessage !== undefined){
+                if(this.unreadMessage && this.unreadMessage !== undefined && this.unreadMessage.Task !== undefined){
+                    console.log(this.unreadMessage, "HOL VAGYOK")
                     for (let item of this.unreadMessage.Task) {
                         //console.log(Object.values(item), "unreadPro");
                         const values = Object.values(item);
@@ -801,14 +805,15 @@
             },
         },
         beforeMount(){
-            this.getUnreadMessages();
+            
         },
         mounted(){
-            
+            this.getUnreadMessages();
             this.getPriorities()
             this.getProjectsById()
             this.getProjectParticipants()
             this.getTasks()
+
             console.log(this.$route)
         }
     }
@@ -838,6 +843,7 @@
                 <!--<h2>{{ projectData.manager }}</h2>-->
             </div>
             <div class="scrolling-table-container">
+                <Loader v-if="loader===true"></Loader>
                 <table class="ui selectable striped table" >
                     <thead>
                         <tr>
@@ -854,14 +860,6 @@
                             
                         </tr>
                     </thead>
-                    <tbody v-if="loader==true">
-                            <div class="ui segment" >
-                                <div class="ui active dimmer">
-                                    <div class="ui small text loader">Loading</div>
-                                </div>
-                                <p></p>
-                            </div>
-                    </tbody>
                     <tbody v-if="loader==false">
 
                         <tr v-for="task in taskData" :key="task.task_id" :class="rowBackground(task)">

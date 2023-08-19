@@ -88,6 +88,7 @@ export default{
     beforeMount() {
         this.getUserRoles();
         this.countofTasks();
+        this.SetUserCard();
     },
     mounted(){
        

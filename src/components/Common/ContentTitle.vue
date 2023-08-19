@@ -49,8 +49,19 @@ export default{
             const findManager = managerRoles.some((role)=>role.role==='Manager')
             //console.log(managerRoles, findManager);
             return findManager
+        },
+        systemNotification(){
+            const notification = this.$store.state.notifications
+            this.message = notification ? notification.length:0
+            console.log(this.message, "heyhü")
+            return this.message
+        },
+        managerNotification(){
+            const notification = this.$store.state.managerNotifications
+            this.manager = notification ? notification:0
+            console.log(this.manager, "heyhü")
+            return this.manager
         }
-       
         
     },
     methods:{
@@ -105,13 +116,13 @@ export default{
         <div class="notifications-container">
             <div class="message-container" v-if="(h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && this.computedLock==false)" >
                 <div class="ui large red left pointing label" @click="redirectToNotifications"> 
-                    <i class="bullhorn icon" v-if="message !== 0 && message !== null"></i>
+                    <i class="bullhorn icon" v-if="systemNotification"></i>
                     <i class="bullhorn open icon" v-else></i>{{ message ? message: 0 }}
                 </div>
             </div>
             <div class="message-container manager" v-if="(h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && this.computedLock==false && this.managerMode === true)" >
                 <div class="ui large red label" @click="redirectToManagerNotifications"> 
-                    <i class="binoculars icon" v-if="message !== 0 && message !== null"></i>{{ manager ? manager: 0 }}
+                    <i class="binoculars icon" v-if="managerNotification"></i>{{ manager ? manager: 0 }}
                 </div>
             </div>
         </div>

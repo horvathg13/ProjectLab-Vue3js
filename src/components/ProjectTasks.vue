@@ -125,8 +125,6 @@
             if(this.show_Create_Task_Modal==false){
                 this.show_Create_Task_Modal = true
             }
-            
-           
         },
 
         cancelModal(){
@@ -159,11 +157,8 @@
             this.t_priority = task.priority;
             this.task_id = task.id;
             console.log(this.deadline, this.task_name, this.description, this.t_priority)
-            
            
             this.p_id= this.projectData.project_id;
-            
-            
             
             let formData = new FormData();
             formData.append("task_name", this.task_name);
@@ -172,8 +167,6 @@
             formData.append("project_id",this.p_id);
             formData.append("task_priority",this.t_priority);
             formData.append("task_id",this.task_id);
-            
-            
 
             let url ="/api/createtask";
                 ServiceClient.post(url,formData).then((response) =>{
@@ -214,7 +207,6 @@
                         }
                     }
                 });
-            
             },
             AssignEmployeeToTask(data){
                 const {selected_employee, remove_employee}=data
@@ -267,38 +259,30 @@
                                 this.show_error_popup = false
                                 this.message="";
                             },  2000)
-                            
                         }
                     }
                 });
-            
             },
-            
-        
 
             getProjectsById(){
                 let url =`/api/projects/${this.$route.params.id}`;
                 ServiceClient.post(url).then((response) =>{
-                        
-                        if (response.status == 200){
-                            
-                            this.projectData=response.data
-                            console.log(this.projectData, "ProjectData")
+                    if (response.status == 200){
+                        this.projectData=response.data
+                        console.log(this.projectData, "ProjectData")
+                    }
+                }).catch((error) => {
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message = error.response.data.message
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message="";
+                            },  2000)
                         }
-                    }).catch((error) => {
-                            
-                        if (error.response && error.response.status) {
-                            if (error.response.data && error.response.data.message) {
-                                this.message = error.response.data.message
-                                this.show_error_popup = true
-                                setTimeout(() => {
-                                    this.show_error_popup = false
-                                    this.message="";
-                                },  2000)
-                                
-                            }
-                        }
-                    });
+                    }
+                });
             },
 
             /*getTaskEmployee(){
@@ -325,13 +309,11 @@
             getPriorities(){
                 let url ="/api/getpriorities";
                 ServiceClient.post(url).then((response) =>{
-                        
                     if (response.status == 200){
                         this.priorities=response.data.data
                         console.log(this.priorities, "hellóbelló prioriti")
                     }
                 }).catch((error) => {
-                        
                     if (error.response && error.response.status) {
                         if (error.response.data && error.response.data.message) {
                             this.message=error.response.data.message;
@@ -344,7 +326,6 @@
                         }
                     }
                 });
-
             },
            
             getTasks(){
@@ -367,7 +348,6 @@
                         this.loader=false;
                     }
                 }).catch((error) => {
-                        
                     if (error.response && error.response.status) {
                         if (error.response.data && error.response.data.message) {
                             this.message = error.response.data.message
@@ -379,45 +359,36 @@
                                 this.show_error_popup = false
                                 this.message = "";
                             },  2000)
-                            
                         }
                     }
                 });
-
             },
             getProjectParticipants(){
                 let url =`/api/getprojectparticipants/${this.$route.params.id}`;
                 ServiceClient.post(url).then((response) =>{
-                        
                         if (response.status == 200){
-                           
                             this.getusers=response.data
                         }
-                    }).catch((error) => {
-                            
-                        if (error.response && error.response.status) {
-                            if (error.response.data && error.response.data.message) {
-                                this.message=error.response.data.message;
-                                this.show_error_popup = true
-                                setTimeout(() => {
-                                    this.show_error_popup = false
-                                    this.message="";
-                                },  4500)
-                                
-                            }
+                }).catch((error) => {
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message=error.response.data.message;
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message="";
+                            },  4500)
                         }
-                    });
+                    }
+                });
             },
 
             AttachMyself(task){
                 const {data} = task
                 let taskId = task.data.task_id;
                 let projectId = null;
-               
                 projectId = this.projectData.project_id;
-                
-               
-                console.log(taskId, projectId, "lolo")
+                //console.log(taskId, projectId, "lolo")
                 let url = `/api/projects/${projectId}/tasks/${taskId}`;
 
                 ServiceClient.post(url).then((response) =>{
@@ -432,7 +403,6 @@
                         },  1500)
                     }
                 }).catch((error) => {
-                        
                     if (error.response && error.response.status) {
                         if (error.response.data && error.response.data.message) {
                             this.message = error.response.data.message;
@@ -441,7 +411,6 @@
                                 this.show_error_popup = false
                                 this.message="";
                             },  4500)
-                            
                         }
                     }
                 });
@@ -472,30 +441,25 @@
                         console.log(this.getActiveTaskEmployee, "lokol")
                         this.show_Comment_Modal = true
                         }
-                    }).catch((error) => {
-                            
-                        if (error.response && error.response.status) {
-                            if (error.response.data && error.response.data.message) {
-                                this.message=error.response.message;
-                                this.show_error_popup = true
-                                setTimeout(() => {
-                                    this.show_error_popup = false
-                                    this.message="";
-                                },  2000)
-                                
-                            }
+                }).catch((error) => {
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message=error.response.message;
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message="";
+                            },  2000)
                         }
-                    });
-                
+                    }
+                });
             },
             SendMessage(emitData){
                 const{participants,message,data} = emitData
                 let projectId = null;
-               
                 projectId = this.projectData.project_id;
-                
                 emitData.projectId = projectId
-                console.log(emitData, "emitData",projectId);
+                //console.log(emitData, "emitData",projectId);
                 let url='/api/send-message';
                 ServiceClient.post(url,emitData).then((response) =>{
                         console.log(response);
@@ -503,26 +467,23 @@
                             this.message = response.data.message;
                             this.show_popup=true
                             setTimeout(() => {
-                            this.show_popup = false
-                            this.cancelModal()
-                            this.message = "";
+                                this.show_popup = false
+                                this.cancelModal()
+                                this.message = "";
                         },  1500)
                         }
-                    }).catch((error) => {
-                            
-                        if (error.response && error.response.status) {
-                            if (error.response.data && error.response.data.message) {
-                                this.message=error.response.data.message
-                                this.show_error_popup = true
-                                setTimeout(() => {
-                                    this.show_error_popup = false
-                                    this.message = "";
-                                },  2000)
-                                
-                            }
+                }).catch((error) => {
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message=error.response.data.message
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message = "";
+                            },  2000)
                         }
-                    });
-
+                    }
+                });
             },
             getButtons(task){
                this.ActualTaskData = task;
@@ -567,9 +528,9 @@
                        
                         if(this.projectButtons.manager && this.projectButtons.manager.length>0){
                             this.projectButtons.manager = this.projectButtons.manager.slice(1)
-                           for(let item in this.projectButtons.manager){
+                            for(let item in this.projectButtons.manager){
                                this.mergedButtons.push(this.projectButtons.manager[item])
-                           }
+                            }
                         }
                         if(this.projectButtons.admin && this.projectButtons.admin.length>0){
                             this.projectButtons.admin = this.projectButtons.admin.slice(4,7)
@@ -601,50 +562,19 @@
                             if(foundMatch == true){
                                 break;
                             }
-                            
                         }
-                       /*for (let item in this.unreadMessage.Task) {
-                            console.log(this.unreadMessage.Task[item]);
-                            const keys = Object.keys(this.unreadMessage.Task[item]);
-                            console.log(keys, "object.keys(this.unreadMessage.Task[item])");
-                        
-                            if (
-                                this.unreadMessage.Task[item][keys[0]] === task.task_id &&
-                                this.unreadMessage.Task[item][keys[1]] == this.$route.params.id
-                            ) {
-                                this.newMessage = true;
-                                console.log("match", this.newMessage);
-                            } else {
-                                this.newMessage = false;
-                                console.log("something went wrong",  this.$route.params.id);
-                            }
-                        }*/
-                       /*for (let item of this.unreadMessage.Task) {
-                            console.log(item);
-                            const keys = Object.keys(item);
-                            console.log(keys, "object.keys(item)")
-                            for (let key of keys) {
-                                if (this.unreadMessage.Task[item][keys[0]] == task.task_id && this.unreadMessage.Task[item][keys[1]] == this.$route.params.id) {
-                                    this.newMessage = true;
-                                    console.log("match", this.newMessage);
-                                }else{
-                                    console.log("something went wrong", this.unreadMessage.Task[item][keys[0]])
-                                }
-                            }
-                        }*/
                     }  
                 }).catch((error) => {
-                   if (error.response && error.response.status) {
-                       if (error.response.data && error.response.data.message) {
-                           this.message = error.response.data.message
-                           this.show_error_popup = true
-                           setTimeout(() => {
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message = error.response.data.message
+                            this.show_error_popup = true
+                            setTimeout(() => {
                                this.show_error_popup = false
                                this.message = ""
-                           }, 2000)
-
-                       }
-                   }
+                            }, 2000)
+                        }
+                    }
                });   
                
                
@@ -674,14 +604,9 @@
                                 this.show_error_popup = false
                                 this.message = ""
                             }, 2000)
-
                         }
                     }
                 });
-
-                
-                console.log("namizu")
-
             },
             SetStatus(set){
                 const{data}=set
@@ -722,7 +647,6 @@
                                 this.show_error_popup = false
                                 this.message = ""
                             }, 2000)
-
                         }
                     }
                 });
@@ -737,8 +661,6 @@
                         for(let item in response.data){
                             this.statusDataTravel= response.data[item].status.map(u=>({id:u.id, name:u.task_status}))
                         }
-                        
-                        
                         console.log(this.statusDataTravel, "statusDataTravel", )
                     }
                 }).catch((error) => {
@@ -750,11 +672,9 @@
                                 this.show_error_popup = false
                                 this.message = ""
                             }, 2000)
-
                         }
                     }
                 });
-
             },
             filter(selectData){
                 const{select}=selectData
@@ -830,18 +750,14 @@
             Sort(sortData){
                 const{selected, key} = sortData
                 for(let e in this.setSortData){
-                   if(this.setSortData[e].key === sortData.selected.key){
-                    const index = this.setSortData.indexOf(this.setSortData[e]);
-                    this.setSortData.splice(index, 1);
-                   }
+                    if(this.setSortData[e].key === sortData.selected.key){
+                        const index = this.setSortData.indexOf(this.setSortData[e]);
+                        this.setSortData.splice(index, 1);
+                    }
                 }
                 this.setSortData.push(sortData.selected)
-              
                 console.log(this.setSortData, "SORTDA")
                 this.getTasks()
-         
-
-
             },
             clearSort(clearKey){
                
@@ -853,16 +769,16 @@
                 }
                 console.log(this.setSortData, "SORTDA")
                 this.getTasks()
-
             },
             getUnreadMessages(){
-                ServiceClient.post('/api/get-unread-messages').then(response => {
+                this.unreadMessage = this.$store.state.unreadMessages
+                /*ServiceClient.post('/api/get-unread-messages').then(response => {
                     console.log("getUnreadMessages",response.data);
                    // store.commit("getUnreadMessages", response.data);
                     this.unreadMessage = response.data
                 }).catch(error =>{
                     console.log(error);
-                });
+                });*/
             },
             ShoudShowEnvelope(task){
                 let foundMatch = false;
@@ -875,17 +791,13 @@
                             if (values[i] == task.task_id && values[i + 1] == this.$route.params.id) {
                                // console.log(values);
                                 return foundMatch = true
-                               
-                            
                             }else{
                                 foundMatch = false;;
                                // console.log("match", this.newMessage,Object.values(item)[i],task.task_id );
                             }
                         }
-                        
                     }
                 }
-              
             },
         },
         beforeMount(){

@@ -840,13 +840,14 @@
 
             },*/
             getUnreadMessages(){
-                ServiceClient.post('/api/get-unread-messages').then(response => {
+                this.unreadMessage = this.$store.state.unreadMessages
+                /*ServiceClient.post('/api/get-unread-messages').then(response => {
                     console.log("getUnreadMessages",response.data);
                    // store.commit("getUnreadMessages", response.data);
                     this.unreadMessage = response.data
                 }).catch(error =>{
                     console.log(error);
-                });
+                });*/
             },
             ShoudShowEnvelope(task){
                 let foundMatch = false;

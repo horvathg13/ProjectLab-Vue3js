@@ -165,13 +165,13 @@ export default{
             let dataTravel={};
             dataTravel.name=arriveData.name,
             dataTravel.email=arriveData.email
-
+            store.commit("setUserData",arriveData)
             let url='/api/save-profile-data';
             ServiceClient.post(url,dataTravel).then(response => {
                 if(response.status===200){
                     this.message=response.data.message
                     this.showPopup=true
-                    this.getUserData();
+                    //this.getUserData();
                     setTimeout(()=>{
                         this.showPopup=false
                         this.show_Profile_Modal=false;
@@ -205,19 +205,24 @@ export default{
                 }
             });
         },
-        getUserData(){
+       /* getUserData(){
             ServiceClient.post('/api/getUserData').then(response => {
                 store.commit("setUserData",response.data);
             }).catch(error =>{
                 console.log(error);
             });
+        },*/
+        setNotifications(){
+            this.userData = this.$store.state.userData,
+            this.userRole = this.$store.state.userRole
+
         }
     },
     beforeMount() {
         //this.SetUserButton();
     },
     mounted(){
-        
+        this.setNotifications();
     }
    
 

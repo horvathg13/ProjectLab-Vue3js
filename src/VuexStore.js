@@ -4,7 +4,7 @@ export const store = createStore({
     state:{
       username: null,
       userData: {},
-      userRole:{},
+      userRole:[],
       userID: null,
       selectedRows:[],
       unreadMessages:{},

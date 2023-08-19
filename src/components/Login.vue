@@ -44,21 +44,23 @@
                             localStorage.setItem("token", response.data.data.token);
                             this.getNotifications();
                             this.getManaganerNotifications();
+                            this.getUserRoles();
                             this.$router.push({path: "/home"});
-
                         }, 1400);
                         
                     
                     }
                 }).catch((error) => {
                     this.disablefield= false        
-                    if (error.response.status === 401) {
-                    if (error.response.data.message) {
-                        this.errors.push(error.response.data.message) 
-                        
-                    } else {
-                        this.errors = ["Server error occurred"] 
-                    }
+                    if (error.response){
+                        if (error.response.data.message) {
+                            this.errors.push(error.response.data.message) 
+                            
+                        } else {
+                            this.errors =["Server error occurred"]
+                        }
+                    }else{
+                        this.errors = ["Server error occurred"]
                     }
                 });
                 /*ServiceClient.post("/api/getUserPermission").then(response => {
@@ -85,6 +87,15 @@
                 }).catch(error =>{
                 console.log(error);
                 });
+            },
+            getUserRoles(){
+                ServiceClient.post('/api/getUserRole').then(response => {
+                    store.commit("setuserRole",response.data)
+                    console.log(response.data, "getUserRole");
+                }).catch(error =>{
+                    console.log(error);
+                });
+
             },
             close(){
                 this.errors=[]

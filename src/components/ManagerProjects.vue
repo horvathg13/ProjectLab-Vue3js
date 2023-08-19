@@ -79,7 +79,7 @@
         '$store.state.userRole'(newValue) {
             this.userRole = newValue;
             console.log( this.userRole, "hello from user watcher");
-            //this.SetAddNewUser()
+           
         }
     },
 
@@ -87,17 +87,12 @@
        
     },
     methods:{
-        /*unreadMessages(){
-            this.unreadMessage= store.state.unreadMessages
-            console.log(this.unreadMessage, "hello from Vuex")
-        },*/
-
+       
         updateModal(){
             this.Editdata = null
             if(this.showModal==false){
                 this.showModal = true
             }
-            
         },
 
         showParticipantModal(project){
@@ -133,11 +128,9 @@
                             this.show_error_popup = false
                             this.message = "";
                         },  2000)
-                        
                     }
                 }
             });
-            
         },
 
         cancelModal(){
@@ -190,7 +183,8 @@
                             setTimeout(() => {
                                 this.show_error_popup = false
                                 this.errorArray=[];
-                                this.cancelModal()
+                                this.cancelModal();
+                                this.getProjects();
                             },  2000)
                         }
                     if (error.response.data && error.response.data.message) {
@@ -204,11 +198,8 @@
                     }
                 }
             });
-            this.getProjects();
             
         },
-                   
-
             getProjects(){
                 this.loader=true;
                 let url ="/api/get-manager-projects";
@@ -244,24 +235,20 @@
                 ServiceClient.post(url).then((response) =>{
                         
                         if (response.status == 200){
-                            
                             this.getusers=response.data
-                            
-                            
+                        }
+                }).catch((error) => {
                         
-                        }
-                    }).catch((error) => {
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                            },  4500)
                             
-                        if (error.response && error.response.status) {
-                            if (error.response.data && error.response.data.message) {
-                                this.show_error_popup = true
-                                setTimeout(() => {
-                                    this.show_error_popup = false
-                                },  4500)
-                                
-                            }
                         }
-                    });
+                    }
+                });
             },
             
             redirect(project){
@@ -335,9 +322,6 @@
                 });
                     
             },
-            contentTitle(){
-                this.h1= this.$route.name
-            },
             circularMenuDropdown(){
                 this.circulardrop = !this.circulardrop
                 console.log("circular drop")
@@ -366,28 +350,24 @@
                                     email:data.email,
                                     project_name:data.project_name,
                                     status:data.status
-
                                 })
                             }
-                            
                             console.log(this.projectParticipants, "rókagomba")
                             this.show_Comment_Modal = true
                         }
-                    }).catch((error) => {
-                            
-                        if (error.response && error.response.status) {
-                            if (error.response.data && error.response.data.message) {
-                                this.message = error.response.data.message
-                                this.show_error_popup = true
-                                setTimeout(() => {
-                                    this.show_error_popup = false
-                                    this.message = ""
-                                },  4500)
-                                
-                            }
+                }).catch((error) => {
+                        
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message = error.response.data.message
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message = ""
+                            },  4500)
                         }
-                    });
-                
+                    }
+                });
             },
             SendMessage(emitData){
                 const{participants,message,data} = emitData
@@ -404,21 +384,21 @@
                             this.cancelModal()
                             },  1500)
                         }
-                    }).catch((error) => {
+                }).catch((error) => {
+                        
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message =error.response.data.message
+                            console.log(this.message, "errormessage")
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message = "";
+                            },  2000)
                             
-                        if (error.response && error.response.status) {
-                            if (error.response.data && error.response.data.message) {
-                                this.message =error.response.data.message
-                                console.log(this.message, "errormessage")
-                                this.show_error_popup = true
-                                setTimeout(() => {
-                                    this.show_error_popup = false
-                                    this.message = "";
-                                },  2000)
-                                
-                            }
                         }
-                    });
+                    }
+                });
 
             },
             getButtons(project){
@@ -492,27 +472,7 @@
                             if(foundMatch==true){
                                 break;
                             }
-                            
-                            /*const keys = Object.keys(item);
-                            for (let key of keys) {
-                                if (item[key] === project.project_id) {
-                                    this.newMessage = true;
-                                    console.log("match", this.newMessage);
-                                }
-                            }*/
                         }
-                        
-                        /*for(let item in this.unreadMessage.Project){
-                            console.log(this.unreadMessage.Project[item])
-                            if(item.UnreadProject_Project_id === project.project_id){
-                                this.newMessage=true
-                                console.log("match",this.newMessage)
-                            }else{
-                                this.newMessage=false
-                                console.log("unmatch")
-                            }   
-                        }*/
-                        
                     }
                 
                 }).catch((error) => {
@@ -706,13 +666,14 @@
                 
             },
             getUnreadMessages(){
-                ServiceClient.post('/api/get-unread-messages').then(response => {
+                this.unreadMessage = this.$store.state.unreadMessages
+                /*ServiceClient.post('/api/get-unread-messages').then(response => {
                     console.log("getUnreadMessages",response.data);
                     store.commit("getUnreadMessages", response.data);
                     this.unreadMessage = response.data
                 }).catch(error =>{
                     console.log(error);
-                });
+                });*/
             },
             favoriteStar(project){
                 let dataTravel={};
@@ -784,7 +745,7 @@
             this.getUnreadMessages();
             this.getProjects()
             this.getUsers()
-            this.contentTitle();
+            
             
             
         }

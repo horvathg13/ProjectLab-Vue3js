@@ -8,6 +8,7 @@
     import CommentModal from './Modals/CommentModal.vue'
     import Status from './Modals/Status.vue'
     import Sort from './Common/SortButton.vue'
+    import {store} from '../VuexStore'
     
 export default{
     data(){
@@ -69,9 +70,7 @@ export default{
             dataTravel.sortData = this.setSortData;
             let url ="/api/get-my-tasks";
             ServiceClient.post(url,dataTravel).then((response) =>{
-                    
                 if (response.status == 200){
-                    
                     this.myTasks=response.data
                     console.log(this.myTasks ,"MYTASK")
                     this.loader=false;
@@ -690,13 +689,14 @@ export default{
             this.show_Create_Task_Modal =true
         },
         getUnreadMessages(){
-            ServiceClient.post('/api/get-unread-messages').then(response => {
+            this.unreadMessage = this.$store.state.unreadMessages
+            /*ServiceClient.post('/api/get-unread-messages').then(response => {
                 console.log("getUnreadMessages",response.data);
                 // store.commit("getUnreadMessages", response.data);
                 this.unreadMessage = response.data
             }).catch(error =>{
                 console.log(error);
-            });
+            });*/
         },
         ShoudShowEnvelope(task){
             let foundMatch = false;

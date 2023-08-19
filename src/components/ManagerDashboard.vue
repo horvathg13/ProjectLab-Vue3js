@@ -53,28 +53,6 @@ export default{
         }
     },
     methods:{
-        accessControll(){
-            ServiceClient.post('/api/getUserRole').then(response => {
-                if(response.status === 200){
-                    store.commit("setuserRole",response.data)
-                    this.userRole = response.data
-                    //console.log(response.data, "getUserRole");
-                    if(this.userRole.code !== 404){
-                        //console.log(this.userRole);
-                        const isAdmin= this.userRole.some(item=>item.role === "Admin" || item.role === "Manager");
-                        //console.log(isAdmin,"AMIN")
-                        if(isAdmin === false){this.$router.push("/accessdenied")}
-                    }else{
-                        this.$router.push("/accessdenied")
-                    }
-                }
-                
-            }).catch(error =>{
-                console.log(error);
-            });
-                
-            
-        },
         SetUserCard(){
             if(this.userRole && this.userRole.code !==404){
                 if(this.userRole.filter(item=> item.role ==="Manager")){
@@ -96,14 +74,15 @@ export default{
             this.$router.push("/manager-tasks")
 
         },
-        getManagerNotifications(){
+        /*getManagerNotifications(){
+
             ServiceClient.post('/api/get-manager-notification').then(response => {
                 store.commit("getManagerNotifications",response.data);
                 console.log(response.data, "ManagerNotifica");
             }).catch(error =>{
                 console.log(error);
             });
-        }
+        }*/
 
     },
     beforeRouteEnter (to, from, next) {

@@ -22,7 +22,7 @@ export default{
             this.notifications = newValue
             console.log(newValue.length, "hello notifica watch");
         },
-        notifications(newValue){
+        /*setNotifications(newValue){
             if(newValue.length == 0){
                 console.log("enter the hook")
                 this.message = "You have no system notification!"
@@ -32,10 +32,7 @@ export default{
                     this.message = "";
                 },2000)
             }
-            
-       
-            
-        },
+        },*/
         
     },
     computed:{
@@ -44,21 +41,23 @@ export default{
     },
     methods:{
         getUnreadMessages(){
-            ServiceClient.post('/api/get-unread-messages').then(response => {
+            this.unreadMessage = this.$store.state.unreadMessages
+            /*ServiceClient.post('/api/get-unread-messages').then(response => {
                 console.log("getUnreadMessages",response.data);
                 store.commit("getUnreadMessages", response.data);
                 this.unreadMessage = response.data
             }).catch(error =>{
                 console.log(error);
-            });
+            });*/
         },
         getNotifications(){
-            ServiceClient.post('/api/notifications').then(response => {
+            this.notifications = this.$store.state.notifications
+           /* ServiceClient.post('/api/notifications').then(response => {
                 store.commit("getNotifications",response.data);
                 console.log(response.data, "notifica");
             }).catch(error =>{
                 console.log(error);
-            });
+            });*/
         },
         ShoudShowEnvelope(n){
             let foundMatch=false
@@ -92,22 +91,14 @@ export default{
                         //console.log(values[i], "unreadPro")
                         if (values[i] == n.id) {
                             return foundMatch = true
-                        
                         }else{
                             foundMatch = false;;
                             console.log("match");
                         }
-                        
                     }
-                
-                
                 }
             }        
-                    
-                
-                
         },
-
     },
     beforeMount() {
        
@@ -123,9 +114,9 @@ export default{
     <div class="main-container">
         <div class="background component">
         </div>
-        <Transition name="drop">
+       <!-- <Transition name="drop">
             <Success v-if="showErrorPopup == true" :message="this.message"></Success>
-        </Transition>
+        </Transition>-->
         <div class="content-container"> 
 
             <div class="centerd-component-container">

@@ -45,12 +45,13 @@ export default{
             
         },
         getUserRoles(){
-            ServiceClient.post('/api/getUserRole').then(response => {
+            this.userRole = this.$store.state.userRole
+           /* ServiceClient.post('/api/getUserRole').then(response => {
                 store.commit("setuserRole",response.data)
                 console.log(response.data, "getUserRole");
             }).catch(error =>{
             console.log(error);
-            });
+            });*/
         },
         users(){
             this.$router.push('/users')

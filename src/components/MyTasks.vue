@@ -52,6 +52,7 @@ export default{
             RemoveData:[],
             setSortData:[],
             readOnlyMode:false,
+            tryAgain:null,
         }
     },
     components:{
@@ -390,7 +391,7 @@ export default{
                     },  1500)
                     }
                 }).catch((error) => {
-                        
+                    this.tryAgain=null;
                     if (error.response && error.response.status) {
                         if (error.response.data && error.response.data.message) {
                             this.message=error.response.data.message
@@ -398,6 +399,7 @@ export default{
                             setTimeout(() => {
                                 this.show_error_popup = false
                                 this.message = "";
+                                this.tryAgain=false;
                             },  2000)
                             
                         }
@@ -850,6 +852,7 @@ export default{
         :taskData="this.taskDataTravel"
         :Participants="this.getActiveTaskEmployee"
         :projectId ="this.ActualTaskData.projectId"
+        :tryAgain="this.tryAgain"
         ></CommentModal>
         <Status v-if="this.showStatusModal == true"
         @cancel-modal="cancelModal"

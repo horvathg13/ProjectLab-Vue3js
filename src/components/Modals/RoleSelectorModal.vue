@@ -1,4 +1,5 @@
 <script>
+import MultipleSelection from '../Common/MultipleSelectComponents.vue';
     export default{
         name: "RoleSelectorModal",
         props:{
@@ -7,12 +8,13 @@
             isDropdownOpen:null,
             user:{},
         },
+        components:{
+            MultipleSelection,
+        },
         data(){
             return{
-                selectedRole:{
-                    id: "",
-                    name: "",
-                },
+                selectedRole:{},
+                removedRole:{},
                 buttonDisable:false,
             }
         },
@@ -27,14 +29,21 @@
 
             attachRole(){
                 this.buttonDisable=true,
-                this.$emit("attachRole", { role_id: this.selectedRole.id, role_name: this.selectedRole.name, user_id: this.user.id })
+                this.$emit("attachRole", { selectedRole:this.selectedRole, user_id: this.user.id, remove:this.removedRole })
             },
 
-            selectRole(role) {
-                this.selectedRole["id"] = role.id;
-                this.selectedRole["name"] = role.role_name;
+            selectRole(arrive) {
+                const{select}=arrive
+                console.log(arrive, "SELECT")
+                this.selectedRole = arrive.select;
+                console.log(this.selectedRole, "HEYHÓ")
                                
-            },
+            }, 
+            detach(data){
+                const{detach} = data;
+                this.removedRole = data.remove
+                console.log(this.removedRole, "DETACH")
+            }
 
            
 
@@ -61,7 +70,13 @@
                         <label>Selected User: {{user.name}}</label>
                     </div>
                     <div class="field"><label>Select a Role</label></div>
-                    <div class="ui fluid selection dropdown" @click="toggleDrop" :class="{ active: selectedRole.name }">
+                    <MultipleSelection
+                    :VforArray="this.getroles.map(r => ({id:r.id, name:r.role_name}))"
+                    :VforActiveArray="this.user.roles.map(r=>({name:r}))"
+                    @select="selectRole"
+                    @detach-user="detach"
+                    ></MultipleSelection>
+                    <!--<div class="ui fluid selection dropdown" @click="toggleDrop" :class="{ active: selectedRole.name }">
                         <i class="dropdown icon"></i>
                         <input type="hidden" name="roles" v-model="selectedRole.id">
                             <div class="selected-text">{{ selectedRole.name  }}</div>
@@ -70,7 +85,7 @@
                                     {{ role.role_name }}
                                 </div>
                             </div>
-                    </div>
+                    </div>-->
                     
                     <button class="ui green button" type="submit" :disabled="buttonDisable">Create</button>
                 </form>

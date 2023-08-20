@@ -311,14 +311,15 @@
         },
 
         createParticipants(data){
+            this.participants=[];
             const { selected, remove_employee } = data;
             //console.log(data, "DATAAA")
-            this.participants = data.selected.select;
+            /*this.participants = data.selected.select;*/
             this.removeData = data.remove_employee
-            console.log(this.participants,this.removeData, "partiparti")
+            console.log(data, "partiparti")
             
             const finalData={};
-            finalData.participants = this.participants;
+            finalData.participants = data.selected.select;
             finalData.project = this.projectData;
             finalData.remove = this.removeData
             console.log(finalData, "hullapelyhes");
@@ -352,14 +353,15 @@
                     }
                     if (error.response.data && error.response.data.message) {
                         this.message=error.response.data.message
-                    /*this.message = Object.values(error.response.data.message).flatMap(
-                        (y) => y
-                    );*/
-                    this.show_error_popup = true;
-                    setTimeout(() => {
-                        this.show_error_popup = false;
-                        this.message = "";
-                    }, 2000);
+                        /*this.message = Object.values(error.response.data.message).flatMap(
+                            (y) => y
+                        );*/
+                        this.show_error_popup = true;
+                        setTimeout(() => {
+                            this.show_error_popup = false;
+                            this.message = "";
+                            this.cancelModal();
+                        }, 2000);
                     }
                 } else {
                     this.message = "Error occurred during the request";

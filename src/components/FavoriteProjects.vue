@@ -467,7 +467,7 @@
                             
                         }
                         if(this.projectButtons.admin && this.projectButtons.admin.length>0){
-                            this.projectButtons.admin = this.projectButtons.admin.slice(-4)
+                            this.projectButtons.admin = this.projectButtons.admin.slice(3,8)
                             for(let item in this.projectButtons.admin){
                                 this.mergedButtons.push(this.projectButtons.admin[item])
                             }

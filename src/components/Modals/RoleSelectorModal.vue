@@ -28,21 +28,22 @@ import MultipleSelection from '../Common/MultipleSelectComponents.vue';
             },
 
             attachRole(){
-                this.buttonDisable=true,
+                this.buttonDisable=true;
+                console.log(this.buttonDisable,"KOKŐŐLŐLŐLŐLŐ")
                 this.$emit("attachRole", { selectedRole:this.selectedRole, user_id: this.user.id, remove:this.removedRole })
             },
 
             selectRole(arrive) {
                 const{select}=arrive
-                console.log(arrive, "SELECT")
+                //console.log(arrive, "SELECT")
                 this.selectedRole = arrive.select;
-                console.log(this.selectedRole, "HEYHÓ")
+                //console.log(this.selectedRole, "HEYHÓ")
                                
             }, 
             detach(data){
                 const{detach} = data;
                 this.removedRole = data.remove
-                console.log(this.removedRole, "DETACH")
+                //console.log(this.removedRole, "DETACH")
             }
 
            
@@ -71,8 +72,9 @@ import MultipleSelection from '../Common/MultipleSelectComponents.vue';
                     </div>
                     <div class="field"><label>Select a Role</label></div>
                     <MultipleSelection
+                    :disable="this.buttonDisable"
                     :VforArray="this.getroles.map(r => ({id:r.id, name:r.role_name}))"
-                    :VforActiveArray="this.user.roles.map(r=>({name:r}))"
+                    :VforActiveArray="this.user.roles ? this.user.roles.map(r=>({name:r})):null"
                     @select="selectRole"
                     @detach-user="detach"
                     ></MultipleSelection>

@@ -84,8 +84,9 @@ import {store} from '../VuexStore'
             this.triggerValue = null;
             this.user.id = this.dataSave.id;
             this.user.name = this.dataSave.name;
+            this.user.roles= this.dataSave.roles?this.dataSave.roles.trim().split(","):[];
             this.show_role_selector_modal = true;
-            console.log(this.user);
+            console.log(this.user, "ROLESELECTORMODAL");
             
         },
         updateModal(){
@@ -295,16 +296,16 @@ import {store} from '../VuexStore'
 
             userToRole(data) {
 
-                const { role_id, role_name, user_id } = data
+                const { selectedRole, user_id, remove } = data
                 let dataTravel = {}
                 dataTravel.user_id = user_id
-                dataTravel.role_id = role_id,
-                dataTravel.role_name = role_name
-
+                dataTravel.selectedRole = selectedRole,
+                dataTravel.remove=remove;
+                console.log(dataTravel, "DATARAVEL");
                 let url = '/api/user-to-role/';
                 ServiceClient.post(url,dataTravel).then((response) => {
                     if (response.status == 200) {
-
+                        this.message=response.data.message
                         console.log(response)
                         this.show_popup = true
                         this.getUsers()
@@ -337,7 +338,7 @@ import {store} from '../VuexStore'
                 const {data, str} = kiskutya
                 this.dataSave = kiskutya.data;
                 this.func = kiskutya.str
-                console.log(kiskutya)
+                console.log(kiskutya, "KISKUTYA")
                 this.triggerModal= true
 
             },

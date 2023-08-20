@@ -295,7 +295,7 @@ import {store} from '../VuexStore'
             },
 
             userToRole(data) {
-
+                this.user={};
                 const { selectedRole, user_id, remove } = data
                 let dataTravel = {}
                 dataTravel.user_id = user_id

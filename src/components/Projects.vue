@@ -283,9 +283,10 @@
         },
 
         getUsers(){
-            let url ="/api/getusers";
+            let url ="/api/getManagers";
             ServiceClient.post(url).then((response) =>{
                     if (response.status == 200){
+                        console.log(response.data, "HERE MANAGERS");
                         this.getusers=response.data
                     }
             }).catch((error) => {

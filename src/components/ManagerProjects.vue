@@ -233,7 +233,7 @@
             },
 
             getUsers(){
-                let url ="/api/getusers";
+                let url ="/api/getManagers";
                 ServiceClient.post(url).then((response) =>{
                         
                         if (response.status == 200){

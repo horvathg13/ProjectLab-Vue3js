@@ -25,14 +25,6 @@
                 remove_employee:[],
             }
         },
-        watch:{
-            'participants':{
-                immediate:true,
-                handler(newValue){
-                    this.SelectComp_getActiveTaskParticipants = newValue
-                }
-            }
-        },
         methods: {
             toggleDrop(){
                 this.$emit("toggleDrop")
@@ -96,7 +88,7 @@
                             <MultipleSelectComponents 
                             :disable="buttonDisable" 
                             :VforArray="this.getusers.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))"
-                            :VforActiveArray="this.SelectComp_getActiveTaskParticipants.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" 
+                            :VforActiveArray="this.participants.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" 
                             @select="makeSelection"
                             @detach-user="detach"></MultipleSelectComponents>
                             

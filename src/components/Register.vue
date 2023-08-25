@@ -48,7 +48,7 @@ export default{
                 formData.append("name", this.name);
                 formData.append("email", this.email);
                 formData.append("password", this.password);
-                formData.append("c_password", this.c_password);
+                formData.append("confirm_password", this.c_password);
                 
                 let url ="/api/register";
                 ServiceClient.post(url,formData).then((response) =>{
@@ -62,16 +62,26 @@ export default{
                     }
                 })  .catch((error) => {
                         
-                        if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
+                    if (error.response && error.response.status) {
+                        //console.log(error.response)
+                        if(error.response.data.validatorError){
+                            this.errors=Object.values(error.response.data.validatorError)
+                            //console.log(this.errors, "ERRORS")
+                            
+                            /*setTimeout(() => {
+                                this.errors=[];
+                            },  2000)*/
+                        }
+                        if (error.response.data.message) {
+                            
                             this.errors = Object.values(error.response.data.message).flatMap(y => y)
                            
-                            alert("Server side form validation is working");
-                        } else {
+                            //alert("Server side form validation is working");
+                        }else if(!error.response.data.validatorError && !error.response.data.message){
                             this.errors = ["Server error occurred"] 
                         }
-                        }
-                    });
+                    }
+                });
             }
         },
         close(){

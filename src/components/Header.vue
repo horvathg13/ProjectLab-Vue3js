@@ -95,45 +95,51 @@ export default{
             }
         },*/
         toggleDropdown() {
-            this.isDropdownOpen = !this.isDropdownOpen;
+            if(!!localStorage.getItem("token")===true){
+                this.isDropdownOpen = !this.isDropdownOpen;
+            }
+            
         },
         logOut(){
-            let url ="/api/logout";
-            ServiceClient.post(url).then(response => {
-                localStorage.removeItem("token");
-                store.commit("deleteUserData");
-                store.commit("deleteUserRole");
-                store.commit("deleteNotifications");
-                store.commit("deleteManagerNotifications");
-                this.$router.push({path: "/login"});
-                this.message="Logged Out Successful!"
-                this.showPopup=true
-                this.lockMode=true
-                setTimeout(()=>{
-                    this.showPopup=false
-                },1600)
-            }).catch((error) => {
+            if(!!localStorage.getItem("token")===true){
+                let url ="/api/logout";
+                ServiceClient.post(url).then(response => {
+                    localStorage.removeItem("token");
+                    store.commit("deleteUserData");
+                    store.commit("deleteUserRole");
+                    store.commit("deleteNotifications");
+                    store.commit("deleteManagerNotifications");
+                    this.$router.push({path: "/login"});
+                    this.message="Logged Out Successful!"
+                    this.showPopup=true
+                    this.lockMode=true
+                    setTimeout(()=>{
+                        this.showPopup=false
+                    },1600)
+                }).catch((error) => {
+                            
+                    if (error.response ?? error.response.status === 401) {
+                    if (error.response.data.message) {
+                        this.message= error.response.data.message
+                        this.showErrorPopup=true
+                        setTimeout(()=>{
+                            this.showErrorPopup=false
+                        },4000)
                         
-                if (error.response ?? error.response.status === 401) {
-                if (error.response.data.message) {
-                    this.message= error.response.data.message
-                    this.showErrorPopup=true
-                    setTimeout(()=>{
-                        this.showErrorPopup=false
-                    },4000)
-                    
-                }else {
-                    this.message = ["Server error occurred"];
-                    this.showErrorPopup=true
-                    setTimeout(()=>{
-                        this.showErrorPopup=false
-                    },4000)
-                }
+                    }else {
+                        this.message = ["Server error occurred"];
+                        this.showErrorPopup=true
+                        setTimeout(()=>{
+                            this.showErrorPopup=false
+                        },4000)
+                    }
+                
+                    }
+                })
             
-                }
-            })
-        
+            }
         },
+            
         
         home(){
             this.$router.push('/home')
@@ -157,7 +163,10 @@ export default{
             this.$router.push('/manager-dashboard')
         },
         profileModalSwitch(){
-            this.show_Profile_Modal = !this.show_Profile_Modal
+            if(!!localStorage.getItem("token")===true){
+                this.show_Profile_Modal = !this.show_Profile_Modal
+            }
+            
             
         },
         saveProfileData(arriveData){
@@ -256,7 +265,7 @@ export default{
                 <!--<li v-if="lockMode==false">Statistics</li>-->
             </ul>
         </div>
-        <div class="ui teal buttons" >
+        <div class="ui teal buttons">
             <div class="ui button" @click="profileModalSwitch"><i class="user circle icon"></i>
                 <div class="username"><h5>{{userData.name}}</h5></div></div>
             <div class="ui floating dropdown icon button"  @click="toggleDropdown">

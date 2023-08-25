@@ -700,7 +700,7 @@ export default{
         },
         getUnreadMessages(){
             this.unreadMessage = this.$store.state.unreadMessages
-            console.log(this.unreadMessage, "ITT VAGYOK")
+            //console.log(this.unreadMessage, "ITT VAGYOK")
             /*ServiceClient.post('/api/get-unread-messages').then(response => {
                 console.log("getUnreadMessages",response.data);
                 // store.commit("getUnreadMessages", response.data);

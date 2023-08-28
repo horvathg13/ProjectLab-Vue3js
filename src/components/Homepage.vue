@@ -37,7 +37,7 @@ export default{
     methods:{
         SetUserCard(){
             if(this.userRole && this.userRole.code !==404){
-                this.userRole.forEach(item=> {if(item.role ==="Admin"){ this.userCard=true, this.showCards=true}else if(item.role ==="Manager"){this.managerCard=true}else{this.showCards = true}})
+                this.userRole.forEach(item=> {if(item.role ==="Admin"){ this.userCard=true, this.showCards=true}else if(item.role ==="Manager"){this.managerCard=true, this.showCards = true}else{this.showCards = true}})
             }else if(this.userRole.code==404){
                 this.temporaryMessage = true
                 this.temporaryCard=true

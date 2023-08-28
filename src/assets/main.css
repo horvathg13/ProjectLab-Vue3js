@@ -119,7 +119,7 @@ form{
   text-align: center;
   max-width: 300px;
   /*min-width: 100px;*/
-  overflow: auto;
+  /*overflow: auto;*/
   text-overflow: ellipsis;
   padding:15px
 }

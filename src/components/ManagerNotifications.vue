@@ -74,7 +74,8 @@
             setSortData:[],
             setFilterData:[],
             userRole:{},
-            tryAgain:null
+            tryAgain:null,
+            showButton:null,
         }
     },
     watch: {
@@ -374,6 +375,7 @@
                         this.taskData=response.data
                         this.managerRole = response.data[0].haveManagerRole
                         console.log(this.taskData, "szegény legény")
+                        this.showButton=true,
                         this.loader=false;
                     }
                 }).catch((error) => {
@@ -384,6 +386,7 @@
                             this.managerRole = error.response.data.haveManagerRole
                             console.log(error.response.data)
                             this.show_error_popup = true
+                            this.showButton=false,
                             this.loader=false;
                             setTimeout(() => {
                                 this.show_error_popup = false
@@ -692,8 +695,9 @@
                     if (response.status == 200){
                         console.log(response.data, "responseDATA")
                         this.message = response.data.message;
-                        
                         this.show_popup = true;
+                        this.managerNotificationUpdate();
+                        this.getTasks();
                         setTimeout(() => {
                             this.show_popup = false
                             this.message = ""
@@ -881,32 +885,43 @@
                 
             },
             AcceptAllTasks(){
-                let url='/api/accept-all-task';
-                ServiceClient.post(url).then((response) =>{
-                    if (response.status == 200){
-                        console.log(response.data, "responseDATA")
-                        this.message = response.data.message;
-                        
-                        this.show_popup = true;
-                        setTimeout(() => {
-                            this.show_popup = false
-                            this.message = ""
-                            this.getTasks();
-                        },  1500)
-                        
-                    }
-                }).catch((error) => {
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message = error.response.data.message
-                            this.show_error_popup = true
+                if(this.showButton===true){
+                    let url='/api/accept-all-task';
+                    ServiceClient.post(url).then((response) =>{
+                        if (response.status == 200){
+                            console.log(response.data, "responseDATA")
+                            this.message = response.data.message;
+                            this.show_popup = true;
+                            this.managerNotificationUpdate();
                             setTimeout(() => {
-                                this.show_error_popup = false
+                                this.show_popup = false
                                 this.message = ""
-                            }, 2000)
-
+                                this.getTasks();
+                            },  1500)
+                            
                         }
-                    }
+                    }).catch((error) => {
+                        if (error.response && error.response.status) {
+                            if (error.response.data && error.response.data.message) {
+                                this.message = error.response.data.message
+                                this.show_error_popup = true
+                                setTimeout(() => {
+                                    this.show_error_popup = false
+                                    this.message = ""
+                                }, 2000)
+
+                            }
+                        }
+                    });
+                }
+                
+            },
+            managerNotificationUpdate(){
+                ServiceClient.post('/api/get-manager-notification').then(response => {
+                    store.commit("getManagerNotifications",response.data);
+                    console.log(response.data, "ManagerNotifica");
+                }).catch(error =>{
+                    console.log(error);
                 });
             },
 
@@ -985,7 +1000,7 @@
                             <th></th>
                             
                             <th>
-                            <button class="ui right floated small primary labeled icon button" @click="AcceptAllTasks"><i class="green check icon"></i>Accept All</button></th>
+                            <button v-if="this.showButton===true" class="ui right floated small primary labeled icon button" @click="AcceptAllTasks"><i class="green check icon"></i>Accept All</button></th>
                             
                         </tr>
                     </thead>

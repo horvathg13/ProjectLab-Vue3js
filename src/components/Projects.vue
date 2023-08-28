@@ -275,7 +275,7 @@
                         setTimeout(() => {
                             this.show_error_popup = false
                             this.message = "";
-                        },  4500)
+                        },  2500)
                         
                     }
                 }

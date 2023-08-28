@@ -94,7 +94,7 @@ export default{
                         setTimeout(() => {
                             this.show_popup = false
                             this.message = "";
-                        },  4500)
+                        },  2500)
                         
                     }
                 }

@@ -1,4 +1,18 @@
 <script>
+export default{
+    data(){
+
+    },
+    methods:{
+        register(){
+            this.$router.push("/register");
+        },
+
+        login(){
+            this.$router.push("/login");
+        }
+    }
+}
 </script>
 
 <template>
@@ -15,12 +29,8 @@
                 <h2>and manage your tasks easy</h2>
             </div>
             <div class="g-buttons">
-                <div>
-                    <button class="massive ui orange button"><a href="/register">Register</a></button>
-                </div>
-                <div>
-                    <button class="massive ui green button"><a href="/login">Login</a></button>
-                </div>
+                <button class="massive ui orange button" @click="register">Register</button>
+                <button class="massive ui green button" @click="login">Login</button>
             </div>
 
         </div>
@@ -30,7 +40,7 @@
 </template>
 
 <style scoped>
- .background.greeting{
+ /*.background.greeting{
         filter: blur(10px) grayscale(0.35) hue-rotate(1091deg);
-    }
+    }*/
 </style>

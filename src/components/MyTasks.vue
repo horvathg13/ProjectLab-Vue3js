@@ -823,7 +823,7 @@ export default{
                             
                         </tfoot>
                     </table>
-            </div>
+                </div>
             </div>
         </div>
         <Transition>

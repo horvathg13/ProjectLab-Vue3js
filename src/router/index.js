@@ -24,8 +24,6 @@ const router = createRouter({
       path: '/',
       name: 'Greeting',
       component: Greeting,
-      meta:{requiresAuth: true}
-
     },
     {
       path: "/register",

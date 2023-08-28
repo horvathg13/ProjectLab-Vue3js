@@ -192,7 +192,8 @@ form{
 
 .background.greeting{
   background-image:url("../assets/GreetingP_icons/labyrinth_v2.jpg");
-  
+  /*filter: blur(17px) grayscale(0.35) hue-rotate(1091deg);*/
+  filter: blur(17px) grayscale(0.35) hue-rotate(292deg);
 
 }
 
@@ -200,31 +201,41 @@ form{
   color: white;
   margin-top: 0px;
   position: absolute;
-  top: calc(50% - 300px);
+  /*top: calc(50% - 300px);*/
+  top: calc(45% - 300px);
   left: 5%;
   z-index: 2;
   width: 50%;
-  height: 75%;
+  /*height: 75%;*/
+  height: fit-content;
   margin:2% 20%;
   text-align: center;
+  /*background-color: #07071970;
+  border-radius: 30px;*/
 }
 .g-main-header{
   padding: 10px;
 }
 
 .g-header{
-  padding: 70px;
+  /*padding: 70px;*/
+  padding:40px
 }
 .g-main-header h1{
-  font-size: 110px;
+  /*font-size: 110px;*/
+  font-size: 90px;
 }
 
 .g-header h2{
-  font-size: 35px;
+  /*font-size: 35px;*/
+  font-size:30px;
 }
 .g-buttons{
-  display: flex;
-  margin-left: 30%;
+  /*display: flex;
+  margin-left: 30%;*/
+  margin:0 auto;
+  display: inline-flex;
+  padding: 15px;
 }
 .g-buttons a {
   text-decoration: none;
@@ -236,7 +247,7 @@ form{
 
 .background.register{
   background-image:url("../assets/RegP_icons/reg-bg-v3.png");
- filter: blur(1px);
+  filter: blur(1px);
 }
 
 .reg-img{
@@ -276,7 +287,9 @@ form{
 /*Login*/
 
 .background.login{
-  background-image:url("../assets/LoginP_icons/login_bcgrd_v3.jpg");
+ /* background-image:url("../assets/LoginP_icons/login_bcgrd_v3.jpg");*/
+  background-image: url("../assets/GreetingP_icons/labyrinth_v2.jpg");
+  filter: blur(17px) grayscale(0.35) hue-rotate(292deg);
 }
 
 /*Home Page*/

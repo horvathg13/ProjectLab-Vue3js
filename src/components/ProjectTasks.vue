@@ -11,6 +11,7 @@
   import Filter from './Common/FilterButton.vue'
   import Sort from './Common/SortButton.vue'
   import Loader from './Common/Loading.vue';
+  import {store} from '../VuexStore';
 
   export default {
     name: "ProjectTasks",

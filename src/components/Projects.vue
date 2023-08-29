@@ -325,11 +325,11 @@
         },
             
         redirect(project){
-            const {data} = project.data;
-            this.projectData = [project]
+            
+            this.projectData = project
             console.log(this.projectData,"érik a szőlő")
             this.redirectToTasks = true;
-            this.$router.push(`/projects/${project.data.project_id}/tasks`);
+            this.$router.push(`/projects/${project.project_id}/tasks`);
             
         },
 
@@ -907,7 +907,7 @@
                                         :buttons="this.mergedButtons"
                                         :component="this.$route.name"
                                         :newMessage="this.newMessage"
-                                        @redirect="this.redirect"
+                                        @redirect="this.redirect(project)"
                                         @showParticipantModal="this.showParticipantModal"
                                         @edit="this.EditingModeSwitch"
                                         @CommentEmit="this.commentModalSwitch"

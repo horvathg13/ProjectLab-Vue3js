@@ -244,7 +244,8 @@
                         this.show_popup = true
                         setTimeout(() => {
                             this.show_popup = false
-                            this.cancelModal()
+                            this.getTasks()
+                            this.cancelModal();
                             this.message=""
                         },  1500)
                     }

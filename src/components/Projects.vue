@@ -75,6 +75,7 @@
             triggerValue:null,
             dataSave:[],
             tryAgain:null,
+            getmanager:[],
         }
     },
     watch: {
@@ -171,6 +172,9 @@
                     if (error.response.data && error.response.data.message) {
                         this.message= error.response.data.message//Object.values(error.response.data.message).flatMap(y => y)
                         this.show_error_popup = true
+                        if(this.show_participant_modal==false){
+                            this.show_participant_modal = true
+                        }
                         setTimeout(() => {
                             this.show_error_popup = false
                             this.message = "";
@@ -233,7 +237,7 @@
                             setTimeout(() => {
                                 this.show_error_popup = false
                                 this.errorArray=[];
-                                this.cancelModal()
+                                this.tryAgain=false;
                             },  2000)
                         }
                     if (error.response.data && error.response.data.message) {
@@ -271,6 +275,7 @@
                     if (error.response.data && error.response.data.message) {
                         this.message= error.response.data.message
                         this.show_error_popup = true
+                        this.getproject=[];
                         this.loader=false;
                         setTimeout(() => {
                             this.show_error_popup = false
@@ -282,12 +287,12 @@
             });
         },
 
-        getUsers(){
+        getManagers(){
             let url ="/api/getManagers";
             ServiceClient.post(url).then((response) =>{
                     if (response.status == 200){
                         console.log(response.data, "HERE MANAGERS");
-                        this.getusers=response.data
+                        this.getmanager=response.data
                     }
             }).catch((error) => {
                 if (error.response && error.response.status) {
@@ -296,6 +301,24 @@
                         setTimeout(() => {
                             this.show_error_popup = false
                         },  4500)
+                    }
+                }
+            });
+        },
+        getUsers(){
+            let url ="/api/getusers";
+            ServiceClient.post(url).then((response) =>{
+                    if (response.status == 200){
+                        console.log(response.data, "HERE Users");
+                        this.getusers=response.data
+                    }
+            }).catch((error) => {
+                if (error.response && error.response.status) {
+                    if (error.response.data && error.response.data.message) {
+                        this.show_error_popup = true
+                        setTimeout(() => {
+                            this.show_error_popup = false
+                        },  3500)
                     }
                 }
             });
@@ -763,7 +786,7 @@
                     setTimeout(() => {
                         this.show_popup = false
                         this.message = ""
-                        this.getProjects()
+                        this.getProjects();
                     },  1500)
                 }
             }).catch(error =>{
@@ -787,18 +810,38 @@
                 
 
             
-        },
-        beforeMount(){
-            this.setUserRoles()
-        },
-        mounted(){
-            this.getUnreadMessages();
-            this.getProjects()
-            this.getUsers()
-           
+    },
+    beforeRouteEnter(to, from, next) {
+        ServiceClient.post('/api/getUserRole').then(response => {
+            if(response.status === 200){
+                store.commit("setuserRole",response.data)
+                const userRole = response.data
+                //console.log(response.data, "getUserRole");
+                if(userRole.code === 404){
+                    
+                    next('/accessdenied')
+                  
+                }else{
+                    next();
+                }
+            }
             
-            
-        }
+        }).catch(error =>{
+            console.log(error);
+        });
+    },
+    beforeMount(){
+        this.setUserRoles()
+    },
+    mounted(){
+        this.getUnreadMessages();
+        this.getProjects()
+        this.getUsers()
+        this.getManagers();
+        
+        
+        
+    }
     }
 
 
@@ -906,7 +949,7 @@
                 @cancel-modal="cancelModal" 
                 
                 @create-project="createProjects" 
-                :getusers="this.getusers" 
+                :getusers="this.getmanager" 
                 :isDropdownOpen="this.isDropdownOpen"
                 :EditMode="this.EditMode"
                 :EditData="this.Editdata"

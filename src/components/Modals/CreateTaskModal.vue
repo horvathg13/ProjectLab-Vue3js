@@ -154,14 +154,15 @@
                                 format="yyyy-MM-dd"
                                 >{{ Task_Details.deadline }}</VueDatePicker>
                             </div>
-                            <div class="field">
-                                <label>Description</label>
-                                <textarea :readonly="buttonDisable" type="texarea" name="description" placeholder="Details" v-model="Task_Details.description"></textarea>
-                            </div>
                             <div class="field" >
                                 <label> Priority</label>
                             </div>
                             <SelectComponents  :disable="buttonDisable" :VforArray="this.priorities" :editTask="this.SelectCompData" @select="makeSelection"></SelectComponents>
+                            <div class="field">
+                                <label>Description</label>
+                                <textarea :readonly="buttonDisable" type="texarea" name="description" placeholder="Details" v-model="Task_Details.description"></textarea>
+                            </div>
+                            
 
                             <button v-if="(this.readOnlyMode === false || this.readOnlyMode === null) && (this.EditMode=== false || this.EditMode=== null) && (this.createNewTask===true)"  :disabled="buttonDisable" class="ui green button" type="submit">Create</button>
                             <button v-if="(this.readOnlyMode === false || this.readOnlyMode === null) && this.EditMode=== true && (this.createNewTask===false || this.createNewTask===null || this.createNewTask === undefined) "  :disabled="buttonDisable" class="ui green button" type="submit">Edit</button>

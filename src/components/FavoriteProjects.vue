@@ -719,6 +719,25 @@
 
             
         },
+        beforeRouteEnter(to, from, next) {
+            ServiceClient.post('/api/getUserRole').then(response => {
+                if(response.status === 200){
+                    store.commit("setuserRole",response.data)
+                    const userRole = response.data
+                    //console.log(response.data, "getUserRole");
+                    if(userRole.code === 404){
+                        
+                        next('/accessdenied')
+                    
+                    }else{
+                        next();
+                    }
+                }
+                
+            }).catch(error =>{
+                console.log(error);
+            });
+        },
         mounted(){
             this.getUnreadMessages();
             this.getFavoriteProjects()

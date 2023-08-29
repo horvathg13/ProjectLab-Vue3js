@@ -152,7 +152,7 @@
 
     .modal {
     background-color: white;
-    height: 500px;
+    height: 400px;
     width: auto;
     margin: auto;
     border-radius: 20px;

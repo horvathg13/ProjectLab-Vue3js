@@ -176,7 +176,7 @@ export default{
 
     .modal {
     background-color: #e8da52;
-    height: 350px;
+    height: fit-content;
     width: 500px;
     margin: auto;
     border-radius: 20px;
@@ -206,6 +206,7 @@ export default{
    
     .buttonContainer{
         top:40px;
+        padding:10px
     }
     
     .field label{

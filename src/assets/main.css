@@ -193,7 +193,8 @@ form{
 .background.greeting{
   background-image:url("../assets/GreetingP_icons/labyrinth_v2.jpg");
   /*filter: blur(17px) grayscale(0.35) hue-rotate(1091deg);*/
-  filter: blur(17px) grayscale(0.35) hue-rotate(292deg);
+  /*filter: blur(17px) grayscale(0.35) hue-rotate(292deg);*/
+  filter: blur(17px) hue-rotate(282deg);
 
 }
 

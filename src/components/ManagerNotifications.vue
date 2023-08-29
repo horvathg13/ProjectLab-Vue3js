@@ -11,6 +11,7 @@
   import Filter from './Common/FilterButton.vue'
   import Sort from './Common/SortButton.vue'
   import Loader from './Common/Loading.vue'
+  import {store} from "../VuexStore"
 
   export default {
     name: "ProjectTasks",
@@ -387,6 +388,7 @@
                             console.log(error.response.data)
                             this.show_error_popup = true
                             this.showButton=false,
+                            this.taskData=[];
                             this.loader=false;
                             setTimeout(() => {
                                 this.show_error_popup = false
@@ -892,7 +894,7 @@
                             console.log(response.data, "responseDATA")
                             this.message = response.data.message;
                             this.show_popup = true;
-                            this.managerNotificationUpdate();
+                            this.managerNotificationUpdate()
                             setTimeout(() => {
                                 this.show_popup = false
                                 this.message = ""

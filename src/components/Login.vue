@@ -110,7 +110,7 @@
 
 <template>
     <div class="main-container">
-        <div class="background login">
+        <div class="background greeting">
         </div>
         <Transition name="drop">
                 <Success_Popup v-if="login_succeded"></Success_Popup>

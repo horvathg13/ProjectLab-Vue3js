@@ -71,6 +71,7 @@
             setFilterData:[],
             removeData:[],
             tryAgain:null,
+            getmanager:[],
         }
     },
     watch: {
@@ -127,6 +128,9 @@
                     if (error.response.data && error.response.data.message) {
                         this.message= error.response.data.message//Object.values(error.response.data.message).flatMap(y => y)
                         this.show_error_popup = true
+                        if(this.show_participant_modal==false){
+                            this.show_participant_modal = true
+                        }
                         setTimeout(() => {
                             this.show_error_popup = false
                             this.message = "";
@@ -233,12 +237,12 @@
                 });
             },
 
-            getUsers(){
+            getManagers(){
                 let url ="/api/getManagers";
                 ServiceClient.post(url).then((response) =>{
                         
                         if (response.status == 200){
-                            this.getusers=response.data
+                            this.getmanager=response.data
                         }
                 }).catch((error) => {
                         
@@ -253,7 +257,24 @@
                     }
                 });
             },
-            
+            getUsers(){
+                let url ="/api/getusers";
+                ServiceClient.post(url).then((response) =>{
+                        if (response.status == 200){
+                            console.log(response.data, "HERE Users");
+                            this.getusers=response.data
+                        }
+                }).catch((error) => {
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                            },  3500)
+                        }
+                    }
+                });
+            },
             redirect(project){
                 const {data} = project.data;
                 this.projectData = [project]
@@ -748,7 +769,8 @@
         mounted(){
             this.getUnreadMessages();
             this.getProjects()
-            this.getUsers()
+            this.getManagers()
+            this.getUsers();
             
             
             
@@ -850,7 +872,7 @@
                 @cancel-modal="cancelModal" 
                 
                 @create-project="createProjects" 
-                :getusers="this.getusers" 
+                :getusers="this.getmanager" 
                 :isDropdownOpen="this.isDropdownOpen"
                 :EditMode="this.EditMode"
                 :EditData="this.Editdata"></CreateProjectModal>

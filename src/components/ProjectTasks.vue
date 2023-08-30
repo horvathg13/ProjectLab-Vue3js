@@ -355,6 +355,7 @@
                         if (error.response.data && error.response.data.message) {
                             this.message = error.response.data.message
                             this.managerRole = error.response.data.haveManagerRole
+                            this.adminRole = error.response.data.haveAdminRole
                             console.log(error.response.data)
                             this.show_error_popup = true
                             this.loader=false;

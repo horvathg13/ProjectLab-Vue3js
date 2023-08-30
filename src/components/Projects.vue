@@ -141,8 +141,7 @@
         },
 
         showParticipantModal(project){
-            const{data} = project
-            let url =`/api/getprojectparticipants/${project.data.project_id}`;
+            let url =`/api/getprojectparticipants/${project.project_id}`;
             ServiceClient.post(url).then((response) =>{
                 if(response.status == 200){
                     this.participants = response.data
@@ -151,7 +150,7 @@
                 if(this.show_participant_modal==false){
                     this.show_participant_modal = true
                 }
-                this.projectData = project.data
+                this.projectData = project
                 console.log("parti", project, this.participant)
 
             }).catch((error) => {
@@ -207,13 +206,13 @@
             this.p_id = p_id;
             console.log(this.selectedManager, this.date, p_name)
             
-            let formData = new FormData();
-            formData.append("p_name", this.p_name);
-            formData.append("p_manager_id", this.selectedManager.id);
-            formData.append("date",this.date);
-            formData.append("p_id",this.p_id);
+            let dataTravel= {};
+            dataTravel.project_name= this.p_name
+            dataTravel.manager_id= this.selectedManager.id
+            dataTravel.date= this.date
+            dataTravel.project_id= this.p_id
             let url ="/api/createproject";
-            ServiceClient.post(url,formData).then((response) =>{
+            ServiceClient.post(url,dataTravel).then((response) =>{
                 console.log(response);
                 if (response.status == 200){
 
@@ -305,12 +304,15 @@
                 }
             });
         },
-        getUsers(){
-            let url ="/api/getusers";
-            ServiceClient.post(url).then((response) =>{
+        getUsers(project){
+            let url ="/api/getEmployees";
+            let dataTravel={}
+            dataTravel.projectId = project.project_id
+            ServiceClient.post(url,dataTravel).then((response) =>{
                     if (response.status == 200){
                         console.log(response.data, "HERE Users");
                         this.getusers=response.data
+                        this.showParticipantModal(project)
                     }
             }).catch((error) => {
                 if (error.response && error.response.status) {
@@ -322,6 +324,7 @@
                     }
                 }
             });
+            
         },
             
         redirect(project){
@@ -838,7 +841,7 @@
     mounted(){
         this.getUnreadMessages();
         this.getProjects()
-        this.getUsers()
+        //this.getUsers()
         this.getManagers();
         
         
@@ -910,7 +913,7 @@
                                         :component="this.$route.name"
                                         :newMessage="this.newMessage"
                                         @redirect="this.redirect(project)"
-                                        @showParticipantModal="this.showParticipantModal"
+                                        @showParticipantModal="this.getUsers(project)"
                                         @edit="this.EditingModeSwitch"
                                         @CommentEmit="this.commentModalSwitch"
                                         @SwitchModal="SwitchStatusModal"

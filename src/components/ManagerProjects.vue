@@ -100,8 +100,8 @@
         },
 
         showParticipantModal(project){
-            const{data} = project
-            let url =`/api/getprojectparticipants/${project.data.project_id}`;
+            
+            let url =`/api/getprojectparticipants/${project.project_id}`;
             ServiceClient.post(url).then((response) =>{
                 if(response.status == 200){
                     this.participants = response.data
@@ -110,7 +110,7 @@
                 if(this.show_participant_modal==false){
                     this.show_participant_modal = true
                 }
-                this.projectData = project.data
+                this.projectData = project
                 console.log("parti", project, this.participant)
 
             }).catch((error) => {
@@ -257,12 +257,15 @@
                     }
                 });
             },
-            getUsers(){
-                let url ="/api/getusers";
-                ServiceClient.post(url).then((response) =>{
+            getUsers(project){
+                let url ="/api/getEmployees";
+                let dataTravel={}
+                dataTravel.projectId = project.project_id
+                ServiceClient.post(url, dataTravel).then((response) =>{
                         if (response.status == 200){
                             console.log(response.data, "HERE Users");
                             this.getusers=response.data
+                            this.showParticipantModal(project);
                         }
                 }).catch((error) => {
                     if (error.response && error.response.status) {
@@ -770,7 +773,7 @@
             this.getUnreadMessages();
             this.getProjects()
             this.getManagers()
-            this.getUsers();
+            //this.getUsers();
             
             
             
@@ -832,7 +835,7 @@
                                         :component="this.$route.name"
                                         :newMessage="this.newMessage"
                                         @redirect="this.redirect"
-                                        @showParticipantModal="this.showParticipantModal"
+                                        @showParticipantModal="this.getUsers(project)"
                                         @edit="this.EditingModeSwitch"
                                         @CommentEmit="this.commentModalSwitch"
                                         @SwitchModal="SwitchStatusModal">

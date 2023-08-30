@@ -497,7 +497,9 @@
                     }
                     
                     if(this.projectButtons.employee && this.projectButtons.employee.length>0){
-                        this.mergedButtons.push(this.projectButtons.employee[5])
+                        if(!(this.projectButtons.manager && this.projectButtons.manager.length>0)){
+                            this.mergedButtons.push(this.projectButtons.employee[5])
+                        }
                         this.projectButtons.employee = this.projectButtons.employee.slice(0,2)
                         //console.log("entered in the hook",this.projectButtons.employee)
                         

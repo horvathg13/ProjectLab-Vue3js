@@ -112,15 +112,15 @@ export default{
             <a class="section" :href="data.path">{{data.breadcrumb}}</a>
             <i class="right chevron icon divider"></i>
         </div>
-       <div class="ui large breadcrumb section" v-if="h1Title != 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && h1Title !=='Homepage'" :class="{active: h1Title}"> {{ h1Title }}</div>
+       <div class="ui large breadcrumb section" v-if="h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && h1Title !=='Homepage' " :class="{active: h1Title}"> {{ h1Title }}</div>
         <div class="notifications-container">
-            <div class="message-container" v-if="(h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && this.computedLock==false)" >
+            <div class="message-container" v-if="(h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && h1Title !== 'Reset Password' && this.computedLock==false)" >
                 <div class="ui large red left pointing label" @click="redirectToNotifications"> 
                     <i class="bullhorn icon" v-if="systemNotification"></i>
                     <i class="bullhorn open icon" v-else></i>{{ message ? message: 0 }}
                 </div>
             </div>
-            <div class="message-container manager" v-if="(h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && this.computedLock==false && this.managerMode === true)" >
+            <div class="message-container manager" v-if="(h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && h1Title !== 'Reset Password' && this.computedLock==false && this.managerMode === true)" >
                 <div class="ui large red label" @click="redirectToManagerNotifications"> 
                     <i class="binoculars icon" v-if="managerNotification"></i>{{ manager ? manager: 0 }}
                 </div>

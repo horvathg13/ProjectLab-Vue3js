@@ -43,7 +43,7 @@ export default{
             let formData = new FormData();
             formData.append("email", this.email);
             formData.append("password", this.password);
-            formData.append("c_password", this.c_password);
+            formData.append("confirm_password", this.c_password);
             let url = "/api/resetpassword";
             this.disablefield = true;
 
@@ -138,5 +138,14 @@ export default{
 
 </template>
 <style scoped>
+.HP-title{
+    text-align: center;
+    width: auto;
+    max-width: 800px;
+}
+.HP-title h1{
+    overflow: hidden;
+    text-overflow: ellipsis;
 
+}
 </style>

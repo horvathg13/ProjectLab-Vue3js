@@ -1,7 +1,7 @@
 <template>
     <div class="AD">
         <div class="AD_img">
-            <img src="../assets/NotFound_icon/notfound.jpg">
+            <img src="../assets/NotFound_icon/page_not_found_v3.png">
         </div>
         <div class="AD_content">
             <h1>404</h1>
@@ -24,7 +24,7 @@
   align-items: center;
 }
 .AD_img img{
-  height: 450px;
+  height: 550px;
   padding: 70px 10px
 }
 </style>

@@ -231,7 +231,7 @@ const router = createRouter({
     },
     {
       path: '/:catchAll(.*)',
-      name: 'NotFound',
+      name: "Not Found",
       component: NotFound
     }
     

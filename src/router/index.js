@@ -16,6 +16,7 @@ import ManagerDashboard from "../components/ManagerDashboard.vue"
 import ManagerProjects from "../components/ManagerProjects.vue"
 import ManagerTasks from "../components/ManagerTasks.vue"
 import ManagerNotifications from "../components/ManagerNotifications.vue"
+import NotFound from "../components/NotFound.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -228,6 +229,11 @@ const router = createRouter({
       
 
     },
+    {
+      path: '/:catchAll(.*)',
+      name: 'NotFound',
+      component: NotFound
+    }
     
     
     

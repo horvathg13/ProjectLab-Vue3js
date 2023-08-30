@@ -3,7 +3,8 @@ import VueClickAway from "vue3-click-away";
     export default{
         name: "AddUserModal",
         props:{
-            Url:""
+            Url:"",
+            tryAgain:null,
         },
         data(){
             return{
@@ -14,6 +15,20 @@ import VueClickAway from "vue3-click-away";
         },
         directives:{
             VueClickAway
+        },
+        watch:{
+            'tryAgain':{
+                immediate:true,
+                deep:true,
+                handler(newValue){
+                    if(newValue==false){
+                        this.buttonDisable=newValue
+                    }
+                    
+                    console.log("try hello",newValue,this.buttonDisable)
+                    
+                }
+            }
         },
         methods: {
             cancelModal() {

@@ -74,8 +74,8 @@ export default{
                         }
                         if (error.response.data.message) {
                             
-                            this.errors = Object.values(error.response.data.message).flatMap(y => y)
-                           
+                            //this.errors = Object.values(error.response.data.message).flatMap(y => y)
+                            this.errors = ["Database error occured"]
                             //alert("Server side form validation is working");
                         }else if(!error.response.data.validatorError && !error.response.data.message){
                             this.errors = ["Server error occurred"] 

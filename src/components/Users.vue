@@ -45,6 +45,8 @@ import {store} from '../VuexStore'
             adminbuttons:{},
             userRole:{},
             AddNewUser:false,
+            errorarray:[],
+            tryAgain:null,
         }
     },
     watch:{
@@ -101,7 +103,8 @@ import {store} from '../VuexStore'
             this.showModal = false
             this.show_reset_password_manual_modal=false
             this.show_role_selector_modal = false
-            this.url = ""
+            this.url = "",
+            this.tryAgain=null
         },
 
         createUser(data){
@@ -130,8 +133,17 @@ import {store} from '../VuexStore'
                        
                     }
                 }).catch((error) => {
-                        
-                    if (error.response && error.response.status === 400) {
+                    this.tryAgain=null
+                    if(error.response.data.validatorError){
+                        this.errorarray=error.response.data.validatorError
+                        this.show_error_popup=true
+                        setTimeout(() => {
+                            this.tryAgain=false
+                            this.show_error_popup = false
+                            this.errorArray=[];
+                        },  2000)
+                    }
+                    if (error.response && error.response.data.message) {
                         if (error.response.data && error.response.data.message) {
                             this.show_error_popup = true
                             setTimeout(() => {
@@ -426,7 +438,7 @@ import {store} from '../VuexStore'
             <Success_Popup v-if="show_popup==true" :message="this.message"></Success_Popup>
         </Transition>
         <Transition name="drop">
-            <ErrorPopup v-if="show_error_popup==true" :message="this.message"></ErrorPopup>
+            <ErrorPopup v-if="show_error_popup==true" :message="this.message" :errorarray="this.errorArray"></ErrorPopup>
         </Transition>
         <div class="content-container">
             
@@ -486,8 +498,12 @@ import {store} from '../VuexStore'
             </div>
         </div>
         <Transition>
-                <AddUserModal v-if="showModal==true" @cancel-modal="cancelModal"
-                @create-user="createUser" @copy-to="copy" :Url="this.url"></AddUserModal>
+                <AddUserModal v-if="showModal==true"
+                @cancel-modal="cancelModal"
+                @create-user="createUser" 
+                @copy-to="copy" 
+                :Url="this.url"
+                :tryAgain="this.tryAgain"></AddUserModal>
         </Transition> 
         <Transition>
             <ResetPasswordManualModal v-if="show_reset_password_manual_modal==true" @cancel-modal="cancelModal" @copy-to="copy" :Url="this.url"></ResetPasswordManualModal>

@@ -816,35 +816,59 @@
                     }
                 }
             },
-        },
-        beforeRouteEnter(to, from, next) {
-            ServiceClient.post('/api/getUserRole').then(response => {
-                if(response.status === 200){
-                    store.commit("setuserRole",response.data)
-                    const userRole = response.data
-                    //console.log(response.data, "getUserRole");
-                    if(userRole.code === 404){
-                        
-                        next('/accessdenied')
-                    
-                    }else{
-                        next();
+            accessControll(){
+                ServiceClient.post('/api/getUserRole').then(response => {
+                    if(response.status === 200){
+                        store.commit("setuserRole",response.data)
+                        const userRole = response.data
+                        //console.log(response.data, "getUserRole");
+                        if(userRole.code === 404){
+                            this.$router.push('/accessdenied')
+                        }else{
+                           this.enterControll();
+                        }
                     }
-                }
-                
-            }).catch(error =>{
-                console.log(error);
-            });
+                }).catch(error =>{
+                    console.log(error);
+                });
+            },
+            enterControll(){
+                let dataTravel={};
+                dataTravel.p_id = this.$route.params.id
+                ServiceClient.post('/api/acessControllForTasks',dataTravel).then(response => {
+                    if(response.status === 200){
+                        this.getUnreadMessages();
+                        this.getPriorities()
+                        this.getProjectsById()
+                        this.getProjectParticipants()
+                        this.getTasks()
+                    }
+                }).catch(error =>{
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message = error.response.data.message
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message = ""
+                            }, 2000)
+
+                        }
+                    }
+                });
+            }
         },
+        
         beforeMount(){
             
         },
         mounted(){
-            this.getUnreadMessages();
+            this.accessControll()
+            /*this.getUnreadMessages();
             this.getPriorities()
             this.getProjectsById()
             this.getProjectParticipants()
-            this.getTasks()
+            this.getTasks()*/
 
             console.log(this.$route)
         }

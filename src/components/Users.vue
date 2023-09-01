@@ -135,7 +135,7 @@ import {store} from '../VuexStore'
                 }).catch((error) => {
                     this.tryAgain=null
                     if(error.response.data.validatorError){
-                        this.errorarray=error.response.data.validatorError
+                        this.errorArray=error.response.data.validatorError
                         this.show_error_popup=true
                         setTimeout(() => {
                             this.tryAgain=false

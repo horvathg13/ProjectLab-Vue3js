@@ -161,13 +161,13 @@
             this.p_id = p_id;
             console.log(this.selectedManager, this.date, p_name)
             
-            let formData = new FormData();
-            formData.append("p_name", this.p_name);
-            formData.append("p_manager_id", this.selectedManager.id);
-            formData.append("date",this.date);
-            formData.append("p_id",this.p_id);
+            let dataTravel= {};
+            dataTravel.project_name= this.p_name
+            dataTravel.manager_id= this.selectedManager.id
+            dataTravel.date= this.date
+            dataTravel.project_id= this.p_id
             let url ="/api/createproject";
-            ServiceClient.post(url,formData).then((response) =>{
+            ServiceClient.post(url,dataTravel).then((response) =>{
                 console.log(response);
                 if (response.status == 200){
 
@@ -753,9 +753,9 @@
                     //console.log(response.data, "getUserRole");
                     if(userRole.code !== 404){
                         //console.log(this.userRole);
-                        const isAdmin= userRole.some(item=>item.role === "Admin" || item.role === "Manager");
+                        const isManager= userRole.some(item.role === "Manager");
                         //console.log(isAdmin,"AMIN")
-                        if(isAdmin === false){
+                        if(isManager === false){
                             next('/accessdenied')
                         }else{
                             next()

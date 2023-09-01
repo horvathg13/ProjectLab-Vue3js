@@ -93,9 +93,9 @@ export default{
                 //console.log(response.data, "getUserRole");
                 if(userRole.code !== 404){
                     //console.log(this.userRole);
-                    const isAdmin= userRole.some(item=>item.role === "Admin" || item.role === "Manager");
-                    //console.log(isAdmin,"AMIN")
-                    if(isAdmin === false){
+                    const isManager= userRole.some(item.role === "Manager");
+                        //console.log(isAdmin,"AMIN")
+                    if(isManager === false){
                         next('/accessdenied')
                     }else{
                         next();

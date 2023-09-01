@@ -97,8 +97,8 @@
                         <form class="ui form" @submit.prevent="attach" novalidate>
                            
                             <div class="field"><label>Remove or Add Active Employee(s)</label></div>
-                            <MultipleSelectComponents :VforArray="this.SelectComp_getProjectParticipants.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" 
-                            :VforActiveArray="this.SelectComp_getActiveTaskParticipants.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" 
+                            <MultipleSelectComponents :VforArray="this.SelectComp_getProjectParticipants.length>0 ? this.SelectComp_getProjectParticipants.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'})) :null" 
+                            :VforActiveArray="this.SelectComp_getActiveTaskParticipants.length >0 ? this.SelectComp_getActiveTaskParticipants.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'})) :null" 
                             @select="makeSelection"
                             @detach-user="detach"></MultipleSelectComponents>
                             

@@ -108,6 +108,10 @@
     .title{
         top:15px
     }
+    .title h3{
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
     .ui.green.button.create{
         top:15px
     }
@@ -146,7 +150,8 @@
     width: auto;
     margin: auto;
     border-radius: 20px;
-    padding:30px
+    padding:30px;
+    max-width:600px
     }
     .ui.input{
         width: 500px;

@@ -798,8 +798,8 @@ export default{
                         <tbody>
                             <tr v-for="task in myTasks" :key="task.id" :class="rowBackground(task)">
                                 <td>{{task.id}}</td>
-                                <td>{{task.projectName}}</td>
-                                <td>{{task.name}}</td>
+                                <td :style="{overflow:'auto', textOverflow:'ellipsis'}">{{task.projectName}}</td>
+                                <td :style="{overflow:'auto', textOverflow:'ellipsis'}">{{task.name}}</td>
                                 <td>{{ task.status}}</td>
                                 <td>{{ task.priority}}</td>
                                 <td>{{ task.deadline}}</td>

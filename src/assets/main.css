@@ -117,7 +117,7 @@ form{
 .ui.table td{
   padding: 0.7em ;
   text-align: center;
-  max-width: 300px;
+  max-width: 200px;
   /*min-width: 100px;*/
   /*overflow: auto;*/
   text-overflow: ellipsis;
@@ -154,13 +154,15 @@ form{
   margin-bottom:20px;
   width: auto;
   min-width: auto;
-  max-width: max-content;
+  max-width: 500px;
   left: 0;
   padding: 0;
   
 }
 .content-title.task h1{
   font-size: 35px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .content-title.task h2{
   color:white;

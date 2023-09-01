@@ -898,8 +898,8 @@
                         <tbody >
                             <tr v-for="project in getprojects" :key="project.id" :class="rowBackground(project)">
                                 <td>{{project.project_id}}</td>
-                                <td>{{project.manager}}</td>
-                                <td>{{project.name}}</td>
+                                <td :style="{overflow:'auto', textOverflow:'ellipsis'}">{{project.manager}}</td>
+                                <td :style="{overflow:'auto', textOverflow:'ellipsis'}">{{project.name}}</td>
                                 <td>{{ project.status}}</td>
                                 <td>{{ project.deadline}}</td>
                                 <td ><i v-if="ShoudShowEnvelope(project)" class="red envelope icon"></i></td>

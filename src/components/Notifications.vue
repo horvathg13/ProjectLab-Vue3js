@@ -158,7 +158,7 @@ export default{
                             <tr v-for="n in notifications" :key="n.id" class="warning">
                                 <td>{{n.id}}</td>
                                 <td>{{n.type}}</td>
-                                <td>{{n.title}}</td>
+                                <td :style="{overflow:'auto', textOverflow:'ellipsis'}">{{n.title}}</td>
                                 <td>{{n.status}}</td>
                                 <td>{{n.deadline}}</td>
                                 <td ><i v-if="ShoudShowEnvelope(n)" class="red envelope icon"></i></td>

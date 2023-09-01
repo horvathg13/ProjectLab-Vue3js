@@ -1010,8 +1010,8 @@
 
                         <tr v-for="task in taskData" :key="task.task_id" :class="rowBackground(task)">
                             <td>{{ task.task_id }}</td>
-                            <td>{{ task.p_name }}</td>
-                            <td>{{task.task_name }}</td>
+                            <td :style="{overflow:'auto', textOverflow:'ellipsis'}">{{ task.p_name }}</td>
+                            <td :style="{overflow:'auto', textOverflow:'ellipsis'}">{{task.task_name }}</td>
                             <td>{{task.deadline }}</td>
                             <td>{{task.status }}</td>
                             <td>{{ task.priority}}</td>

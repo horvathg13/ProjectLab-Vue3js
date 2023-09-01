@@ -753,7 +753,7 @@
                     //console.log(response.data, "getUserRole");
                     if(userRole.code !== 404){
                         //console.log(this.userRole);
-                        const isManager= userRole.some(item.role === "Manager");
+                        const isManager= userRole.some(item=>item.role === "Manager");
                         //console.log(isAdmin,"AMIN")
                         if(isManager === false){
                             next('/accessdenied')

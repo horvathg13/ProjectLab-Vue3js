@@ -464,8 +464,8 @@ import {store} from '../VuexStore'
                         <tbody>
                             <tr v-for="user in getusers" :key="user.id">
                                 <td>{{user.id}}</td>
-                                <td>{{user.name}}</td>
-                                <td>{{user.email}}</td>
+                                <td :style="{overflow:'auto', textOverflow:'ellipsis'}">{{user.name}}</td>
+                                <td :style="{overflow:'auto', textOverflow:'ellipsis'}">{{user.email}}</td>
                                 <td>{{user.roles}}</td>
                                 <td>
                                     <CircularMenu
@@ -516,3 +516,10 @@ import {store} from '../VuexStore'
         </Transition>
     </div>
 </template>
+
+<style scoped>
+.ui.table.uniq td{
+    overflow: auto;
+    text-overflow: ellipsis;
+}
+</style>

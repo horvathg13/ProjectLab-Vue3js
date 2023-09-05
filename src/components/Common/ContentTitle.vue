@@ -18,21 +18,15 @@ export default{
     },
     watch:{
         '$store.state.notifications'(newValue) {
-            console.log(newValue.length,"kakakaokspd")
             this.message = newValue.length;
-            //console.log(newValue.length, "hello notifica watch");
         },
         '$store.state.userRole'(newValue){
            
             this.userRole = newValue;
-            console.log(this.userRole, "hello from user watcher");
-            //this.lock();
           
         },
         '$store.state.managerNotifications'(newValue) {
-            console.log(newValue,"kakakaokspd")
             this.manager = newValue;
-            //console.log(newValue, "hello ManagerNotifica watch");
         },
     },
     computed: {
@@ -41,45 +35,26 @@ export default{
         },
         computedLock(){
             const lock = this.userRole.code ? this.userRole.code === 404:false
-            //console.log(lock)
             return lock
         },
         managerMode(){
             const managerRoles = Object.values(this.userRole);
             const findManager = managerRoles.some((role)=>role.role==='Manager')
-            //console.log(managerRoles, findManager);
             return findManager
         },
         systemNotification(){
             const notification = this.$store.state.notifications
             this.message = notification ? notification.length:0
-            console.log(this.message, "heyhü")
             return this.message
         },
         managerNotification(){
             const notification = this.$store.state.managerNotifications
             this.manager = notification ? notification:0
-            console.log(this.manager, "heyhü")
             return this.manager
         }
         
     },
     methods:{
-        /*lock(){
-            if(this.userRole.code ?? this.userRole.code == 404){
-                this.lockMode = true
-                    
-            }else{
-                this.lockMode = false
-                
-                for(let i in this.userRole){
-                   if(this.userRole[i].role ==='Manager'){
-                    this.managerMode=true
-                    console.log(this.managerMode)
-                   }
-                }
-            }   
-        },*/
         redirectToNotifications(){
             this.$router.push('/notifications')
         },
@@ -90,11 +65,9 @@ export default{
     },
    
     beforeMount() {
-        //this.lock()
         
     },
     mounted() {
-        //this.lock();
     },
  
 }

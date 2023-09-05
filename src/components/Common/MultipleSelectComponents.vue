@@ -20,7 +20,6 @@ export default{
             immediate:true,
             handler(newValue){
                 this.dropdownDisbale= newValue
-                console.log(this.dropdownDisbale, "DISABLE")
             }
             
         }
@@ -29,7 +28,6 @@ export default{
         toggleDrop(){
             this.$emit("toggleDrop")
             this.isDropdownOpen = !this.isDropdownOpen;
-            console.log("toggleDrop is working")
         },
         select(v) {
             
@@ -39,7 +37,6 @@ export default{
             };
             
             let exist = this.selected.some(d => d.id === selectedUser.id)
-            console.log(exist)
             if(!exist){
                 this.selected.push(selectedUser);
                 

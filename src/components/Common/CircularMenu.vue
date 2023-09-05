@@ -28,14 +28,12 @@ import VueClickAway from "vue3-click-away";
                 handler(newValue){
                     this.componentButtons = newValue
                     
-                    //console.log("Hello from watcher", this.componentButtons)
                 }
             },
             'newMessage':{
                 immediate:true,
                 handler(newValue){
                     this.setNewMessage = newValue
-                    //console.log("Hello from watcher_newMessage",newValue)
                 }
 
             }
@@ -49,18 +47,9 @@ import VueClickAway from "vue3-click-away";
             onClickAway(){
                 this.circulardrop = false
                 this.componentButtons = []
-                //this.setNewMessage=false
             },
-            /*async circularMenuDropdown(){
-                this.circulardrop = !this.circulardrop
-                console.log("circular drop")
-                this.dropdownClasses = await this.dropdownDynamicDirection();
-                console.log(this.dropdownClasses);
-                
-            },*/
             circularMenuDropdown(){
                 this.circulardrop = !this.circulardrop
-                console.log("circular drop")
             },
             redirectEmit(){
                 this.$emit("redirect", {data: this.data})
@@ -93,7 +82,6 @@ import VueClickAway from "vue3-click-away";
             },
             SwitchModal(){
                 this.$emit("SwitchModal",{data: this.data})
-                console.log("hello from circle modal")
             },
             CompletedEmit(){
                 this.$emit("CompletedEmit",{data:this.data})
@@ -101,22 +89,6 @@ import VueClickAway from "vue3-click-away";
             TaskDetailsEmit(){
                 this.$emit("TaskDetailsEmit",{data:this.data, readOnlyMode:true})
             },
-            /*dropdownDynamicDirection(){
-                return new Promise((resolve) => {
-                    setTimeout(() => {
-                    const dropdownMenu = this.$refs.dropdown;
-                    const rect = dropdownMenu.getBoundingClientRect();
-                    console.log(rect);
-                    if (rect.bottom > window.innerHeight && this.circulardrop) {
-                        resolve(true);
-                    } else {
-                        resolve(false);
-                    }
-                    }, 1);
-                });
-                
-                
-            }*/
             
             DataSaveLeaveProjectEmit(){
                 this.$emit("DataSaveLeaveProjectEmit",{data:this.data, str:'leaveProject'})

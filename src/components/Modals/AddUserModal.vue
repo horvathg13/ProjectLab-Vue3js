@@ -25,7 +25,6 @@ import VueClickAway from "vue3-click-away";
                         this.buttonDisable=newValue
                     }
                     
-                    console.log("try hello",newValue,this.buttonDisable)
                     
                 }
             }

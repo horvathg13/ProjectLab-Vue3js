@@ -48,11 +48,9 @@
             formData.append("slug", this.slug);
             let url ="/api/createrole";
                 ServiceClient.post(url,formData).then((response) =>{
-                    console.log(response);
                     if (response.status == 200){
                         this.show_popup = true
                         this.url = response.data.data.url
-                        console.log(response.data.data.url)
                        
                     }
                 }).catch((error) => {

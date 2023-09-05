@@ -51,7 +51,6 @@
                 this.remove_employee=[];
                 this.SelectComp_getActiveTaskParticipants=[];
                 this.SelectComp_getProjectParticipants=[];
-                console.log(this.SelectComp_getActiveTaskParticipants,  this.SelectComp_getProjectParticipants, "EMPTY?!")
             },
 
             makeSelection(data){
@@ -63,7 +62,6 @@
                 const{detach} = data;
                 
                 this.remove_employee = data.remove
-                console.log(this.remove_employee, "DETACH")
             }
             
 

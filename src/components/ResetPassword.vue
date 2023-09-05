@@ -51,7 +51,6 @@ export default{
                 if (response.data.status === 200) {
                    
                     this.login_succeded = true;
-                    console.log(response.data);
 
                     setTimeout(() => {
         
@@ -72,12 +71,6 @@ export default{
                 }
                 }
             });
-            /*ServiceClient.post("/api/getUserPermission").then(response => {
-            store.commit("setuserRole",response.data);
-            }).catch(error =>{
-            console.log(error);
-            });
-            */
         },
         close(){
             this.errors=[]

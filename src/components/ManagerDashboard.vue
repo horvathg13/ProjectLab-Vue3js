@@ -16,7 +16,6 @@ export default{
     },
     computed: {
         username() {
-            console.log(toRaw(this.$store.state))
             return this.$store.state.userData.name;
         }
     },
@@ -24,7 +23,6 @@ export default{
         '$store.state.userRole'(newValue) {
             
             this.userRole = newValue;
-            console.log( this.userRole, "hello from user watcher");
             this.SetUserCard();
             
             
@@ -42,14 +40,7 @@ export default{
     computed:{
         needToCheck(){
             const color = this.needToCheck ? 'big orange binoculars icon':'big green binoculars icon'
-            console.log(color)
             return color
-            /*if(this.needToCheck !== null || this.needToCheck !==0){
-                console.log(this.needToCheck,"CHECK")
-                return "big orange binoculars icon"
-            }else{
-                return "big green binoculars icon"
-            }*/
         }
     },
     methods:{
@@ -74,27 +65,14 @@ export default{
             this.$router.push("/manager-tasks")
 
         },
-        /*getManagerNotifications(){
-
-            ServiceClient.post('/api/get-manager-notification').then(response => {
-                store.commit("getManagerNotifications",response.data);
-                console.log(response.data, "ManagerNotifica");
-            }).catch(error =>{
-                console.log(error);
-            });
-        }*/
-
     },
     beforeRouteEnter (to, from, next) {
         ServiceClient.post('/api/getUserRole').then(response => {
             if(response.status === 200){
                 store.commit("setuserRole",response.data)
                 const userRole = response.data
-                //console.log(response.data, "getUserRole");
                 if(userRole.code !== 404){
-                    //console.log(this.userRole);
                     const isManager= userRole.some(item=>item.role === "Manager");
-                        //console.log(isAdmin,"AMIN")
                     if(isManager === false){
                         next('/accessdenied')
                     }else{
@@ -109,12 +87,7 @@ export default{
             console.log(error);
         });
     },
-    /*beforeMount() {
-       this.getManagerNotifications();
-    },*/
     mounted(){
-       
-       
     }
 }
 </script>

@@ -48,7 +48,6 @@
                 flush:true,
                 handler(newValue){
                     this.SelectCompData = newValue
-                    console.log("hello from createTask comp", this.SelectCompData)
                 }
             },
             'readOnlyMode':{
@@ -56,7 +55,6 @@
                 deep:true,
                 handler(newValue){
                     this.buttonDisable=newValue
-                    console.log("readonly hello", newValue,this.buttonDisable, this.tryAgain)
                     
                 }
                 
@@ -69,7 +67,6 @@
                         this.buttonDisable=newValue
                     }
                     
-                    console.log("try hello",newValue,this.buttonDisable, this.createNewTask,  this.EditMode)
                     
                 }
             }
@@ -82,7 +79,6 @@
             cancelModal() {
                 this.SelectCompData ={}
                 this.$emit("cancel-modal");
-                console.log(this.SelectCompData , "empty??")
             },
 
             createTask(){
@@ -104,14 +100,12 @@
         },
         mounted(){
             if(this.EditData!== null && this.EditMode=== true || this.EditData!== null && this.readOnlyMode=== true){
-                console.log(this.EditData, "solution")
                 this.Task_Details.name= this.EditData.task_name?this.EditData.task_name:this.EditData.name;
                 this.Task_Details.deadline = this.EditData.deadline ? this.EditData.deadline: this.EditData.deadline
                 this.Task_Details.description = this.EditData.description
                 this.Task_Details.priority = this.EditData.priority_id ? this.EditData.priority_id: this.EditData.priorityId
                 this.Task_Details.id = this.EditData.task_id?this.EditData.task_id:this.EditData.id
 
-                console.log(this.Task_Details, "solution finish", this.EditData)
                 
             }
        

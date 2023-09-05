@@ -5,7 +5,6 @@ import {store} from "./VuexStore"
 import ContentTitle from './components/Common/ContentTitle.vue'
  
 ServiceClient.post('/api/get-unread-messages').then(response => {
-  console.log("getUnreadMessages",response.data);
   store.commit("getUnreadMessages", response.data);
 }).catch(error =>{
   console.log(error);
@@ -19,7 +18,6 @@ ServiceClient.post('/api/getUserData').then(response => {
 
 setInterval(() => {
   ServiceClient.post('/api/get-unread-messages').then(response => {
-    console.log("getUnreadMessages",response.data);
     store.commit("getUnreadMessages", response.data);
   }).catch(error =>{
     console.log(error);
@@ -30,21 +28,18 @@ setInterval(() => {
 
 ServiceClient.post('/api/notifications').then(response => {
   store.commit("getNotifications",response.data);
-  console.log(response.data, "notifica");
 }).catch(error =>{
   console.log(error);
 });
 
 ServiceClient.post('/api/get-manager-notification').then(response => {
   store.commit("getManagerNotifications",response.data);
-  console.log(response.data, "ManagerNotifica");
 }).catch(error =>{
   console.log(error);
 });
 
 ServiceClient.post('/api/getUserRole').then(response => {
   store.commit("setuserRole",response.data)
-  console.log(response.data, "getUserRole");
 }).catch(error =>{
   console.log(error);
 });

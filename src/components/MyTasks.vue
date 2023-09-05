@@ -69,7 +69,6 @@ export default{
     watch: {
         '$store.state.unreadMessages'(newValue) {
             this.unreadMessage = newValue;
-            console.log(this.unreadMessage, "hello from watch");
         }
     },
     methods:{
@@ -81,7 +80,6 @@ export default{
             ServiceClient.post(url,dataTravel).then((response) =>{
                 if (response.status == 200){
                     this.myTasks=response.data
-                    console.log(this.myTasks ,"MYTASK")
                     this.loader=false;
                 }
             }).catch((error) => {
@@ -118,14 +116,11 @@ export default{
             this.getProjectParticipants();
             const{data} = task
             this.AttachTask = task.data
-            console.log(this.AttachTask.id,"attach_is active")
 
             let url=`/api/getActiveEmployees/${this.AttachTask.id}`;
             ServiceClient.post(url).then((response) =>{
-                console.log(response);
                 if (response.status == 200){
                     this.getActiveTaskEmployee = response.data
-                    console.log(this.getActiveTaskEmployee, "lokol")
                     if(this.show_Attach_Modal == false){
                         this.show_Attach_Modal = true
                     }
@@ -147,7 +142,6 @@ export default{
         },
         showCreateTaskModal(){
            this.Editdata = null
-           console.log(this.Editdata, "edit data is set null?")
             if(this.show_Create_Task_Modal==false){
                 this.show_Create_Task_Modal = true
             }
@@ -167,7 +161,6 @@ export default{
             this.assignEmployee=[],
             this.RequestData=[],
             this.RemoveData=[];
-            console.log("Bezártad a Modalt")
         },
 
         createTask(data){
@@ -179,7 +172,6 @@ export default{
             this.description = task.description;
             this.t_priority = task.priority;
             this.task_id = task.id;
-            console.log(this.deadline, this.task_name, this.description, this.t_priority)
             
            
             this.p_id= this.ActualTaskData.projectId;
@@ -198,7 +190,6 @@ export default{
 
             let url ="/api/createtask";
                 ServiceClient.post(url,formData).then((response) =>{
-                    console.log(response);
                     if (response.status == 200){
                         this.message=response.data.message
                         this.show_popup = true
@@ -227,7 +218,6 @@ export default{
         AssignEmployeeToTask(data){
             const {selected_employee, remove_employee}=data
             
-            console.log(this.assignEmployee, "mackó", this.AttachTask)
             
             if(data.selected_employee.select !== undefined){
                     this.assignEmployee=data.selected_employee.select;
@@ -245,17 +235,14 @@ export default{
             }
             if(data.remove_employee !== undefined){
                 this.RemoveData=data.remove_employee;
-                console.log(this.RemoveData, "REMOVEDATA")
             }
             let dataTravel={};
             dataTravel.requestData = this.RequestData ? this.RequestData:null,
             dataTravel.removeData = this.RemoveData ? this.RemoveData:null,
             dataTravel.task_id = this.AttachTask.id
             dataTravel.project_id = this.ActualTaskData.projectId
-            console.log(dataTravel, "TRAVEL")
             let url ="/api/assign-employee-to-task";
             ServiceClient.post(url,dataTravel).then((response) =>{
-                console.log(response);
                 if (response.status == 200){
                     this.message =response.data.message
                     this.show_popup = true
@@ -291,7 +278,6 @@ export default{
                     
                 if (response.status == 200){
                     this.priorities=response.data.data
-                    console.log(this.priorities, "hellóbelló prioriti")
                 }
             }).catch((error) => {
                     
@@ -339,20 +325,16 @@ export default{
             const {data, switching} = kiskutya
             this.Editdata = kiskutya.data
             this.EditMode = kiskutya.switching;
-            console.log(this.Editdata, "editmode")
             this.show_Create_Task_Modal =true
         },
         commentModalSwitch(kismacska){
             const{data} = kismacska
             this.taskDataTravel = kismacska.data
-            console.log(this.taskDataTravel, "kismacskaTaskData")
             let url=`/api/getActiveEmployees/${kismacska.data.id}`;
             ServiceClient.post(url).then((response) =>{
-                    console.log(response);
                     if (response.status == 200){
-                    this.getActiveTaskEmployee = response.data
-                    console.log(this.getActiveTaskEmployee, "lokol")
-                    this.show_Comment_Modal = true
+                        this.getActiveTaskEmployee = response.data
+                        this.show_Comment_Modal = true
                     }
                 }).catch((error) => {
                         
@@ -377,10 +359,8 @@ export default{
             projectId = this.ActualTaskData.projectId;
             
             emitData.projectId = projectId
-            console.log(emitData, "emitData",projectId);
             let url='/api/send-message';
             ServiceClient.post(url,emitData).then((response) =>{
-                    console.log(response);
                     if (response.status == 200){
                         this.message = response.data.message;
                         this.show_popup=true
@@ -409,7 +389,6 @@ export default{
         },
         getButtons(task){
             this.ActualTaskData = task;
-            console.log(this.ActualTaskData, "TASKDATA")
             let url=`/api/get-buttons/${task.projectId}`
             ServiceClient.post(url).then(response => {
                 if (response.status == 200){
@@ -432,18 +411,8 @@ export default{
                             if(this.projectButtons.employee[item].label === 'Completed' && task.status === 'Completed'){
                                 let findButton =this.projectButtons.employee.indexOf(this.projectButtons.employee[item]);
                                 this.projectButtons.employee.splice(findButton,1)
-                                //console.log(findButton)
                             }   
                         }
-                       /* this.projectButtons.employee = this.projectButtons.employee.slice(1,2)
-                        
-                        for(let item in this.projectButtons.employee){
-                            this.mergedButtons.push(this.projectButtons.employee[item])
-                        }
-                        this.projectButtons.employee = this.projectButtons.employee.slice(-1)
-                        for(let item in this.projectButtons.employee){
-                            this.mergedButtons.push(this.projectButtons.employee[item])
-                        } */
                         this.mergedButtons.push(this.projectButtons.employee[1])
                         this.mergedButtons.push(this.projectButtons.employee[3])
                         this.mergedButtons.push(this.projectButtons.employee[4])
@@ -457,37 +426,28 @@ export default{
                         }
                     }
                     
-                    console.log(this.mergedButtons, "merged");
                     for (let item in this.unreadMessage.Task) {
-                        console.log(this.unreadMessage.Task[item]);
                         const keys = Object.keys(this.unreadMessage.Task[item]);
-                        console.log(keys, "object.keys(this.unreadMessage.Task[item])");
                     
                         if (
                             this.unreadMessage.Task[item][keys[0]] === task.task_id &&
                             this.unreadMessage.Task[item][keys[1]] == this.ActualTaskData.projectId
                         ) {
                             this.newMessage = true;
-                            console.log("match", this.newMessage);
                         } else {
                             this.newMessage = false;
-                            console.log("something went wrong",  this.ActualTaskData.projectId);
                         }
                     }
                     let foundMatch = false;
                     for (let item of this.unreadMessage.Task) {
-                        console.log(Object.values(item), "unreadPro");
                         const values = Object.values(item);
                         for (let i = 0; i < values.length - 1; i++) {
-                            console.log(values[i], "unreadPro")
                             if (values[i] == task.id && values[i + 1] == task.projectId) {
                                 this.newMessage = true;
                                 foundMatch = true
-                                console.log("match", values[i], this.newMessage);
                                 break;
                             }else{
                                 this.newMessage = false;
-                                console.log("match", this.newMessage,Object.values(item)[i],task.id );
                             }
                             if(foundMatch == true){
                                 break;
@@ -518,19 +478,16 @@ export default{
         },
         SwitchStatusModal(statusData){
             const{data}=statusData
-            console.log(statusData, "statusData")
             
             let url=`/api/get-status/${this.ActualTaskData.projectId}/${statusData.data.task_id}`;
 
             ServiceClient.post(url).then((response) =>{
                 if (response.status == 200){
-                    console.log(response.data, "responseDATA")
                     for(let item in response.data){
                         this.statusDataTravel= response.data[item]
                     }
                     this.statusDataTravel.priority = this.priorities
                     this.showStatusModal = true;
-                    console.log(this.statusDataTravel, "statusDataTravel", )
                 }
             }).catch((error) => {
                 if (error.response && error.response.status) {
@@ -547,12 +504,10 @@ export default{
             });
 
             
-            console.log("namizu")
 
         },
         SetStatus(set){
             const{data}=set
-            console.log(set, "SET",JSON.stringify(set.setAllTask));
             if(Object.keys(set.priority).length == 0){
                 set.priority.id = null
             }
@@ -563,11 +518,9 @@ export default{
             dataTravel.priorityId = set.priority.id;
             dataTravel.setAllTask = set.setAllTask;
             dataTravel.setAllPriority = set.setAllPriority;
-            console.log(dataTravel, "travel")
             let url='/api/set-status';
             ServiceClient.post(url,dataTravel).then((response) =>{
                 if (response.status == 200){
-                    console.log(response.data, "responseDATA")
                     this.message = response.data.message;
                     
                     this.show_popup = true;
@@ -602,12 +555,10 @@ export default{
             dataTravel.projectId = this.ActualTaskData.projectId
             dataTravel.taskData = emit.data
             dataTravel.taskData.status = "Completed";
-            console.log(emit, "EMMI")
             let url='/api/completed';
 
             ServiceClient.post(url,dataTravel).then((response) =>{
                 if (response.status == 200){
-                    console.log(response.data, "responseDATA")
                     this.message = response.data[0].message;
                     
                     this.show_popup = true;
@@ -647,83 +598,34 @@ export default{
             }
             this.setSortData.push(sortData.selected)
             this.getMyTasks();
-            console.log(this.setSortData, "SORTDA")
             
-            /*let url='/api/sort'
-            let dataTravel={};
-            dataTravel.type=sortData.selected.id,
-            dataTravel.key=sortData.key,
-            dataTravel.data=this.myTasks
-            ServiceClient.post(url,dataTravel).then((response) =>{
-                if (response.status == 200){
-                    console.log(response.data, "responseDATA")
-                    this.myTasks = response.data
-                    
-                    /*this.show_popup = true;
-                    
-                    setTimeout(() => {
-                        this.show_popup = false
-                        this.message = ""
-                        this.cancelModal()
-                    },  1500)*/
-                    
-           /*     }
-            }).catch((error) => {
-                if (error.response && error.response.status) {
-                    if (error.response.data && error.response.data.message) {
-                        this.message = error.response.data.message
-                        this.show_error_popup = true
-                        this.getTasks();
-                        
-                        setTimeout(() => {
-                            this.show_error_popup = false
-                            this.message = ""
-                        }, 2000)
-
-                    }
-                }
-            });*/
 
 
         },
         clearFilter(){
             this.setSortData=[];
             this.getMyTasks();
-            console.log(this.setSortData, "SORTDA")
         },
         TaskDetails(readOnlydata){
             const{data,readOnlyMode}=readOnlydata
-            console.log(readOnlydata.data, "READONLY")
             this.Editdata = readOnlydata.data,
             this.readOnlyMode = readOnlydata.readOnlyMode,
             this.show_Create_Task_Modal =true
         },
         getUnreadMessages(){
             this.unreadMessage = this.$store.state.unreadMessages
-            //console.log(this.unreadMessage, "ITT VAGYOK")
-            /*ServiceClient.post('/api/get-unread-messages').then(response => {
-                console.log("getUnreadMessages",response.data);
-                // store.commit("getUnreadMessages", response.data);
-                this.unreadMessage = response.data
-            }).catch(error =>{
-                console.log(error);
-            });*/
         },
         ShoudShowEnvelope(task){
             let foundMatch = false;
             if(this.unreadMessage && this.unreadMessage !== undefined && this.unreadMessage.Task !== undefined){
-                console.log(this.unreadMessage,"HOL VAGYOK")
                 for (let item of this.unreadMessage.Task) {
-                    //console.log(Object.values(item), "unreadPro");
                     const values = Object.values(item);
                     for (let i = 0; i < values.length - 1; i++) {
-                        //console.log(values[i], "unreadPro")
                         if (values[i] == task.id && values[i + 1] == task.projectId) {
                             return foundMatch = true
                         
                         }else{
                             foundMatch = false;;
-                            console.log("match", this.newMessage,Object.values(item)[i],task.id );
                         }
                     }
                 }
@@ -735,7 +637,6 @@ export default{
             if(response.status === 200){
                 store.commit("setuserRole",response.data)
                 const userRole = response.data
-                //console.log(response.data, "getUserRole");
                 if(userRole.code === 404){
                     
                     next('/accessdenied')

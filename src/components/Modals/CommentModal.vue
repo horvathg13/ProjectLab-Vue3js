@@ -40,7 +40,6 @@ export default{
             immediate:true,
             deep:true,
             handler(newValue){
-                console.log("MÓKA",this.buttonDisable, newValue)
                 if(newValue== false){
                     this.buttonDisable=newValue
                 }
@@ -68,7 +67,6 @@ export default{
 
         ParticipantDataManipulation(){
             if(this.Participants.length>0){
-                console.log("hello from commentmodal", this.Participants)
                 this.NewParticipants = [];
                 for(let parti of this.Participants){
                     this.NewParticipants.push({
@@ -78,13 +76,11 @@ export default{
                         color: this.getRandomColor()
                     });
                 }
-                console.log(this.NewParticipants, "newparticipants")
             }
             
         },
         ArrayManipulation(){
             if(this.projectData != null){
-                console.log(this.projectData,"its a project")
                 this.project_id = this.projectData.project_id;
                 this.NewData ={ 
                   
@@ -93,19 +89,16 @@ export default{
                     status: this.projectData.status,
                     deadline:this.projectData.deadline,
                 }
-                console.log(this.NewData, "newdata")
 
             }else if(this.taskData != null){
-                console.log(this.taskData, "this.taskData")
 
-                    this.NewData={
-                        id: this.taskData.task_id ? this.taskData.task_id: this.taskData.id,
-                        name: this.taskData.task_name ? this.taskData.task_name: this.taskData.name,
-                        status: this.taskData.status,
-                        deadline: this.taskData.deadline ? this.taskData.deadline: this.taskData.deadline,
-                    };
+                this.NewData={
+                    id: this.taskData.task_id ? this.taskData.task_id: this.taskData.id,
+                    name: this.taskData.task_name ? this.taskData.task_name: this.taskData.name,
+                    status: this.taskData.status,
+                    deadline: this.taskData.deadline ? this.taskData.deadline: this.taskData.deadline,
+                };
 
-                    console.log(this.NewData, "newdata")
                 
             }
            
@@ -122,7 +115,6 @@ export default{
                 this.project_id = this.projectId
             }
             
-            console.log( "parti")
             let dataTravel={};
             dataTravel.projectId = this.project_id
             dataTravel.taskId = this.taskId
@@ -130,14 +122,11 @@ export default{
             let url='/api/get-messages/';
 
             ServiceClient.post(url, dataTravel).then((response) =>{
-                    console.log(response);
                     if (response.status == 200){
                         this.loader=false
                         this.messages = response.data
-                        console.log( this.messages , "chat is here!")
                         this.currentUserId = this.messages.currentUser_id,
                         this.messageData = this.messages.messageData
-                        console.log("query is working", this.messageData, this.currentUserId)
 
                         
          
@@ -149,7 +138,6 @@ export default{
                     if (error.response && error.response.status) {
                         if (error.response.data && error.response.data.message) {
                             this.errorMessage = error.response.data.message
-                            console.log(this.errorMessage, "errormessage")
                             this.show_error_popup = true
                             setTimeout(() => {
                                 this.show_error_popup = false
@@ -165,7 +153,6 @@ export default{
         },
         setMessageBackgroundColor(message){
             if(this.NewParticipants.length !== null || this.NewParticipants.length !== undefined || this.NewParticipants.length !== 0){
-                console.log(this.NewParticipants)
                 let findParticipant = this.NewParticipants.find((participant)=>participant.id === message.sender_id);
                 if(findParticipant){
                         return {
@@ -186,14 +173,12 @@ export default{
         
     },
     mounted(){
-        console.log(this.taskData, "taskdata")
         this.ParticipantDataManipulation()
         this.ArrayManipulation()
        
         this.getMessages()
      
         
-        //console.log("Hello from mounted", this.messages)
     }
     
 }

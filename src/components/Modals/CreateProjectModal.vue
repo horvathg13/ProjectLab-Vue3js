@@ -41,7 +41,6 @@
                 immediate:true,
                 deep:true,
                 handler(newValue){
-                   //console.log("MÓKA",this.buttonDisable, newValue)
                     if(newValue== false){
                         this.buttonDisable=newValue
                     }
@@ -57,7 +56,6 @@
 
             createProject(){
                 this.buttonDisable=true
-                console.log(this.p_name, "hello from createProject()")
                 this.$emit("create-project", { p_name: this.p_name, manager:this.selectedManager, date: this.date, p_id: this.p_id})
             },
 
@@ -71,14 +69,12 @@
         },
         mounted(){
             if(this.EditData && this.EditMode=== true){
-                console.log(this.EditData, "solution", this.getusers, "getuser")
                 this.p_name= this.EditData.name;
                 this.selectedManager.id = this.EditData.manager_id,
                 this.selectedManager.name = this.EditData.manager,
                 this.selectedManager.email = this.EditData.manager_email
                 this.date = this.EditData.deadline.replace(/-/g, ".")
                 this.p_id = this.EditData.project_id
-                console.log(this.p_name, "p_name?")            
             }
        
         },

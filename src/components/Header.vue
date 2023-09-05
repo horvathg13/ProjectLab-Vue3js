@@ -18,7 +18,6 @@ export default{
     data() {
         return {
             isDropdownOpen: false,
-            //username:"",
             message:"",
             showPopup:false,
             showErrorPopup:false,
@@ -30,18 +29,14 @@ export default{
             userData:{},
             errorArray:[],
             tryAgain:Boolean,
-            //hasToken: !!localStorage.getItem("token")
         };
     },
     watch: {
         '$store.state.userData'(newValue) {
-           // this.username = newValue.name;
             this.userData = newValue;
-            console.log(this.username, newValue, "hello from header watch");
         },
         '$store.state.userRole'(newValue) {
             this.userRole = newValue;
-            console.log( this.userRole, "hello from user watcher");
             
         }
 
@@ -57,7 +52,6 @@ export default{
             const haveToken = localStorage.getItem("token");
             const lock = this.userRole.code ? this.userRole.code === 404:false;
             const controll = !haveToken || (haveToken && lock);
-            console.log(controll, "BTN")
             return controll
         },
         managerButtonControll(){
@@ -72,28 +66,6 @@ export default{
         
     },
     methods:{
-        /*SetUserButton(){
-            if(localStorage.getItem("token")){
-                if(this.userRole.code ?? this.userRole.code == 404){
-                    this.lockMode = true
-                }else{
-                    for(let i in this.userRole){
-                        if(this.userRole[i].role=="Admin"){
-                            this.lockMode = false
-                            this.userButton=true
-                        }else if(this.userRole[i].role=="Manager"){
-                            this.lockMode = false
-                            this.managerButton=true
-                        }else{
-                            this.lockMode = false
-                        }
-                    }
-                }
-            }else{
-                this.lockMode = true
-
-            }
-        },*/
         toggleDropdown() {
             if(!!localStorage.getItem("token")===true){
                 this.isDropdownOpen = !this.isDropdownOpen;
@@ -192,7 +164,6 @@ export default{
                 if (error.response && error.response.status) {
                     if(error.response.data.validatorError){
                         this.errorArray=error.response.data.validatorError
-                        console.log( this.errorArray)
                         this.showErrorPopup =true
                         this.tryAgain=true,
                         setTimeout(() => {
@@ -203,7 +174,6 @@ export default{
                     }
                     if (error.response.data && error.response.data.message) {
                         this.message= error.response.data.message
-                        console.log(this.message, "ERRORMESSAGE")
                         this.showErrorPopup  = true
                         setTimeout(() => {
                             this.showErrorPopup = false
@@ -214,13 +184,6 @@ export default{
                 }
             });
         },
-       /* getUserData(){
-            ServiceClient.post('/api/getUserData').then(response => {
-                store.commit("setUserData",response.data);
-            }).catch(error =>{
-                console.log(error);
-            });
-        },*/
         setNotifications(){
             this.userData = this.$store.state.userData,
             this.userRole = this.$store.state.userRole

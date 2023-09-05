@@ -29,21 +29,17 @@ import MultipleSelection from '../Common/MultipleSelectComponents.vue';
 
             attachRole(){
                 this.buttonDisable=true;
-                console.log(this.buttonDisable,"KOKŐŐLŐLŐLŐLŐ")
                 this.$emit("attachRole", { selectedRole:this.selectedRole, user_id: this.user.id, remove:this.removedRole })
             },
 
             selectRole(arrive) {
                 const{select}=arrive
-                //console.log(arrive, "SELECT")
                 this.selectedRole = arrive.select;
-                //console.log(this.selectedRole, "HEYHÓ")
                                
             }, 
             detach(data){
                 const{detach} = data;
                 this.removedRole = data.remove
-                //console.log(this.removedRole, "DETACH")
             }
 
            
@@ -78,16 +74,6 @@ import MultipleSelection from '../Common/MultipleSelectComponents.vue';
                     @select="selectRole"
                     @detach-user="detach"
                     ></MultipleSelection>
-                    <!--<div class="ui fluid selection dropdown" @click="toggleDrop" :class="{ active: selectedRole.name }">
-                        <i class="dropdown icon"></i>
-                        <input type="hidden" name="roles" v-model="selectedRole.id">
-                            <div class="selected-text">{{ selectedRole.name  }}</div>
-                            <div class="menu" :class="{ active: isDropdownOpen }" >
-                                <div class="item" v-for="role in getroles" :key="role.id" @click="selectRole(role)">
-                                    {{ role.role_name }}
-                                </div>
-                            </div>
-                    </div>-->
                     
                     <button class="ui green button" type="submit" :disabled="buttonDisable">Create</button>
                 </form>

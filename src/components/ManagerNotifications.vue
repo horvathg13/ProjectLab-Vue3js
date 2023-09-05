@@ -82,7 +82,6 @@
     watch: {
         '$store.state.unreadMessages'(newValue) {
             this.unreadMessage = newValue;
-            console.log(this.unreadMessage, "hello from watch");
         }
     },
    
@@ -91,11 +90,8 @@
             ServiceClient.post('/api/getUserRole').then(response => {
                 if(response.status === 200){
                     this.userRole = response.data
-                    //console.log(response.data, "getUserRole");
                     if(this.userRole.code !== 404){
-                        //console.log(this.userRole);
                         const isAdmin= this.userRole.some(item=>item.role === "Admin" || item.role === "Manager");
-                        //console.log(isAdmin,"AMIN")
                         if(isAdmin === false){this.$router.push("/accessdenied")}
                     }else{
                         this.$router.push("/accessdenied")
@@ -110,47 +106,7 @@
         },
         toggleDropdownActive(){
             this.isDropdownOpenActive = !this.isDropdownOpenActive;
-            console.log("Heyhó Active Dropping")
         },
-        /*Attach_Modal(task){
-            const{data} = task
-            this.AttachTask = task.data
-            console.log("attach_is active", task.data)
-
-            let url=`/api/getActiveEmployees/${task.data.task_id}`;
-            ServiceClient.post(url).then((response) =>{
-                    console.log(response);
-                    if (response.status == 200){
-                       this.getActiveTaskEmployee = response.data
-                       console.log(this.getActiveTaskEmployee, "lokol")
-                       if(this.show_Attach_Modal == false){
-                            this.show_Attach_Modal = true
-                        }
-                    }
-                }).catch((error) => {
-                        
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message=error.response.data.message
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = "";
-                            },  2000)
-                            
-                        }
-                    }
-                });
-        },
-        showCreateTaskModal(){
-           this.Editdata = null
-           console.log(this.Editdata, "edit data is set null?")
-            if(this.show_Create_Task_Modal==false){
-                this.show_Create_Task_Modal = true
-            }
-            
-           
-        },*/
 
         cancelModal(){
             this.show_Create_Task_Modal = false
@@ -158,7 +114,6 @@
             this.show_Comment_Modal = false
             this.Editdata={},
             this.EditMode = false
-            //this.getTasks(this.p_id)
             this.projectButtons = {},
             this.mergedButtons=[],
             this.showStatusModal =false,
@@ -166,175 +121,7 @@
             this.RequestData=[],
             this.RemoveData=[];
             this.readOnlyMode=false
-            console.log("Bezártad a Modalt")
         },
-
-        /*createTask(data){
-            
-            const { task } = data;
-            //a task statust szerver oldalon állítom be, minden automatikusan aktiv lesz.
-            this.task_name = task.name ;
-            this.deadline = task.deadline;
-            this.description = task.description;
-            this.t_priority = task.priority;
-            this.task_id = task.id;
-            console.log(this.deadline, this.task_name, this.description, this.t_priority)
-            
-           
-            this.p_id= this.projectData.project_id;
-            
-            
-            
-            let formData = new FormData();
-            formData.append("task_name", this.task_name);
-            formData.append("deadline", this.deadline);
-            formData.append("description",this.description);
-            formData.append("project_id",this.p_id);
-            formData.append("task_priority",this.t_priority);
-            formData.append("task_id",this.task_id);
-            
-            
-
-            let url ="/api/createtask";
-                ServiceClient.post(url,formData).then((response) =>{
-                    console.log(response);
-                    if (response.status == 200){
-                        this.show_popup = true
-                        setTimeout(() => {
-                            this.show_popup = false
-                            this.cancelModal()
-                        },  1500)
-                    }
-                }).catch((error) => {
-                        
-                    if (error.response && error.response.status) {
-                        if(error.response.data.validatorError){
-                            this.errorArray=error.response.data.validatorError
-                            console.log( this.errorArray)
-                            this.show_error_popup=true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.errorArray=[];
-                            },  2000)
-                        }
-                        if (error.response.data && error.response.data.message) {
-                            this.message= error.response.data.message
-                            console.log(this.message, "ERRORMESSAGE")
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message="";
-                            },  2000)
-                            
-                        }
-                    }
-                });
-            
-            },
-            AssignEmployeeToTask(data){
-                const {selected_employee, remove_employee}=data
-               
-                console.log(this.assignEmployee, "mackó", this.AttachTask)
-                
-                if(data.selected_employee.select !== undefined){
-                     this.assignEmployee=data.selected_employee.select;
-                     this.RequestData = this.assignEmployee.map(employee => {
-                        return {
-                            id: employee.id,
-                            name: employee.name,
-                            deadline: this.AttachTask.deadline,
-                            description: this.AttachTask.description,
-                            task_status: this.AttachTask.status,
-                            task_id: this.AttachTask.task_id,
-                            task_name: this.AttachTask.task_name
-                        };
-                    });
-                }
-                if(data.remove_employee !== null){
-                    this.RemoveData=data.remove_employee;
-                    console.log(this.RemoveData, "REMOVEDATA")
-                }
-                let dataTravel={};
-                dataTravel.requestData = this.RequestData,
-                dataTravel.removeData = this.RemoveData,
-                dataTravel.task_id = this.AttachTask.task_id
-                dataTravel.project_id = this.projectData.project_id
-                let url ="/api/assign-employee-to-task";
-                ServiceClient.post(url,dataTravel).then((response) =>{
-                    console.log(response);
-                    if (response.status == 200){
-                        this.message =response.data.message
-                        this.show_popup = true
-                        setTimeout(() => {
-                            this.show_popup = false
-                            this.cancelModal()
-                            this.message=""
-                        },  1500)
-                    }
-                }).catch((error) => {
-                        
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message=error.response.data.message
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message="";
-                            },  2000)
-                            
-                        }
-                    }
-                });
-            
-            },
-            
-        
-
-            getProjectsById(){
-                let url =`/api/projects/${this.projectData.project_id}`;
-                ServiceClient.post(url).then((response) =>{
-                        
-                        if (response.status == 200){
-                            
-                            this.projectData=response.data
-                            console.log(this.projectData, "ProjectData")
-                        }
-                    }).catch((error) => {
-                            
-                        if (error.response && error.response.status) {
-                            if (error.response.data && error.response.data.message) {
-                                this.message = error.response.data.message
-                                this.show_error_popup = true
-                                setTimeout(() => {
-                                    this.show_error_popup = false
-                                    this.message="";
-                                },  2000)
-                                
-                            }
-                        }
-                    });
-            },*/
-
-            /*getTaskEmployee(){
-                let url ="/api/get-task-employee";
-                ServiceClient.post(url).then((response) =>{
-                        
-                        if (response.status == 200){
-                            this.getusers=response.data
-                        }
-                    }).catch((error) => {
-                            
-                        if (error.response && error.response.status) {
-                            if (error.response.data && error.response.data.message) {
-                                this.show_error_popup = true
-                                setTimeout(() => {
-                                    this.show_error_popup = false
-                                },  2000)
-                                
-                            }
-                        }
-                    });
-            },*/
 
             getPriorities(){
                 let url ="/api/getpriorities";
@@ -342,7 +129,6 @@
                         
                     if (response.status == 200){
                         this.priorities=response.data.data
-                        console.log(this.priorities, "hellóbelló prioriti")
                     }
                 }).catch((error) => {
                         
@@ -364,10 +150,6 @@
             getTasks(){
                 this.loader=true;
                 let dataTravel={};
-                /*dataTravel.projectId=this.$route.params.id;
-                dataTravel.sortData = this.setSortData,
-                dataTravel.filterData=this.setFilterData*/
-                console.log(dataTravel, "travel");
                 let url ='/api/managed-completed-tasks'
 
                 ServiceClient.post(url,).then((response) =>{
@@ -375,7 +157,6 @@
                     if (response.status == 200){
                         this.taskData=response.data
                         this.managerRole = response.data[0].haveManagerRole
-                        console.log(this.taskData, "szegény legény")
                         this.showButton=true,
                         this.loader=false;
                     }
@@ -385,7 +166,6 @@
                         if (error.response.data && error.response.data.message) {
                             this.message = error.response.data.message
                             this.managerRole = error.response.data.haveManagerRole
-                            console.log(error.response.data)
                             this.show_error_popup = true
                             this.showButton=false,
                             this.taskData=[];
@@ -400,77 +180,8 @@
                 });
 
             },
-           /* getProjectParticipants(){
-                let url =`/api/getprojectparticipants/${this.projectData.project_id}`;
-                ServiceClient.post(url).then((response) =>{
-                        
-                        if (response.status == 200){
-                           
-                            this.getusers=response.data
-                        }
-                    }).catch((error) => {
-                            
-                        if (error.response && error.response.status) {
-                            if (error.response.data && error.response.data.message) {
-                                this.message=error.response.data.message;
-                                this.show_error_popup = true
-                                setTimeout(() => {
-                                    this.show_error_popup = false
-                                    this.message="";
-                                },  4500)
-                                
-                            }
-                        }
-                    });
-            },
-
-            AttachMyself(task){
-                const {data} = task
-                let taskId = task.data.task_id;
-                let projectId = null;
-               
-                projectId = this.projectData.project_id;
-                
-               
-                console.log(taskId, projectId, "lolo")
-                let url = `/api/projects/${projectId}/tasks/${taskId}`;
-
-                ServiceClient.post(url).then((response) =>{
-                        
-                    if (response.status == 200){
-                        this.message = response.data.message 
-                        this.show_popup = true
-                        setTimeout(() => {
-                            this.show_popup = false
-                            this.cancelModal()
-                            this.message="";
-                        },  1500)
-                    }
-                }).catch((error) => {
-                        
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message = error.response.data.message;
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message="";
-                            },  4500)
-                            
-                        }
-                    }
-                });
-            },
-            EditingModeSwitch(kiskutya){
-                const {data, switching} = kiskutya
-                this.Editdata = kiskutya.data
-                this.EditMode = kiskutya.switching;
-                console.log(this.Editdata, "editmode")
-                this.show_Create_Task_Modal =true
-            },*/
             TaskDetails(readOnlydata){
                 const{data,readOnlyMode}=readOnlydata
-                console.log(readOnlydata.data, "READONLY")
                 this.Editdata = readOnlydata.data,
                 this.readOnlyMode = readOnlydata.readOnlyMode,
                 this.show_Create_Task_Modal =true
@@ -478,13 +189,10 @@
             commentModalSwitch(kismacska){
                 const{data} = kismacska
                 this.taskDataTravel = kismacska.data
-                console.log(this.taskData, "kismacskaTaskData")
                 let url=`/api/getActiveEmployees/${kismacska.data.task_id}`;
                 ServiceClient.post(url).then((response) =>{
-                        console.log(response);
                         if (response.status == 200){
                         this.getActiveTaskEmployee = response.data
-                        console.log(this.getActiveTaskEmployee, "lokol")
                         this.show_Comment_Modal = true
                         }
                     }).catch((error) => {
@@ -510,10 +218,8 @@
                 projectId = this.projectData.project_id;
                 
                 emitData.projectId = projectId
-                console.log(emitData, "emitData",projectId);
                 let url='/api/send-message';
                 ServiceClient.post(url,emitData).then((response) =>{
-                        console.log(response);
                         if (response.status == 200){
                             this.message = response.data.message;
                             this.show_popup=true
@@ -543,7 +249,6 @@
             getButtons(task){
                this.ActualTaskData = task;
                this.projectData.project_id= task.p_id
-               console.log(this.ActualTaskData, "TASKDATA")
                let url=`/api/get-buttons/${this.projectData.project_id}`
                ServiceClient.post(url).then(response => {
                    if (response.status == 200){
@@ -568,26 +273,20 @@
                         }  
                        
                        if(this.projectButtons.manager && this.projectButtons.manager.length>0){
-                            console.log(this.projectButtons.manager)
                             this.mergedButtons.push(this.projectButtons.manager[3])
                         
                         }
                       
-                       console.log(this.mergedButtons, "merged");
                        let foundMatch = false;
                         for (let item of this.unreadMessage.Task) {
-                            console.log(Object.values(item), "unreadPro");
                             const values = Object.values(item);
                             for (let i = 0; i < values.length - 1; i++) {
-                                console.log(values[i], "unreadPro")
                                 if (values[i] == task.task_id && values[i + 1] == this.projectData.project_id) {
                                     this.newMessage = true;
                                     foundMatch = true
-                                    console.log("match", values[i], this.newMessage);
                                     break;
                                 }else{
                                     this.newMessage = false;
-                                    console.log("match", this.newMessage,Object.values(item)[i],task.task_id );
                                 }
                                 if(foundMatch == true){
                                     break;
@@ -598,35 +297,6 @@
                             }
                             
                         }
-                       /*for (let item in this.unreadMessage.Task) {
-                            console.log(this.unreadMessage.Task[item]);
-                            const keys = Object.keys(this.unreadMessage.Task[item]);
-                            console.log(keys, "object.keys(this.unreadMessage.Task[item])");
-                        
-                            if (
-                                this.unreadMessage.Task[item][keys[0]] === task.task_id &&
-                                this.unreadMessage.Task[item][keys[1]] == this.projectData.project_id
-                            ) {
-                                this.newMessage = true;
-                                console.log("match", this.newMessage);
-                            } else {
-                                this.newMessage = false;
-                                console.log("something went wrong",  this.$route.params.id);
-                            }
-                        }*/
-                       /*for (let item of this.unreadMessage.Task) {
-                            console.log(item);
-                            const keys = Object.keys(item);
-                            console.log(keys, "object.keys(item)")
-                            for (let key of keys) {
-                                if (this.unreadMessage.Task[item][keys[0]] == task.task_id && this.unreadMessage.Task[item][keys[1]] == this.$route.params.id) {
-                                    this.newMessage = true;
-                                    console.log("match", this.newMessage);
-                                }else{
-                                    console.log("something went wrong", this.unreadMessage.Task[item][keys[0]])
-                                }
-                            }
-                        }*/
                     }  
                 }).catch((error) => {
                    if (error.response && error.response.status) {
@@ -646,19 +316,16 @@
             },
             SwitchStatusModal(statusData){
                 const{data}=statusData
-                console.log(statusData, "statusData")
                 
                 let url=`/api/get-status/${this.projectData.project_id}/${statusData.data.task_id}`;
 
                 ServiceClient.post(url).then((response) =>{
                     if (response.status == 200){
-                        console.log(response.data, "responseDATA")
                         for(let item in response.data){
                             this.statusDataTravel= response.data[item]
                         }
                         this.statusDataTravel.priority = this.priorities
                         this.showStatusModal = true;
-                        console.log(this.statusDataTravel, "statusDataTravel", )
                     }
                 }).catch((error) => {
                     if (error.response && error.response.status) {
@@ -675,12 +342,10 @@
                 });
 
                 
-                console.log("namizu")
 
             },
             SetStatus(set){
                 const{data}=set
-                console.log(set, "SET",JSON.stringify(set.setAllTask));
                 if(Object.keys(set.priority).length == 0){
                     set.priority.id = null
                 }
@@ -695,7 +360,6 @@
                 let url='/api/set-status';
                 ServiceClient.post(url,dataTravel).then((response) =>{
                     if (response.status == 200){
-                        console.log(response.data, "responseDATA")
                         this.message = response.data.message;
                         this.show_popup = true;
                         this.managerNotificationUpdate();
@@ -721,95 +385,6 @@
                     }
                 });
             },
-            /*getFilterData(){
-                let Task=true;
-                let url=`/api/get-status/${this.projectData.project_id}/${Task}`;
-
-                ServiceClient.post(url).then((response) =>{
-                    if (response.status == 200){
-                        console.log(response.data, "responseDATA")
-                        for(let item in response.data){
-                            this.statusDataTravel= response.data[item].status.map(u=>({id:u.id, name:u.task_status}))
-                        }
-                        
-                        
-                        console.log(this.statusDataTravel, "statusDataTravel", )
-                    }
-                }).catch((error) => {
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message = error.response.data.message
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = ""
-                            }, 2000)
-
-                        }
-                    }
-                });
-
-            },
-            filter(selectData){
-                const{select}=selectData
-                
-                for(let e in this.setFilterData){
-                    if(this.setFilterData[e].name === selectData.select.name){
-                        const index = this.setSortData.indexOf(this.setFilterData[e]);
-                        this.setFilterData.splice(index, 1);
-                    }
-                }
-                this.setFilterData.push(selectData.select);
-                this.getTasks();
-                console.log(this.setFilterData, "SORTDA")
-
-            },
-            clearFilter(){
-                this.setFilterData=[]
-                this.getTasks();
-                console.log(this.setFilterData, "SORTDA")
-            },
-            Completed(emit){
-                const{data}=emit;
-                this.loader = true;
-                let dataTravel={};
-                dataTravel.projectId = this.projectData.project_id
-                dataTravel.taskData = emit.data
-                dataTravel.taskData.status = "Completed";
-                console.log(emit, "EMMI")
-                let url='/api/completed';
-
-                ServiceClient.post(url,dataTravel).then((response) =>{
-                    if (response.status == 200){
-                        console.log(response.data, "responseDATA")
-                        this.message = response.data[0].message;
-                        
-                        this.show_popup = true;
-                        
-                        setTimeout(() => {
-                            this.show_popup = false
-                            this.message = ""
-                            this.cancelModal()
-                        },  1500)
-                        
-                    }
-                }).catch((error) => {
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message = error.response.data.message
-                            this.show_error_popup = true
-                            this.getTasks();
-                            
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = ""
-                            }, 2000)
-
-                        }
-                    }
-                });
-
-            },*/
             rowBackground(task){
                 let color = "";
                 if(task.status=="Suspended"){
@@ -821,58 +396,21 @@
                 }
                 return color
             },
-            /*Sort(sortData){
-                const{selected, key} = sortData
-                for(let e in this.setSortData){
-                   if(this.setSortData[e].key === sortData.selected.key){
-                    const index = this.setSortData.indexOf(this.setSortData[e]);
-                    this.setSortData.splice(index, 1);
-                   }
-                }
-                this.setSortData.push(sortData.selected)
-              
-                console.log(this.setSortData, "SORTDA")
-                this.getTasks()
-         
-
-
-            },
-            clearSort(clearKey){
-               
-                for(let e in this.setSortData){
-                    if(this.setSortData[e].key === clearKey.key){
-                        const index = this.setSortData.indexOf(this.setSortData[e]);
-                        this.setSortData.splice(index, 1);
-                    }
-                }
-                console.log(this.setSortData, "SORTDA")
-                this.getTasks()
-
-            },*/
             getUnreadMessages(){
                 this.unreadMessage = this.$store.state.unreadMessages
-                /*ServiceClient.post('/api/get-unread-messages').then(response => {
-                    console.log("getUnreadMessages",response.data);
-                   // store.commit("getUnreadMessages", response.data);
-                    this.unreadMessage = response.data
-                }).catch(error =>{
-                    console.log(error);
-                });*/
+               
             },
             ShoudShowEnvelope(task){
                 let foundMatch = false;
                 if(this.unreadMessage && this.unreadMessage !== undefined){
                     for (let item of this.unreadMessage.Task) {
-                        //console.log(Object.values(item), "unreadPro");
                         const values = Object.values(item);
                         for (let i = 0; i < values.length - 1; i++) {
-                            //console.log(values[i], "unreadPro")
                             if (values[i] == task.task_id && values[i + 1] == task.p_id) {
                                 return foundMatch = true
                             
                             }else{
                                 foundMatch = false;;
-                                console.log("match", this.newMessage,Object.values(item)[i],task.task_id );
                             }
                             
                         }
@@ -891,7 +429,6 @@
                     let url='/api/accept-all-task';
                     ServiceClient.post(url).then((response) =>{
                         if (response.status == 200){
-                            console.log(response.data, "responseDATA")
                             this.message = response.data.message;
                             this.show_popup = true;
                             this.managerNotificationUpdate()
@@ -921,7 +458,6 @@
             managerNotificationUpdate(){
                 ServiceClient.post('/api/get-manager-notification').then(response => {
                     store.commit("getManagerNotifications",response.data);
-                    console.log(response.data, "ManagerNotifica");
                 }).catch(error =>{
                     console.log(error);
                 });
@@ -934,11 +470,8 @@
             ServiceClient.post('/api/getUserRole').then(response => {
                 if(response.status === 200){
                     const userRole = response.data
-                    //console.log(response.data, "getUserRole");
                     if(userRole.code !== 404){
-                        //console.log(this.userRole);
                         const isManager= userRole.some(item=>item.role === "Manager");
-                        //console.log(isAdmin,"AMIN")
                         if(isManager === false){
                             next('/accessdenied')
                         }else{
@@ -959,10 +492,7 @@
         mounted(){
             
             this.getPriorities()
-            /*this.getProjectsById()
-            this.getProjectParticipants()*/
             this.getTasks()
-            //console.log(this.$route)
         }
     }
 

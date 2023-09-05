@@ -30,7 +30,6 @@
                     if(newValue==false){
                         this.buttonDisable=newValue
                     }
-                    //console.log(this.buttonDisable, newValue)
                 }   
             }
         },

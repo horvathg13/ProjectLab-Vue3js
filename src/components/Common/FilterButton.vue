@@ -23,7 +23,6 @@ export default{
             handler(newValue){
                 this.SelectCompData = newValue
                 this.loader = false
-                console.log("hello from filter button",this.SelectCompData)
             }
         },
     },
@@ -42,12 +41,9 @@ export default{
                 id: v.id,
                 name: v.name
             };
-            console.log(selectedFilter)
             let exist = this.selected.some(d => d.id === selectedFilter.id)
-            console.log(exist)
             if(!exist){
                 this.selected.push(selectedFilter);
-                console.log(this.selected, "SELECTED")
                 this.$emit("select", {select:this.selected})
             }
             

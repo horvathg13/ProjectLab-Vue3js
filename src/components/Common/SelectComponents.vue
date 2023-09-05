@@ -27,14 +27,12 @@ export default{
                     setTimeout(()=>{
                         this.selected.id = newValue.priority_id
                         this.selected.name = newValue.priority 
-                        console.log(this.selected, "hello from watch",newValue )
                     },100)
                     
                 }else{
                     this.$nextTick(()=>{
                         this.selected.name = null
                         this.selected.id = null
-                        console.log("its run else")
                     })
                     
                 }
@@ -49,10 +47,8 @@ export default{
             handler(newValue){
                 if(this.editProject != null){
                     this.$nextTick(()=>{
-                        console.log("hello from setEditName")
                         this.selected.name = newValue.manager
                         this.selected.id = newValue.manager_id
-                        console.log(this.selected.id, this.selected.name, "hello from setEditname final line")
                     })
                 }else{
                     this.$nextTick(()=>{
@@ -71,19 +67,10 @@ export default{
             
         }
     },
-    /*computed:{
-        setEditName(){
-            if(this.editname !== null){
-                console.log("hello from setEditName")
-                return this.selected.name = this.editname
-            }
-        }
-    },*/
     methods:{
         toggleDrop(){
             this.$emit("toggleDrop")
             this.isDropdownOpen = !this.isDropdownOpen;
-            console.log("toggleDrop is working")
         },
         select(v) {
             this.selected.id = v.id;
@@ -92,15 +79,12 @@ export default{
         },
         setEditProject(){
             if(this.editProject !== null){
-                console.log("hello from setEditName")
                 this.selected.name = this.editProject.manager
                 this.selected.id = this.editProject.manager_id
-                console.log(this.selected.id, this.selected.name, "hello from setEditname final line")
             }
         },
         setEditTask(){
             if(this.editTask != null){
-                console.log("hello from edit Task")
                 this.selected.name = this.editTask.priority  
                 this.selected.id = this.editTask.priority_id
 
@@ -110,19 +94,6 @@ export default{
     },
     mounted(){
         
-        /* this.selected.id = null
-        this.selected.name =""
-        console.log(this.selected)
-       setTimeout(()=>{
-            if(this.editProject != null){
-                this.setEditProject();
-            }else if(this.editTask !=null){
-                this.setEditTask()
-            }
-            
-            
-           
-        },15)*/
         
         
     }

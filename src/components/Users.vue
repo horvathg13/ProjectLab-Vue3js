@@ -52,8 +52,6 @@ import {store} from '../VuexStore'
     watch:{
         '$store.state.userRole'(newValue) {
             this.userRole = newValue;
-            console.log( this.userRole, "hello from user watcher");
-            //this.SetAddNewUser()
         }
     },
     
@@ -61,7 +59,6 @@ import {store} from '../VuexStore'
         trigger(data){
             const{trigger} = data
             this.triggerValue = trigger
-            console.log(this.triggerValue)
             
             if(this.triggerValue === true){
                 if(this.func === 'BannUser'){
@@ -78,7 +75,6 @@ import {store} from '../VuexStore'
         },
         toggleDropdown() {
             this.isDropdownOpen = !this.isDropdownOpen;
-            console.log("dropping")
         },
         open_show_role_selector_modal(){
             this.triggerModal = true;
@@ -88,7 +84,6 @@ import {store} from '../VuexStore'
             this.user.name = this.dataSave.name;
             this.user.roles= this.dataSave.roles?this.dataSave.roles.trim().split(","):[];
             this.show_role_selector_modal = true;
-            console.log(this.user, "ROLESELECTORMODAL");
             
         },
         updateModal(){
@@ -112,19 +107,16 @@ import {store} from '../VuexStore'
             
             this.name = name;
             this.email= email;
-            console.log(this.name, this.email)
             
             let formData = new FormData();
             formData.append("name", this.name);
             formData.append("email", this.email);
             let url ="/api/createuser";
                 ServiceClient.post(url,formData).then((response) =>{
-                    console.log(response);
                     if (response.status == 200){
                         this.message = response.data.message;
                         this.show_popup = true
                         this.url = response.data.data.url
-                        console.log(response.data.data.url)
                         setTimeout(() => {
                             this.getUsers();
                             this.show_popup = false
@@ -156,7 +148,6 @@ import {store} from '../VuexStore'
             
         },
         copy(){
-            console.log(this.url.length)
             if(this.url.length>0){
                 navigator.clipboard.writeText(this.url)
                 .then(() => {
@@ -193,7 +184,6 @@ import {store} from '../VuexStore'
                         if (response.status == 200){
                             
                             this.getusers=response.data
-                            console.log(response)
                             
                         
                         }
@@ -220,7 +210,6 @@ import {store} from '../VuexStore'
                         if (response.status == 200){
                             
                             this.getroles = response.data.roles
-                            console.log( this.getroles)
                             
                         
                         }
@@ -281,7 +270,6 @@ import {store} from '../VuexStore'
 
                     if (response.status == 200) {
                         this.url = response.data.data.url
-                        console.log(response)
                         this.show_popup = true
                         this.show_reset_password_manual_modal = true;
                         setTimeout(() => {
@@ -313,12 +301,10 @@ import {store} from '../VuexStore'
                 dataTravel.user_id = user_id
                 dataTravel.selectedRole = selectedRole,
                 dataTravel.remove=remove;
-                console.log(dataTravel, "DATARAVEL");
                 let url = '/api/user-to-role/';
                 ServiceClient.post(url,dataTravel).then((response) => {
                     if (response.status == 200) {
                         this.message=response.data.message
-                        console.log(response)
                         this.show_popup = true
                         this.getUsers()
                         setTimeout(() => {
@@ -350,7 +336,6 @@ import {store} from '../VuexStore'
                 const {data, str} = kiskutya
                 this.dataSave = kiskutya.data;
                 this.func = kiskutya.str
-                console.log(kiskutya, "KISKUTYA")
                 this.triggerModal= true
 
             },
@@ -383,7 +368,6 @@ import {store} from '../VuexStore'
             setUserRole(){
                 ServiceClient.post('/api/getUserRole').then(response => {
                     store.commit("setuserRole",response.data)
-                    console.log(response.data, "getUserRole");
                 }).catch(error =>{
                     console.log(error);
                 });
@@ -398,11 +382,8 @@ import {store} from '../VuexStore'
                 if(response.status === 200){
                     store.commit("setuserRole",response.data)
                     const userRole = response.data
-                    //console.log(response.data, "getUserRole");
                     if(userRole.code !== 404){
-                        //console.log(this.userRole);
                         const isAdmin= userRole.some(item=>item.role === "Admin");
-                        //console.log(isAdmin,"AMIN")
                         if(isAdmin === false){
                             next('/accessdenied')
                         }else{
@@ -417,9 +398,6 @@ import {store} from '../VuexStore'
                 console.log(error);
             });
         },
-        /*beforeMount(){
-            this.setUserRole();
-        },*/
         mounted(){
             this.getUsers()
             this.getRoles()

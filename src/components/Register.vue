@@ -23,7 +23,6 @@ export default{
     },
     methods:{
         async register(){
-            console.log("Submit btn is pressed");
             this.errors=[];
             if(!this.name){
                 this.errors.push("Name is required")
@@ -34,10 +33,6 @@ export default{
             if(!this.password){
                 this.errors.push("Password is required")
             }
-            /*if(this.password.length > 8){
-                this.errors.push("The password must be min.8 character")
-            }*/
-            //a jelszó tartalmazzon nagybetűket és számokat is! 
             if(this.c_password !== this.password){
                 this.errors.push("Passwords do not match")
             }
@@ -52,10 +47,8 @@ export default{
                 
                 let url ="/api/register";
                 ServiceClient.post(url,formData).then((response) =>{
-                    console.log(response);
                     if (response.status == 200){
                         this.show_popup = true
-                        console.log(this.show_popup, "in action")
                         setTimeout(() => {
                             this.$router.push({path: "/login"})
                         }, 1300)
@@ -63,20 +56,12 @@ export default{
                 })  .catch((error) => {
                         
                     if (error.response && error.response.status) {
-                        //console.log(error.response)
                         if(error.response.data.validatorError){
                             this.errors=Object.values(error.response.data.validatorError)
-                            //console.log(this.errors, "ERRORS")
-                            
-                            /*setTimeout(() => {
-                                this.errors=[];
-                            },  2000)*/
                         }
                         if (error.response.data.message) {
                             
-                            //this.errors = Object.values(error.response.data.message).flatMap(y => y)
                             this.errors = ["Database error occured"]
-                            //alert("Server side form validation is working");
                         }else if(!error.response.data.validatorError && !error.response.data.message){
                             this.errors = ["Server error occurred"] 
                         }
@@ -89,7 +74,6 @@ export default{
         }
     },
     mounted(){
-        console.log(this.$route)
     }
 }
 </script>

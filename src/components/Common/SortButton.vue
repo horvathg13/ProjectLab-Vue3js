@@ -37,7 +37,6 @@ export default{
             handler(newValue){
                 this.sortArray = newValue
                 this.loader = false
-                console.log("hello from sort button",this.sortArray)
             }
         },
         
@@ -54,7 +53,6 @@ export default{
             this.selected.abridgement = v.abridgement;
             this.selected.key = this.sortKey
             this.$emit("sorted", {selected:this.selected, key:this.sortKey})
-            console.log(this.sortKey)
         },
 
         deleteSelected(){

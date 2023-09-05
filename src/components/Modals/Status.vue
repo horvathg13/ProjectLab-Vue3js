@@ -28,7 +28,6 @@ export default{
             handler(newValue){
                 this.SelectCompData = newValue.status
                 this.selectPriority = newValue.priority ? newValue.priority:null
-                console.log("hello from status comp",this.SelectCompData)
             }
         },
        
@@ -41,7 +40,6 @@ export default{
         cancelModal(){
             this.SelectCompData ={}
             this.$emit("cancel-modal");
-            console.log(this.SelectCompData , "empty??");
         },
 
         setStatus(){
@@ -57,7 +55,6 @@ export default{
         makeSelection(selectData){
             const {select} = selectData
             this.statusData = selectData.select
-            console.log( this.statusData, "SELECTDATA")
         },
         makePrioritySelection(selection){
             const {select} = selection
@@ -105,16 +102,6 @@ export default{
                     :disable="this.buttonDisbale"
                     @select="makePrioritySelection"></SelectComponents>
                 </div>
-                <!--<div class="checkboxContainer" v-if="task == true">
-                    <div class="ui  toggle  checkbox" :class="{disabled:buttonDisbale}" >
-                        <input type="checkbox" name="public" :disabled="buttonDisbale" v-model="setAllTask">
-                        <label>Set this status to all task</label>
-                    </div>
-                    <div class="ui  toggle  checkbox" :class="{disabled:buttonDisbale}" >
-                        <input type="checkbox" name="public" :disabled="buttonDisbale" v-model="setAllPriority">
-                        <label>Set this priority to all task</label>
-                    </div>
-                </div>-->
                 
 
                 <div class="buttonContainer"  :class="{disabled:buttonDisbale}">

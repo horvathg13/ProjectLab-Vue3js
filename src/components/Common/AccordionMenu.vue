@@ -17,7 +17,6 @@ export default{
         toggleDrop(){
            
             this.isDropdownOpen = !this.isDropdownOpen;
-            console.log("toggleDrop is working")
         },
         toggleDropMessage(){
             this.isDropdownOpenMessage = !this.isDropdownOpenMessage;

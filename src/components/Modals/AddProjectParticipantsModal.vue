@@ -28,7 +28,6 @@
         methods: {
             toggleDrop(){
                 this.$emit("toggleDrop")
-                console.log("toggleDrop is working")
             },
             cancelModal() {
                 this.$emit("cancel-modal");
@@ -48,7 +47,6 @@
                 const{detach} = data;
                 
                 this.remove_employee = data.remove
-                console.log(this.remove_employee, "DETACH")
             }
            
 

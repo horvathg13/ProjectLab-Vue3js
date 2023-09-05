@@ -37,7 +37,6 @@
                     if (response.data.success) {
                     
                         this.login_succeded = true;
-                        console.log(response.data);
 
                         setTimeout(() => {
                             store.commit("setUserData", response.data.data)
@@ -63,17 +62,10 @@
                         this.errors = ["Server error occurred"]
                     }
                 });
-                /*ServiceClient.post("/api/getUserPermission").then(response => {
-                store.commit("setuserRole",response.data);
-                }).catch(error =>{
-                console.log(error);
-                });
-                */
             },
             getNotifications(){
                 ServiceClient.post('/api/notifications').then(response => {
                     store.commit("getNotifications",response.data);
-                    console.log(response.data, "before");
                 
                 }).catch(error =>{
                     console.log(error);
@@ -83,7 +75,6 @@
             getManaganerNotifications(){
                 ServiceClient.post('/api/get-manager-notification').then(response => {
                     store.commit("getManagerNotifications",response.data);
-                    console.log(response.data, "ManagerNotifica");
                 }).catch(error =>{
                 console.log(error);
                 });
@@ -91,7 +82,6 @@
             getUserRoles(){
                 ServiceClient.post('/api/getUserRole').then(response => {
                     store.commit("setuserRole",response.data)
-                    console.log(response.data, "getUserRole");
                 }).catch(error =>{
                     console.log(error);
                 });
@@ -102,7 +92,6 @@
             }
         },
         mounted() {
-            console.log(this.$route)
         },
         
     }

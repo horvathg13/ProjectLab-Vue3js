@@ -19,7 +19,6 @@ export default{
     },
     computed: {
         username() {
-            console.log(toRaw(this.$store.state))
             return this.$store.state.userData.name;
         }
     },
@@ -27,7 +26,6 @@ export default{
         '$store.state.userRole'(newValue) {
             
             this.userRole = newValue;
-            console.log( this.userRole, "hello from user watcher");
             this.SetUserCard();
             
             
@@ -46,12 +44,6 @@ export default{
         },
         getUserRoles(){
             this.userRole = this.$store.state.userRole
-           /* ServiceClient.post('/api/getUserRole').then(response => {
-                store.commit("setuserRole",response.data)
-                console.log(response.data, "getUserRole");
-            }).catch(error =>{
-            console.log(error);
-            });*/
         },
         users(){
             this.$router.push('/users')

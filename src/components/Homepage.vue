@@ -66,7 +66,6 @@ export default{
         countofTasks(){
 
             ServiceClient.post('/api/count-of-my-active-tasks').then(response => {
-                console.log(response.data, "countofTasks");
                 if(response.status === 200){
                     this.countOfMyActiveTasks = response.data
                     return "star icon"

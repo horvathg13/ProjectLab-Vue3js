@@ -71,6 +71,7 @@
             setFilterData:[],
             removeData:[],
             tryAgain:null,
+            getmanager:[],
         }
     },
     watch: {
@@ -98,10 +99,8 @@
                 }else{
                     this.$router.push("/accessdenied")
                 }
-                
             },
         
-
             updateModal(){
                 this.Editdata = null
                 if(this.showModal==false){
@@ -111,8 +110,7 @@
             },
 
             showParticipantModal(project){
-                const{data} = project
-                let url =`/api/getprojectparticipants/${project.data.project_id}`;
+                let url =`/api/getprojectparticipants/${project.project_id}`;
                 ServiceClient.post(url).then((response) =>{
                     if(response.status == 200){
                         this.participants = response.data
@@ -121,31 +119,33 @@
                     if(this.show_participant_modal==false){
                         this.show_participant_modal = true
                     }
-                    this.projectData = project.data
+                    this.projectData = project
 
                 }).catch((error) => {
-                    if (error.response && error.response.status) {
-                        if(error.response.data.validatorError){
-                            this.errorArray=error.response.data.validatorError
-                            this.show_error_popup=true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.errorArray=[];
-                                this.cancelModal()
-                            },  2000)
+                    if(error.response.data.validatorError){
+                        this.errorArray=error.response.data.validatorError
+                        this.show_error_popup=true
+                        if(this.show_participant_modal==false){
+                            this.show_participant_modal = true
                         }
-                        if (error.response.data && error.response.data.message) {
-                            this.message= error.response.data.message//Object.values(error.response.data.message).flatMap(y => y)
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = "";
-                            },  2000)
-                            
+                        setTimeout(() => {
+                            this.show_error_popup = false
+                            this.errorArray=[];
+                            this.cancelModal()
+                        },  2000)
+                    }
+                    if (error.response.data && error.response.data.message) {
+                        this.message= error.response.data.message//Object.values(error.response.data.message).flatMap(y => y)
+                        this.show_error_popup = true
+                        if(this.show_participant_modal==false){
+                            this.show_participant_modal = true
                         }
+                        setTimeout(() => {
+                            this.show_error_popup = false
+                            this.message = "";
+                        },  2000)
                     }
                 });
-                
             },
 
             cancelModal(){
@@ -156,29 +156,28 @@
                 this.projectButtons = {},
                 this.mergedButtons = [],
                 this.showStatusModal = false
-                
             },
 
             createProjects(data){
-                
+
                 const { p_name, manager, date, p_id } = data;
-                
+            
                 this.p_name = p_name ;
                 this.selectedManager = manager;
                 this.date = date;
                 this.p_id = p_id;
                 
-                let formData = new FormData();
-                formData.append("p_name", this.p_name);
-                formData.append("p_manager_id", this.selectedManager.id);
-                formData.append("date",this.date);
-                formData.append("p_id",this.p_id);
+                let dataTravel= {};
+                dataTravel.project_name= this.p_name
+                dataTravel.manager_id= this.selectedManager.id
+                dataTravel.date= this.date
+                dataTravel.project_id= this.p_id
                 let url ="/api/createproject";
-                ServiceClient.post(url,formData).then((response) =>{
+                ServiceClient.post(url,dataTravel).then((response) =>{
                     if (response.status == 200){
-
                         this.message= response.data.message
                         this.show_popup = true
+                        this.getFavoriteProjects();
                         setTimeout(() => {
                             this.show_popup = false
                             this.cancelModal()
@@ -186,7 +185,7 @@
                         },  1500)
                     }
                 }).catch((error) => {
-                        
+                    this.tryAgain=null;     
                     if (error.response && error.response.status) {
                         if(error.response.data.validatorError){
                                 this.errorArray=error.response.data.validatorError
@@ -194,7 +193,7 @@
                                 setTimeout(() => {
                                     this.show_error_popup = false
                                     this.errorArray=[];
-                                    this.cancelModal()
+                                    this.tryAgain=false;
                                 },  2000)
                             }
                         if (error.response.data && error.response.data.message) {
@@ -203,13 +202,12 @@
                             setTimeout(() => {
                                 this.show_error_popup = false
                                 this.message = "";
+                                this.tryAgain=false;
                             },  2000)
-                            
                         }
                     }
                 });
                 this.getFavoriteProjects();
-                
             },
                    
 
@@ -242,30 +240,43 @@
                     }
                 });
             },
-
-            getUsers(){
-                let url ="/api/getusers";
+            getManagers(){
+                let url ="/api/getManagers";
                 ServiceClient.post(url).then((response) =>{
-                        
-                        if (response.status == 200){
-                            
-                            this.getusers=response.data
-                            
-                            
-                        
+                    if (response.status == 200){
+                        this.getmanager=response.data
+                    }
+                }).catch((error) => {
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                            },  4500)
                         }
-                    }).catch((error) => {
-                            
-                        if (error.response && error.response.status) {
-                            if (error.response.data && error.response.data.message) {
-                                this.show_error_popup = true
-                                setTimeout(() => {
-                                    this.show_error_popup = false
-                                },  4500)
-                                
-                            }
+                    }
+                });
+            },
+
+            getUsers(project){
+                let url ="/api/getEmployees";
+                let dataTravel={}
+                dataTravel.projectId = project.project_id
+                ServiceClient.post(url,dataTravel).then((response) =>{
+                    if (response.status == 200){
+                        this.getusers=response.data
+                        this.showParticipantModal(project)
+                    }
+                }).catch((error) => {
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                            },  3500)
                         }
-                    });
+                    }
+                });
             },
             
             redirect(project){
@@ -316,6 +327,7 @@
                             this.show_error_popup = true;
                             setTimeout(() => {
                                 this.show_error_popup = false;
+                                this.cancelModal();
                                 this.message = "";
                             }, 2000);
                         }
@@ -328,7 +340,6 @@
                         }, 2000);
                     }
                 });
-                    
             },
             contentTitle(){
                 this.h1= this.$route.name
@@ -347,36 +358,33 @@
                 this.projectData = kismacska.data
                 let url =`/api/getprojectparticipants/${this.projectData.project_id}`;
                 ServiceClient.post(url).then((response) =>{
+                    if (response.status == 200){
+                        this.projectParticipants=[]
+                        for(let data of response.data){
+                            this.projectParticipants.push({
+                                id:data.userId,
+                                name:data.name,
+                                email:data.email,
+                                project_name:data.project_name,
+                                status:data.status
+                            })
+                        }
+                        this.show_Comment_Modal = true
+                    }
+                }).catch((error) => {
                         
-                        if (response.status == 200){
-                            this.projectParticipants=[]
-                            for(let data of response.data){
-                                this.projectParticipants.push({
-                                    id:data.userId,
-                                    name:data.name,
-                                    email:data.email,
-                                    project_name:data.project_name,
-                                    status:data.status
-
-                                })
-                            }
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message = error.response.data.message
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message = ""
+                            },  4500)
                             
-                            this.show_Comment_Modal = true
                         }
-                    }).catch((error) => {
-                            
-                        if (error.response && error.response.status) {
-                            if (error.response.data && error.response.data.message) {
-                                this.message = error.response.data.message
-                                this.show_error_popup = true
-                                setTimeout(() => {
-                                    this.show_error_popup = false
-                                    this.message = ""
-                                },  4500)
-                                
-                            }
-                        }
-                    });
+                    }
+                });
                 
             },
             SendMessage(emitData){
@@ -392,21 +400,21 @@
                             this.cancelModal()
                             },  1500)
                         }
-                    }).catch((error) => {
-                        this.tryAgain=null;
-                        if (error.response && error.response.status) {
-                            if (error.response.data && error.response.data.message) {
-                                this.message =error.response.data.message
-                                this.show_error_popup = true
-                                setTimeout(() => {
-                                    this.show_error_popup = false
-                                    this.message = "";
-                                    this.tryAgain=false;
-                                },  2000)
-                                
-                            }
+                }).catch((error) => {
+                    this.tryAgain=null;
+                    if (error.response && error.response.status) {
+                        if (error.response.data && error.response.data.message) {
+                            this.message =error.response.data.message
+                            this.show_error_popup = true
+                            setTimeout(() => {
+                                this.show_error_popup = false
+                                this.message = "";
+                                this.tryAgain=false;
+                            },  2000)
+                            
                         }
-                    });
+                    }
+                });
 
             },
             getButtons(project){
@@ -471,12 +479,7 @@
                             if(foundMatch==true){
                                 break;
                             }
-                            
-                            
                         }
-                        
-                        
-                        
                     }
                 
                 }).catch((error) => {
@@ -503,7 +506,6 @@
                         for(let item in response.data){
                             this.statusDataTravel= response.data[item]
                         }
-                        
                         this.showStatusModal = true;
                     }
                 }).catch((error) => {
@@ -519,7 +521,6 @@
                         }
                     }
                 });
-
             },
             SetStatus(set){
                 const{data}=set
@@ -534,14 +535,13 @@
                 ServiceClient.post(url,dataTravel).then((response) =>{
                     if (response.status == 200){
                         this.message = response.data.message;
-                        this.getprojects();
+                        this.getFavoriteProjects();
                         this.show_popup = true;
                         setTimeout(() => {
                             this.show_popup = false
                             this.message = ""
                             this.cancelModal()
                         },  1500)
-                        
                     }
                 }).catch((error) => {
                     if (error.response && error.response.status) {
@@ -581,7 +581,6 @@
                         }
                     }
                 });
-
             },
             filter(selectData){
                 const{select}=selectData
@@ -641,10 +640,6 @@
                         }
                     }
                 }
-                    
-                    
-                
-                
             },
             getUnreadMessages(){
                 ServiceClient.post('/api/get-unread-messages').then(response => {
@@ -654,10 +649,6 @@
                     console.log(error);
                 });
             }
-                
-                
-
-            
         },
         beforeRouteEnter(to, from, next) {
             ServiceClient.post('/api/getUserRole').then(response => {
@@ -672,7 +663,6 @@
                         next();
                     }
                 }
-                
             }).catch(error =>{
                 console.log(error);
             });
@@ -680,10 +670,9 @@
         mounted(){
             this.getUnreadMessages();
             this.getFavoriteProjects()
-            this.getUsers()
+            //this.getUsers()
             this.contentTitle();
-            
-            
+            this.getManagers();
         }
     }
 
@@ -740,7 +729,7 @@
                                         :component="this.$route.name"
                                         :newMessage="this.newMessage"
                                         @redirect="this.redirect"
-                                        @showParticipantModal="this.showParticipantModal"
+                                        @showParticipantModal="this.getUsers(project)"
                                         @edit="this.EditingModeSwitch"
                                         @CommentEmit="this.commentModalSwitch"
                                         @SwitchModal="SwitchStatusModal">
@@ -773,10 +762,11 @@
                 @cancel-modal="cancelModal" 
                 
                 @create-project="createProjects" 
-                :getusers="this.getusers" 
+                :getusers="this.getmanager" 
                 :isDropdownOpen="this.isDropdownOpen"
                 :EditMode="this.EditMode"
-                :EditData="this.Editdata"></CreateProjectModal>
+                :EditData="this.Editdata"
+                :tryAgain="this.tryAgain"></CreateProjectModal>
         </Transition>
         <ProjectTasks v-if="redirectToTasks==true"
         :projectData="this.projectData"></ProjectTasks>

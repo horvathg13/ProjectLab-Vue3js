@@ -5,4 +5,4 @@ services:
       context: .
     ports:
       - '5180:5173'
-    # További konfigurációk a Vue frontendhez
+    

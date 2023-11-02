@@ -5,7 +5,6 @@
   import ErrorPopup from './Common/ErrorPopup.vue';
   import ProjectTasks from './ProjectTasks.vue';
   import AddProjectParticipantsModal from './Modals/AddProjectParticipantsModal.vue';
-  import AccrodionMenu from './Common/AccordionMenu.vue';
   import ContentTitle from './Common/ContentTitle.vue';
   import CircularMenu from './Common/CircularMenu.vue';
   import CommentModal from './Modals/CommentModal.vue';
@@ -22,7 +21,6 @@
         ErrorPopup,
         ProjectTasks,
         AddProjectParticipantsModal,
-        AccrodionMenu,
         ContentTitle,
         CircularMenu,
         CommentModal,

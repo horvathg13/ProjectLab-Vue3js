@@ -419,10 +419,6 @@ import {store} from '../VuexStore'
             <ErrorPopup v-if="show_error_popup==true" :message="this.message" :errorarray="this.errorArray"></ErrorPopup>
         </Transition>
         <div class="content-container">
-            
-            <!--<div class="content-title users">
-                <h1>Users</h1>
-            </div>-->
         
             <div class="centerd-component-container">
                 <div class="scrolling-table-container">
@@ -442,8 +438,8 @@ import {store} from '../VuexStore'
                         <tbody>
                             <tr v-for="user in getusers" :key="user.id">
                                 <td>{{user.id}}</td>
-                                <td :style="{overflow:'auto', textOverflow:'ellipsis'}">{{user.name}}</td>
-                                <td :style="{overflow:'auto', textOverflow:'ellipsis'}">{{user.email}}</td>
+                                <td :style="{overflow:'hidden', textOverflow:'ellipsis'}">{{user.name}}</td>
+                                <td :style="{overflow:'hidden', textOverflow:'ellipsis'}">{{user.email}}</td>
                                 <td>{{user.roles}}</td>
                                 <td>
                                     <CircularMenu
@@ -454,10 +450,6 @@ import {store} from '../VuexStore'
                                     @DataSaveEmit="DataSave"
                                     @DataSaveRolesEmit="DataSave"
                                     @DataSaveResetPassword="DataSave"></CircularMenu>
-                                    <!--<button class="ui small yellow button"><i class="edit icon"></i>Edit</button>
-                                    <button class="ui small red button" @click="DataSave(user, 'BannUser')"><i class="close icon"></i>Ban user</button>
-                                    <button class="ui small purple button" @click="DataSave(user, 'open_show_role_selector_modal')"><i class="balance scale icon"></i>Roles</button>
-                                    <button class="ui small orange button" @click="DataSave(user, 'PasswordResetManual')"><i class="key icon"></i>Reset password</button>-->
                                 </td>
                             </tr>
                         </tbody>

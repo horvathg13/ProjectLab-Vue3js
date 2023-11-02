@@ -16,6 +16,8 @@ coverage
 
 /cypress/videos/
 /cypress/screenshots/
+Dockerfile
+*.yaml
 
 # Editor directories and files
 .vscode/*

@@ -105,15 +105,6 @@ import VueClickAway from "vue3-click-away";
         <i class="ellipsis horizontal icon"></i>
         <div ref="dropdown" class="menu"  :class="{ active: this.circulardrop }" >
             <div  class="item" v-for="button in componentButtons" :key="button.label"><button :class="button.class" @click="handleClick(button.onclick)"><i :class="button.icon.primary ? button.icon.primary:button.icon"></i><div v-html="button.label"></div><i :class="button.icon.secoundary ? button.icon.secoundary:none" v-if="setNewMessage==true"></i></button></div>
-            <!--<div  class="item" v-if="component === 'Projects'"><button class="ui small orange button item" @click="redirectEmit()"><i class="tasks icon"></i>View Tasks</button></div>
-            <div class="item" v-if="component === 'Projects'"><button class="ui small green button item" @click="showParticipantModalEmit()"><i class="user plus icon"></i>Employees</button></div>
-            <div class="item" v-if="component === 'Tasks'"><button class="ui normal green button item " @click="Attach_ModalEmit()"><i class="user plus icon"></i>Attach To<br> Employee</button></div>
-            <div class="item" v-if="component === 'Tasks'"><button class="ui normal green button item" @click=" AttachMyselfEmit()"><i class="user plus icon"></i>Attach To<br> Myself</button></div>
-            <div class="item"><button class="ui normal violet button item" @click=" EditEmit()"><i class="edit icon"></i>Edit</button></div>
-            <div class="item" v-if="component === 'Users'"><button class="ui small red button item" @click="DataSaveEmit()"><i class="close icon"></i>Ban user</button></div>
-            <div class="item" v-if="component === 'Users'"><button class="ui small purple button item" @click="DataSaveRolesEmit()"><i class="balance scale icon"></i>Roles</button></div>
-            <div class="item" v-if="component === 'Users'"><button class="ui small orange button item" @click="DataSaveResetPasswordEmit()"><i class="key icon"></i>Reset<br> password</button></div>
-            <div class="item" v-if="component === 'Projects' || component === 'Tasks'"><button class="ui small blue button item" @click="CommentEmit()"><i class="comments icon"></i>Comments<i class="ui red bell icon"></i></button></div>-->
         </div>
     </button>
 </template>

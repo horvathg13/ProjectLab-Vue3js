@@ -24,8 +24,6 @@ import VueClickAway from "vue3-click-away";
                     if(newValue==false){
                         this.buttonDisable=newValue
                     }
-                    
-                    
                 }
             }
         },
@@ -49,18 +47,13 @@ import VueClickAway from "vue3-click-away";
 
 <template>
         <div class="modal-overlay">
-            
-            <div class="modal" v-click-away="cancelModal"> 
+            <div class="modal"  v-click-away="cancelModal">
                 <div class="close">
                     <i class="close large red icon" @click="cancelModal" ></i>
                 </div>
                 <div class="header">
-                    
                     <h1>Add a user</h1>
-                    
                 </div>
-          
-              
                 <div class="forms" >
 
                     <div class="form-container" >
@@ -73,7 +66,6 @@ import VueClickAway from "vue3-click-away";
                                 <label>Email</label>
                                 <input :disabled="buttonDisable" type="email" name="email" placeholder="Email" v-model="email">
                             </div>
-                    
                             <button :disabled="buttonDisable" class="ui green button" type="submit" >Save</button>
                         </form>
                     </div>
@@ -84,12 +76,8 @@ import VueClickAway from "vue3-click-away";
                                 Copy
                             </button>
                     </div>
-                    
-                    
               </div>
-              
             </div>
-            
       </div>
 </template>
 

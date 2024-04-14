@@ -3,6 +3,8 @@ import axios from "axios"
 import Success_Popup from "./Common/Success_Popup.vue"
 import { Transition } from "vue"
 import ServiceClient from "../ServiceClient"
+import EventHandler from "@/components/Common/EventHandler/eventHandler.vue";
+import errorPopup from "@/components/Common/ErrorPopup.vue";
 export default{
     name:"Register",
 
@@ -14,10 +16,13 @@ export default{
             password:"",
             c_password:"",
             errors:[],
-            show_popup: false
+            show_popup: false,
+            error_popup:false,
+            serverError: {}
         }
     },
     components: {
+      EventHandler,
         Transition,
         Success_Popup
     },
@@ -53,24 +58,20 @@ export default{
                             this.$router.push({path: "/login"})
                         }, 1300)
                     }
-                })  .catch((error) => {
-                        
-                    if (error.response && error.response.status) {
-                        if(error.response.data.validatorError){
-                            this.errors=Object.values(error.response.data.validatorError)
-                        }
-                        if (error.response.data.message) {
-                            
-                            this.errors = ["Database error occured"]
-                        }else if(!error.response.data.validatorError && !error.response.data.message){
-                            this.errors = ["Server error occurred"] 
-                        }
-                    }
+                }).catch((error) => {
+                    this.serverError=error;
+                    console.log(this.serverError.response);
+                    this.error_popup=true;
                 });
+            }else{
+              this.error_popup=true
             }
         },
         close(){
             this.errors=[]
+        },
+        closeErrorModal(){
+          this.error_popup=false;
         }
     },
     mounted(){
@@ -82,10 +83,14 @@ export default{
     <div class="main-container">
         <div class="background register">
         </div>
+        <EventHandler
+            :successPopup="show_popup"
+            :error-popup="error_popup"
+            :errorarray="errors"
+            :serverError="serverError"
+            @close="closeErrorModal"
 
-        <Transition name="drop">
-            <Success_Popup v-if="show_popup"></Success_Popup>
-        </Transition>
+        />
         
         <div class="centerd-component-container">
             <div class="reg-img">
@@ -97,17 +102,7 @@ export default{
                         <h1><span>R</span>egister</h1>
                 </div>
                 <form class="ui large form error" @submit.prevent="register" novalidate>
-                    <div class="ui error thiny message" role="alert" v-if="errors.length">
-                        <i class="thiny close icon" @click="close"></i>
-                        <div class="error-message-header"><i class="exclamation triangle icon"></i>
-                            Attention! Form validation controll!
-                        </div>
-                        <ul class="list">
-                            <li v-for="(error,index) in errors" :key="index">
-                            {{ error }}
-                            </li>
-                        </ul>
-                    </div>
+
                     <div class="field">
                         <label><span>N</span>ame</label>
                         <input type="text" name="name" placeholder="type your name" v-model="name">

@@ -6,27 +6,19 @@
       errorarray:Array,
       serverError:'',
     },
-    data(){
-        return{
-            
-                
-      }
-    },
     methods:{
-      closeErrorPopup(){
+      closeErrorPopup(e){
         this.$emit('close-error', false);
       }
-
     },
-
   }
 
 </script>
 
 <template>
-    <div class="popup">
+    <div class="popup" @click="(e)=>{e.stopPropagation()}">
       <div class="closeIcon">
-        <i class="close icon" @click="closeErrorPopup"></i>
+        <i class="close icon" @click="(e)=>closeErrorPopup(e)"></i>
       </div>
         <div class="popup-content">
             <div class="popup-icon">

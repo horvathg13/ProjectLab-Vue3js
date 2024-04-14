@@ -91,87 +91,78 @@ export default{
 
 <template>
     <div class="HP-main">
-        <div class= "background home">
-        </div>  
+        <div class= "background home"></div>
+
         <div class="content-container">
-        <div class="HP-title">
-            <h1>Welcome {{ username }}</h1>
-            <h3 v-if="this.temporaryMessage == false">Let's work on something!</h3>
-            <h3 v-if="this.temporaryMessage == true">Please contact the admin to give roles to you!</h3>
-        </div>
+          <div class="HP-title">
+              <h1>Welcome {{ username }}</h1>
+              <h3 v-if="this.temporaryMessage == false">Let's work on something!</h3>
+              <h3 v-if="this.temporaryMessage == true">Please contact the admin to give roles to you!</h3>
+          </div>
         
-        <div class="ui link cards">
+          <div class="ui link cards">
+
             <div class="card temporary" v-if="temporaryCard == true">
                 <div class="image">
-                <img src="../assets/HomeP_icons/temporary_lock.jpg">
+                  <img src="../assets/HomeP_icons/temporary_lock.jpg">
                 </div>
                 <div class="content">
-                    <h3>STOP!</h3>
-                   
+                  <h3>STOP!</h3>
                 </div>
             </div>
+
             <div class="card" v-if="userCard == true" @click="users">
                 <div class="image">
-                <img src="../assets/HomeP_icons/users.png">
+                  <img src="../assets/HomeP_icons/users.png">
                 </div>
                 <div class="content">
                     <h3>Users</h3>
-                   
                 </div>
             </div>
-            <!--<div class="card">
-                <div class="image">
-                <img src="../assets/HomeP_icons/rolepermission.png">
-                </div>
-                <div class="content">
-                    <div class="header"><a href="/rolepermission">Roles and Permissions</a></div>
-                   
-                </div>
-            </div>-->
+
             <div class="card" v-if="showCards == true" @click="notifications">
                 <div class="image">
-                <img src="../assets/HomeP_icons/request_v2.png">
+                  <img src="../assets/HomeP_icons/request_v2.png">
                 </div>
                 <div class="content">
                     <h3>Notifications</h3>
-                    
                 </div>
             </div>
+
             <div class="card" v-if="showCards == true" @click="projects">
                 <div class="image">
-                <img src="../assets/HomeP_icons/my_projects.png">
+                  <img src="../assets/HomeP_icons/my_projects.png">
                 </div>
                 <div class="content">
                     <h3>Project</h3>
-                    
                 </div>
             </div>
+
             <div class="card" v-if="showCards == true" @click="fprojects">
                 <div class="image">
-                <img src="../assets/HomeP_icons/favorite-book.png">
+                  <img src="../assets/HomeP_icons/favorite-book.png">
                 </div>
                 <div class="content">
                     <h3>Favorite Projects</h3>
-                    
                 </div>
             </div>
+
             <div class="card" v-if="showCards == true" @click="mytasks">
                 <div class="new-icon" v-if="this.countOfMyActiveTasks>0"><h3>{{ countOfMyActiveTasks }}</h3></div>
                 <div class="image">
-                <img src="../assets/HomeP_icons/tasks.png">
+                  <img src="../assets/HomeP_icons/tasks.png">
                 </div>
                 <div class="content">
                     <h3>My tasks</h3>
-                   
                 </div>
             </div>
+
             <div class="card" v-if="managerCard == true" @click="managerDb">
                 <div class="image">
-                <img src="../assets/HomeP_icons/manager.png">
+                  <img src="../assets/HomeP_icons/manager.png">
                 </div>
                 <div class="content">
                     <h3>Manager Dashboard</h3>
-                   
                 </div>
             </div>
             <!--<div class="card" v-if="showCards == true">
@@ -180,10 +171,10 @@ export default{
                 </div>
                 <div class="content">
                     <div class="header">Statistics</div>
-                    
+
                 </div>
             </div>-->
-        </div>
+          </div>
         </div>
     </div>
 </template>

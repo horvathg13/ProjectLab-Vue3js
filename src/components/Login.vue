@@ -3,11 +3,13 @@
     import {store} from "../VuexStore"
     import ServiceClient from '../ServiceClient'
     import Success_Popup from './Common/Success_Popup.vue'
+    import EventHandler from "@/components/Common/EventHandler/eventHandler.vue";
 
 
     export default{
         name: "Login",
-        components: { 
+        components: {
+          EventHandler,
             Success_Popup,
         },
         data() {
@@ -19,7 +21,9 @@
                 user_name: "",
                 userData: {},
                 login_succeded: false,
-                disablefield: false
+                disablefield: false,
+                serverError:'',
+                error_popup:false,
             };
         },
     
@@ -50,17 +54,9 @@
                     
                     }
                 }).catch((error) => {
-                    this.disablefield= false        
-                    if (error.response){
-                        if (error.response.data.message) {
-                            this.errors.push(error.response.data.message) 
-                            
-                        } else {
-                            this.errors =["Server error occurred"]
-                        }
-                    }else{
-                        this.errors = ["Server error occurred"]
-                    }
+                    this.disablefield= false
+                    this.serverError=error;
+                    this.error_popup=true;
                 });
             },
             getNotifications(){
@@ -69,14 +65,13 @@
                 
                 }).catch(error =>{
                     console.log(error);
-                
                 });
             },
             getManaganerNotifications(){
                 ServiceClient.post('/api/get-manager-notification').then(response => {
                     store.commit("getManagerNotifications",response.data);
                 }).catch(error =>{
-                console.log(error);
+                  console.log(error);
                 });
             },
             getUserRoles(){
@@ -85,10 +80,12 @@
                 }).catch(error =>{
                     console.log(error);
                 });
-
             },
             close(){
                 this.errors=[]
+            },
+            closeErrorModal(){
+              this.error_popup=false;
             }
         },
         mounted() {
@@ -99,11 +96,16 @@
 
 <template>
     <div class="main-container">
-        <div class="background greeting">
-        </div>
-        <Transition name="drop">
-                <Success_Popup v-if="login_succeded"></Success_Popup>
-        </Transition>
+        <div class="background greeting"></div>
+
+        <EventHandler
+            :successPopup="login_succeded"
+            :error-popup="error_popup"
+            :errorarray="errors"
+            :serverError="serverError"
+            @close="closeErrorModal"
+        />
+
         <div class="content-container">
         <div class="centerd-component-container">
             
@@ -111,19 +113,7 @@
                 <div class="form-title">
                         <h1><span>L</span>og in</h1>
                 </div>
-                <div class="ui error thiny message" role="alert" v-if="errors.length">
-                        <i class="thiny close icon" @click="close"></i>
-                        <div class="error-message-header"><i class="exclamation triangle icon"></i>
-                            Attention!
-                        </div>
-                        <ul class="list">
-                            <li v-for="(error,index) in errors" :key="index">
-                            {{ error }}
-                            </li>
-                        </ul>
-                </div>
                 <form class="ui big form" @submit.prevent="login" novalidate>
-                    
                     <div class="field">
                         <label><span>E</span>-mail</label>
                         <input type="email" name="email" :disabled="disablefield" placeholder="email" v-model="email">

@@ -7,6 +7,7 @@ import MultipleSelection from '../Common/MultipleSelectComponents.vue';
             getroles:Array,
             isDropdownOpen:null,
             user:{},
+            tryAgain:null
         },
         components:{
             MultipleSelection,
@@ -17,6 +18,17 @@ import MultipleSelection from '../Common/MultipleSelectComponents.vue';
                 removedRole:{},
                 buttonDisable:false,
             }
+        },
+        watch:{
+          'tryAgain':{
+            immediate:true,
+            deep:true,
+            handler(newValue){
+              if(newValue==false){
+                this.buttonDisable=newValue
+              }
+            }
+          }
         },
         methods: {
             toggleDrop(){
@@ -41,26 +53,19 @@ import MultipleSelection from '../Common/MultipleSelectComponents.vue';
                 const{detach} = data;
                 this.removedRole = data.remove
             }
-
-           
-
         },
-        
     }
 </script>
 
 <template>
         <div class="modal-overlay">
-            
             <div class="modal">
                 <div class="close">
                     <i class="close large red icon" @click="cancelModal"></i>
                 </div>
-                
                 <div class="header">
                     <i class="exclamation huge triangle icon"></i>
                     <h2>You Activated The Role Selector Mode!</h2>
-                    
                 </div>
                 <form class="ui form" @submit.prevent="attachRole" novalidate>
                     <div class="field">
@@ -74,20 +79,9 @@ import MultipleSelection from '../Common/MultipleSelectComponents.vue';
                     @select="selectRole"
                     @detach-user="detach"
                     ></MultipleSelection>
-                    
                     <button class="ui green button" type="submit" :disabled="buttonDisable">Create</button>
                 </form>
-               
-                    
-                    
-                
-                   
-                    
-                    
-                
-              
             </div>
-            
         </div>
 </template>
 

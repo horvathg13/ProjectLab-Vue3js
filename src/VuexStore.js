@@ -10,7 +10,6 @@ export const store = createStore({
       unreadMessages:{},
       notifications:[],
       managerNotifications:[],
-
     },
     mutations:{
         getManagerNotifications(state,data){

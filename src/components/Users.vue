@@ -10,6 +10,8 @@ import ContentTitle from './Common/ContentTitle.vue';
 import CircularMenu from './Common/CircularMenu.vue';
 import {store} from '../VuexStore'
   import EventHandler from "@/components/Common/EventHandler/eventHandler.vue";
+  import serviceClient from "../ServiceClient";
+  import * as Promis from "axios";
 
   export default {
     components: {
@@ -66,14 +68,13 @@ import {store} from '../VuexStore'
     watch:{
         '$store.state.userRole'(newValue) {
             this.userRole = newValue;
-        }
+        },
     },
     
     methods:{
         trigger(data){
             const{trigger} = data
             this.triggerValue = trigger
-            console.log(this.triggerValue)
             if(this.triggerValue === true){
                 if(this.func === 'BannUser'){
                     this.BanUser();
@@ -91,13 +92,12 @@ import {store} from '../VuexStore'
             this.isDropdownOpen = !this.isDropdownOpen;
         },
         open_show_role_selector_modal(){
-            this.triggerModal = true;
-            this.triggerModal = false;
-            this.triggerValue = null;
-            this.user.id = this.dataSave.id;
-            this.user.name = this.dataSave.name;
-            this.user.roles= this.dataSave.roles?this.dataSave.roles.trim().split(","):[];
-            this.show_role_selector_modal = true;
+            this.triggerModal = false
+            this.triggerValue = null
+            this.user.id = this.dataSave.id
+            this.user.name = this.dataSave.name
+            this.user.roles= this.dataSave.roles?this.dataSave.roles.trim().split(","):[]
+            this.show_role_selector_modal = true
         },
         updateModal(){
             if(this.showModal==false){
@@ -118,28 +118,24 @@ import {store} from '../VuexStore'
             
             this.name = name;
             this.email= email;
-            
-            let formData = new FormData();
-            formData.append("name", this.name);
-            formData.append("email", this.email);
             this.tryAgain=true;
-            let url ="/api/createuser";
-            ServiceClient.post(url,formData).then((response) =>{
-                if (response.status == 200){
-                    this.message = response.data.message;
-                    this.show_popup = true
-                    this.url = response.data.data.url
-                    setTimeout(() => {
-                        this.getUsers();
-                        this.show_popup = false
-                        this.message = "";
-                    },  2000)
 
-                }
+            ServiceClient.createUser(this.name,this.email).then((response) =>{
+              if (response.status === 200){
+                this.message = response.data.message;
+                this.show_popup = true
+                this.url = response.data.data.url
+                setTimeout(() => {
+                  this.getUsers();
+                  this.show_popup = false
+                  this.message = "";
+                },  2000)
+
+              }
             }).catch((error) => {
-                this.tryAgain=false
-                this.serverError=error
-                this.show_error_popup=true
+              this.tryAgain=false
+              this.serverError=error
+              this.show_error_popup=true
             });
         },
         copy(){
@@ -172,12 +168,8 @@ import {store} from '../VuexStore'
         },
 
           getUsers(){
-              let url ="/api/getusers";
-              ServiceClient.post(url).then((response) =>{
-
-                      if (response.status == 200){
-                          this.getusers=response.data
-                      }
+              ServiceClient.getUsers().then(users=>{
+                this.getusers = users
               }).catch((error) => {
                 this.serverError=error;
                 this.show_error_popup = true
@@ -185,60 +177,43 @@ import {store} from '../VuexStore'
           },
 
           getRoles(){
-              let url ="/api/getroles";
-              ServiceClient.post(url).then((response) =>{
-
-                      if (response.status == 200){
-                          this.getroles = response.data.roles
-                      }
-              }).catch((error) => {
-                  this.serverError=error;
-                  this.show_error_popup = true
-              });
+            ServiceClient.getRoles().then(roles=>{
+              this.getroles = roles
+            }).catch((error) => {
+              this.serverError=error;
+              this.show_error_popup = true
+            });
           },
 
           BanUser() {
               this.triggerModal = false;
               this.triggerValue = null;
-
-              let url = `/api/ban-user/${this.dataSave.id}`;
-              ServiceClient.post(url)
-                  .then((response) => {
-                      if (response.status === 200) {
-                          this.show_popup = true;
-                          this.getUsers();
-                          setTimeout(() => {
-                              this.show_popup = false;
-
-                          }, 1500);
-                          this.url = response.data.data.url;
-                      }
-                  })
-                  .catch((error) => {
-                    if(error.response){
-                      this.serverError=error;
-                      this.show_error_popup = true;
-                    }
-
-                  });
-
+              ServiceClient.banUser(this.dataSave.id).then((result)=>{
+                  this.show_popup = true;
+                  setTimeout(() => {
+                    this.show_popup = false;
+                  }, 1500);
+                  this.getusers=result
+              }).catch((error) => {
+                console.log(error)
+                if(error.response){
+                  this.serverError=error;
+                  this.show_error_popup = true;
+                }
+              });
           },
           PasswordResetManual(){
-
               this.triggerModal = false;
               this.triggerValue = null;
-
-              let url = `/api/password-reset-manual/${this.dataSave.id}`;
-              ServiceClient.post(url).then((response) => {
-
-                  if (response.status == 200) {
-                      this.url = response.data.data.url
-                      this.show_popup = true
-                      this.show_reset_password_manual_modal = true;
-                      setTimeout(() => {
-                          this.show_popup = false
-                      }, 1500)
-                  }
+              ServiceClient.passwordResetManual(this.dataSave.id).then((response) => {
+                if (response.status === 200) {
+                  this.url = response.data.data.url
+                  this.show_popup = true
+                  this.show_reset_password_manual_modal = true;
+                  setTimeout(() => {
+                    this.show_popup = false
+                  }, 1500)
+                }
               }).catch((error) => {
                 this.serverError=error;
                 this.show_error_popup = true;
@@ -248,32 +223,21 @@ import {store} from '../VuexStore'
           userToRole(data) {
               this.user={};
               const { selectedRole, user_id, remove } = data
-
-              let dataTravel = {}
-              dataTravel.user_id = user_id
-              dataTravel.selectedRole = selectedRole,
-              dataTravel.remove=remove;
-
-              let url = '/api/user-to-role/';
               this.tryAgain=true;
 
-              ServiceClient.post(url,dataTravel).then((response) => {
-                  if (response.status == 200) {
-                      this.message=response.data.message
-                      this.show_popup = true
-                      this.getUsers()
-                      setTimeout(() => {
-                          this.show_popup = false
-                          this.show_role_selector_modal = false
-                      }, 1500)
-                  }
-
-
+              ServiceClient.userToRole(user_id,selectedRole,remove).then(() => {
+                  this.show_popup = true
+                  setTimeout(() => {
+                    this.show_popup = false
+                    this.show_role_selector_modal = false
+                  }, 1500)
               }).catch((error) => {
-                this.serverError=error;
-                this.show_error_popup = true;
-                this.tryAgain=false
-                this.open_show_role_selector_modal()
+                if(error.response){
+                  this.serverError=error;
+                  this.show_error_popup = true;
+                  this.tryAgain=false
+                  this.open_show_role_selector_modal()
+                }
               });
           },
 
@@ -285,21 +249,13 @@ import {store} from '../VuexStore'
           },
 
           getUsersButton(user){
-
-              let url="/api/get-users-buttons"
-              ServiceClient.post(url).then(response => {
-                  if (response.status == 200){
-                      for(let i in response.data){
-                          this.adminbuttons = response.data[i]
-                      }
-                      this.adminbuttons = this.adminbuttons.admin.slice(0,3)
-                  }
-
+              ServiceClient.getUsersButton().then(buttons=>{
+                this.adminbuttons= buttons
               }).catch((error) => {
-                  if (error.response && error.response.status) {
-                    this.serverError=error;
-                    this.show_error_popup = true;
-                  }
+                if (error.response && error.response.status) {
+                  this.serverError=error;
+                  this.show_error_popup = true;
+                }
               });
           },
 
@@ -308,24 +264,15 @@ import {store} from '../VuexStore'
           }
         },
         beforeRouteEnter(to, from, next) {
-            ServiceClient.post('/api/getUserRole').then(response => {
-                if(response.status === 200){
-                    store.commit("setuserRole",response.data)
-                    const userRole = response.data
-                    if(userRole.code !== 404){
-                        const isAdmin= userRole.some(item=>item.role === "Admin");
-                        if(isAdmin === false){
-                            next('/accessdenied')
-                        }else{
-                            next();
-                        }
-                    }else{
-                        next('/accessdenied')
-                    }
-                }
-                
-            }).catch(error =>{
-                console.log(error);
+            ServiceClient.accessAdmin().then(isAdmin => {
+              if(isAdmin) {
+                next();
+              }else {
+                next('/accessdenied');
+              }
+            }).catch(error => {
+              console.error(error);
+              next('/accessdenied');
             });
         },
         mounted(){
@@ -385,10 +332,8 @@ import {store} from '../VuexStore'
                         </tbody>
                         <tfoot class="full-width">
                             <tr>
-                                
                                 <th></th>
                                 <th colspan="4">
-                            
                                 </th>
                             </tr>
                             
@@ -409,7 +354,7 @@ import {store} from '../VuexStore'
             <ResetPasswordManualModal v-if="show_reset_password_manual_modal==true" @cancel-modal="cancelModal" @copy-to="copy" :Url="this.url"></ResetPasswordManualModal>
         </Transition>
         <Transition>
-            <RoleSelectorModal v-if="show_role_selector_modal==true" @toggleDrop= "toggleDropdown" @cancel-modal="cancelModal" @attachRole="userToRole" :getusers="this.getusers" :getroles="this.getroles" :isDropdownOpen="this.isDropdownOpen" :user="this.user" :tryAgain="this.tryAgain"></RoleSelectorModal>
+            <RoleSelectorModal v-if="show_role_selector_modal===true" @toggleDrop= "toggleDropdown" @cancel-modal="cancelModal" @attachRole="userToRole" :getusers="this.getusers" :getroles="this.getroles" :isDropdownOpen="this.isDropdownOpen" :user="this.user" :tryAgain="this.tryAgain"></RoleSelectorModal>
         </Transition>
         <Transition>
             <AreYouSureModal v-if="triggerModal==true" @trigger="trigger"></AreYouSureModal>

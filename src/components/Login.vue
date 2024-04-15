@@ -31,55 +31,34 @@
             async login() {
                 this.errors = [];
                 this.user_name = "";
-                let formData = new FormData();
-                formData.append("email", this.email);
-                formData.append("password", this.password);
-                let url = "/api/login";
                 this.disablefield = true;
 
-                ServiceClient.post(url, formData).then(response => {
-                    if (response.data.success) {
-                    
+                ServiceClient.login(this.email, this.password).then((response)=>{
+                      if (response.data.success) {
                         this.login_succeded = true;
-
                         setTimeout(() => {
-                            store.commit("setUserData", response.data.data)
-                            localStorage.setItem("token", response.data.data.token);
-                            this.getNotifications();
-                            this.getManaganerNotifications();
-                            this.getUserRoles();
-                            this.$router.push({path: "/home"});
+                          store.commit("setUserData", response.data.data)
+                          localStorage.setItem("token", response.data.data.token);
+                          this.getNotifications();
+                          this.getManagerNotifications();
+                          this.getUserRoles();
+                          this.$router.push({path: "/home"});
                         }, 1400);
-                        
-                    
-                    }
+                      }
                 }).catch((error) => {
-                    this.disablefield= false
-                    this.serverError=error;
-                    this.error_popup=true;
+                  this.disablefield= false
+                  this.serverError=error;
+                  this.error_popup=true;
                 });
             },
             getNotifications(){
-                ServiceClient.post('/api/notifications').then(response => {
-                    store.commit("getNotifications",response.data);
-                
-                }).catch(error =>{
-                    console.log(error);
-                });
+                ServiceClient.getNotifications();
             },
-            getManaganerNotifications(){
-                ServiceClient.post('/api/get-manager-notification').then(response => {
-                    store.commit("getManagerNotifications",response.data);
-                }).catch(error =>{
-                  console.log(error);
-                });
+            getManagerNotifications(){
+              ServiceClient.getManagerNotifications();
             },
             getUserRoles(){
-                ServiceClient.post('/api/getUserRole').then(response => {
-                    store.commit("setuserRole",response.data)
-                }).catch(error =>{
-                    console.log(error);
-                });
+              ServiceClient.getUserRoles();
             },
             close(){
                 this.errors=[]

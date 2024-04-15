@@ -44,24 +44,17 @@ export default{
             
 
             if(!this.errors.length){
-                let formData = new FormData();
-                formData.append("name", this.name);
-                formData.append("email", this.email);
-                formData.append("password", this.password);
-                formData.append("confirm_password", this.c_password);
-                
-                let url ="/api/register";
-                ServiceClient.post(url,formData).then((response) =>{
-                    if (response.status == 200){
-                        this.show_popup = true
-                        setTimeout(() => {
-                            this.$router.push({path: "/login"})
-                        }, 1300)
-                    }
+                ServiceClient.register(this.name, this.email, this.password, this.c_password).then((response) =>{
+                  if (response.status == 200){
+                    this.show_popup = true
+                    setTimeout(() => {
+                      this.$router.push({path: "/login"})
+                    }, 1300)
+                  }
                 }).catch((error) => {
-                    this.serverError=error;
-                    console.log(this.serverError.response);
-                    this.error_popup=true;
+                  this.serverError=error;
+                  console.log(this.serverError.response);
+                  this.error_popup=true;
                 });
             }else{
               this.error_popup=true

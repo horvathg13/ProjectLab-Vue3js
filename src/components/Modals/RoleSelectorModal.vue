@@ -69,7 +69,7 @@ import MultipleSelection from '../Common/MultipleSelectComponents.vue';
                 </div>
                 <form class="ui form" @submit.prevent="attachRole" novalidate>
                     <div class="field">
-                        <label>Selected User: {{user.name}}</label>
+                        <label :style="{overflow:'hidden', textOverflow:'ellipsis'}">Selected User: {{user.name}}</label>
                     </div>
                     <div class="field"><label>Select a Role</label></div>
                     <MultipleSelection

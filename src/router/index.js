@@ -5,7 +5,6 @@ import Login from "../components/Login.vue"
 import Home from "../components/Homepage.vue"
 import Users from "../components/Users.vue"
 import ResetPassword from "../components/ResetPassword.vue"
-import RolePermission from "../components/RolePermission.vue"
 import Projects from "../components/Projects.vue"
 import ProjectTasks from "../components/ProjectTasks.vue"
 import Notifications from "../components/Notifications.vue"
@@ -60,11 +59,6 @@ const router = createRouter({
       path: "/reset-password/:token?",
       name:"Reset Password",
       component: ResetPassword
-    },
-    {
-      path: "/rolepermission",
-      name:"RolePermission",
-      component: RolePermission
     },
     {
       path: "/projects",

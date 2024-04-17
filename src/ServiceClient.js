@@ -89,6 +89,7 @@ class ServiceClient {
     static getUserRoles() {
         return this.post('/api/getUserRole').then(response => {
             store.commit("setuserRole", response.data)
+            return response.data
         }).catch(error => {
             console.log(error);
         });
@@ -157,6 +158,77 @@ class ServiceClient {
 
     static resetPassword(email, password, c_password){
         return this.post("/api/resetpassword", {email:email, password:password, confirm_password:c_password}).then((response)=>{
+            return response.data
+        })
+    }
+
+    static getProjectParticipants(projectId){
+        return this.post(`/api/getprojectparticipants/${projectId}`).then(response=>{
+            return response.data
+        })
+    }
+
+    static getProjects(sortData, filterData){
+        return this.post("/api/getprojects", {sortData:sortData, filterData:filterData}).then(response=>{
+            return response.data
+        })
+    }
+
+    static createProject(name, manager, date, projectId){
+        return this.post("/api/createproject",{project_name:name, manager_id:manager, date:date, project_id:projectId}).then(response=>{
+            return response.data
+        })
+    }
+
+    static getManagers(){
+        return this.post("/api/getManagers").then((response)=>{return response.data})
+    }
+    static getEmployees(){
+        return this.post("/api/getEmployees").then(response=> {
+            return response.data
+        })
+    }
+    static createProjectParticipants(participants, projectData, remove){
+        return this.post("/api/createparticipants",{participants: participants, project: projectData, remove:remove}).then((response)=>{
+            return response.data
+        })
+    }
+    static sendMessage(message, projectId, taskId ){
+        return this.post('/api/send-message', {message:message, projectId:projectId, taskId:taskId}).then(response=>{
+            return response.data
+        })
+    }
+
+    static getMessages(projectId, taskId, participants){
+        return this.post('/api/get-messages/',{projectId:projectId, taskId:taskId ? taskId : null,participants:participants}).then((response)=>{
+            return response.data
+        })
+    }
+    static getButtons(projectId){
+        return this.post(`/api/get-buttons/${projectId}`).then((response)=> {
+            return response.data
+        });
+    }
+    static getStatus(projectId, taskId){
+        return this.post(`/api/get-status/${projectId}/${taskId}`).then((response)=>{
+            return response.data
+        })
+    }
+    static setStatus(projectId, taskId, StatusId, priorityId){
+        return this.post('/api/set-status', {projectId: projectId, taskId: taskId, StatusId: StatusId, priorityId:priorityId})
+    }
+    static setFavoriteProject(project){
+        return this.post('/api/add-favorite-project', {project: project}).then((response)=>{
+            return response.data
+        })
+    }
+    static removeFromFavoriteProject(project){
+        return this.post('/api/remove-favorite-project', {project: project}).then((response)=>{
+            return response.data
+        })
+    }
+    static leaveProject(projectId){
+        return this.post('/api/leave-project', {projectId: projectId}).then((response)=>{
             return response.data
         })
     }

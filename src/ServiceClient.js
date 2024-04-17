@@ -232,6 +232,49 @@ class ServiceClient {
             return response.data
         })
     }
+
+    static getActiveEmployees(taskId){
+        return this.post(`/api/getActiveEmployees/${taskId}`).then((response)=>{
+            return response.data
+        })
+    }
+    static createTask(projectId, taskName, deadline, description, taskPriority, taskId){
+        return this.post('/api/createtask',
+            {project_id: projectId, task_name: taskName, deadline:deadline, description: description?description:null, task_priority:taskPriority, task_id:taskId?taskId:null}).then((response)=>{
+                return response.data
+        })
+    }
+    static assignEmployeeToTask(requestData, removeData, taskId, projectId){
+        return this.post("/api/assign-employee-to-task",
+            {requestData: requestData, removeData:removeData, task_id:taskId, project_id:projectId }).then((response)=>{
+                return response.data
+        })
+    }
+    static getProjectById(projectId){
+        return this.post(`/api/projects/${projectId}`).then((response)=>{
+            return response.data
+        })
+    }
+    static getPriorities(){
+        return this.post("/api/getpriorities").then((response)=>{
+            return response.data
+        })
+    }
+    static getTasks(projectId, sortData, filterData){
+        return this.post(`/api/projects/${projectId}/tasks`,{projectId:projectId, sortData:sortData, filterData:filterData}).then((response)=>{
+            return response.data
+        })
+    }
+    static taskAttachToMyself(projectId, taskId){
+        return this.post("/api/task-attach-to-myself",{projectId: projectId, taskId:taskId}).then((response)=>{
+            return response.data
+        })
+    }
+    static taskCompleted(projectId, taskData, ){
+        return this.post('/api/completed',{projectId:projectId, taskData:taskData}).then((response)=>{
+            return response.data.message
+        })
+    }
 }
 
 export default ServiceClient

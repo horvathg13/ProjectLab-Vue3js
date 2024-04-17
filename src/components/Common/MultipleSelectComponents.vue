@@ -5,7 +5,7 @@ export default{
        VforArray:Array,
        VforActiveArray:Array,
        disable:true,
-       updateSelected:''
+       updateSelected:false
     },
     data(){
         return{

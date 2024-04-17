@@ -82,7 +82,7 @@ export default{
             <h1>{{h1Title}}</h1>
         </div>
         <div class="ui large breadcrumb" v-for="(data,index) in meta" :key="index">
-            <a class="section" :href="data.path">{{data.breadcrumb}}</a>
+            <RouterLink class="section" :to="data.path">{{data.breadcrumb}}</RouterLink>
             <i class="right chevron icon divider"></i>
         </div>
        <div class="ui large breadcrumb section" v-if="h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && h1Title !=='Homepage' " :class="{active: h1Title}"> {{ h1Title }}</div>
@@ -161,7 +161,7 @@ export default{
     color:white;
 }
 .ui.breadcrumb .icon.divider{
-    color:black;
+    color:white;
 }
 .ui.large.breadcrumb{
     color: lawngreen;

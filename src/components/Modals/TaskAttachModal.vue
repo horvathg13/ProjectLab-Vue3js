@@ -17,13 +17,16 @@
             getProjectParticipants:Array,
             getActiveTaskParticipants:Array,
             taskData:Array,
+            tryAgain:''
         },
         data(){
             return{
                 selected_employee:[],
                 remove_employee:[],
                 SelectComp_getProjectParticipants:[],
-                SelectComp_getActiveTaskParticipants:[]
+                SelectComp_getActiveTaskParticipants:[],
+                buttonDisable:false,
+                clear:false
             }
         },
         watch:{
@@ -38,7 +41,15 @@
                 handler(newValue){
                     this.SelectComp_getActiveTaskParticipants = newValue
                 }
+            },
+          'tryAgain':{
+            immediate:true,
+            handler(newValue){
+              this.buttonDisable = newValue
+              this.selected_employee=[];
+              this.remove_employee=[];
             }
+          }
         },
         methods: {
             cancelModal() {
@@ -47,25 +58,20 @@
 
             attach(){
                 this.$emit("attach-user", {selected_employee: this.selected_employee, remove_employee:this.remove_employee})
+                console.log(this.selected_employee,this.remove_employee )
                 this.selected_employee=[];
                 this.remove_employee=[];
-                this.SelectComp_getActiveTaskParticipants=[];
-                this.SelectComp_getProjectParticipants=[];
+                this.clear=!this.clear
             },
 
             makeSelection(data){
                 const {select}=data
-
                 this.selected_employee = data
             },
             detach(data){
                 const{detach} = data;
-                
                 this.remove_employee = data.remove
             }
-            
-
-          
         },
         mounted(){
            
@@ -96,12 +102,13 @@
                            
                             <div class="field"><label>Remove or Add Active Employee(s)</label></div>
                             <MultipleSelectComponents :VforArray="this.SelectComp_getProjectParticipants.length>0 ? this.SelectComp_getProjectParticipants.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'})) :null" 
-                            :VforActiveArray="this.SelectComp_getActiveTaskParticipants.length >0 ? this.SelectComp_getActiveTaskParticipants.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'})) :null" 
+                            :VforActiveArray="this.SelectComp_getActiveTaskParticipants.length >0 ? this.SelectComp_getActiveTaskParticipants.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'})) :null"
                             @select="makeSelection"
-                            @detach-user="detach"></MultipleSelectComponents>
+                            @detach-user="detach"
+                            :update-selected="clear"></MultipleSelectComponents>
                             
                     
-                            <button class="ui green create button" type="submit">That's it!</button>
+                            <button class="ui green create button" type="submit" :disabled="buttonDisable">That's it!</button>
                         </form>
                     </div>
                 </div>

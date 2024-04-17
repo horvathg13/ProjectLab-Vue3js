@@ -6,44 +6,29 @@ import ContentTitle from './components/Common/ContentTitle.vue'
  
 ServiceClient.post('/api/get-unread-messages').then(response => {
   store.commit("getUnreadMessages", response.data);
-}).catch(error =>{
-  console.log(error);
-});
+})
 
 ServiceClient.post('/api/getUserData').then(response => {
   store.commit("setUserData",response.data);
-}).catch(error =>{
-  console.log(error);
-});
+})
 
 setInterval(() => {
   ServiceClient.post('/api/get-unread-messages').then(response => {
     store.commit("getUnreadMessages", response.data);
-  }).catch(error =>{
-    console.log(error);
-  });
+  })
 }, 30000);
-
-
 
 ServiceClient.post('/api/notifications').then(response => {
   store.commit("getNotifications",response.data);
-}).catch(error =>{
-  console.log(error);
-});
+})
 
 ServiceClient.post('/api/get-manager-notification').then(response => {
   store.commit("getManagerNotifications",response.data);
-}).catch(error =>{
-  console.log(error);
-});
+})
 
 ServiceClient.post('/api/getUserRole').then(response => {
   store.commit("setuserRole",response.data)
-}).catch(error =>{
-  console.log(error);
-});
-
+})
 
 </script>
 

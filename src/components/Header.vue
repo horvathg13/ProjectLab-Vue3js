@@ -4,7 +4,7 @@ import { store } from '../VuexStore';
 import Success from './Common/Success_Popup.vue';
 import Error from './Common/ErrorPopup.vue';
 import Profile from './Modals/ProfileModal.vue';
-
+import router from "@/router";
 export default{
     name: 'Header',
     
@@ -195,6 +195,7 @@ export default{
     },
     mounted(){
         this.setNotifications();
+
     }
    
 

@@ -264,16 +264,12 @@ import {store} from '../VuexStore'
           }
         },
         beforeRouteEnter(to, from, next) {
-            ServiceClient.accessAdmin().then(isAdmin => {
-              if(isAdmin) {
-                next();
-              }else {
-                next('/accessdenied');
-              }
-            }).catch(error => {
-              console.error(error);
-              next('/accessdenied');
-            });
+          const isAdmin = store.state.userRole.some(item => item.role === "Admin");
+          if(isAdmin === true){
+            next();
+          }else{
+            next('/accessdenied');
+          }
         },
         mounted(){
             this.getUsers()

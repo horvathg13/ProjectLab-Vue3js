@@ -70,25 +70,23 @@ export default{
         },
     },
     beforeRouteEnter(to, from, next) {
-        ServiceClient.post('/api/getUserRole').then(response => {
-            if(response.status === 200){
-                store.commit("setuserRole",response.data)
-                const userRole = response.data
-                if(userRole.code === 404){
-                    
-                    next('/accessdenied')
-                  
-                }else{
-                    next();
-                }
+        if(store.state.userRole.length ===0){
+          ServiceClient.getUserRoles().then(roles=>{
+            if (roles.length!==0){
+              next()
+            }else{
+              next('/accessdenied')
             }
-            
-        }).catch(error =>{
-            console.log(error);
-        });
+          }).catch(error=>{
+            console.log(error)
+            next('/accessdenied')
+          })
+        }else{
+          next();
+        }
     },
     beforeMount() {
-       
+
     },
     mounted(){
         this.getNotifications();

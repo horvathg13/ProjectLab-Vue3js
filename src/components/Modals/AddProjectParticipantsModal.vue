@@ -16,6 +16,18 @@
             getusers:Array,
             projectData:{},
             participants:Array,
+            tryAgain:null
+        },
+        watch:{
+          'tryAgain':{
+            immediate:true,
+            deep:true,
+            handler(newValue){
+              if(newValue== false){
+                this.buttonDisable=newValue
+              }
+            }
+          }
         },
         data(){
             return{
@@ -23,6 +35,7 @@
                 buttonDisable:false,
                 SelectComp_getActiveTaskParticipants:[],
                 remove_employee:[],
+                clear:false
             }
         },
         methods: {
@@ -35,8 +48,9 @@
 
             createParticipant(){
                 this.buttonDisable=true,
-                this.$emit("add-participants", { selected: this.selected_user, remove_employee:this.remove_employee})
-                
+                this.$emit("add-participants", { selected: this.selected_user, remove_employee:this.remove_employee});
+                this.selected_user=[];
+                this.clear=!this.clear;
             },
 
             makeSelection(data) {
@@ -87,6 +101,7 @@
                             :disable="buttonDisable" 
                             :VforArray="this.getusers.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))"
                             :VforActiveArray="this.participants.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" 
+                            :updateSelected="clear"
                             @select="makeSelection"
                             @detach-user="detach"></MultipleSelectComponents>
                             

@@ -236,7 +236,6 @@
             ServiceClient.getProjectParticipants(this.projectData.project_id).then((participants)=>{
               this.projectParticipants=participants
               this.show_Comment_Modal = true
-              console.log(participants)
             }).catch((error) => {
               this.serverError=error
               this.show_error_popup=true
@@ -486,27 +485,17 @@
             
     },
     beforeRouteEnter(to, from, next) {
-        ServiceClient.post('/api/getUserRole').then(response => {
-            if(response.status === 200){
-                store.commit("setuserRole",response.data)
-                const userRole = response.data
-                if(userRole.code === 404){
-                    
-                    next('/accessdenied')
-                  
-                }else{
-                    next();
-                }
-            }
-        }).catch(error =>{
-            console.log(error);
-        });
+      const userRole = store.state.userRole
+      if(userRole.length>0){
+        next()
+      }else{
+        next('/accessdenied')
+      }
     },
     beforeMount(){
         this.setUserRoles()
     },
     mounted(){
-        this.getUnreadMessages();
         this.getProjects()
         this.getManagers();
     }

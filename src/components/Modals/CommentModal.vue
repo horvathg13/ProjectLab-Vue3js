@@ -77,7 +77,7 @@ export default{
             this.InputMessage=''
         },
         getMessages(){
-            ServiceClient.getMessages(this.projectData.project_id, this.taskData?.id, this.NewParticipants).then((result)=>{
+            ServiceClient.getMessages(this.projectData.project_id, this.taskData?.task_id, this.NewParticipants).then((result)=>{
               this.loader=false;
               this.messageData=result.messageData;
               this.currentUserId=result.currentUser_id;
@@ -300,6 +300,12 @@ export default{
         scrollbar-gutter: auto ;
         max-height: 80px;
     }
+    .header h2{
+      margin-bottom: 3px;
+    }
+    .header h4{
+      margin-top: 5px;
+    }
     .ui.green.button.create{
         top:15px
     }
@@ -338,7 +344,7 @@ export default{
     width: 700px;
     margin: 15px;
     border-radius: 20px;
-    padding:20px;
+    padding:15px;
     min-height: calc(100% - 10%);
     }
     .modal.participants{

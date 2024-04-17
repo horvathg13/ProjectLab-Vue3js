@@ -6,6 +6,7 @@ export default{
     props:{
         data:Array,
         task:false,
+        tryAgain:false
     },
     directives:{
         VueClickAway
@@ -26,9 +27,16 @@ export default{
             immediate:true,
             deep:true,
             handler(newValue){
-                this.SelectCompData = newValue.status
+                this.SelectCompData = newValue
                 this.selectPriority = newValue.priority ? newValue.priority:null
             }
+        },
+        'tryAgain':{
+          immediate:true,
+          deep:true,
+          handler(newValue){
+            this.buttonDisbale=newValue
+          }
         },
        
     },

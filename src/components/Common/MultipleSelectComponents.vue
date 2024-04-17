@@ -4,7 +4,8 @@ export default{
     props:{
        VforArray:Array,
        VforActiveArray:Array,
-       disable:true
+       disable:true,
+       updateSelected:''
     },
     data(){
         return{
@@ -21,7 +22,12 @@ export default{
             handler(newValue){
                 this.dropdownDisbale= newValue
             }
-            
+        },
+        'updateSelected':{
+          immediate: true,
+          handler(newValue){
+            this.selected=[];
+          }
         }
     },
     methods:{

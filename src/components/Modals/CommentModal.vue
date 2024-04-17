@@ -1,6 +1,7 @@
 <script>
   import ServiceClient from '../../ServiceClient';
   import ErrorPopup from '../Common/ErrorPopup.vue';
+  import EventHandler from "@/components/Common/EventHandler/eventHandler.vue";
   
 
 export default{
@@ -12,9 +13,8 @@ export default{
         projectId:null,
     },
     components:{
-        ErrorPopup,
+      EventHandler,
     },
-    
     data(){
         return{
             NewParticipants:[],
@@ -29,12 +29,9 @@ export default{
             show_error_popup:false,
             loader:true,
             buttonDisable:false,
-            
+            serverError:'',
         }
-        
-
     },
-
     watch:{
         'tryAgain':{
             immediate:true,
@@ -43,15 +40,9 @@ export default{
                 if(newValue== false){
                     this.buttonDisable=newValue
                 }
-                
             }
-            
         }
     },
-    created(){
-        
-    },
-   
     methods:{
         cancelModal() {
             this.$emit("cancel-modal");
@@ -64,13 +55,12 @@ export default{
             }
             return color;
         },
-
         ParticipantDataManipulation(){
             if(this.Participants.length>0){
                 this.NewParticipants = [];
                 for(let parti of this.Participants){
                     this.NewParticipants.push({
-                        id: parti.id,
+                        id: parti.userId,
                         name: parti.name,
                         email: parti.email,
                         color: this.getRandomColor()
@@ -79,81 +69,27 @@ export default{
             }
             
         },
-        ArrayManipulation(){
-            if(this.projectData != null){
-                this.project_id = this.projectData.project_id;
-                this.NewData ={ 
-                  
-                    id: null, 
-                    name: this.projectData.name,
-                    status: this.projectData.status,
-                    deadline:this.projectData.deadline,
-                }
-
-            }else if(this.taskData != null){
-
-                this.NewData={
-                    id: this.taskData.task_id ? this.taskData.task_id: this.taskData.id,
-                    name: this.taskData.task_name ? this.taskData.task_name: this.taskData.name,
-                    status: this.taskData.status,
-                    deadline: this.taskData.deadline ? this.taskData.deadline: this.taskData.deadline,
-                };
-
-                
-            }
-           
-        },
-        Send(){
+        Send(e){
+            e.preventDefault()
             this.buttonDisable=true,
-            this.$emit("sendEmit", {participants: this.NewParticipants, message:this.InputMessage, data:this.NewData})
+            this.$emit("sendEmit", {message: this.InputMessage})
+            this.getMessages();
+            this.InputMessage=''
         },
         getMessages(){
-            if(this.projectId == null){
-                this.taskId = null;
-            }else{
-                this.taskId = this.taskData.task_id ? this.taskData.task_id: this.taskData.id
-                this.project_id = this.projectId
-            }
-            
-            let dataTravel={};
-            dataTravel.projectId = this.project_id
-            dataTravel.taskId = this.taskId
-            dataTravel.participants = this.NewParticipants
-            let url='/api/get-messages/';
-
-            ServiceClient.post(url, dataTravel).then((response) =>{
-                    if (response.status == 200){
-                        this.loader=false
-                        this.messages = response.data
-                        this.currentUserId = this.messages.currentUser_id,
-                        this.messageData = this.messages.messageData
-
-                        
-         
-                    }else{
-                            console.log("I dont get data")
-                        }
-                }).catch((error) => {
-                        
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.errorMessage = error.response.data.message
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.errorMessage = "";
-                                
-                            },  2000)
-                            
-                        }
-                    }
-                });
-
-
+            ServiceClient.getMessages(this.projectData.project_id, this.taskData?.id, this.NewParticipants).then((result)=>{
+              this.loader=false;
+              this.messageData=result.messageData;
+              this.currentUserId=result.currentUser_id;
+            }).catch((error)=>{
+              this.serverError=error;
+              this.show_error_popup=true;
+            })
         },
         setMessageBackgroundColor(message){
             if(this.NewParticipants.length !== null || this.NewParticipants.length !== undefined || this.NewParticipants.length !== 0){
                 let findParticipant = this.NewParticipants.find((participant)=>participant.id === message.sender_id);
+                console.log(this.NewParticipants);
                 if(findParticipant){
                         return {
                             backgroundColor: findParticipant.color
@@ -163,42 +99,36 @@ export default{
                 }
             }else{
                 return {backgroundColor: '#7df52c'}
-                            
-                        
             }
-           
-            
+        },
+        closeErrorModal(){
+          this.show_error_popup=false
+          this.serverError=[]
+          this.errorMessage=''
         }
-
-        
     },
     mounted(){
         this.ParticipantDataManipulation()
-        this.ArrayManipulation()
-       
         this.getMessages()
-     
-        
     }
-    
 }
 </script>
 
 
 <template>
     <div class="modal-overlay">
-        <Transition name="drop">
-                   <ErrorPopup v-if="show_error_popup==true" :message="this.errorMessage"></ErrorPopup>
-        </Transition>
+      <EventHandler
+          :error-popup="show_error_popup"
+          :error-message="errorMessage"
+          :server-error="serverError"
+          @close="closeErrorModal"
+      />
         <div class="modal participants">
             <div class="header"><h1>Participants</h1></div>
             <div class="card participants" v-for="participant in this.NewParticipants" :key="participant.id">
-                
                 <div class="avatar" :style="{backgroundColor: participant.color}" ><h1>{{participant.name.charAt(0).toUpperCase()}}</h1></div>
                 <span>{{participant.name}}</span>
-
-            </div>   
-
+            </div>
         </div>
             
         <div class="modal"> 
@@ -206,9 +136,8 @@ export default{
                 <i class="close large red icon" @click="cancelModal"></i>
             </div>
             <div class="header" >
-                
-                <h1>{{ NewData.name }}</h1>
-                
+                <h2>{{ projectData.name }}</h2>
+                <h4>{{taskData?.task_name}}</h4>
             </div>
                     
             <div class="messagebox">
@@ -225,9 +154,7 @@ export default{
                         :class="{'message': message.sender_id !== currentUserId,
                                 'message response': message.sender_id === currentUserId
                                 }">
-                            
                             <div  :title="message.sender_name" :class="{'avatar response':message.sender_id === currentUserId, 'avatar message':message.sender_id !== currentUserId }" :style="setMessageBackgroundColor(message)"><h1>{{message.sender_name.charAt(0).toUpperCase() }}</h1></div>
-                            
                             <div
                             :class="{'message bubble ui left pointing label': message.sender_id !== currentUserId,
                                 'message bubble ui right pointing label': message.sender_id === currentUserId
@@ -235,24 +162,17 @@ export default{
                                 <div class="message bubble content">
                                     <h5>{{message.created_at}}</h5>
                                     <h3>{{message.message}}</h3>
-                                    
                                 </div>
                             </div>
-                            
                         </div>
                     </div>
-                    
-
                 </div>
                 <div class="ui large  input" :class="{disabled:buttonDisable}">
-                    <input :class="{disabled:buttonDisable}"  type="text" placeholder="Type message" v-model="InputMessage">
-                    <button class="ui primary button" @click="Send" :class="{disabled:buttonDisable}"><i class="ui large paper plane outline icon"></i></button>
-                    
+                    <input id="input" :class="{disabled:buttonDisable}"  type="text" placeholder="Type message" v-model="InputMessage" @keydown.enter="(e)=>Send(e)">
+                    <button class="ui primary button" @click="(e)=>Send(e)" :class="{disabled:buttonDisable}"><i class="ui large paper plane outline icon"></i></button>
                 </div>
             </div>
-            
         </div>
-            
     </div>
 </template>
 
@@ -348,6 +268,7 @@ export default{
         display: grid;
         scrollbar-width: thin;
         scrollbar-gutter: stable;
+        scroll-behavior: smooth;
     }
     .message.bubble{
         background-color: white;

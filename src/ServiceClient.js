@@ -275,6 +275,11 @@ class ServiceClient {
             return response.data.message
         })
     }
+    static getMyTasks(sortData){
+        return this.post('/api/get-my-tasks',{sortData:sortData}).then((response)=>{
+            return response.data
+        })
+    }
 }
 
 export default ServiceClient

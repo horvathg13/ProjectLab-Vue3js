@@ -24,19 +24,19 @@
             <div class="popup-icon">
                 <i class="big exclamation triangle icon"></i>
             </div>
-            <div class="popup-text" v-if="this.errorarray" >
+            <div class="popup-text" v-if="this.errorarray?.length>0" >
               <ul v-for="error in errorarray">
                 <li>{{ error }}</li>
               </ul>
             </div>
             <div class="popup-text" v-if="this.serverError?.response?.data?.validatorError" >
-              <ul v-for="error in serverError?.response?.data?.validatorError">
+              <ul v-for="error in this.serverError?.response?.data?.validatorError">
                 <li>{{ error}}</li>
               </ul>
             </div>
-            <div class="popup-text" v-if="this.serverError?.response?.data && !this.serverError?.response?.data?.validatorError" >
+            <div class="popup-text" v-if="this.serverError.response.data.message && !(this.serverError.response.data.validatorError)" >
               <ul>
-                <li>{{ serverError.response?.data?.message ?  serverError.response?.data?.message : 'Server Error Occurred'}}</li>
+                <li>{{ this.serverError.response?.data?.message ?  this.serverError.response?.data?.message : 'Server Error Occurred'}}</li>
               </ul>
             </div>
             <div class="popup-text" v-if="this.message">

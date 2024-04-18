@@ -77,7 +77,7 @@ export default{
             this.InputMessage=''
         },
         getMessages(){
-            ServiceClient.getMessages(this.projectData.project_id, this.taskData?.task_id, this.NewParticipants).then((result)=>{
+            ServiceClient.getMessages(this.projectData.project_id, this.taskData?.id || this.taskData?.task_id, this.NewParticipants).then((result)=>{
               this.loader=false;
               this.messageData=result.messageData;
               this.currentUserId=result.currentUser_id;
@@ -89,7 +89,6 @@ export default{
         setMessageBackgroundColor(message){
             if(this.NewParticipants.length !== null || this.NewParticipants.length !== undefined || this.NewParticipants.length !== 0){
                 let findParticipant = this.NewParticipants.find((participant)=>participant.id === message.sender_id);
-                console.log(this.NewParticipants);
                 if(findParticipant){
                         return {
                             backgroundColor: findParticipant.color

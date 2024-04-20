@@ -73,6 +73,7 @@ export default{
     },
     methods:{
         getMyTasks(){
+          this.loader=true
           ServiceClient.getMyTasks(this.setSortData).then(tasks=>{
             this.myTasks=tasks
             this.loader=false;
@@ -324,8 +325,9 @@ export default{
         },
         SetStatus(set){
           const{data}=set
+          console.log(data, set);
           this.tryAgain=true
-          ServiceClient.setStatus(this.ActualTaskData.projectData.project_id, this.ActualTaskData.taskData.id, set.data.id, set.priority.id).then(()=>{
+          ServiceClient.setStatus(this.ActualTaskData.projectData.project_id, this.ActualTaskData.taskData.id, set.data, set.priority.id).then(()=>{
             this.getMyTasks();
             this.show_popup = true;
             setTimeout(() => {
@@ -532,6 +534,7 @@ export default{
         @cancel-modal="cancelModal"
         :data="this.statusDataTravel"
         :task="true"
+        :tryAgain="this.tryAgain"
         @set-status="SetStatus"></Status>
         
     </div>
@@ -540,12 +543,6 @@ export default{
 
 
 <style scoped>
- .ui.segment{
-        position: absolute;
-        width:100%;
-        height: 100px !important;
-       
-    }
 
     i.icon{
         cursor: pointer;

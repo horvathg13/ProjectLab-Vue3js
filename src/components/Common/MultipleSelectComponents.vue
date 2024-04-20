@@ -25,6 +25,7 @@ export default{
         },
         'updateSelected':{
           immediate: true,
+          deep:true,
           handler(newValue){
             this.selected=[];
             this.remove=[];
@@ -57,7 +58,8 @@ export default{
         },
         removeActiveUser(user){
             this.remove.push(user);
-            let findUserIndex = this.VforActiveArray.findIndex((u)=>u.id === user.id);
+          //let findUserIndex = this.VforActiveArray.findIndex((u)=>u.id === user.id);
+            let findUserIndex = this.VforActiveArray.indexOf(user);
             this.VforActiveArray.splice(findUserIndex, 1);
             this.$emit("detach-user", {remove:this.remove})
         }
@@ -101,6 +103,7 @@ span{
 
 .ui.label.transition.activeEmployee{
     background-color: rgb(61, 240, 61);
+    margin: 2px;
 }
 .selected-items {
   max-height: 80px; 

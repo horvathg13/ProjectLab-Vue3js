@@ -22,28 +22,15 @@ export default{
             return this.$store.state.userData.name;
         }
     },
-    watch:{
-        '$store.state.userRole'(newValue) {
-            
-            this.userRole = newValue;
-            this.SetUserCard();
-            
-            
-        }
-    },
    
     methods:{
         SetUserCard(){
-            if(this.userRole && this.userRole.code !==404){
-                this.userRole.forEach(item=> {if(item.role ==="Admin"){ this.userCard=true, this.showCards=true}else if(item.role ==="Manager"){this.managerCard=true, this.showCards = true}else{this.showCards = true}})
-            }else if(this.userRole.code==404){
-                this.temporaryMessage = true
-                this.temporaryCard=true
-            }
-            
-        },
-        getUserRoles(){
-            this.userRole = this.$store.state.userRole
+           if(store.state.userRole.length>0){
+             store.state.userRole.forEach(item=> {if(item.role ==="Admin"){ this.userCard=true, this.showCards=true}else if(item.role ==="Manager"){this.managerCard=true, this.showCards = true}else{this.showCards = true}})
+           }else{
+               this.temporaryMessage = true
+               this.temporaryCard=true
+           }
         },
         users(){
             this.$router.push('/users')
@@ -77,13 +64,10 @@ export default{
 
     },
     beforeMount() {
-        this.getUserRoles();
         this.countofTasks();
-        this.SetUserCard();
     },
-    mounted(){
-       
-       
+    mounted() {
+        this.SetUserCard()
     }
 }
 </script>

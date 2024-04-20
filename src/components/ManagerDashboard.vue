@@ -3,8 +3,6 @@ import { store } from "../VuexStore";
 import { toRaw} from "vue";
 import ServiceClient from '../ServiceClient'
 export default{
-    name:"Home",
-
     data(){
         return{
             store,
@@ -14,26 +12,16 @@ export default{
             needToCheck:null,
         }
     },
-    computed: {
-        username() {
-            return this.$store.state.userData.name;
-        }
-    },
     watch:{
         '$store.state.userRole'(newValue) {
-            
             this.userRole = newValue;
             this.SetUserCard();
-            
-            
         },
         '$store.state.managerNotifications':{
             immediate:true,
             handler(newValue){
                 this.needToCheck = newValue;
             }
-            
-            
         }
     },
    
@@ -45,17 +33,16 @@ export default{
     },
     methods:{
         SetUserCard(){
-            if(this.userRole && this.userRole.code !==404){
-                if(this.userRole.filter(item=> item.role ==="Manager")){
+            if(store.state.userRole.length>0){
+                if(store.state.userRole.filter(item=> item.role ==="Manager")){
                     this.temporaryCard = false
                     this.managerCard=true
                 }else{
                     this.temporaryCard = true
                 }
-            }else if(this.userRole.code==404){
+            }else{
                 this.$router.push('/accessdenied');
             }
-            
         },
         managerProjects(){
             this.$router.push("/manager-projects")
@@ -67,28 +54,18 @@ export default{
         },
     },
     beforeRouteEnter (to, from, next) {
-        ServiceClient.post('/api/getUserRole').then(response => {
-            if(response.status === 200){
-                store.commit("setuserRole",response.data)
-                const userRole = response.data
-                if(userRole.code !== 404){
-                    const isManager= userRole.some(item=>item.role === "Manager");
-                    if(isManager === false){
-                        next('/accessdenied')
-                    }else{
-                        next();
-                    }
-                }else{
-                    next('/accessdenied')
-                }
-            }
-            
-        }).catch(error =>{
-            console.log(error);
-        });
+      const userRole = store.state.userRole
+      if(userRole.length>0){
+        const isManager= userRole.some(item=>item.role === "Manager");
+        if(isManager === true){
+          next()
+        }else{
+          next('/accessdenied')
+        }
+      }else{
+        next('/accessdenied')
+      }
     },
-    mounted(){
-    }
 }
 </script>
 

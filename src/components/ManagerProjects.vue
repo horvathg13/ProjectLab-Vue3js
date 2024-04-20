@@ -13,9 +13,11 @@
   import Filter from './Common/FilterButton.vue'
   import Sort from './Common/SortButton.vue'
   import Loader from './Common/Loading.vue';
+  import EventHandler from "@/components/Common/EventHandler/eventHandler.vue";
 
   export default {
     components: {
+      EventHandler,
         CreateProjectModal,
         Success_Popup,
         ErrorPopup,
@@ -70,6 +72,7 @@
             removeData:[],
             tryAgain:null,
             getmanager:[],
+            serverError:''
         }
     },
     watch: {
@@ -83,11 +86,7 @@
         }
     },
 
-    computed:{
-       
-    },
     methods:{
-       
         updateModal(){
             this.Editdata = null
             if(this.showModal==false){
@@ -96,44 +95,19 @@
         },
 
         showParticipantModal(project){
-            
-            let url =`/api/getprojectparticipants/${project.project_id}`;
-            ServiceClient.post(url).then((response) =>{
-                if(response.status == 200){
-                    this.participants = response.data
-                    
-                }
-                if(this.show_participant_modal==false){
-                    this.show_participant_modal = true
-                }
-                this.projectData = project
-
-            }).catch((error) => {
-                if (error.response && error.response.status) {
-                    if(error.response.data.validatorError){
-                        this.errorArray=error.response.data.validatorError
-                        this.show_error_popup=true
-                        setTimeout(() => {
-                            this.show_error_popup = false
-                            this.errorArray=[];
-                            this.cancelModal()
-                        },  2000)
-                    }
-                    if (error.response.data && error.response.data.message) {
-                        this.message= error.response.data.message//Object.values(error.response.data.message).flatMap(y => y)
-                        this.show_error_popup = true
-                        if(this.show_participant_modal==false){
-                            this.show_participant_modal = true
-                        }
-                        setTimeout(() => {
-                            this.show_error_popup = false
-                            this.message = "";
-                        },  2000)
-                    }
-                }
-            });
+          if(this.show_participant_modal === false){
+            this.show_participant_modal = true
+          }
+          ServiceClient.getProjectParticipants(project.project_id).then(participants=>{
+            this.participants = participants
+            this.projectData = project
+          }).catch((error) => {
+            if (error.response.data && error.response.data.message) {
+              this.message= error.response.data.message
+              this.show_error_popup = true
+            }
+          });
         },
-
         cancelModal(){
             this.showModal = false
             this.show_participant_modal = false
@@ -142,434 +116,228 @@
             this.projectButtons = {},
             this.mergedButtons = [],
             this.showStatusModal = false
-            
         },
 
         createProjects(data){
-            
-            const { p_name, manager, date, p_id } = data;
-            
-            this.p_name = p_name ;
-            this.selectedManager = manager;
-            this.date = date;
-            this.p_id = p_id;
-            
-            let dataTravel= {};
-            dataTravel.project_name= this.p_name
-            dataTravel.manager_id= this.selectedManager.id
-            dataTravel.date= this.date
-            dataTravel.project_id= this.p_id
-            let url ="/api/createproject";
-            ServiceClient.post(url,dataTravel).then((response) =>{
-                if (response.status == 200){
+          const { p_name, manager, date, p_id } = data;
+          this.tryAgain=true
 
-                    this.message= response.data.message
-                    this.show_popup = true
-                    this.getProjects();
-                    setTimeout(() => {
-                        this.show_popup = false
-                        this.cancelModal()
-                        this.message = "";
-                    },  1500)
-                }
-            }).catch((error) => {
-                    
-                if (error.response && error.response.status) {
-                    if(error.response.data.validatorError){
-                            this.errorArray=error.response.data.validatorError
-                            this.show_error_popup=true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.errorArray=[];
-                                this.cancelModal();
-                                this.getProjects();
-                            },  2000)
-                        }
-                    if (error.response.data && error.response.data.message) {
-                        this.message= error.response.data.message//Object.values(error.response.data.message).flatMap(y => y)
-                        this.show_error_popup = true
-                        setTimeout(() => {
-                            this.show_error_popup = false
-                            this.message = "";
-                        },  2000)
-                        
-                    }
-                }
-            });
-            
+          ServiceClient.createProject(p_name,manager,date,p_id).then(success=>{
+            this.message= success.message
+            this.show_popup = true
+            setTimeout(() => {
+              this.show_popup = false
+              this.cancelModal();
+              this.getProjects();
+              this.message = "";
+            },  1500)
+          }).catch(error=>{
+            this.serverError=error
+            this.tryAgain=false
+            this.show_error_popup=true
+          })
         },
             getProjects(){
                 this.loader=true;
-                let url ="/api/get-manager-projects";
-                let dataTravel={};
-                dataTravel.sortData = this.setSortData,
-                dataTravel.filterData=this.setFilterData
-                ServiceClient.post(url,dataTravel).then((response) =>{
-                        
-                    if (response.status == 200){
-                        
-                        this.getprojects=response.data
-                        this.loader=false;
-                    }
-                }).catch((error) => {
-                        
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message= error.response.data.message
-                            this.show_error_popup = true
-                            this.loader=false;
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = "";
-                            },  4500)
-                            
-                        }
-                    }
-                });
+                ServiceClient.getManagerProjects(this.setSortData, this.setFilterData).then((projects)=>{
+                  this.getprojects=projects
+                  this.loader=false;
+                }).catch(error=>{
+                  if(error.response){
+                    this.loader=false
+                    this.serverError=error
+                    this.show_error_popup=true
+                  }
+                })
             },
-
             getManagers(){
-                let url ="/api/getManagers";
-                ServiceClient.post(url).then((response) =>{
-                        
-                        if (response.status == 200){
-                            this.getmanager=response.data
-                        }
-                }).catch((error) => {
-                        
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                            },  4500)
-                            
-                        }
-                    }
-                });
+              ServiceClient.getManagers().then(managers=>{
+                this.getmanager=managers
+              }).catch((error) => {
+                if (error.response.data && error.response.data.message) {
+                  this.show_error_popup = true
+                }
+              });
             },
             getUsers(project){
-                let url ="/api/getEmployees";
-                let dataTravel={}
-                dataTravel.projectId = project.project_id
-                ServiceClient.post(url, dataTravel).then((response) =>{
-                        if (response.status == 200){
-                            this.getusers=response.data
-                            this.showParticipantModal(project);
-                        }
-                }).catch((error) => {
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                            },  3500)
-                        }
-                    }
-                });
+              ServiceClient.getEmployees().then(employees=>{
+                this.getusers=employees
+                this.showParticipantModal(project)
+                this.projectData=project
+              }).catch((error) => {
+                if (error.response.data && error.response.data.message) {
+                  this.serverError=error
+                  this.show_error_popup = true
+                }
+              });
             },
             redirect(project){
-                const {data} = project.data;
-                this.projectData = [project]
-                this.redirectToTasks = true;
-                this.$router.push(`/projects/${project.data.project_id}/tasks`);
-                
+              this.projectData = project
+              this.redirectToTasks = true;
+              this.$router.push({
+                name:"Tasks",
+                params:{
+                  id: project.data.project_id
+                }
+              })
             },
 
             createParticipants(data){
-                const { selected, remove_employee } = data;
-                this.participants = data.selected.select;
-                this.removeData = data.remove_employee
-               
-                const finalData={};
-                finalData.participants = this.participants;
-                finalData.project = this.projectData;
-                finalData.remove = this.removeData
+              this.participants=[];
+              this.tryAgain=true;
+              const { selected, remove_employee } = data;
+              ServiceClient.createProjectParticipants(selected.select, this.projectData, remove_employee).then(success=>{
+                this.message = success.message;
+                this.show_popup = true;
+                this.tryAgain=false
+                this.showParticipantModal(this.projectData)
+                setTimeout(() => {
+                  this.show_popup = false;
+                  this.message = "";
+                }, 1500);
 
-                
-                let url = "/api/createparticipants";
-                ServiceClient.post(url, finalData)
-                    .then((response) => {
-                    if (response.status == 200) {
-                        this.message = response.data.message;
-                        this.show_popup = true;
-                        this.finalData= [];
-                        setTimeout(() => {
-                            this.show_popup = false;
-                            this.cancelModal();
-                            this.message = "";
-                        }, 1500);
-                    }
-                }).catch((error) => {
-                    if (error.response && error.response.status) {
-                        if(error.response.data.validatorError){
-                            this.errorArray=error.response.data.validatorError
-                            this.show_error_popup=true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.errorArray=[];
-                                this.cancelModal();
-                            },  2000)
-                        }
-                        if (error.response.data && error.response.data.message) {
-                            this.message=error.response.data.message
-                            this.show_error_popup = true;
-                            setTimeout(() => {
-                                this.show_error_popup = false;
-                                this.message = "";
-                            }, 2000);
-                            }
-                    } else {
-                        this.message = "Error occurred during the request";
-                        this.show_error_popup = true;
-                        setTimeout(() => {
-                        this.show_error_popup = false;
-                        this.message = "";
-                        }, 2000);
-                    }
-                });
+              }).catch((error) => {
+                this.serverError=error
+                this.show_error_popup=true
+                this.tryAgain=false
+                this.showParticipantModal(this.projectData)
+              });
                     
             },
-            circularMenuDropdown(){
-                this.circulardrop = !this.circulardrop
-            },
-            EditingModeSwitch(kiskutya){
-                const {data, switching} = kiskutya
-                this.Editdata = kiskutya.data
-                this.EditMode = kiskutya.switching;
+            EditingModeSwitch(project){
+                const {data, switching} = project
+                this.Editdata = project.data
+                this.EditMode = project.switching;
                 this.showModal = true
             },
-            commentModalSwitch(kismacska){
-                const {data} = kismacska;
-                this.projectData = kismacska.data
-                let url =`/api/getprojectparticipants/${this.projectData.project_id}`;
-                ServiceClient.post(url).then((response) =>{
-                        
-                        if (response.status == 200){
-                            this.projectParticipants=[]
-                            for(let data of response.data){
-                                this.projectParticipants.push({
-                                    id:data.userId,
-                                    name:data.name,
-                                    email:data.email,
-                                    project_name:data.project_name,
-                                    status:data.status
-                                })
-                            }
-                            this.show_Comment_Modal = true
-                        }
-                }).catch((error) => {
-                        
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message = error.response.data.message
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = ""
-                            },  4500)
-                        }
-                    }
-                });
+            commentModalSwitch(project){
+              const {data} = project;
+              this.projectData = project.data
+              ServiceClient.getProjectParticipants(this.projectData.project_id).then((participants)=>{
+                this.projectParticipants=participants
+                this.show_Comment_Modal = true
+              }).catch((error) => {
+                this.serverError=error
+                this.show_error_popup=true
+              });
             },
             SendMessage(emitData){
-                const{participants,message,data} = emitData
-                
-                emitData.projectId=this.projectData.project_id;
-                let url='/api/send-message';
-                ServiceClient.post(url, emitData).then((response) =>{
-                        if (response.status == 200){
-                            this.show_popup=true
-                            setTimeout(() => {
-                            this.show_popup = false
-                            this.cancelModal()
-                            },  1500)
-                        }
-                }).catch((error) => {
-                    this.tryAgain=null;
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message =error.response.data.message
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = "";
-                                this.tryAgain=false;
-                            },  2000)
-                            
-                        }
-                    }
-                });
-
+              const{message} = emitData
+              this.tryAgain=true
+              ServiceClient.sendMessage(message,this.projectData.project_id,null).then(response=>{
+                this.tryAgain=false
+              }).catch(error=>{
+                this.tryAgain=false
+                this.serverError=error
+                this.show_error_popup=true
+              })
             },
             getButtons(project){
                 this.projectData = project
-                let url=`/api/get-buttons/${project.project_id}`
-                ServiceClient.post(url).then(response => {
-                    if (response.status == 200){
-                        this.projectButtons = {};
-                        this.mergedButtons = [];
+                ServiceClient.getButtons(project.project_id).then((buttons)=>{
+                  this.projectButtons = {};
+                  this.mergedButtons = [];
 
-                        for(let i in response.data){
-                            for(let item in response.data[i]){
-                                
-                                if(item == "employee"){
-                                    this.projectButtons.employee= response.data[i][item]
-                                }else if(item == "manager"){
-                                    this.projectButtons.manager= response.data[i][item]
-                                }else if(item=="admin"){
-                                    this.projectButtons.admin= response.data[i][item]
-                                }
-                            }
-                        }
-                        
-                        if(this.projectButtons.employee && this.projectButtons.employee.length>0){
-                            this.projectButtons.employee = this.projectButtons.employee.slice(0,2)
-                            for(let item in this.projectButtons.employee){
-                                this.mergedButtons.push(this.projectButtons.employee[item])
-                            } 
-                            
-                        }
-                        if(this.projectButtons.admin && this.projectButtons.admin.length>0){
-                            this.projectButtons.admin = this.projectButtons.admin.slice(-4)
-                            for(let item in this.projectButtons.admin){
-                                this.mergedButtons.push(this.projectButtons.admin[item])
-                            }
-                        
-                            
-                        }
-                        if(this.projectButtons.manager && this.projectButtons.manager.length>0){
-                            this.mergedButtons.push(this.projectButtons.manager[0])
-                            this.projectButtons.manager=this.projectButtons.manager.slice(2)
-                            for(let item in this.projectButtons.manager){
-                                this.mergedButtons.push(this.projectButtons.manager[item])
-                            }
-                            
-                        }    
-                        
-                        let foundMatch=false
-                        for (let item of this.unreadMessage.Project) {
-                            for(let i in Object.values(item)){
-                                if(Object.values(item)[i] == project.project_id){
-                                    this.newMessage = true;
-                                    foundMatch=true
-                                    break;
-                                }else{
-                                    this.newMessage = false;
-                                }
-                                if(foundMatch==true){
-                                    break;
-                                }
-                            }
-                            if(foundMatch==true){
-                                break;
-                            }
-                        }
+                  buttons.map((item)=>{
+                    if(item.employee){
+                      this.projectButtons.employee= item.employee
                     }
-                
+                    if(item.manager){
+                      this.projectButtons.manager= item.manager
+                    }
+                    if(item.admin){
+                      this.projectButtons.admin= item.admin
+                    }
+                  })
+
+                  if(this.projectButtons.employee && this.projectButtons.employee.length>0){
+                      this.projectButtons.employee = this.projectButtons.employee.slice(0,2)
+                      for(let item in this.projectButtons.employee){
+                          this.mergedButtons.push(this.projectButtons.employee[item])
+                      }
+                  }
+                  if(this.projectButtons.admin && this.projectButtons.admin.length>0){
+                      this.projectButtons.admin = this.projectButtons.admin.slice(-4)
+                      for(let item in this.projectButtons.admin){
+                          this.mergedButtons.push(this.projectButtons.admin[item])
+                      }
+                  }
+                  if(this.projectButtons.manager && this.projectButtons.manager.length>0){
+                      this.mergedButtons.push(this.projectButtons.manager[0])
+                      this.projectButtons.manager=this.projectButtons.manager.slice(2)
+                      for(let item in this.projectButtons.manager){
+                          this.mergedButtons.push(this.projectButtons.manager[item])
+                      }
+                  }
+                  let foundMatch=false
+                  for (let item of this.unreadMessage.Project) {
+                      for(let i in Object.values(item)){
+                          if(Object.values(item)[i] == project.project_id){
+                              this.newMessage = true;
+                              foundMatch=true
+                              break;
+                          }else{
+                              this.newMessage = false;
+                          }
+                          if(foundMatch==true){
+                              break;
+                          }
+                      }
+                      if(foundMatch==true){
+                          break;
+                      }
+                  }
                 }).catch((error) => {
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message = error.response.data.message
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = ""
-                            }, 2000)
-
-                        }
-                    }
+                  if(error.response){
+                    this.serverError=error;
+                    this.show_error_popup = true
+                  }
                 });
             },
             SwitchStatusModal(statusData){
-                const{data}=statusData
-                let TaskId=null
-                let url=`/api/get-status/${statusData.data.project_id}/${TaskId}`;
-
-                ServiceClient.post(url).then((response) =>{
-                    if (response.status == 200){
-                        for(let item in response.data){
-                            this.statusDataTravel= response.data[item]
-                        }
-                        
-                        this.showStatusModal = true;
-                    }
-                }).catch((error) => {
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message = error.response.data.message
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = ""
-                            }, 2000)
-
-                        }
-                    }
-                });
+              const{data}=statusData
+              this.tryAgain=false
+              ServiceClient.getStatus(statusData.data.project_id, null).then(statuses=>{
+                this.statusDataTravel= statuses
+                this.showStatusModal = true;
+              }).catch(error=>{
+                this.serverError=error
+                this.show_error_popup=true
+              })
 
             },
             SetStatus(set){
-                const{data}=set
-                let dataTravel={}
-                dataTravel.projectId = this.projectData.project_id;
-                dataTravel.taskId = null;
-                dataTravel.StatusId= set.data.id;
-                dataTravel.priorityId = null;
-                dataTravel.setAllTask = null;
-                dataTravel.setAllPriority = null;
-                let url='/api/set-status';
-                ServiceClient.post(url,dataTravel).then((response) =>{
-                    if (response.status == 200){
-                        this.message = response.data.message;
-                        this.show_popup = true;
-                        setTimeout(() => {
-                            this.show_popup = false
-                            this.message = ""
-                            this.getProjects();
-                            this.cancelModal()
-                        },  1500)
-                        
-                    }
-                }).catch((error) => {
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message = error.response.data.message
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = ""
-                            }, 2000)
+              const{data}=set
+              this.tryAgain=true
 
-                        }
-                    }
-                });
+              if(set.data === ""){
+                this.message='Operation Canceled.'
+                this.show_error_popup = true
+                setTimeout(()=>{this.tryAgain = false},1000)
+              }else {
+                ServiceClient.setStatus(this.projectData.project_id, null, data, null).then(() => {
+                  this.getProjects();
+                  this.show_popup = true;
+                  setTimeout(() => {
+                    this.show_popup = false
+                    this.cancelModal()
+                  }, 1500)
+                }).catch(error => {
+                  if (error.response) {
+                    this.tryAgain = false
+                    this.serverError = error
+                    this.show_error_popup = true
+                  }
+                })
+              }
             },
             getFilterData(){
-                let TaskId=null;
-                let ProjectId = null;
-                let url=`/api/get-status/${ProjectId}/${TaskId}`;
-
-                ServiceClient.post(url).then((response) =>{
-                    if (response.status == 200){
-                        for(let item in response.data){
-                            this.statusDataTravel= response.data[item].status.map(u=>({id:u.id, name:u.p_status}))
-                        }
-                    }
-                }).catch((error) => {
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message = error.response.data.message
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = ""
-                            }, 2000)
-
-                        }
-                    }
-                });
-
+              ServiceClient.getStatus(null, null).then(statuses=>{
+                this.statusDataTravel= statuses.map((u)=>({id: u.id, name: u.p_status}))
+              }).catch(error=>{
+                this.serverError=error
+                this.show_error_popup=true
+              })
             },
             filter(selectData){
                 const{select}=selectData
@@ -586,7 +354,6 @@
             clearFilter(){
                 this.setFilterData=[];
                 this.getProjects();
-
             },
             rowBackground(project){
                 let color = "";
@@ -609,9 +376,6 @@
                 }
                 this.setSortData.push(sortData.selected)
                 this.getProjects();
-               
-
-
             },
             ShoudShowEnvelope(project){
                 let foundMatch=false
@@ -634,83 +398,59 @@
                         }
                     }
                 }
-                    
-                    
-                
-                
             },
             getUnreadMessages(){
                 this.unreadMessage = this.$store.state.unreadMessages
             },
             favoriteStar(project){
-                let dataTravel={};
-                dataTravel.project= project
-                let url = ''
-                if(project.favorite==true){
-                    url ='/api/remove-favorite-project';
-                }else{
-                    url='/api/add-favorite-project';
-                }   
-                ServiceClient.post(url,dataTravel).then(response => {
-                    if(response.status === 200){
-                        this.message = response.data.message
-                        this.show_popup = true
-                        setTimeout(() => {
-                            this.show_popup = false
-                            this.message = ""
-                            this.getProjects()
-                        },  1500)
-                    }
-                }).catch(error =>{
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message = error.response.data.message
-                            this.show_error_popup = true
-                            
-                            
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = ""
-                            }, 2000)
+              this.loader=true
 
-                        }
-                    }
-                });
-                
+              let dataTravel={};
+              dataTravel.project= project
+              let url = ''
+              if(project.favorite==true){
+                ServiceClient.removeFromFavoriteProject(project).then(success=>{
+                  this.show_popup = true
+                  setTimeout(() => {
+                    this.show_popup = false
+                    this.getProjects()
+                  },  1500)
+                }).catch(error=>{
+                  this.serverError=error
+                  this.show_error_popup=true
+                })
+              }else{
+                ServiceClient.setFavoriteProject(project).then(success=>{
+                  this.show_popup = true
+                  setTimeout(() => {
+                    this.show_popup = false
+                    this.getProjects()
+                  },  1500)
+                }).catch(error=>{
+                  this.serverError=error
+                  this.show_error_popup=true
+                })
+              }
+            },
+            closeErrorModal(){
+              this.show_error_popup=false
+              this.serverError=[]
+              this.message=''
+              this.errorArray=[]
             }
-                
-                
-
-            
         },
         beforeRouteEnter (to, from, next) {
-            ServiceClient.post('/api/getUserRole').then(response => {
-                if(response.status === 200){
-                    store.commit("setuserRole",response.data)
-                    const userRole = response.data
-                    if(userRole.code !== 404){
-                        const isManager= userRole.some(item=>item.role === "Manager");
-                        if(isManager === false){
-                            next('/accessdenied')
-                        }else{
-                            next()
-                        }
-                    }else{
-                        next('/accessdenied')
-                    }
-                }
-                
-            }).catch(error =>{
-                console.log(error);
-            });
+          const isAdmin = store.state.userRole.some(item => item.role === "Manager");
+          if(isAdmin === true){
+            next();
+          }else{
+            next('/accessdenied');
+          }
         },
         mounted(){
             this.getUnreadMessages();
             this.getProjects()
             this.getManagers()
-            
-            
-            
         }
     }
 
@@ -720,16 +460,15 @@
         <div class="main-container">
         <div class="background component">
         </div>
-        
-        <Transition name="drop">
-            <Success_Popup v-if="show_popup==true" :message="this.message"></Success_Popup>
-        </Transition>
-        <Transition name="drop">
-            <ErrorPopup v-if="show_error_popup==true" :message="this.message" :errorarray="this.errorArray"></ErrorPopup>
-        </Transition>
-        <Transition name="drop">
-            <AreYouSureModal v-if="show_areyousure_popup==true"></AreYouSureModal>
-        </Transition>
+        <EventHandler
+            :error-popup="show_error_popup"
+            :success-popup="show_popup"
+            :errorarray="errorArray"
+            :success-message="message"
+            :error-message="message"
+            :server-error="serverError"
+            @close="closeErrorModal"
+        />
         <div class="content-container"> 
             
             <div class="centerd-component-container">
@@ -812,17 +551,17 @@
                 :getusers="this.getmanager" 
                 :isDropdownOpen="this.isDropdownOpen"
                 :EditMode="this.EditMode"
-                :EditData="this.Editdata"></CreateProjectModal>
+                :EditData="this.Editdata"
+                :tryAgain="this.tryAgain"></CreateProjectModal>
         </Transition>
-        <ProjectTasks v-if="redirectToTasks==true"
-        :projectData="this.projectData"></ProjectTasks>
         <Transition>
             <AddProjectParticipantsModal v-if="show_participant_modal == true"
             @cancel-modal="cancelModal"  
             @add-participants="createParticipants"
             :getusers="this.getusers"
             :projectData="this.projectData"
-            :participants = this.participants></AddProjectParticipantsModal>
+            :participants = this.participants
+            :tryAgain="this.tryAgain"></AddProjectParticipantsModal>
         </Transition>
         <CommentModal v-if="this.show_Comment_Modal == true"
         @cancel-modal="cancelModal"
@@ -835,15 +574,11 @@
         @cancel-modal="cancelModal"
         :data="this.statusDataTravel"
         :task="false"
+        :tryAgain="this.tryAgain"
         @set-status="SetStatus"></Status>
     </div>
 </template>
 
 <style scoped>
-    .ui.segment{
-        position: absolute;
-        width:100%;
-        height: 100px !important;
-        
-    }
+
 </style>

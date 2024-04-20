@@ -284,6 +284,11 @@ class ServiceClient {
             return response.data
         })
     }
+    static getManagerProjects(sortData, filterData){
+        return this.post("/api/get-manager-projects", {sortData:sortData, filterData:filterData}).then((response)=>{
+            return response.data
+        })
+    }
 }
 
 export default ServiceClient

@@ -289,6 +289,21 @@ class ServiceClient {
             return response.data
         })
     }
+    static getManagerTasks(sortData, filterData){
+        return this.post("/api/get-manager-tasks", {sortData:sortData, filterData:filterData}).then((response)=>{
+            return response.data
+        })
+    }
+    static acceptAllTask(){
+        return this.post("/api/accept-all-task").then((response)=>{
+            return response.data
+        })
+    }
+    static getManagedTasks(){
+        return this.post("/api/managed-completed-tasks").then((response)=>{
+            return response.data
+        })
+    }
 }
 
 export default ServiceClient

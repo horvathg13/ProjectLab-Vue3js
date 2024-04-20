@@ -131,7 +131,6 @@
         createTask(data){
             this.tryAgain=true;
             const { task } = data
-            console.log(task);
             ServiceClient.createTask(this.$route.params.id, task.name, task.deadline, task.description, task.priority, task.id).then((success)=>{
               this.show_popup = true
               setTimeout(() => {
@@ -383,22 +382,32 @@
               })
             },
             SetStatus(set){
-              const{data}=set
+              const{data,priority}=set
               this.tryAgain=true
-              ServiceClient.setStatus(this.projectData.project_id, this.ActualTaskData.task_id, set.data.id, set.priority.id).then(()=>{
-                this.getTasks();
-                this.show_popup = true;
-                setTimeout(() => {
-                  this.show_popup = false
-                  this.cancelModal()
-                },  1500)
-              }).catch(error=>{
-                if(error.response){
-                  this.tryAgain=false
-                  this.serverError=error
-                  this.show_error_popup=true
-                }
-              })
+              console.log(set)
+              if(data !== "" && priority !== "") {
+
+                ServiceClient.setStatus(this.projectData.project_id, this.ActualTaskData.task_id, data, priority).then(() => {
+                  this.getTasks();
+                  this.show_popup = true;
+                  setTimeout(() => {
+                    this.show_popup = false
+                    this.cancelModal()
+                  }, 1500)
+                }).catch(error => {
+                  if (error.response) {
+                    this.tryAgain = false
+                    this.serverError = error
+                    this.show_error_popup = true
+                  }
+                })
+              }else{
+                setTimeout(()=>{
+                  this.tryAgain = false
+                },1000)
+                this.message = 'Operation Canceled.'
+                this.show_error_popup = true
+              }
             },
             getFilterData(){
               ServiceClient.getStatus(null, this.ActualTaskData.task_id).then(statuses=>{
@@ -538,7 +547,6 @@
         <div class="centerd-component-container" >
             <div class="content-title task" v-if="this.loader===false">
                 <h1>{{projectData.name}}</h1>
-                <!--<h2>{{ projectData.manager }}</h2>-->
             </div>
             <div class="scrolling-table-container">
                 <Loader v-if="loader===true"></Loader>

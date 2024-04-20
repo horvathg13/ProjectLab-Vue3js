@@ -84,13 +84,6 @@
                 this.Task_Details["priority"] = priority.id;
                 this.priority_name = priority.task_priority               
             },
-
-            makeSelection(data){
-                const {select} = data
-                this.Task_Details.priority= select.id
-            },
-           
-          
         },
         mounted(){
             if(this.EditData!== null && this.EditMode=== true || this.EditData!== null && this.readOnlyMode=== true){
@@ -100,7 +93,6 @@
                 this.Task_Details.priority = this.EditData.priority_id ? this.EditData.priority_id: this.EditData.priorityId
                 this.Task_Details.id = this.EditData.task_id?this.EditData.task_id:this.EditData.id
             }
-       
         },
         
     }
@@ -123,7 +115,7 @@
                         <form class="ui form" @submit.prevent="createTask" novalidate>
                             <div class="field">
                                 <label>Task Name</label>
-                                <input :readonly="buttonDisable" type="text" name="name" placeholder="Name" v-model="Task_Details.name">
+                                <input :readonly="buttonDisable" type="text" name="name" placeholder="Name" v-model="Task_Details.name" @change="Task_Details.name">
                             </div>
                             <div class="field">
                                 <label>Task Deadline</label>

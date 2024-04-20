@@ -175,7 +175,11 @@
                     this.getTasks();
                     this.message=""
                   },  1500)
+                  this.RequestData=[];
+                  this.RemoveData=[];
                 }).catch(error=>{
+                  this.RequestData=[];
+                  this.RemoveData=[];
                   if(error.response){
                     console.log(data);
                     this.tryAgain=false;
@@ -183,6 +187,13 @@
                     this.serverError=error
                     this.show_error_popup=true
                   }
+                })
+                ServiceClient.getActiveEmployees(this.AttachTask.task_id).then((employees)=>{
+                  this.getActiveTaskEmployee = employees
+                  this.show_Attach_Modal = true
+                }).catch((error) => {
+                  this.serverError=error
+                  this.show_error_popup=true
                 })
             },
 

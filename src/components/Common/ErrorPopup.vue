@@ -34,7 +34,7 @@
                 <li>{{ error}}</li>
               </ul>
             </div>
-            <div class="popup-text" v-if="this.serverError.response.data.message && !(this.serverError.response.data.validatorError)" >
+            <div class="popup-text" v-if="this.serverError?.response?.data?.message && !(this.serverError.response.data.validatorError)" >
               <ul>
                 <li>{{ this.serverError.response?.data?.message ?  this.serverError.response?.data?.message : 'Server Error Occurred'}}</li>
               </ul>

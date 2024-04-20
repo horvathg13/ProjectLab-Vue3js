@@ -58,7 +58,6 @@
 
             attach(){
                 this.$emit("attach-user", {selected_employee: this.selected_employee, remove_employee:this.remove_employee})
-                console.log(this.selected_employee,this.remove_employee )
                 this.selected_employee=[];
                 this.remove_employee=[];
                 this.clear=!this.clear

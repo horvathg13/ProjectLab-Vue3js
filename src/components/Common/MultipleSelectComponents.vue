@@ -27,6 +27,7 @@ export default{
           immediate: true,
           handler(newValue){
             this.selected=[];
+            this.remove=[];
           }
         }
     },
@@ -56,12 +57,10 @@ export default{
         },
         removeActiveUser(user){
             this.remove.push(user);
-            let index = this.VforActiveArray.indexOf(user);
-            this.VforActiveArray.splice(index, 1);
-
+            let findUserIndex = this.VforActiveArray.findIndex((u)=>u.id === user.id);
+            this.VforActiveArray.splice(findUserIndex, 1);
             this.$emit("detach-user", {remove:this.remove})
         }
-
     },
 
 }

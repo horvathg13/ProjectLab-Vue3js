@@ -373,7 +373,8 @@ export default{
         },
         TaskDetails(readOnlydata){
             const{data,readOnlyMode}=readOnlydata
-            this.Editdata = readOnlydata.data,
+            console.log(readOnlydata)
+            this.Editdata = readOnlydata.data.taskData,
             this.readOnlyMode = readOnlydata.readOnlyMode,
             this.show_Create_Task_Modal =true
         },
@@ -466,7 +467,6 @@ export default{
                                     <i v-if="ShoudShowEnvelope(task)" class="red envelope icon"></i>
                                 </td>
                                 <td>
-                                   <!--<i class="arrow large alternate circle right icon" @click="jump(task)"></i>-->
                                     <CircularMenu
                                         @click="getButtons(task)"
                                         :data="task"

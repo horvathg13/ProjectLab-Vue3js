@@ -37,8 +37,6 @@
                 },
                 priority_name:"",
                 buttonDisable:Boolean,
-                
-                
             }
         },
         watch:{
@@ -55,9 +53,7 @@
                 deep:true,
                 handler(newValue){
                     this.buttonDisable=newValue
-                    
                 }
-                
             },
             'tryAgain':{
                 immediate:true,
@@ -66,8 +62,6 @@
                     if(newValue==false){
                         this.buttonDisable=newValue
                     }
-                    
-                    
                 }
             }
         },
@@ -105,8 +99,6 @@
                 this.Task_Details.description = this.EditData.description
                 this.Task_Details.priority = this.EditData.priority_id ? this.EditData.priority_id: this.EditData.priorityId
                 this.Task_Details.id = this.EditData.task_id?this.EditData.task_id:this.EditData.id
-
-                
             }
        
         },
@@ -122,36 +114,29 @@
                     <i class="close large red icon" @click="cancelModal"></i>
                 </div>
                 <div class="header">
-                    
                     <h1 v-if="(this.EditMode=== false || this.EditMode=== null) && (this.readOnlyMode === false || this.readOnlyMode === null) && (this.createNewTask===true)">Let's create a task!</h1>
                     <h1 v-if="this.EditMode=== true">Edit Mode</h1>
                     <h1 v-if="this.readOnlyMode === true">Task Details</h1>
-                    
-                    
                 </div>
-          
-              
                 <div class="forms">
-
                     <div class="form-container">
                         <form class="ui form" @submit.prevent="createTask" novalidate>
                             <div class="field">
                                 <label>Task Name</label>
                                 <input :readonly="buttonDisable" type="text" name="name" placeholder="Name" v-model="Task_Details.name">
                             </div>
-                           
                             <div class="field">
                                 <label>Task Deadline</label>
-                                <VueDatePicker :disabled="buttonDisable" v-model="Task_Details.deadline"
-                                :enable-time-picker="false"
-                                model-type="yyyy-MM-dd"
-                                format="yyyy-MM-dd"
-                                >{{ Task_Details.deadline }}</VueDatePicker>
+                                <input type="date" :disabled="buttonDisable" v-model="Task_Details.deadline">
                             </div>
                             <div class="field" >
                                 <label> Priority</label>
                             </div>
-                            <SelectComponents  :disable="buttonDisable" :VforArray="this.priorities" :editTask="this.SelectCompData" @select="makeSelection"></SelectComponents>
+                              <select v-model="Task_Details.priority" :disabled="buttonDisable">
+                                <option value="" selected>Select a priority</option>
+                                <option v-for="priority in this.priorities" :value="priority.id" >{{ priority.name}}</option>
+                              </select>
+
                             <div class="field">
                                 <label>Description</label>
                                 <textarea :readonly="buttonDisable" type="texarea" name="description" placeholder="Details" v-model="Task_Details.description"></textarea>
@@ -162,9 +147,7 @@
                             <button v-if="(this.readOnlyMode === false || this.readOnlyMode === null) && this.EditMode=== true && (this.createNewTask===false || this.createNewTask===null || this.createNewTask === undefined) "  :disabled="buttonDisable" class="ui green button" type="submit">Edit</button>
                         </form>
                     </div>
-                    
               </div>
-              
             </div>
             
       </div>

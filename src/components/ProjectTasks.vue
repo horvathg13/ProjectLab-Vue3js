@@ -87,9 +87,6 @@
     },
    
     methods:{
-        toggleDropdownActive(){
-            this.isDropdownOpenActive = !this.isDropdownOpenActive;
-        },
         Attach_Modal(task){
             const{data} = task
             this.AttachTask = task.data
@@ -181,7 +178,6 @@
                   this.RequestData=[];
                   this.RemoveData=[];
                   if(error.response){
-                    console.log(data);
                     this.tryAgain=false;
                     this.RequestData=[];
                     this.serverError=error
@@ -395,7 +391,6 @@
             SetStatus(set){
               const{data,priority}=set
               this.tryAgain=true
-              console.log(set)
               if(data !== "" || priority !== "") {
 
                 ServiceClient.setStatus(this.projectData.project_id, this.ActualTaskData.task_id, data, priority).then(() => {
@@ -551,10 +546,7 @@
     <Transition name="drop">
         <AreYouSureModal v-if="show_areyousure_popup==true"></AreYouSureModal>
     </Transition>
-
     <div class="content-container">
-        
-    
         <div class="centerd-component-container" >
             <div class="content-title task" v-if="this.loader===false">
                 <h1>{{projectData.name}}</h1>
@@ -571,14 +563,11 @@
                             <th>Priority <Sort :data="this.taskData" :sortKey="'t_priority'" @sorted="Sort" @deleteSelected="clearSort"></Sort></th>
                             <th>Employees</th>
                             <th></th>
-                            
                             <th>
                             <button v-if="this.managerRole==true || this.adminRole==true || this.participantRole==true" class="ui right floated small primary labeled icon button" @click="showCreateTaskModal()"><i class="tasks icon"></i>New</button></th>
-                            
                         </tr>
                     </thead>
                     <tbody v-if="loader==false">
-
                         <tr v-for="task in taskData" :key="task.task_id" :class="rowBackground(task)">
                             <td>{{ task.task_id }}</td>
                             <td :style="{overflow:'hidden', textOverflow:'ellipsis'}">{{task.task_name }}</td>
@@ -590,8 +579,6 @@
                                 <i v-if="task.mytask === true" class="assigned-icon"></i>
                                 <i v-if="ShoudShowEnvelope(task)" class="red envelope icon"></i>
                             </td>
-                            
-                            
                             <td>
                                 <CircularMenu
                                   :data="task"
@@ -606,12 +593,7 @@
                                   @CompletedEmit="Completed"
                                   @TaskDetailsEmit="TaskDetails">
                                 </CircularMenu>
-                                
                             </td>
-                        
-                            
-                            
-                        
                         </tr>
                     </tbody>
                     <tfoot class="full-width" v-if="this.loader == false">
@@ -620,12 +602,9 @@
                             <th></th>
                             <th></th>
                             <th></th>
-                            
                             <th colspan="4">
-                        
                             </th>
                         </tr>
-                        
                     </tfoot>
                 </table>
         </div>

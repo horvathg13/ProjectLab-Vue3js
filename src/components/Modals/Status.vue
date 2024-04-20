@@ -15,10 +15,8 @@ export default{
         return{
             SelectCompData:[],
             selectPriority:[],
-            statusData:{},
-            priorityData:{},
-            setAllTask:false,
-            setAllPriority:false,
+            statusData:"",
+            priorityData:"",
             buttonDisbale:false
         }
     },
@@ -46,7 +44,7 @@ export default{
     methods:{
         
         cancelModal(){
-            this.SelectCompData ={}
+            this.SelectCompData=null
             this.$emit("cancel-modal");
         },
 
@@ -55,8 +53,7 @@ export default{
             this.$emit("set-status",{
                                         data: this.statusData,
                                         priority:this.priorityData,
-                                        setAllTask: this.setAllTask, 
-                                        setAllPriority:this.setAllPriority
+
                                     })
         },
 
@@ -77,7 +74,6 @@ export default{
 
 <template>
     <div class="modal-overlay">
-            
         <div class="modal" v-click-away="cancelModal">
             <div class="close">
                 <i class="close large red icon" @click="cancelModal"></i>
@@ -90,27 +86,26 @@ export default{
             <form class="ui form" @submit.prevent="setStatus" novalidate>
                 <div class="field upper" v-if="task == false">
                     <label>Set Status</label>
-                    <SelectComponents
-                    :VforArray="this.SelectCompData.map(u=>({id:u.id, name:u.p_status}))"
-                    :disable="this.buttonDisbale"
-                    @select="makeSelection"></SelectComponents>
+                    <select v-model="statusData" :disabled="buttonDisbale" >
+                      <option value="" >Select a status</option>
+                      <option v-for="status in this.SelectCompData" :value="status.id" >{{ status.p_status}}</option>
+                    </select>
                 </div>
                 
                 <div class="field upper" v-if="task == true">
                     <label>Set Status</label>
-                    <SelectComponents
-                    :VforArray="this.SelectCompData.map(u=>({id:u.id, name:u.task_status}))"
-                    :disable="this.buttonDisbale"
-                    @select="makeSelection"></SelectComponents>
+                    <select v-model="statusData" :disabled="buttonDisbale">
+                      <option value="" selected>Select a status</option>
+                      <option v-for="status in this.SelectCompData" :value="status.id" >{{ status.task_status}}</option>
+                    </select>
                 </div>
                 <div class="field"  v-if="task == true">
                     <label>Set Priority</label>
-                    <SelectComponents
-                    :VforArray="this.selectPriority"
-                    :disable="this.buttonDisbale"
-                    @select="makePrioritySelection"></SelectComponents>
+                    <select v-model="priorityData" :disabled="buttonDisbale">
+                      <option value="" selected>Select a priority</option>
+                      <option v-for="priority in this.selectPriority" :value="priority.id" >{{ priority.name}}</option>
+                    </select>
                 </div>
-                
 
                 <div class="buttonContainer"  :class="{disabled:buttonDisbale}">
                     <button class="ui green button" type="submit" :disabled="buttonDisbale">OK</button>

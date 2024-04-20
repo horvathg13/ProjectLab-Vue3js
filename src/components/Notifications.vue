@@ -125,8 +125,6 @@ export default{
                                 <td>{{n.status}}</td>
                                 <td>{{n.deadline}}</td>
                                 <td ><i v-if="ShoudShowEnvelope(n)" class="red envelope icon"></i></td>
-
-                                <!--<td>{{ n.days }} </td>-->     
                             </tr>
                         </tbody>
                         <tfoot class="full-width">

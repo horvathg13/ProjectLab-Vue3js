@@ -77,7 +77,7 @@ export default{
             this.InputMessage=''
         },
         getMessages(){
-            ServiceClient.getMessages(this.projectData.project_id, this.taskData?.id || this.taskData?.task_id, this.NewParticipants).then((result)=>{
+            ServiceClient.getMessages(this.projectData?.project_id || this.projectData?.p_id, this.taskData?.id || this.taskData?.task_id, this.NewParticipants).then((result)=>{
               this.loader=false;
               this.messageData=result.messageData;
               this.currentUserId=result.currentUser_id;
@@ -135,7 +135,7 @@ export default{
                 <i class="close large red icon" @click="cancelModal"></i>
             </div>
             <div class="header" >
-                <h2>{{ projectData.name }}</h2>
+                <h2>{{ projectData?.name || projectData?.p_name }}</h2>
                 <h4>{{taskData?.task_name}}</h4>
             </div>
                     

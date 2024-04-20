@@ -38,12 +38,12 @@
                         this.login_succeded = true;
                         store.commit("setUserData", response.data.data)
                         localStorage.setItem("token", response.data.data.token);
-                        this.getUserRoles();
-                        this.getNotifications();
-                        this.getManagerNotifications();
-                        setTimeout(() => {
-                          this.$router.push({path: "/home"});
-                        }, 1500);
+
+                        Promise.all([
+                          ServiceClient.getUserRoles(),
+                          ServiceClient.getManagerNotifications(),
+                          ServiceClient.getNotifications(),
+                        ]).then(()=>{this.$router.push({path: "/home"})})
                       }
                 }).catch((error) => {
                   this.disablefield= false

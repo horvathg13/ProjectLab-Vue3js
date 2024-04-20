@@ -396,7 +396,7 @@
               const{data,priority}=set
               this.tryAgain=true
               console.log(set)
-              if(data !== "" && priority !== "") {
+              if(data !== "" || priority !== "") {
 
                 ServiceClient.setStatus(this.projectData.project_id, this.ActualTaskData.task_id, data, priority).then(() => {
                   this.getTasks();
@@ -671,12 +671,5 @@
 </template>
 
 <style scoped>
-    .ui.segment{
-        position: absolute;
-        width:100%;
-        height: 100px !important;
-       
-    }
-    
-  
+
 </style>

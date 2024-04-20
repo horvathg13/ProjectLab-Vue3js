@@ -231,6 +231,7 @@ import {store} from '../VuexStore'
                     this.show_popup = false
                     this.show_role_selector_modal = false
                   }, 1500)
+                  this.getUsers();
               }).catch((error) => {
                 if(error.response){
                   this.serverError=error;

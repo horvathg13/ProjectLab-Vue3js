@@ -334,20 +334,29 @@
         SetStatus(set){
             const{data}=set
             this.tryAgain=true
-            ServiceClient.setStatus(this.projectData.project_id, null, set.data.id, null).then(()=>{
-              this.getProjects();
-              this.show_popup = true;
-              setTimeout(() => {
-                this.show_popup = false
-                this.cancelModal()
-              },  1500)
-            }).catch(error=>{
-              if(error.response){
-                this.tryAgain=false
-                this.serverError=error
-                this.show_error_popup=true
-              }
-            })
+
+            if(set.data === ""){
+              this.message='Operation Canceled.'
+              this.show_error_popup = true
+              setTimeout(()=>{this.tryAgain = false},1000)
+
+            }else {
+
+              ServiceClient.setStatus(this.projectData.project_id, null, data, null).then(() => {
+                this.getProjects();
+                this.show_popup = true;
+                setTimeout(() => {
+                  this.show_popup = false
+                  this.cancelModal()
+                }, 1500)
+              }).catch(error => {
+                if (error.response) {
+                  this.tryAgain = false
+                  this.serverError = error
+                  this.show_error_popup = true
+                }
+              })
+            }
         },
         getFilterData(){
             ServiceClient.getStatus(null, null).then(statuses=>{
@@ -569,10 +578,6 @@
                                         <i v-else class="star outline icon"></i>
                                     </button>
                                 </td>
-                            
-                                
-                                
-                            
                             </tr>
                         </tbody>
                         <tfoot class="full-width" v-if="loader==false">
@@ -582,10 +587,8 @@
                                 <th></th>
                                 <th></th>
                                 <th colspan="4">
-                            
                                 </th>
                             </tr>
-                            
                         </tfoot>
                     </table>
             </div>
@@ -594,8 +597,7 @@
         
         <Transition>
                 <CreateProjectModal v-if="showModal==true" 
-                @cancel-modal="cancelModal" 
-                
+                @cancel-modal="cancelModal"
                 @create-project="createProjects" 
                 :getusers="this.getmanager" 
                 :isDropdownOpen="this.isDropdownOpen"
@@ -625,7 +627,7 @@
         @cancel-modal="cancelModal"
         :data="this.statusDataTravel"
         :task="false"
-        :try-again="this.tryAgain"
+        :tryAgain="this.tryAgain"
         @set-status="SetStatus"></Status>
         <AreYouSureModal v-if="triggerModal==true" @trigger="triggerfunction"></AreYouSureModal>
     </div>

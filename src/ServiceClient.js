@@ -33,7 +33,6 @@ class ServiceClient {
                 localStorage.removeItem("token");
                 store.commit("deleteUserData");
                 store.commit("deleteUserRole");
-
             }
             throw error
         })
@@ -277,6 +276,11 @@ class ServiceClient {
     }
     static getMyTasks(sortData){
         return this.post('/api/get-my-tasks',{sortData:sortData}).then((response)=>{
+            return response.data
+        })
+    }
+    static getMyFavoriteProjects(sortData, filterData){
+        return this.post("/api/get-favorite-projects",{sortData:sortData, filterData:filterData}).then((response)=>{
             return response.data
         })
     }

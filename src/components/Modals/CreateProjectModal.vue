@@ -24,7 +24,11 @@
             return{
                 p_name:"",
                 p_id:null,
-                selectedManager:{},
+                selectedManager:{
+                  id:null,
+                  name:"",
+                  email:"",
+                },
                 date: '',
                 buttonDisable:false,
             }
@@ -39,6 +43,22 @@
                     }
                 }
             },
+            'EditData':{
+              immediate: true,
+              handler(newValue){
+                if(this.EditData && this.EditMode=== true){
+                  this.p_name= this.EditData.name;
+                  this.selectedManager.id = this.EditData.manager_id,
+                  this.selectedManager.name = this.EditData.manager,
+                  this.selectedManager.email = this.EditData.manager_email,
+                  this.date = this.EditData.deadline
+                  this.p_id = this.EditData.project_id
+                }else{
+                  this.selectedManager=''
+                }
+                console.log(this.selectedManager);
+              }
+            }
         },
 
         methods: {
@@ -49,6 +69,7 @@
 
             createProject(){
                 this.buttonDisable=true
+                console.log(this.selectedManager)
                 this.$emit("create-project", { p_name: this.p_name, manager:this.selectedManager, date: this.date, p_id: this.p_id})
             },
 
@@ -92,9 +113,9 @@
                               <input :disabled="buttonDisable" type="text" name="name" placeholder="Name" v-model="p_name">
                           </div>
                           <div class="field"><label>Select a Manager</label></div>
-                          <select v-model="selectedManager" :disabled="buttonDisable">
+                          <select v-model="this.selectedManager.id" :disabled="buttonDisable">
                             <option value="" selected="true">Select a manager</option>
-                            <option v-for="user in this.getusers" :value="selectedManager" >{{ user.name + ' (' + user.email + ')' }}</option>
+                            <option v-for="user in this.getusers" :value="user.id" >{{ user.name + ' (' + user.email + ')' }}</option>
                           </select>
                           <div class="field" >
                               <label>Enter Deadline</label>

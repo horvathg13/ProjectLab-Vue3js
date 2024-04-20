@@ -200,9 +200,12 @@
         redirect(project){
             this.projectData = project
             this.redirectToTasks = true;
-            this.$router.push(`/projects/${project.project_id}/tasks`);
+            this.$router.push(
+          {
+            name:"Tasks",
+            params:{id:project.project_id}
+          })
         },
-
         createParticipants(data){
             this.participants=[];
             this.tryAgain=true;
@@ -224,15 +227,15 @@
               this.showParticipantModal(this.projectData)
             });
         },
-        EditingModeSwitch(kiskutya){
-            const {data, switching} = kiskutya
-            this.Editdata = kiskutya.data
-            this.EditMode = kiskutya.switching;
+        EditingModeSwitch(project){
+            const {data, switching} = project
+            this.Editdata = project.data
+            this.EditMode = project.switching;
             this.showModal = true
         },
-        commentModalSwitch(kismacska){
-            const {data} = kismacska;
-            this.projectData = kismacska.data
+        commentModalSwitch(project){
+            const {data} = project;
+            this.projectData = project.data
             ServiceClient.getProjectParticipants(this.projectData.project_id).then((participants)=>{
               this.projectParticipants=participants
               this.show_Comment_Modal = true
@@ -458,10 +461,10 @@
               })
             }
         },
-        DataSave(kiskutya){
-            const {data, str} = kiskutya
-            this.dataSave = kiskutya.data;
-            this.func = kiskutya.str
+        DataSave(project){
+            const {data, str} = project
+            this.dataSave = data;
+            this.func = str
             this.triggerModal= true
         },
         leaveProject(){
@@ -478,7 +481,6 @@
               this.serverError=error
               this.show_error_popup=true
             })
-
         },
         setUserRoles(){
             this.userRole = this.$store.state.userRole
@@ -605,8 +607,6 @@
                 :EditData="this.Editdata"
                 :tryAgain="this.tryAgain"></CreateProjectModal>
         </Transition>
-        <ProjectTasks v-if="redirectToTasks==true"
-        :projectData="this.projectData"></ProjectTasks>
         <Transition>
             <AddProjectParticipantsModal v-if="show_participant_modal == true"
             @cancel-modal="cancelModal"  

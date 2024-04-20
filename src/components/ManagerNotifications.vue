@@ -12,11 +12,11 @@
   import Sort from './Common/SortButton.vue'
   import Loader from './Common/Loading.vue'
   import {store} from "../VuexStore"
+  import EventHandler from "@/components/Common/EventHandler/eventHandler.vue";
 
   export default {
-    name: "ProjectTasks",
-
     components: {
+      EventHandler,
         CreateTaskModal,
         Success_Popup,
         ErrorPopup,
@@ -77,6 +77,7 @@
             userRole:{},
             tryAgain:null,
             showButton:null,
+            serverError:''
         }
     },
     watch: {
@@ -86,28 +87,6 @@
     },
    
     methods:{
-        accessControll(){
-            ServiceClient.post('/api/getUserRole').then(response => {
-                if(response.status === 200){
-                    this.userRole = response.data
-                    if(this.userRole.code !== 404){
-                        const isAdmin= this.userRole.some(item=>item.role === "Admin" || item.role === "Manager");
-                        if(isAdmin === false){this.$router.push("/accessdenied")}
-                    }else{
-                        this.$router.push("/accessdenied")
-                    }
-                }
-                
-            }).catch(error =>{
-                console.log(error);
-            });
-                
-            
-        },
-        toggleDropdownActive(){
-            this.isDropdownOpenActive = !this.isDropdownOpenActive;
-        },
-
         cancelModal(){
             this.show_Create_Task_Modal = false
             this.show_Attach_Modal = false
@@ -124,61 +103,32 @@
         },
 
             getPriorities(){
-                let url ="/api/getpriorities";
-                ServiceClient.post(url).then((response) =>{
-                        
-                    if (response.status == 200){
-                        this.priorities=response.data.data
-                    }
-                }).catch((error) => {
-                        
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message=error.response.data.message;
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message="";
-                            },  2000)
-                            
-                        }
-                    }
-                });
-
+              ServiceClient.getPriorities().then(priorities=>{
+                this.priorities=priorities
+              }).catch(error=>{
+                if(error.response){
+                  this.serverError=error
+                  this.show_error_popup=true
+                }
+              })
             },
            
             getTasks(){
-                this.loader=true;
-                let dataTravel={};
-                let url ='/api/managed-completed-tasks'
-
-                ServiceClient.post(url,).then((response) =>{
-                        
-                    if (response.status == 200){
-                        this.taskData=response.data
-                        this.managerRole = response.data[0].haveManagerRole
-                        this.showButton=true,
-                        this.loader=false;
-                    }
-                }).catch((error) => {
-                        
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message = error.response.data.message
-                            this.managerRole = error.response.data.haveManagerRole
-                            this.show_error_popup = true
-                            this.showButton=false,
-                            this.taskData=[];
-                            this.loader=false;
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = "";
-                            },  2000)
-                            
-                        }
-                    }
-                });
-
+              this.loader=true;
+              this.taskData=[];
+              ServiceClient.getManagedTasks().then((tasks)=>{
+                tasks.map((e)=>{
+                  this.taskData.push(e)
+                })
+                this.showButton=true,
+                this.loader=false;
+              }).catch((error)=>{
+                if(error.response){
+                  this.serverError=error
+                  this.show_error_popup=true
+                  this.loader=false;
+                }
+              })
             },
             TaskDetails(readOnlydata){
                 const{data,readOnlyMode}=readOnlydata
@@ -186,204 +136,120 @@
                 this.readOnlyMode = readOnlydata.readOnlyMode,
                 this.show_Create_Task_Modal =true
             },
-            commentModalSwitch(kismacska){
-                const{data} = kismacska
-                this.taskDataTravel = kismacska.data
-                let url=`/api/getActiveEmployees/${kismacska.data.task_id}`;
-                ServiceClient.post(url).then((response) =>{
-                        if (response.status == 200){
-                        this.getActiveTaskEmployee = response.data
-                        this.show_Comment_Modal = true
-                        }
-                    }).catch((error) => {
-                            
-                        if (error.response && error.response.status) {
-                            if (error.response.data && error.response.data.message) {
-                                this.message=error.response.message;
-                                this.show_error_popup = true
-                                setTimeout(() => {
-                                    this.show_error_popup = false
-                                    this.message="";
-                                },  2000)
-                                
-                            }
-                        }
-                    });
-                
+            commentModalSwitch(task){
+              const {data} = task;
+              this.taskDataTravel = task.data
+              console.log(task)
+              ServiceClient.getActiveEmployees(this.taskDataTravel.task_id).then((participants)=>{
+                this.getActiveTaskEmployee=participants
+                this.show_Comment_Modal = true
+              }).catch((error) => {
+                this.serverError=error
+                this.show_error_popup=true
+              });
             },
             SendMessage(emitData){
-                const{participants,message,data} = emitData
-                let projectId = null;
-               
-                projectId = this.projectData.project_id;
-                
-                emitData.projectId = projectId
-                let url='/api/send-message';
-                ServiceClient.post(url,emitData).then((response) =>{
-                        if (response.status == 200){
-                            this.message = response.data.message;
-                            this.show_popup=true
-                            setTimeout(() => {
-                            this.show_popup = false
-                            this.cancelModal()
-                            this.message = "";
-                        },  1500)
-                        }
-                    }).catch((error) => {
-                        this.tryAgain=null;
-                        if (error.response && error.response.status) {
-                            if (error.response.data && error.response.data.message) {
-                                this.message=error.response.data.message
-                                this.show_error_popup = true
-                                setTimeout(() => {
-                                    this.show_error_popup = false
-                                    this.message = "";
-                                    this.tryAgain=false;
-                                },  2000)
-                                
-                            }
-                        }
-                    });
-
+              const{message} = emitData
+              this.tryAgain=true
+              ServiceClient.sendMessage(message,this.ActualTaskData.p_id,this.taskDataTravel.task_id).then(response=>{
+                this.tryAgain=false
+              }).catch(error=>{
+                this.tryAgain=false
+                this.serverError=error
+                this.show_error_popup=true
+              })
             },
             getButtons(task){
                this.ActualTaskData = task;
-               this.projectData.project_id= task.p_id
-               let url=`/api/get-buttons/${this.projectData.project_id}`
-               ServiceClient.post(url).then(response => {
-                   if (response.status == 200){
-                       this.projectButtons = {};
-                       this.mergedButtons = [];
+              ServiceClient.getButtons(this.ActualTaskData.p_id).then(buttons => {
+                 this.projectButtons = {};
+                 this.mergedButtons = [];
 
-                       for(let i in response.data){
-                           for(let item in response.data[i]){
-                              
-                               if(item == "employee"){
-                                   this.projectButtons.employee= response.data[i][item]
-                               }else if(item == "manager"){
-                                   this.projectButtons.manager= response.data[i][item]
-                               }
-                           }
-                       }
+                  buttons.map((item)=>{
+                    if(item.employee){
+                      this.projectButtons.employee= item.employee
+                    }
+                    if(item.manager){
+                      this.projectButtons.manager= item.manager
+                    }
+                    if(item.admin){
+                      this.projectButtons.admin= item.admin
+                    }
+                  });
                        
-                       if(this.projectButtons.employee && this.projectButtons.employee.length>0){
-                            this.mergedButtons.push(this.projectButtons.employee[1])
-                            this.mergedButtons.push(this.projectButtons.employee[4])
-                           
-                        }  
-                       
-                       if(this.projectButtons.manager && this.projectButtons.manager.length>0){
-                            this.mergedButtons.push(this.projectButtons.manager[3])
-                        
-                        }
-                      
-                       let foundMatch = false;
-                        for (let item of this.unreadMessage.Task) {
-                            const values = Object.values(item);
-                            for (let i = 0; i < values.length - 1; i++) {
-                                if (values[i] == task.task_id && values[i + 1] == this.projectData.project_id) {
-                                    this.newMessage = true;
-                                    foundMatch = true
-                                    break;
-                                }else{
-                                    this.newMessage = false;
-                                }
-                                if(foundMatch == true){
-                                    break;
-                                }
+                   if(this.projectButtons.employee && this.projectButtons.employee.length>0){
+                        this.mergedButtons.push(this.projectButtons.employee[1])
+                        this.mergedButtons.push(this.projectButtons.employee[4])
+                    }
+
+                   if(this.projectButtons.manager && this.projectButtons.manager.length>0){
+                        this.mergedButtons.push(this.projectButtons.manager[3])
+                    }
+
+                   let foundMatch = false;
+                    for (let item of this.unreadMessage.Task) {
+                        const values = Object.values(item);
+                        for (let i = 0; i < values.length - 1; i++) {
+                            if (values[i] == task.task_id && values[i + 1] == this.ActualTaskData.p_id) {
+                                this.newMessage = true;
+                                foundMatch = true
+                                break;
+                            }else{
+                                this.newMessage = false;
                             }
                             if(foundMatch == true){
                                 break;
                             }
-                            
                         }
-                    }  
+                        if(foundMatch == true){
+                            break;
+                        }
+                    }
                 }).catch((error) => {
-                   if (error.response && error.response.status) {
-                       if (error.response.data && error.response.data.message) {
-                           this.message = error.response.data.message
-                           this.show_error_popup = true
-                           setTimeout(() => {
-                               this.show_error_popup = false
-                               this.message = ""
-                           }, 2000)
-
-                       }
-                   }
-               });   
-               
-               
+                  if (error.response){
+                    this.serverError=error
+                    this.show_error_popup=true
+                  }
+               });
             },
             SwitchStatusModal(statusData){
-                const{data}=statusData
-                
-                let url=`/api/get-status/${this.projectData.project_id}/${statusData.data.task_id}`;
-
-                ServiceClient.post(url).then((response) =>{
-                    if (response.status == 200){
-                        for(let item in response.data){
-                            this.statusDataTravel= response.data[item]
-                        }
-                        this.statusDataTravel.priority = this.priorities
-                        this.showStatusModal = true;
-                    }
-                }).catch((error) => {
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message = error.response.data.message
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = ""
-                            }, 2000)
-
-                        }
-                    }
-                });
-
-                
-
+              const{data}=statusData
+              this.tryAgain=false
+              ServiceClient.getStatus(this.ActualTaskData.p_id, statusData.data.task_id).then(statuses=>{
+                this.statusDataTravel= statuses
+                this.statusDataTravel.priority = this.priorities
+                this.showStatusModal = true;
+              }).catch(error=>{
+                this.serverError=error
+                this.show_error_popup=true
+              })
             },
             SetStatus(set){
-                const{data}=set
-                if(Object.keys(set.priority).length == 0){
-                    set.priority.id = null
-                }
-                let dataTravel={}
-                dataTravel.projectId =this.projectData.project_id;
-                dataTravel.taskId = this.ActualTaskData.task_id;
-                dataTravel.StatusId= set.data.id;
-                dataTravel.priorityId = set.priority.id;
-                dataTravel.setAllTask = set.setAllTask;
-                dataTravel.setAllPriority = set.setAllPriority;
+              const{data,priority}=set
+              this.tryAgain=true
+              if(data !== "" || priority !== "") {
 
-                let url='/api/set-status';
-                ServiceClient.post(url,dataTravel).then((response) =>{
-                    if (response.status == 200){
-                        this.message = response.data.message;
-                        this.show_popup = true;
-                        this.managerNotificationUpdate();
-                        this.getTasks();
-                        setTimeout(() => {
-                            this.show_popup = false
-                            this.message = ""
-                            this.cancelModal()
-                        },  1500)
-                        
-                    }
-                }).catch((error) => {
-                    if (error.response && error.response.status) {
-                        if (error.response.data && error.response.data.message) {
-                            this.message = error.response.data.message
-                            this.show_error_popup = true
-                            setTimeout(() => {
-                                this.show_error_popup = false
-                                this.message = ""
-                            }, 2000)
-
-                        }
-                    }
-                });
+                ServiceClient.setStatus(this.ActualTaskData.p_id, this.ActualTaskData.task_id, data, priority).then(() => {
+                  this.getTasks();
+                  this.show_popup = true;
+                  setTimeout(() => {
+                    this.show_popup = false
+                    this.cancelModal()
+                  }, 1500)
+                }).catch(error => {
+                  if (error.response) {
+                    this.tryAgain = false
+                    this.serverError = error
+                    this.show_error_popup = true
+                  }
+                })
+              }else{
+                setTimeout(()=>{
+                  this.tryAgain = false
+                },1000)
+                this.message = 'Operation Canceled.'
+                this.show_error_popup = true
+              }
             },
             rowBackground(task){
                 let color = "";
@@ -398,7 +264,6 @@
             },
             getUnreadMessages(){
                 this.unreadMessage = this.$store.state.unreadMessages
-               
             },
             ShoudShowEnvelope(task){
                 let foundMatch = false;
@@ -412,85 +277,41 @@
                             }else{
                                 foundMatch = false;;
                             }
-                            
                         }
-                    
-                    
                     }
                 }
-              
-                    
-                    
-                
-                
             },
             AcceptAllTasks(){
                 if(this.showButton===true){
-                    let url='/api/accept-all-task';
-                    ServiceClient.post(url).then((response) =>{
-                        if (response.status == 200){
-                            this.message = response.data.message;
-                            this.show_popup = true;
-                            this.managerNotificationUpdate()
-                            setTimeout(() => {
-                                this.show_popup = false
-                                this.message = ""
-                                this.getTasks();
-                            },  1500)
-                            
-                        }
-                    }).catch((error) => {
-                        if (error.response && error.response.status) {
-                            if (error.response.data && error.response.data.message) {
-                                this.message = error.response.data.message
-                                this.show_error_popup = true
-                                setTimeout(() => {
-                                    this.show_error_popup = false
-                                    this.message = ""
-                                }, 2000)
-
-                            }
-                        }
-                    });
+                    Promise.all(
+                        ServiceClient.acceptAllTask(),
+                        ServiceClient.getManagerNotifications(),
+                        this.getTasks()
+                    )
                 }
-                
             },
             managerNotificationUpdate(){
-                ServiceClient.post('/api/get-manager-notification').then(response => {
-                    store.commit("getManagerNotifications",response.data);
-                }).catch(error =>{
-                    console.log(error);
-                });
+                ServiceClient.getManagerNotifications();
             },
-
-
-            
+            closeErrorModal(){
+              this.show_error_popup=false
+              this.serverError=[]
+              this.message=''
+              this.errorArray=[]
+            },
         },
         beforeRouteEnter (to, from, next) {
-            ServiceClient.post('/api/getUserRole').then(response => {
-                if(response.status === 200){
-                    const userRole = response.data
-                    if(userRole.code !== 404){
-                        const isManager= userRole.some(item=>item.role === "Manager");
-                        if(isManager === false){
-                            next('/accessdenied')
-                        }else{
-                            next();
-                        }
-                    }else{
-                        next('/accessdenied')
-                    }
-                }
-            
-            }).catch(error =>{
-                console.log(error);
-            });
+          const isAdmin = store.state.userRole.some(item => item.role === "Manager");
+          if(isAdmin === true){
+            next();
+          }else{
+            next('/accessdenied');
+          }
         },
         beforeMount(){
             this.getUnreadMessages();
         },
         mounted(){
-            
             this.getPriorities()
             this.getTasks()
         }
@@ -502,12 +323,15 @@
     <div class="main-container">
     <div class="background component">
     </div>
-    <Transition name="drop">
-        <Success_Popup v-if="show_popup==true" :message = "this.message"></Success_Popup>
-    </Transition>
-    <Transition name="drop">
-        <ErrorPopup v-if="show_error_popup==true" :message="this.message" :errorarray="this.errorArray"></ErrorPopup>
-    </Transition>
+    <EventHandler
+        :error-popup="show_error_popup"
+        :success-popup="show_popup"
+        :errorarray="errorArray"
+        :success-message="message"
+        :error-message="message"
+        :server-error="serverError"
+        @close="closeErrorModal"
+    />
     <Transition name="drop">
         <AreYouSureModal v-if="show_areyousure_popup==true"></AreYouSureModal>
     </Transition>
@@ -614,9 +438,10 @@
     <CommentModal v-if="this.show_Comment_Modal == true"
     @cancel-modal="cancelModal"
     @sendEmit="SendMessage"
-    :taskData="this.taskDataTravel"
+    :projectData="this.ActualTaskData"
+    :taskData="this.ActualTaskData"
     :Participants="this.getActiveTaskEmployee"
-    :projectId ="this.projectData.project_id"
+    :projectId ="this.ActualTaskData.p_id"
     :tryAgain="this.tryAgain"
     ></CommentModal>
     <Status v-if="this.showStatusModal == true"

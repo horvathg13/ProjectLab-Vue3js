@@ -19,21 +19,14 @@
             EditMode:false,
             EditData:{},
             tryAgain:null,
-            
-            
         },
         data(){
             return{
                 p_name:"",
                 p_id:null,
-                selectedManager:{
-                    id: "",
-                    name: "",
-                    email: "",
-                },
+                selectedManager:{},
                 date: '',
-                buttonDisable:false  
-                
+                buttonDisable:false,
             }
         },
         watch:{
@@ -45,9 +38,9 @@
                         this.buttonDisable=newValue
                     }
                 }
-            }
+            },
         },
-        
+
         methods: {
            
             cancelModal() {
@@ -59,24 +52,19 @@
                 this.$emit("create-project", { p_name: this.p_name, manager:this.selectedManager, date: this.date, p_id: this.p_id})
             },
 
-
-            makeSelection(data){
-                const {select} = data
-                this.selectedManager= select
-            },
-            
-          
         },
         mounted(){
             if(this.EditData && this.EditMode=== true){
                 this.p_name= this.EditData.name;
                 this.selectedManager.id = this.EditData.manager_id,
                 this.selectedManager.name = this.EditData.manager,
-                this.selectedManager.email = this.EditData.manager_email
-                this.date = this.EditData.deadline.replace(/-/g, ".")
+                this.selectedManager.email = this.EditData.manager_email,
+                this.date = this.EditData.deadline
                 this.p_id = this.EditData.project_id
+            }else{
+              this.selectedManager=''
             }
-       
+            console.log(this.selectedManager)
         },
     }
 </script>
@@ -99,32 +87,25 @@
 
                     <div class="form-container">
                         <form class="ui form" @submit.prevent="createProject" novalidate>
-                            <div class="field">
-                                <label>Project Name</label>
-                                <input :disabled="buttonDisable" type="text" name="name" placeholder="Name" v-model="p_name">
-                            </div>
-                            <div class="field"><label>Select a Manager</label></div>
-                            <SelectComponents :disable="buttonDisable" :VforArray="this.getusers.map(u=>({id:u.id, name:u.name + ' (' + u.email + ')'}))" :editProject="this.EditData" @select="makeSelection"></SelectComponents>
-                            <div class="field" >
-                                <label>Enter Deadline</label>
-                                <VueDatePicker :disabled="buttonDisable" v-model="this.date"
-                                :enable-time-picker="false"
-                                model-type="yyyy.MM.dd"
-                                format="yyyy-MM-dd"                            
-                                >{{ date }}</VueDatePicker>
-                                
-                            </div>
-                    
-                            <button v-if="EditMode===true" :disabled="buttonDisable" class="ui green button" type="submit">Edit</button>
-                            <button v-else :disabled="buttonDisable" class="ui green button" type="submit">Create</button>
-
+                          <div class="field">
+                              <label>Project Name</label>
+                              <input :disabled="buttonDisable" type="text" name="name" placeholder="Name" v-model="p_name">
+                          </div>
+                          <div class="field"><label>Select a Manager</label></div>
+                          <select v-model="selectedManager" :disabled="buttonDisable">
+                            <option value="" selected="true">Select a manager</option>
+                            <option v-for="user in this.getusers" :value="selectedManager" >{{ user.name + ' (' + user.email + ')' }}</option>
+                          </select>
+                          <div class="field" >
+                              <label>Enter Deadline</label>
+                            <input type="date" v-model="this.date">
+                          </div>
+                          <button v-if="EditMode===true" :disabled="buttonDisable" class="ui green button" type="submit">Edit</button>
+                          <button v-else :disabled="buttonDisable" class="ui green button" type="submit">Create</button>
                         </form>
                     </div>
-                    
               </div>
-              
             </div>
-            
       </div>
 </template>
 
@@ -166,6 +147,12 @@
     margin: auto;
     border-radius: 20px;
     padding:30px
+    }
+    input{
+      margin: 5px 0 !important;
+    }
+    input::placeholder{
+      color: black !important;
     }
     .ui.input{
         width: 500px;

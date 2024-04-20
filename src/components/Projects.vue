@@ -145,7 +145,7 @@
             const { p_name, manager, date, p_id } = data;
             this.tryAgain=true
 
-            ServiceClient.createProject(p_name,manager.id,date,p_id).then(success=>{
+            ServiceClient.createProject(p_name,manager,date,p_id).then(success=>{
               this.message= success.message
               this.show_popup = true
               setTimeout(() => {
@@ -189,9 +189,9 @@
             this.getusers=employees
             this.showParticipantModal(project)
             this.projectData=project
-            console.log(project);
           }).catch((error) => {
             if (error.response.data && error.response.data.message) {
+              this.serverError=error
               this.show_error_popup = true
             }
           });
@@ -200,11 +200,12 @@
         redirect(project){
             this.projectData = project
             this.redirectToTasks = true;
-            this.$router.push(
-          {
-            name:"Tasks",
-            params:{id:project.project_id}
-          })
+            this.$router.push({
+              name:"Tasks",
+              params:{
+                id: project.project_id
+              }
+            })
         },
         createParticipants(data){
             this.participants=[];
@@ -261,17 +262,17 @@
               this.projectButtons = {};
               this.mergedButtons = [];
 
-              for(let i in buttons){
-                for(let item in buttons[i]){
-                  if(item == "employee"){
-                    this.projectButtons.employee= buttons[i][item]
-                  }else if(item == "manager"){
-                    this.projectButtons.manager= buttons[i][item]
-                  }else if(item=="admin"){
-                    this.projectButtons.admin= buttons[i][item]
-                  }
+              buttons.map((item)=>{
+                if(item.employee){
+                  this.projectButtons.employee= item.employee
                 }
-              }
+                if(item.manager){
+                  this.projectButtons.manager= item.manager
+                }
+                if(item.admin){
+                  this.projectButtons.admin= item.admin
+                }
+              })
 
               if(this.projectButtons.employee && this.projectButtons.employee.length>0){
                 if(!(this.projectButtons.manager && this.projectButtons.manager.length>0)){
@@ -296,7 +297,6 @@
                   this.mergedButtons.push(this.projectButtons.manager[item])
                 }
               }
-              console.log(this.mergedButtons);
               let foundMatch=false
               for (let item of this.unreadMessage.Project) {
                 for(let i in Object.values(item)){
@@ -320,7 +320,6 @@
                 this.serverError=error;
                 this.show_error_popup = true
               }
-
             });
         },
         SwitchStatusModal(statusData){
@@ -491,9 +490,6 @@
           this.message=''
           this.errorArray=[]
         }
-                
-
-            
     },
     beforeRouteEnter(to, from, next) {
       const userRole = store.state.userRole
@@ -634,10 +630,5 @@
 </template>
 
 <style scoped>
-    /*.ui.segment{
-        position: absolute;
-        width:100%;
-        height: 100px !important;
-        
-    }*/
+
 </style>

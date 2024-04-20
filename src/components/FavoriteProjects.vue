@@ -156,7 +156,7 @@
               const { p_name, manager, date, p_id } = data;
               this.tryAgain=true
 
-              ServiceClient.createProject(p_name,manager.id,date,p_id).then(success=>{
+              ServiceClient.createProject(p_name,manager,date,p_id).then(success=>{
                 this.message= success.message
                 this.show_popup = true
                 setTimeout(() => {
@@ -614,11 +614,6 @@
 </template>
 
 <style scoped>
-    .ui.segment{
-        position: absolute;
-        width:100%;
-        height: 100px !important;
-        
-    }
+
    
 </style>

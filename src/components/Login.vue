@@ -36,14 +36,14 @@
                 ServiceClient.login(this.email, this.password).then((response)=>{
                       if (response.data.success) {
                         this.login_succeded = true;
+                        store.commit("setUserData", response.data.data)
+                        localStorage.setItem("token", response.data.data.token);
+                        this.getUserRoles();
+                        this.getNotifications();
+                        this.getManagerNotifications();
                         setTimeout(() => {
-                          store.commit("setUserData", response.data.data)
-                          localStorage.setItem("token", response.data.data.token);
-                          this.getNotifications();
-                          this.getManagerNotifications();
-                          this.getUserRoles();
                           this.$router.push({path: "/home"});
-                        }, 1400);
+                        }, 1500);
                       }
                 }).catch((error) => {
                   this.disablefield= false

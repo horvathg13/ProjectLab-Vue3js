@@ -153,10 +153,5 @@ export default{
 </template>
 
 <style scoped>
- .ui.segment{
-        position: absolute;
-        width:100%;
-        height: 100px !important;
-       
-    }
+
 </style>

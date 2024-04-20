@@ -50,6 +50,7 @@
                 this.buttonDisable=true,
                 this.$emit("add-participants", { selected: this.selected_user, remove_employee:this.remove_employee});
                 this.selected_user=[];
+                this.remove_employee=[];
                 this.clear=!this.clear;
             },
 

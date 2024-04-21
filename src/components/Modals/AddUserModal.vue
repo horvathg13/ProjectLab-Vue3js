@@ -48,7 +48,7 @@ import VueClickAway from "vue3-click-away";
 <template>
         <div class="modal-overlay">
             <div class="modal"  v-click-away="cancelModal">
-                <div class="close">
+                <div class="close-container">
                     <i class="close large red icon" @click="cancelModal" ></i>
                 </div>
                 <div class="header">
@@ -108,7 +108,7 @@ import VueClickAway from "vue3-click-away";
     padding:30px
     }
     .ui.input{
-        width: 500px;
+        width: 100%;
         height: auto;
     }
     .form-container{
@@ -125,9 +125,5 @@ import VueClickAway from "vue3-click-away";
         font-weight: bold;
         color: rgb(0 0 0 / 62%) !important  
     }
-    .close{
-        width: 60px;
-        left:84%;
-        cursor: pointer;
-    }
+
 </style>

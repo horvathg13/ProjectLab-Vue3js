@@ -60,7 +60,7 @@ import MultipleSelection from '../Common/MultipleSelectComponents.vue';
 <template>
         <div class="modal-overlay">
             <div class="modal">
-                <div class="close">
+                <div class="close-container">
                     <i class="close large red icon" @click="cancelModal"></i>
                 </div>
                 <div class="header">
@@ -166,9 +166,4 @@ import MultipleSelection from '../Common/MultipleSelectComponents.vue';
         
     }
 
-    .close{
-        width: 60px;
-        left:80%;
-        cursor: pointer;
-    }
 </style>

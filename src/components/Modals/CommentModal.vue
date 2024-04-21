@@ -131,7 +131,7 @@ export default{
         </div>
             
         <div class="modal"> 
-            <div class="close">
+            <div class="close-container">
                 <i class="close large red icon" @click="cancelModal"></i>
             </div>
             <div class="header" >
@@ -370,11 +370,7 @@ export default{
         font-weight: bold;
         color: rgb(0 0 0 / 62%) !important  
     }
-    .close{
-        width: 60px;
-        left:84%;
-        cursor: pointer;
-    }
+
 
 </style>
 

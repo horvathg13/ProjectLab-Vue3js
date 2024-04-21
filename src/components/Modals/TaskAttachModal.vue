@@ -83,13 +83,11 @@
         <div class="modal-overlay">
             
             <div class="modal"> 
-                <div class="close">
+                <div class="close-container">
                     <i class="close large red icon" @click="cancelModal"></i>
                 </div>
                 <div class="header">
-                    
-                    <h1>Employee Controll Panel</h1>
-                    
+                    <h1>Employee Control Panel</h1>
                 </div>
           
               
@@ -122,7 +120,7 @@
         margin: 25px 0 0
     }
     .ui.green.create.button{
-        top:30%
+        top:30px
     }
 
     .selected-text{
@@ -184,9 +182,4 @@
         color: rgb(0 0 0 / 62%) !important  
     }
 
-    .close{
-        width: 60px;
-        left:84%;
-        cursor: pointer;
-    }
 </style>

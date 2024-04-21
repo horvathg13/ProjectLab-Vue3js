@@ -75,7 +75,7 @@ export default{
 <template>
     <div class="modal-overlay">
         <div class="modal" v-click-away="cancelModal">
-            <div class="close">
+            <div class="close-container">
                 <i class="close large red icon" @click="cancelModal"></i>
             </div>
             
@@ -195,7 +195,6 @@ export default{
     }
    
     .buttonContainer{
-        top:40px;
         padding:10px
     }
     
@@ -204,10 +203,5 @@ export default{
         color: rgb(0 0 0 / 62%) !important  
     }
 
-    .close{
-        width: 60px;
-        left:80%;
-        cursor: pointer;
-    }
 
 </style>

@@ -78,7 +78,7 @@
         <div  class="modal-overlay"  >
             
             <div class="modal" ><!--v-click-away="cancelModal"--> 
-                <div class="close">
+                <div class="close-container">
                     <i class="close large red icon" @click="cancelModal" ></i>
                 </div>
                 <div class="header">
@@ -119,6 +119,11 @@
 </template>
 
 <style scoped>
+  @media screen and (max-width:280px ){
+    .title{
+      display: none;
+    }
+  }
     .title{
         top:15px
     }
@@ -185,10 +190,5 @@
     .field label{
         font-weight: bold;
         color: rgb(0 0 0 / 62%) !important  
-    }
-    .close{
-        width: 60px;
-        left:84%;
-        cursor: pointer;
     }
 </style>

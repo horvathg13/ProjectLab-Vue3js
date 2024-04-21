@@ -556,7 +556,7 @@
                             <td>{{ task.priority}}</td>
                             <td>{{ task.employees }}</td>
                             <td >
-                                <i v-if="task.mytask === true" class="assigned-icon"></i>
+                                <i v-if="task.myTask === true" class="assigned-icon"></i>
                                 <i v-if="ShoudShowEnvelope(task)" class="red envelope icon"></i>
                             </td>
                             <td>
@@ -616,6 +616,7 @@
     <CommentModal v-if="this.show_Comment_Modal == true"
     @cancel-modal="cancelModal"
     @sendEmit="SendMessage"
+    :projectData="this.taskDataTravel"
     :taskData="this.taskDataTravel"
     :Participants="this.getActiveTaskEmployee"
     :projectId ="this.projectData.project_id"

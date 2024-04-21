@@ -356,7 +356,7 @@
                             <th></th>
                             
                             <th>
-                            <button v-if="this.showButton===true" class="ui right floated small primary labeled icon button" @click="AcceptAllTasks"><i class="green check icon"></i>Accept All</button></th>
+                            <button v-if="this.showButton===true" class="ui small primary labeled icon button" @click="AcceptAllTasks"><i class="green check icon"></i>Accept All</button></th>
                             
                         </tr>
                     </thead>

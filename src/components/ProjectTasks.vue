@@ -288,7 +288,7 @@
             commentModalSwitch(kismacska){
               const {data} = kismacska;
               this.taskDataTravel = kismacska.data
-              ServiceClient.getProjectParticipants(this.taskDataTravel.task_id).then((participants)=>{
+              ServiceClient.getActiveEmployees(this.taskDataTravel.task_id).then((participants)=>{
                 this.getActiveTaskEmployee=participants
                 this.show_Comment_Modal = true
               }).catch((error) => {
@@ -574,7 +574,7 @@
                             <th>Employees</th>
                             <th></th>
                             <th>
-                            <button v-if="this.managerRole==true || this.adminRole==true || this.participantRole==true" class="ui right floated small primary labeled icon button" @click="showCreateTaskModal()"><i class="tasks icon"></i>New</button></th>
+                            <button v-if="this.managerRole==true || this.adminRole==true || this.participantRole==true" class="ui small primary labeled icon button" @click="showCreateTaskModal()"><i class="tasks icon"></i>New</button></th>
                         </tr>
                     </thead>
                     <tbody v-if="loader==false">

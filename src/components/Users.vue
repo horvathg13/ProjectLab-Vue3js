@@ -304,7 +304,7 @@ import {store} from '../VuexStore'
                                 <th>E-mail</th>
                                 <th>Role</th>
                                 <th>
-                                <button class="ui right floated small primary labeled icon button" @click="updateModal"><i class="user plus icon"></i>Add</button>
+                                <button class="ui small primary labeled icon button" @click="updateModal"><i class="user plus icon"></i>Add</button>
                                 </th>
                                 
                             </tr>

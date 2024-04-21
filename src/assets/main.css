@@ -128,6 +128,12 @@ form{
   .ui.table:not(.unstackable) tr > td{
     max-width: 100%;
   }
+  .centerd-component-container{
+    padding:50px 10px;
+  }
+  .scrolling-table-container{
+    overflow: auto;
+  }
 }
 
 .dp__action_buttons{

@@ -196,4 +196,9 @@ export default{
     .ui.card > :first-child{
         border-radius:50px !important
     }
+    @media screen and (max-width:390px) {
+      .ui.cards > .card{
+        margin:10px auto;
+      }
+    }
 </style>

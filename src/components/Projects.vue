@@ -541,7 +541,7 @@
                                 <th></th>
                                 <th></th>
                                 <th>
-                                <button v-if="SetAddNewUser" class="ui right floated small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>
+                                <button v-if="SetAddNewUser" class="ui small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>
                                 
                             </tr>
                         </thead>

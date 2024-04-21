@@ -102,7 +102,7 @@
         <div class="modal-overlay">
             
             <div class="modal" v-click-away="cancelModal"> 
-                <div class="close">
+                <div class="close-container">
                     <i class="close large red icon" @click="cancelModal"></i>
                 </div>
                 <div class="header">
@@ -217,9 +217,5 @@
     .ui.green.button{
         top:15px
     }
-    .close{
-        width: 60px;
-        left:84%;
-        cursor: pointer;
-    }
+
 </style>

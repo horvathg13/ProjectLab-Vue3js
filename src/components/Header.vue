@@ -29,6 +29,7 @@ export default{
             userData:{},
             errorArray:[],
             tryAgain:Boolean,
+            openMenu:false
         };
     },
     watch: {
@@ -70,7 +71,9 @@ export default{
             if(!!localStorage.getItem("token")===true){
                 this.isDropdownOpen = !this.isDropdownOpen;
             }
-            
+        },
+        openMobileMenu(){
+          this.openMenu=!this.openMenu
         },
         logOut(){
             if(!!localStorage.getItem("token")===true){
@@ -217,6 +220,26 @@ export default{
         <Transition name="drop">
             <Error v-if="showErrorPopup == true" :message="message" :errorarray="this.errorArray"></Error>
         </Transition>
+
+        <div className="mobile-menu">
+          <i class="list ul icon mainIcon" @click="this.openMobileMenu()"></i>
+            <Transition name="mobileMenuTransition">
+              <div class="menu" v-if="this.openMenu===true">
+                <div class="closeBtn"><i class="close icon" @click="this.openMobileMenu()"></i></div>
+                  <li v-if="!buttonLockControll" @click="home(); openMobileMenu()">Home</li>
+                  <li v-if="!buttonLockControll && adminButtonControll" @click="users(); openMobileMenu()">Users</li>
+                  <li v-if="!buttonLockControll" @click="notifications(); openMobileMenu()">Notifications</li>
+                  <li v-if="!buttonLockControll" @click="projects(); openMobileMenu()">Projects</li>
+                  <li v-if="!buttonLockControll" @click="fprojects(); openMobileMenu()">Favorite Projects</li>
+                  <li v-if="!buttonLockControll" @click="mytasks(); openMobileMenu()">My Tasks</li>
+                  <li v-if="!buttonLockControll && managerButtonControll" @click="managerDb(); openMobileMenu()">Manager</li>
+                  <li v-if="!buttonLockControll" @click="profileModalSwitch(); openMobileMenu()">{{userData.name}}</li>
+                  <li v-if="!buttonLockControll" @click="logOut(); openMobileMenu()">Logout</li>
+                  <!--<li v-if="lockMode==false">Statistics</li>-->
+              </div>
+            </Transition>
+        </div>
+
         <div class="header-items">
             <ul>
                 <li v-if="!buttonLockControll" @click="home">Home</li>
@@ -229,7 +252,7 @@ export default{
                 <!--<li v-if="lockMode==false">Statistics</li>-->
             </ul>
         </div>
-        <div class="ui teal buttons">
+        <div class="ui teal buttons userControl">
             <div class="ui button" @click="profileModalSwitch"><i class="user circle icon"></i>
                 <div class="username"><h5>{{userData.name}}</h5></div></div>
             <div class="ui floating dropdown icon button"  @click="toggleDropdown">
@@ -249,6 +272,79 @@ export default{
 </template>
 
 <style scoped>
+  @media only screen and (max-width: 1338px){
+      .header-items{
+        display: none;
+      }
+      .userControl{
+        display: none;
+      }
+    .mobile-menu{
+      width: fit-content;
+      height: fit-content;
+    }
+    .mobile-menu .mainIcon{
+      font-size: 25px;
+      height: 40px;
+      top: 7px;
+      right: 10px;
+      background: #3277cd;
+      width: 40px;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+    }
+    .mobile-menu .menu{
+      position: absolute;
+      background: #bff3c3;
+      padding: 25px;
+      top: 60px;
+      right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: 10px;
+      min-width: 200px;
+      border: 1px solid black;
+      box-shadow: 2px 2px 5px rgba(37, 35, 35, 0.53);
+    }
+    .mobile-menu .closeBtn{
+      width: 100%;
+      height: 25px;
+      cursor: pointer;
+    }
+    .mobile-menu .closeBtn:hover{
+      color: red;
+    }
+    .mobile-menu .closeBtn i.icon{
+      float: right;
+      margin: 0 !important;
+    }
+    .mobile-menu .menu li{
+      list-style: none;
+      padding: 8px;
+      text-align: center;
+    }
+    .mobile-menu .menu li:hover{
+      transform: scale(1.1);
+      color: white;
+      background: rgba(0, 128, 0, 0.7);
+      align-content: center;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .mobile-menu .menu ul{
+      align-items: center;
+    }
+    .mobile-menu i{
+      height: fit-content;
+    }
+  }
+  @media only screen and (min-width: 1338px) {
+    .mobile-menu{
+      display: none;
+    }
+  }
     .header{
         display: flex;
         justify-content: space-between;
@@ -318,5 +414,30 @@ export default{
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
+  @keyframes dropUp{
+    0%{
+      transform: translateY(0);
+    }
+    100%{
+      transform: translateY(-500%);
+
+    }
+  }
+  @keyframes dropDown{
+    0%{
+      transform: translateY(-100%);
+    }
+    100%{
+      transform: translateY(0);
+    }
+  }
+  .mobileMenuTransition-enter-active{
+    animation:dropDown .5s;
+  }
+  .mobileMenuTransition-leave-active{
+    animation: dropUp .8s;
+  }
+
 
 </style>

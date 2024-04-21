@@ -81,21 +81,23 @@ export default{
         <div class="content-title users" v-if="h1Title == 'Users'">
             <h1>{{h1Title}}</h1>
         </div>
-        <div class="ui large breadcrumb" v-for="(data,index) in meta" :key="index">
-            <RouterLink class="section" :to="data.path">{{data.breadcrumb}}</RouterLink>
-            <i class="right chevron icon divider"></i>
-        </div>
+        <div class="breadcrumb-container">
+          <div class="ui large breadcrumb" v-for="(data,index) in meta" :key="index">
+              <RouterLink class="section" :to="data.path">{{data.breadcrumb}}</RouterLink>
+              <i class="right chevron icon divider"></i>
+          </div>
        <div class="ui large breadcrumb section" v-if="h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && h1Title !=='Homepage' " :class="{active: h1Title}"> {{ h1Title }}</div>
-        <div class="notifications-container">
-            <div class="message-container" v-if="(h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && h1Title !== 'Reset Password' && this.computedLock==false)" >
-                <div class="ui large red left pointing label" @click="redirectToNotifications"> 
+      </div>
+      <div class="notifications-container">
+            <div class="message-container" title="Notifications" v-if="(h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && h1Title !== 'Reset Password' && this.computedLock==false)" >
+                <div class="ui large red left pointing label" @click="redirectToNotifications">
                     <i class="bullhorn icon" v-if="systemNotification"></i>
                     <i class="bullhorn open icon" v-else></i>{{ message ? message: 0 }}
                 </div>
             </div>
             <div class="message-container manager" v-if="(h1Title !== 'Greeting' && h1Title !=='Register' && h1Title !=='Login' && h1Title !== 'Reset Password' && this.computedLock==false && this.managerMode === true)" >
-                <div class="ui large red label" @click="redirectToManagerNotifications"> 
-                    <i class="binoculars icon" v-if="managerNotification"></i>{{ manager ? manager: 0 }}
+                <div class="ui large red label"  title="Manager Notification" @click="redirectToManagerNotifications">
+                    <i class="binoculars icon"  v-if="managerNotification"></i>{{ manager ? manager: 0 }}
                 </div>
             </div>
         </div>
@@ -105,13 +107,15 @@ export default{
 </template>
 
 <style scoped>
+    .breadcrumb-container{
+      width: 400px;
+      min-width: 190px;
+    }
     .ui.label{
         width: max-content;
         z-index: 99;
         cursor: pointer;
-        top:30px;
-        
-        
+        top:25px;
     }
     .message-container{
         margin-right: 5px;
@@ -120,26 +124,43 @@ export default{
         left:42%;
     }*/
     .notifications-container{
-        display: inline-flex;
-        left:43%;
-        justify-content:space-between;
+        display: flex;
+        width: 400px;
+        min-width: 100px;
+    }
+    @media screen and (max-width:800px ){
+      .notifications-container{
+        display: grid;
+      }
+      .ui.label{
+        top: 5px;
+      }
+      .breadcrumb-container{
+        display: grid;
+
+      }
+      .ui.large.breadcrumb{
+        height: 20px !important;
+        top: 5px !important;
+      }
     }
     .content-title-container{
         width: 100%;
         z-index: 999;
-        
         display: flex;
+        justify-content: space-around;
         background-color: #00000019;
+    }
+    .content-title{
+      width: 400px;
+      min-width: 200px;
     }
     .message-container a {
         opacity: unset;
     }
-    .message-container:hover{
-        opacity: .8;
-    }
-    .message-container:hover {
-        animation: shake 0.4s;
-        animation-iteration-count: 1;
+
+    .ui.label:hover{
+      opacity: .9;
     }
 
 @keyframes shake {
@@ -167,5 +188,6 @@ export default{
     color: lawngreen;
     font-weight: bold;
 }
+
 
 </style>

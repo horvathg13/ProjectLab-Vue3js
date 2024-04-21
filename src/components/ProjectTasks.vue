@@ -234,6 +234,15 @@
                   this.serverError=error
                   this.show_error_popup=true
                   this.loader=false;
+                  if(error.response.data.haveManagerRole){
+                    this.managerRole =error.response.data.haveManagerRole
+                  }
+                  if(error.response.data.haveAdminRole){
+                    this.adminRole = error.response.data.haveAdminRole
+                  }
+                  if(error.response.data.haveParticipantRole){
+                    this.participantRole = error.response.data.haveParticipantRole
+                  }
                 }
               })
             },
@@ -515,6 +524,7 @@
         beforeRouteEnter(to,from, next){
           const userRole = store.state.userRole
           if(userRole.length>0){
+            userRole.map(i=>{})
             next()
           }else{
             next('/accessdenied')

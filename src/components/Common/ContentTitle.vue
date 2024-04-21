@@ -130,19 +130,34 @@ export default{
     }
     @media screen and (max-width:800px ){
       .notifications-container{
-        display: grid;
+        //display: grid;
+        height: 35px;
+        width: 50%;
+        flex-flow: row-reverse;
+        display: inline-flex;
       }
       .ui.label{
         top: 5px;
       }
       .breadcrumb-container{
-        display: grid;
-
+        //display: grid;
+        width: 50%;
+        text-align: center;
+        display: inline-block;
+        height: 35px;
+        margin: 10px;
       }
       .ui.large.breadcrumb{
-        height: 20px !important;
+        height: 25px !important;
         top: 5px !important;
       }
+      .breadcrumb-container{
+        width: fit-content;
+      }
+      .content-title-container{
+        display: block !important;
+      }
+    ;
     }
     .content-title-container{
         width: 100%;

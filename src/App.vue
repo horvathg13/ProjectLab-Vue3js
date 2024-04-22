@@ -15,16 +15,14 @@ ServiceClient.post('/api/getUserData').then(response => {
 setInterval(() => {
   ServiceClient.post('/api/get-unread-messages').then(response => {
     store.commit("getUnreadMessages", response.data);
-  })
+  });
+  ServiceClient.post('/api/notifications').then(response => {
+    store.commit("getNotifications",response.data);
+  });
+  ServiceClient.post('/api/get-manager-notification').then(response => {
+    store.commit("getManagerNotifications",response.data);
+  });
 }, 30000);
-
-ServiceClient.post('/api/notifications').then(response => {
-  store.commit("getNotifications",response.data);
-})
-
-ServiceClient.post('/api/get-manager-notification').then(response => {
-  store.commit("getManagerNotifications",response.data);
-})
 
 ServiceClient.post('/api/getUserRole').then(response => {
   store.commit("setuserRole",response.data)

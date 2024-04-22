@@ -124,8 +124,11 @@
                 this.loader=false;
               }).catch((error)=>{
                 if(error.response){
-                  this.serverError=error
-                  this.show_error_popup=true
+                  //this.serverError=error
+                  //this.show_error_popup=true
+                  if(error.response.data.code === 404){
+                    this.showButton=false
+                  }
                   this.loader=false;
                 }
               })
@@ -283,11 +286,16 @@
             },
             AcceptAllTasks(){
                 if(this.showButton===true){
-                    Promise.all(
+                    Promise.all([
                         ServiceClient.acceptAllTask(),
                         ServiceClient.getManagerNotifications(),
                         this.getTasks()
-                    )
+                    ]).then(()=>{
+                      this.show_popup = true;
+                      setTimeout(() => {
+                        this.show_popup = false
+                      }, 1500)
+                    })
                 }
             },
             managerNotificationUpdate(){

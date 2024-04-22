@@ -126,6 +126,7 @@
         },
 
         createTask(data){
+            this.closeErrorModal()
             this.tryAgain=true;
             const { task } = data
             ServiceClient.createTask(this.$route.params.id, task.name, task.deadline, task.description, task.priority, task.id).then((success)=>{
@@ -145,6 +146,7 @@
             })
         },
             AssignEmployeeToTask(data){
+                this.closeErrorModal()
                 this.tryAgain=true
                 const {selected_employee, remove_employee}=data
                 
@@ -258,6 +260,7 @@
             },
 
             AttachMyself(task){
+              this.closeErrorModal()
                 const {data} = task
                 ServiceClient.taskAttachToMyself(this.$route.params.id, task.data.task_id).then((success)=>{
                   this.show_popup = true
@@ -398,6 +401,7 @@
               })
             },
             SetStatus(set){
+              this.closeErrorModal()
               const{data,priority}=set
               this.tryAgain=true
               if(data !== "" || priority !== "") {
@@ -448,6 +452,7 @@
                 this.getTasks();
             },
             Completed(emit){
+              this.closeErrorModal()
                 const{data}=emit;
                 this.loader = true;
                 ServiceClient.taskCompleted(this.$route.params.id, emit.data).then(success=>{

@@ -142,7 +142,6 @@
             commentModalSwitch(task){
               const {data} = task;
               this.taskDataTravel = task.data
-              console.log(task)
               ServiceClient.getActiveEmployees(this.taskDataTravel.task_id).then((participants)=>{
                 this.getActiveTaskEmployee=participants
                 this.show_Comment_Modal = true
@@ -228,6 +227,7 @@
               })
             },
             SetStatus(set){
+              this.closeErrorModal()
               const{data,priority}=set
               this.tryAgain=true
               if(data !== "" || priority !== "") {

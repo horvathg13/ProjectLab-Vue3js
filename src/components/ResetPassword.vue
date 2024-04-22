@@ -39,6 +39,7 @@ export default{
         },
 
         resetPassword() {
+            this.closeErrorModal()
             this.disablefield = true;
             ServiceClient.resetPassword(this.email, this.password, this.c_password).then(response => {
                 this.login_succeded = true;

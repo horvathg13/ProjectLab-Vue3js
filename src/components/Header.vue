@@ -52,8 +52,8 @@ export default{
         buttonLockControll(){
             const haveToken = localStorage.getItem("token");
             const lock = this.userRole.code ? this.userRole.code === 404:false;
-            const controll = !haveToken || (haveToken && lock);
-            return controll
+            return  !haveToken || (haveToken && lock);
+
         },
         managerButtonControll(){
             const userRoles = Object.values(this.userRole);
@@ -209,7 +209,7 @@ export default{
 </script>
 
 <template>
-    <div class="header" > <!--v-if="hasToken"-->
+    <div class="header">
         <a href="/home"><div class="logo">
             <img src="../assets/RegP_icons/lab-nobg.png">
             <h1><span>Pro</span>ject-Lab</h1>
@@ -224,35 +224,35 @@ export default{
         <div className="mobile-menu">
           <i class="list ul icon mainIcon" @click="this.openMobileMenu()"></i>
             <Transition name="mobileMenuTransition">
-              <div class="menu" v-if="this.openMenu===true">
+              <div class="menu" v-if="this.openMenu===true && !buttonLockControll">
                 <div class="closeBtn"><i class="close icon" @click="this.openMobileMenu()"></i></div>
-                  <li v-if="!buttonLockControll" @click="home(); openMobileMenu()">Home</li>
-                  <li v-if="!buttonLockControll && adminButtonControll" @click="users(); openMobileMenu()">Users</li>
-                  <li v-if="!buttonLockControll" @click="notifications(); openMobileMenu()">Notifications</li>
-                  <li v-if="!buttonLockControll" @click="projects(); openMobileMenu()">Projects</li>
-                  <li v-if="!buttonLockControll" @click="fprojects(); openMobileMenu()">Favorite Projects</li>
-                  <li v-if="!buttonLockControll" @click="mytasks(); openMobileMenu()">My Tasks</li>
-                  <li v-if="!buttonLockControll && managerButtonControll" @click="managerDb(); openMobileMenu()">Manager</li>
-                  <li v-if="!buttonLockControll" @click="profileModalSwitch(); openMobileMenu()">{{userData.name}}</li>
-                  <li v-if="!buttonLockControll" @click="logOut(); openMobileMenu()">Logout</li>
+                  <li  @click="home(); openMobileMenu()">Home</li>
+                  <li v-if="adminButtonControll" @click="users(); openMobileMenu()">Users</li>
+                  <li  @click="notifications(); openMobileMenu()">Notifications</li>
+                  <li  @click="projects(); openMobileMenu()">Projects</li>
+                  <li  @click="fprojects(); openMobileMenu()">Favorite Projects</li>
+                  <li  @click="mytasks(); openMobileMenu()">My Tasks</li>
+                  <li v-if="managerButtonControll" @click="managerDb(); openMobileMenu()">Manager</li>
+                  <li  @click="profileModalSwitch(); openMobileMenu()">{{userData.name}}</li>
+                  <li  @click="logOut(); openMobileMenu()">Logout</li>
                   <!--<li v-if="lockMode==false">Statistics</li>-->
               </div>
             </Transition>
         </div>
 
-        <div class="header-items">
+        <div class="header-items" v-if="!buttonLockControll">
             <ul>
-                <li v-if="!buttonLockControll" @click="home">Home</li>
-                <li v-if="!buttonLockControll && adminButtonControll" @click="users">Users</li>
-                <li v-if="!buttonLockControll" @click="notifications">Notifications</li>
-                <li v-if="!buttonLockControll" @click="projects">Projects</li>
-                <li v-if="!buttonLockControll" @click="fprojects">Favorite Projects</li>
-                <li v-if="!buttonLockControll" @click="mytasks">My Tasks</li>
-                <li v-if="!buttonLockControll && managerButtonControll" @click="managerDb">Manager</li>
+                <li  @click="home">Home</li>
+                <li v-if="adminButtonControll" @click="users">Users</li>
+                <li  @click="notifications">Notifications</li>
+                <li  @click="projects">Projects</li>
+                <li @click="fprojects">Favorite Projects</li>
+                <li  @click="mytasks">My Tasks</li>
+                <li v-if="managerButtonControll" @click="managerDb">Manager</li>
                 <!--<li v-if="lockMode==false">Statistics</li>-->
             </ul>
         </div>
-        <div class="ui teal buttons userControl">
+        <div class="ui teal buttons userControl" v-if="!buttonLockControll">
             <div class="ui button" @click="profileModalSwitch"><i class="user circle icon"></i>
                 <div class="username"><h5>{{userData.name}}</h5></div></div>
             <div class="ui floating dropdown icon button"  @click="toggleDropdown">

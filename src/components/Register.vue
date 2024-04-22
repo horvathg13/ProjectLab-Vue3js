@@ -53,7 +53,6 @@ export default{
                   }
                 }).catch((error) => {
                   this.serverError=error;
-                  console.log(this.serverError.response);
                   this.error_popup=true;
                 });
             }else{

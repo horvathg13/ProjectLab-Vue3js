@@ -29,6 +29,7 @@
     
         methods: {
             async login() {
+                this.closeErrorModal()
                 this.errors = [];
                 this.user_name = "";
                 this.disablefield = true;
@@ -65,6 +66,8 @@
             },
             closeErrorModal(){
               this.error_popup=false;
+              this.errors=[];
+              this.serverError='';
             }
         },
         mounted() {

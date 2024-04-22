@@ -114,6 +114,7 @@ import {store} from '../VuexStore'
         },
 
         createUser(data){
+            this.closeErrorModal();
             const { name, email } = data;
             
             this.name = name;
@@ -221,6 +222,7 @@ import {store} from '../VuexStore'
           },
 
           userToRole(data) {
+              this.closeErrorModal()
               this.user={};
               const { selectedRole, user_id, remove } = data
               this.tryAgain=true;
@@ -262,6 +264,8 @@ import {store} from '../VuexStore'
 
           closeErrorModal(){
             this.show_error_popup=false
+            this.serverError='';
+            this.errorArray=[]
           }
         },
         beforeRouteEnter(to, from, next) {

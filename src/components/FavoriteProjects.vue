@@ -153,11 +153,11 @@
             },
 
             createProjects(data){
+              this.closeErrorModal()
               const { p_name, manager, date, p_id } = data;
               this.tryAgain=true
 
               ServiceClient.createProject(p_name,manager,date,p_id).then(success=>{
-                this.message= success.message
                 this.show_popup = true
                 setTimeout(() => {
                   this.show_popup = false
@@ -197,7 +197,6 @@
                 this.getusers=employees
                 this.showParticipantModal(project)
                 this.projectData=project
-                console.log(project);
               }).catch((error) => {
                 if (error.response.data && error.response.data.message) {
                   this.show_error_popup = true
@@ -214,6 +213,7 @@
             },
 
             createParticipants(data){
+              this.closeErrorModal()
               this.participants=[];
               this.tryAgain=true;
               const { selected, remove_employee } = data;
@@ -242,7 +242,6 @@
                 this.Editdata = data
                 this.EditMode = switching;
                 this.showModal = true
-                console.log(project);
             },
             commentModalSwitch(project){
               const {data} = project;
@@ -256,6 +255,7 @@
               });
             },
             SendMessage(emitData){
+              this.closeErrorModal()
               const{message} = emitData
               this.tryAgain=true
               ServiceClient.sendMessage(message,this.projectData.project_id,null).then(response=>{
@@ -307,7 +307,6 @@
                     this.mergedButtons.push(this.projectButtons.manager[item])
                   }
                 }
-                console.log(this.mergedButtons);
                 let foundMatch=false
                 for (let item of this.unreadMessage.Project) {
                   for(let i in Object.values(item)){
@@ -346,6 +345,7 @@
               })
             },
             SetStatus(set){
+              this.closeErrorModal()
               const{data}=set
               this.tryAgain=true
               if(set.data === ""){
@@ -438,6 +438,7 @@
                 }
             },
             leaveProject(){
+              this.closeErrorModal()
               this.triggerModal=false;
               ServiceClient.leaveProject(this.dataSave.project_id).then((success)=>{
                 this.message =success.message

@@ -122,6 +122,7 @@
         },
 
         createTask(data){
+          this.closeErrorModal()
           this.tryAgain=true;
           const { task } = data
           ServiceClient.createTask(this.ActualTaskData.p_id, task.name, task.deadline, task.description, task.priority, task.id).then((success)=>{
@@ -142,6 +143,7 @@
             
         },
             AssignEmployeeToTask(data){
+              this.closeErrorModal()
               this.tryAgain=true
               const {selected_employee, remove_employee}=data
 
@@ -224,8 +226,6 @@
                 this.loader=false;
               }).catch((error)=>{
                 if(error.response){
-                  this.serverError=error
-                  this.show_error_popup=true
                   this.loader=false;
                 }
               })
@@ -241,6 +241,7 @@
               });
             },
             AttachMyself(task){
+              this.closeErrorModal()
               const {data} = task
               ServiceClient.taskAttachToMyself(this.ActualTaskData.p_id, task.data.task_id).then((success)=>{
                 this.show_popup = true
@@ -367,6 +368,7 @@
 
             },
             SetStatus(set){
+              this.closeErrorModal()
               const{data,priority}=set
               this.tryAgain=true
               if(data !== "" || priority !== "") {
@@ -418,6 +420,7 @@
                 this.getTasks();
             },
             Completed(emit){
+              this.closeErrorModal()
               const{data}=emit;
               this.loader = true;
               ServiceClient.taskCompleted(this.ActualTaskData.p_id, emit.data).then(success=>{

@@ -119,11 +119,11 @@
         },
 
         createProjects(data){
+          this.closeErrorModal()
           const { p_name, manager, date, p_id } = data;
           this.tryAgain=true
 
           ServiceClient.createProject(p_name,manager,date,p_id).then(success=>{
-            this.message= success.message
             this.show_popup = true
             setTimeout(() => {
               this.show_popup = false
@@ -183,6 +183,7 @@
             },
 
             createParticipants(data){
+              this.closeErrorModal()
               this.participants=[];
               this.tryAgain=true;
               const { selected, remove_employee } = data;
@@ -307,6 +308,7 @@
 
             },
             SetStatus(set){
+              this.closeErrorModal()
               const{data}=set
               this.tryAgain=true
 

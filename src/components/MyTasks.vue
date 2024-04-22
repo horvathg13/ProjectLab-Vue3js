@@ -51,7 +51,8 @@ export default{
             setSortData:[],
             readOnlyMode:false,
             tryAgain:null,
-            serverError:''
+            serverError:'',
+            ActualTaskProjectData:{}
         }
     },
     components:{
@@ -80,8 +81,6 @@ export default{
           }).catch((error)=>{
             if(error.response){
               this.loader=false
-              this.serverError=error
-              this.show_error_popup=true
             }
           })
         },
@@ -103,7 +102,6 @@ export default{
             this.getProjectParticipants().then(()=>{
               const{data} = task
               this.AttachTask = task.data
-              console.log(task, task.data);
               ServiceClient.getActiveEmployees(task.data.id).then((employees)=>{
                 this.getActiveTaskEmployee = employees
                 this.show_Attach_Modal = true
@@ -129,10 +127,11 @@ export default{
         },
 
         createTask(data){
+          this.closeErrorModal()
           this.tryAgain=true;
           const { task } = data
-          console.log(task);
-          ServiceClient.createTask(this.ActualTaskData.projectId, task.name, task.deadline, task.description, task.priority, task.id).then((success)=>{
+          console.log(this.ActualTaskData);
+          ServiceClient.createTask(this.ActualTaskProjectData.project_id, task.name, task.deadline, task.description, task.priority, task.id).then((success)=>{
             this.show_popup = true
             setTimeout(() => {
               this.show_popup = false
@@ -149,6 +148,7 @@ export default{
           })
         },
         AssignEmployeeToTask(data){
+          this.closeErrorModal()
           this.tryAgain=true
           const {selected_employee, remove_employee}=data
 
@@ -169,7 +169,7 @@ export default{
           if(data.remove_employee !== null){
             this.RemoveData=data.remove_employee;
           }
-          ServiceClient.assignEmployeeToTask(this.RequestData,this.RemoveData,this.AttachTask.task_id,this.ActualTaskData.projectId).then((success)=>{
+          ServiceClient.assignEmployeeToTask(this.RequestData,this.RemoveData,this.AttachTask.task_id,this.ActualTaskProjectData.project_id).then((success)=>{
             this.show_popup = true
             setTimeout(() => {
               this.show_popup = false
@@ -178,7 +178,6 @@ export default{
             },  1500)
           }).catch(error=>{
             if(error.response){
-              console.log(data);
               this.tryAgain=false;
               this.RequestData=[];
               this.serverError=error
@@ -199,7 +198,7 @@ export default{
         },
 
         getProjectParticipants(){
-          return ServiceClient.getProjectParticipants(this.ActualTaskData.projectId).then(participants=>{
+          return ServiceClient.getProjectParticipants(this.ActualTaskProjectData.project_id).then(participants=>{
              return this.getusers = participants
           }).catch((error) => {
             if (error.response.data && error.response.data.message) {
@@ -226,6 +225,7 @@ export default{
           });
         },
         SendMessage(emitData){
+          this.closeErrorModal()
           const{message} = emitData
           this.tryAgain=true
           ServiceClient.sendMessage(message,this.taskDataTravel.projectData.project_id,this.taskDataTravel.taskData.id).then(response=>{
@@ -240,6 +240,7 @@ export default{
         },
         getButtons(task){
             this.ActualTaskData = task.taskData;
+            this.ActualTaskProjectData=task.projectData;
           ServiceClient.getButtons(task.projectData.project_id).then(buttons=>{
             this.projectButtons = {};
             this.mergedButtons = [];
@@ -277,7 +278,7 @@ export default{
 
                 if (
                     this.unreadMessage.Task[item][keys[0]] === task.task_id &&
-                    this.unreadMessage.Task[item][keys[1]] == this.ActualTaskData.projectId
+                    this.unreadMessage.Task[item][keys[1]] == this.ActualTaskProjectData.project_id
                 ) {
                     this.newMessage = true;
                 } else {
@@ -325,8 +326,8 @@ export default{
           })
         },
         SetStatus(set){
+          this.closeErrorModal()
           const{data}=set
-          console.log(data, set);
           this.tryAgain=true
           ServiceClient.setStatus(this.ActualTaskData.projectData.project_id, this.ActualTaskData.taskData.id, set.data, set.priority.id).then(()=>{
             this.getMyTasks();
@@ -344,6 +345,7 @@ export default{
           })
         },
         Completed(task){
+          this.closeErrorModal()
           ServiceClient.taskCompleted(task.data.projectData.project_id, task.data.taskData).then(success=>{
             this.message=success
             this.show_popup = true;
@@ -376,7 +378,6 @@ export default{
         },
         TaskDetails(readOnlydata){
             const{data,readOnlyMode}=readOnlydata
-            console.log(readOnlydata)
             this.Editdata = readOnlydata.data.taskData,
             this.readOnlyMode = readOnlydata.readOnlyMode,
             this.show_Create_Task_Modal =true
@@ -527,7 +528,7 @@ export default{
         @sendEmit="SendMessage"
         :taskData="this.taskDataTravel.taskData"
         :Participants="this.getActiveTaskEmployee"
-        :projectId ="this.ActualTaskData.projectId"
+        :projectId ="this.ActualTaskProjectData.project_id"
         :tryAgain="this.tryAgain"
         :projectData="this.taskDataTravel.projectData"
         ></CommentModal>

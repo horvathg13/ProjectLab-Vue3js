@@ -79,6 +79,7 @@ export default{
             this.loader=false;
           }).catch((error)=>{
             if(error.response){
+              this.loader=false
               this.serverError=error
               this.show_error_popup=true
             }

@@ -244,10 +244,10 @@ import {store} from '../VuexStore'
               });
           },
 
-          DataSave(kiskutya){
-              const {data, str} = kiskutya
-              this.dataSave = kiskutya.data;
-              this.func = kiskutya.str
+          DataSave(user){
+              const {data, str} = user
+              this.dataSave = user.data;
+              this.func = user.str
               this.triggerModal= true
           },
 

@@ -8,8 +8,8 @@ export const store = createStore({
       userID: null,
       selectedRows:[],
       unreadMessages:{},
-      notifications:[],
-      managerNotifications:[],
+      notifications:0,
+      managerNotifications:0,
     },
     mutations:{
         getManagerNotifications(state,data){

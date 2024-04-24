@@ -13,6 +13,7 @@
   import Loader from './Common/Loading.vue'
   import EventHandler from "@/components/Common/EventHandler/eventHandler.vue";
   import {store} from "@/VuexStore";
+  import * as Promis from "axios";
 
   export default {
     name: "ProjectTasks",
@@ -93,6 +94,10 @@
           this.getProjectParticipants();
           ServiceClient.getActiveEmployees(task.data.task_id).then((employees)=>{
             this.getActiveTaskEmployee = employees
+            let newUsers=this.getusers.filter((e)=> {
+              return !this.getActiveTaskEmployee.some(participant => participant.id === e.userId);
+            });
+            this.getusers=newUsers
             this.show_Attach_Modal = true
           }).catch((error) => {
             this.serverError=error
@@ -164,6 +169,7 @@
               if(data.remove_employee !== null){
                 this.RemoveData=data.remove_employee;
               }
+              Promis.all([
               ServiceClient.assignEmployeeToTask(this.RequestData,this.RemoveData,this.AttachTask.task_id,this.ActualTaskData.p_id).then((success)=>{
                 this.show_popup = true
                 setTimeout(() => {
@@ -171,17 +177,28 @@
                   this.getTasks();
                   this.message=""
                 },  1500)
+
+                this.RequestData=[];
+                this.RemoveData=[];
+                this.tryAgain=false;
+                }),
+                ServiceClient.getProjectParticipants(this.ActualTaskData.p_id).then(participants=>{
+                  this.getusers = participants
+                }),
                 ServiceClient.getActiveEmployees(this.AttachTask.task_id).then((employees)=>{
                   this.getActiveTaskEmployee = employees
+                  console.log(this.getusers);
+                  let newUsers=this.getusers.filter((e)=> {
+                    return !this.getActiveTaskEmployee.some(participant => participant.id === e.userId);
+                  });
+                  this.getusers=newUsers
+                  console.log(employees, newUsers)
                   this.show_Attach_Modal = true
                 }).catch((error) => {
                   this.serverError=error
                   this.show_error_popup=true
                 })
-                this.RequestData=[];
-                this.RemoveData=[];
-                this.tryAgain=false;
-              }).catch(error=>{
+              ]).catch(error=>{
                 this.RequestData=[];
                 this.RemoveData=[];
                 if(error.response){
@@ -191,8 +208,6 @@
                   this.show_error_popup=true
                 }
               })
-
-            
             },
             getProjectsById(){
               ServiceClient.getProjectById(this.ActualTaskData.p_id).then((projects)=>{

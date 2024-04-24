@@ -11,6 +11,7 @@
     import {store} from '../VuexStore'
     import Loader from './Common/Loading.vue'
     import EventHandler from "@/components/Common/EventHandler/eventHandler.vue";
+    import * as Promis from "axios";
     
 export default{
     data(){
@@ -101,9 +102,14 @@ export default{
         Attach_Modal(task){
             this.getProjectParticipants().then(()=>{
               const{data} = task
-              this.AttachTask = task.data
-              ServiceClient.getActiveEmployees(task.data.id).then((employees)=>{
+              this.AttachTask = task.data.taskData
+              console.log(this.AttachTask)
+              ServiceClient.getActiveEmployees(this.AttachTask.id).then((employees)=>{
                 this.getActiveTaskEmployee = employees
+                let newUsers=this.getusers.filter((e)=> {
+                  return !this.getActiveTaskEmployee.some(participant => participant.id === e.userId);
+                });
+                this.getusers=newUsers
                 this.show_Attach_Modal = true
               }).catch((error) => {
                 this.serverError=error
@@ -161,7 +167,7 @@ export default{
                 deadline: this.AttachTask.deadline,
                 description: this.AttachTask.description,
                 task_status: this.AttachTask.status,
-                task_id: this.AttachTask.task_id,
+                task_id: this.AttachTask.id,
                 task_name: this.AttachTask.task_name
               };
             });
@@ -169,7 +175,8 @@ export default{
           if(data.remove_employee !== null){
             this.RemoveData=data.remove_employee;
           }
-          ServiceClient.assignEmployeeToTask(this.RequestData,this.RemoveData,this.AttachTask.task_id,this.ActualTaskProjectData.project_id).then((success)=>{
+          Promis.all([
+          ServiceClient.assignEmployeeToTask(this.RequestData,this.RemoveData,this.AttachTask.id,this.ActualTaskProjectData.project_id).then((success)=>{
             this.show_popup = true
             setTimeout(() => {
               this.show_popup = false
@@ -183,7 +190,22 @@ export default{
               this.serverError=error
               this.show_error_popup=true
             }
+          }),
+          ServiceClient.getProjectParticipants(this.ActualTaskProjectData.project_id).then(participants=>{
+            return this.getusers = participants
+          }),
+          ServiceClient.getActiveEmployees(this.AttachTask.id).then((employees)=>{
+            this.getActiveTaskEmployee = employees
+            let newUsers=this.getusers.filter((e)=> {
+              return !this.getActiveTaskEmployee.some(participant => participant.id === e.userId);
+            });
+            this.getusers=newUsers
+            this.show_Attach_Modal = true
+          }).catch((error) => {
+            this.serverError=error
+            this.show_error_popup=true
           })
+          ])
         },
             
         getPriorities(){

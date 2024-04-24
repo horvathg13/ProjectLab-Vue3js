@@ -117,12 +117,16 @@
         },
 
         showParticipantModal(project){
-          if(this.show_participant_modal === false){
-            this.show_participant_modal = true
-          }
           ServiceClient.getProjectParticipants(project.project_id).then(participants=>{
             this.participants = participants
             this.projectData = project
+            let newUsers=this.getusers.filter((e)=> {
+              return !this.participants.some(participant => participant.userId === e.id);
+            });
+            this.getusers=newUsers
+            if(this.show_participant_modal === false){
+              this.show_participant_modal = true
+            }
           }).catch((error) => {
             if (error.response.data && error.response.data.message) {
               this.message= error.response.data.message
@@ -228,6 +232,8 @@
                 this.tryAgain=false
               this.showParticipantModal(this.projectData)
             });
+            this.getUsers(this.projectData)
+
         },
         EditingModeSwitch(project){
             const {data, switching} = project

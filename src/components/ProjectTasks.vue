@@ -13,6 +13,7 @@
   import Loader from './Common/Loading.vue';
   import {store} from '../VuexStore';
   import EventHandler from "@/components/Common/EventHandler/eventHandler.vue";
+  import * as Promis from "axios";
 
   export default {
     name: "ProjectTasks",
@@ -92,6 +93,10 @@
             this.AttachTask = task.data
             ServiceClient.getActiveEmployees(task.data.task_id).then((employees)=>{
               this.getActiveTaskEmployee = employees
+              let newUsers=this.getusers.filter((e)=> {
+                return !this.getActiveTaskEmployee.some(participant => participant.id === e.userId);
+              });
+              this.getusers=newUsers
               this.show_Attach_Modal = true
             }).catch((error) => {
               this.serverError=error
@@ -167,6 +172,7 @@
                 if(data.remove_employee !== null){
                     this.RemoveData=data.remove_employee;
                 }
+                Promis.all([
                 ServiceClient.assignEmployeeToTask(this.RequestData,this.RemoveData,this.AttachTask.task_id,this.$route.params.id).then((success)=>{
                   this.show_popup = true
                   setTimeout(() => {
@@ -185,14 +191,27 @@
                     this.serverError=error
                     this.show_error_popup=true
                   }
-                })
+                }),
+                ServiceClient.getProjectParticipants(this.$route.params.id).then(participants=>{
+                  this.getusers = participants
+                }).catch((error) => {
+                  if (error.response.data && error.response.data.message) {
+                    this.message= error.response.data.message
+                    this.show_error_popup = true
+                  }
+                }),
                 ServiceClient.getActiveEmployees(this.AttachTask.task_id).then((employees)=>{
                   this.getActiveTaskEmployee = employees
+                  let newUsers=this.getusers.filter((e)=> {
+                    return !this.getActiveTaskEmployee.some(participant => participant.id === e.userId);
+                  });
+                  this.getusers=newUsers
                   this.show_Attach_Modal = true
                 }).catch((error) => {
                   this.serverError=error
                   this.show_error_popup=true
                 })
+                ])
             },
 
             getProjectsById(){

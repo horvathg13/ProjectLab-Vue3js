@@ -483,6 +483,7 @@
                     this.getTasks();
                   },  1500)
                 }).catch(error=>{
+                  this.loader = false;
                   if(error.response){
                     this.serverError=error
                     this.show_error_popup=true

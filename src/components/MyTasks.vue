@@ -103,7 +103,6 @@ export default{
             this.getProjectParticipants().then(()=>{
               const{data} = task
               this.AttachTask = task.data.taskData
-              console.log(this.AttachTask)
               ServiceClient.getActiveEmployees(this.AttachTask.id).then((employees)=>{
                 this.getActiveTaskEmployee = employees
                 let newUsers=this.getusers.filter((e)=> {
@@ -136,7 +135,6 @@ export default{
           this.closeErrorModal()
           this.tryAgain=true;
           const { task } = data
-          console.log(this.ActualTaskData);
           ServiceClient.createTask(this.ActualTaskProjectData.project_id, task.name, task.deadline, task.description, task.priority, task.id).then((success)=>{
             this.show_popup = true
             setTimeout(() => {
@@ -230,10 +228,10 @@ export default{
           });
         },
         
-        EditingModeSwitch(kiskutya){
-            const {data, switching} = kiskutya
-            this.Editdata = kiskutya.data
-            this.EditMode = kiskutya.switching;
+        EditingModeSwitch(task){
+            const {data, switching} = task
+            this.Editdata = task.data.taskData
+            this.EditMode = task.switching;
             this.show_Create_Task_Modal =true
         },
         commentModalSwitch(task){

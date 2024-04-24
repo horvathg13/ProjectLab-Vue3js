@@ -187,12 +187,10 @@
                 }),
                 ServiceClient.getActiveEmployees(this.AttachTask.task_id).then((employees)=>{
                   this.getActiveTaskEmployee = employees
-                  console.log(this.getusers);
                   let newUsers=this.getusers.filter((e)=> {
                     return !this.getActiveTaskEmployee.some(participant => participant.id === e.userId);
                   });
                   this.getusers=newUsers
-                  console.log(employees, newUsers)
                   this.show_Attach_Modal = true
                 }).catch((error) => {
                   this.serverError=error

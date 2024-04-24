@@ -89,7 +89,7 @@ export default{
                 <img src="../assets/HomeP_icons/my_projects.png">
                 </div>
                 <div class="content">
-                    <div class="header">Projects</div>
+                    <div><h3>Projects</h3></div>
                 
                 </div>
             </div>
@@ -102,7 +102,7 @@ export default{
                 <img src="../assets/HomeP_icons/tasks.png">
                 </div>
                 <div class="content">
-                    <div class="header">Tasks</div>
+                    <div><h3>Tasks</h3></div>
                    
                 </div>
             </div>
@@ -111,7 +111,7 @@ export default{
                 <img src="../assets/HomeP_icons/temporary_lock.jpg">
                 </div>
                 <div class="content">
-                    <div class="header">STOP!</div>
+                    <div><h3>STOP!</h3></div>
                    
                 </div>
             </div>

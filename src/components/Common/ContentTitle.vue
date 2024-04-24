@@ -21,9 +21,7 @@ export default{
             this.message = newValue.length;
         },
         '$store.state.userRole'(newValue){
-           
             this.userRole = newValue;
-          
         },
         '$store.state.managerNotifications'(newValue) {
             this.manager = newValue;

@@ -11,7 +11,7 @@ class ServiceClient {
                 Authorization: 'Bearer ' + window.localStorage.getItem('token') || '',
             }
         }).catch(error => {
-            if (error?.response?.data?.message === "Wrong number of segments") {
+            if (error?.response?.data?.message === "Token has expired") {
                 localStorage.removeItem("token");
                 store.commit("deleteUserData");
                 store.commit("deleteUserRole");
@@ -29,7 +29,7 @@ class ServiceClient {
                 Authorization: 'Bearer ' + window.localStorage.getItem('token') || '',
             }
         }).catch(error => {
-            if (error?.response?.data?.message === "Wrong number of segments") {
+            if (error?.response?.data?.message === "Token has expired") {
                 localStorage.removeItem("token");
                 store.commit("deleteUserData");
                 store.commit("deleteUserRole");
@@ -46,7 +46,7 @@ class ServiceClient {
                 Authorization: 'Bearer ' + window.localStorage.getItem('token') || '',
             }
         }).catch(error => {
-            if (error?.response?.data?.message === "Wrong number of segments") {
+            if (error?.response?.data?.message === "Token has expired") {
                 localStorage.removeItem("token");
                 store.commit("deleteUserData");
                 store.commit("deleteUserRole");

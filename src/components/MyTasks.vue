@@ -272,6 +272,9 @@ export default{
               if(item.manager){
                 this.projectButtons.manager= item.manager
               }
+              if(item.admin){
+                this.projectButtons.admin= item.admin
+              }
             });
 
             if(this.projectButtons.employee && this.projectButtons.employee.length>0){
@@ -291,6 +294,13 @@ export default{
                 for(let item in this.projectButtons.manager){
                     this.mergedButtons.push(this.projectButtons.manager[item])
                 }
+            }
+            if(this.projectButtons.admin && this.projectButtons.admin.length>0){
+              this.mergedButtons.push(this.projectButtons.admin[8]);
+              this.projectButtons.admin = this.projectButtons.admin.slice(4,7)
+              for(let item in this.projectButtons.admin){
+                this.mergedButtons.push(this.projectButtons.admin[item])
+              }
             }
 
             for (let item in this.unreadMessage.Task) {

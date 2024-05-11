@@ -2,6 +2,7 @@
   import ServiceClient from '../../ServiceClient';
   import ErrorPopup from '../Common/ErrorPopup.vue';
   import EventHandler from "@/components/Common/EventHandler/eventHandler.vue";
+  import {ref} from "vue";
   
 
 export default{
@@ -81,10 +82,13 @@ export default{
               this.loader=false;
               this.messageData=result.messageData;
               this.currentUserId=result.currentUser_id;
+            }).then(()=>{
+              this.$refs.chatbox.scrollTo({top: this.$refs.chatbox.scrollHeight});
+
             }).catch((error)=>{
               this.serverError=error;
               this.show_error_popup=true;
-            })
+            });
         },
         setMessageBackgroundColor(message){
             if(this.NewParticipants.length !== null || this.NewParticipants.length !== undefined || this.NewParticipants.length !== 0){
@@ -140,7 +144,7 @@ export default{
             </div>
                     
             <div class="messagebox">
-                <div class="message content">
+                <div ref="chatbox" class="message content">
                     
                     <div class="ui segment" v-if="loader == true">
                         <div class="ui active dimmer">

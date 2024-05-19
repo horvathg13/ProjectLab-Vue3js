@@ -17,25 +17,17 @@ import VueClickAway from "vue3-click-away";
                 circulardrop:false,
                 //dropdownClasses:false,
                 componentButtons:[],
-                setNewMessage:false
-                
+                setNewMessage:false,
+                disabled:false
             
             }
         },
         watch:{
-            'buttons':{
-                immediate:true,
-                handler(newValue){
-                    this.componentButtons = newValue
-                    
-                }
-            },
             'newMessage':{
                 immediate:true,
                 handler(newValue){
                     this.setNewMessage = newValue
                 }
-
             }
         },
         methods:{
@@ -46,7 +38,6 @@ import VueClickAway from "vue3-click-away";
             },
             onClickAway(){
                 this.circulardrop = false
-                this.componentButtons = []
             },
             circularMenuDropdown(){
                 this.circulardrop = !this.circulardrop
@@ -93,6 +84,12 @@ import VueClickAway from "vue3-click-away";
             DataSaveLeaveProjectEmit(){
                 this.$emit("DataSaveLeaveProjectEmit",{data:this.data, str:'leaveProject'})
             },
+            setButtonDisabled(){
+              this.disabled=true
+              setTimeout(()=>{
+                this.disabled=false
+              },1500);
+            }
         },
         mounted(){
            
@@ -101,10 +98,10 @@ import VueClickAway from "vue3-click-away";
 </script>
 
 <template>
-    <button  class="circular ui scrolling dropdown blue icon button" :class="{active: this.circulardrop}" @click="circularMenuDropdown" v-click-away="onClickAway" >
+    <button  class="circular ui scrolling dropdown blue icon button" :class="{active: this.circulardrop}" @click="circularMenuDropdown" v-click-away="onClickAway" @dblclick="setButtonDisabled" :disabled="disabled">
         <i class="ellipsis horizontal icon"></i>
         <div ref="dropdown" class="menu"  :class="{ active: this.circulardrop }" >
-            <div  class="item" v-for="button in componentButtons" :key="button.label"><button :class="button.class" @click="handleClick(button.onclick)"><i :class="button.icon.primary ? button.icon.primary:button.icon"></i><div v-html="button.label"></div><i :class="button.icon.secoundary ? button.icon.secoundary:none" v-if="setNewMessage==true"></i></button></div>
+            <div  class="item" v-for="(button, index) in buttons" :key="index"><button :class="button.class" @click="handleClick(button.onclick)"><i :class="button.icon.primary ? button.icon.primary:button.icon"></i><div v-html="button.label"></div><i :class="button.icon.secoundary ? button.icon.secoundary:none" v-if="setNewMessage==true"></i></button></div>
         </div>
     </button>
 </template>

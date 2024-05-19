@@ -19,9 +19,11 @@ setInterval(() => {
   ServiceClient.post('/api/notifications').then(response => {
     store.commit("getNotifications",response.data);
   });
-  ServiceClient.post('/api/get-manager-notification').then(response => {
-    store.commit("getManagerNotifications",response.data);
-  });
+  if(store?.state?.userRole?.some(i=>i.role==="Manager")){
+    ServiceClient.post('/api/get-manager-notification').then(response => {
+      store.commit("getManagerNotifications",response.data);
+    });
+  }
 }, 30000);
 
 ServiceClient.post('/api/getUserRole').then(response => {

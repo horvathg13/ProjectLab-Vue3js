@@ -222,7 +222,13 @@
                 const {data, switching} = project
                 this.Editdata = project.data
                 this.EditMode = project.switching;
+              if(!this.getmanager.length){
+                this.getManagers().then(()=>{
+                  this.showModal = true
+                })
+              }else{
                 this.showModal = true
+              }
             },
             commentModalSwitch(project){
               const {data} = project;

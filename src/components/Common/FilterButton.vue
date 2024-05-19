@@ -3,7 +3,8 @@ import VueClickAway from 'vue3-click-away';
 
 export default{
     props:{
-        data:Array
+        data:Array,
+        disable:Boolean
     },
     directives:{
         

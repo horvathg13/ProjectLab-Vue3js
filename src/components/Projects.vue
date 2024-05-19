@@ -76,7 +76,10 @@
             dataSave:[],
             tryAgain:null,
             getmanager:[],
-            serverError:''
+            serverError:'',
+            buttonLoader:false,
+            btnDisable:false,
+            filterBtnDisable:false
         }
     },
     watch: {
@@ -110,10 +113,16 @@
             }
         },
         updateModal(){
+            this.btnDisable=true
             this.Editdata = null
-            if(this.showModal==false){
+            this.buttonLoader=true
+            this.getManagers().then(()=>{
+              if(this.showModal===false){
+                this.buttonLoader=false
+                this.btnDisable=false
                 this.showModal = true
-            }
+              }
+            })
         },
 
         showParticipantModal(project){
@@ -180,8 +189,8 @@
         },
 
         getManagers(){
-            ServiceClient.getManagers().then(managers=>{
-              this.getmanager=managers
+            return ServiceClient.getManagers().then(managers=>{
+              return this.getmanager=managers
             }).catch((error) => {
               if (error.response.data && error.response.data.message) {
                 this.show_error_popup = true
@@ -454,6 +463,12 @@
           this.serverError=[]
           this.message=''
           this.errorArray=[]
+        },
+        doubleClickHandle(){
+          this.btnDisable=true;
+          setTimeout(()=>{
+            this.btnDisable=false;
+          },1500);
         }
     },
     beforeRouteEnter(to, from, next) {
@@ -469,7 +484,6 @@
     },
     mounted(){
         this.getProjects()
-        this.getManagers();
     }
     }
 
@@ -506,7 +520,10 @@
                                 <th></th>
                                 <th></th>
                                 <th>
-                                <button v-if="SetAddNewUser" class="ui small primary labeled icon button" @click="updateModal"><i class="folder open icon"></i>Add</button></th>
+                                  <button v-if="SetAddNewUser" @dblclick="doubleClickHandle" :disabled="btnDisable" class="ui small primary labeled icon button" @click="updateModal"><i :class= "[buttonLoader ? 'loading spinner icon':'folder open icon']"></i>
+                                    Add
+                                  </button>
+                                </th>
                                 
                             </tr>
                         </thead>

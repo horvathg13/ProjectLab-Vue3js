@@ -110,13 +110,13 @@ class ServiceClient {
     }
 
     static banUser(id){
-        return this.post(`/api/ban-user/${id}`).then((response)=>{
+        return this.post("/api/ban-user",{userId:id}).then((response)=>{
                return this.getUsers()
         })
     }
 
     static passwordResetManual(id){
-        return this.post(`/api/password-reset-manual/${id}`);
+        return this.post("/api/password-reset-manual", {userId:id});
     }
 
     static userToRole(user_id, selectedRole, remove){
@@ -301,6 +301,11 @@ class ServiceClient {
     }
     static getManagedTasks(){
         return this.post("/api/managed-completed-tasks").then((response)=>{
+            return response.data
+        })
+    }
+    static buttonAuth(projectId){
+        return  ServiceClient.post('/api/buttonAuth', {projectId: projectId}).then((response)=>{
             return response.data
         })
     }

@@ -121,6 +121,14 @@ export const store = createStore({
                     permissions: ["employee", "manager"]
                 },
                 {
+                    label: "Edit",
+                    emit: {"event": "showParticipantModal", "data": null, "switching": true},
+                    class: "ui normal violet button item",
+                    icon: "edit icon",
+                    onclick: "EditEmit",
+                    permissions: ["admin", "manager"]
+                },
+                {
                     label:"Task Details",
                     class:"ui small orange button item",
                     icon:"ui tasks icon",

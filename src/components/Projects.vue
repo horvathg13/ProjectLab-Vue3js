@@ -266,69 +266,24 @@
         },
         getButtons(project){
             this.projectData = project
-            ServiceClient.getButtons(project.project_id).then((buttons)=>{
-              this.projectButtons = {};
-              this.mergedButtons = [];
+            this.mergedButtons=[];
+            ServiceClient.buttonAuth(project.project_id).then((rights)=>{
+              let isHaveGlobalManagerRole= store.state.userRole.some(i=>i.role==="Manager");
+              let isHaveGlobalAdminRole=store.state.userRole.some(i=>i.role==='Admin');
+              let isHaveGlobalEmployeeRole=store.state.userRole.some(i=>i.role==="Employee");
 
-              buttons.map((item)=>{
-                if(item.employee){
-                  this.projectButtons.employee= item.employee
-                }
-                if(item.manager){
-                  this.projectButtons.manager= item.manager
-                }
-                if(item.admin){
-                  this.projectButtons.admin= item.admin
-                }
-              })
-
-              if(this.projectButtons.employee && this.projectButtons.employee.length>0){
-                if(!(this.projectButtons.manager && this.projectButtons.manager.length>0)){
-                  this.mergedButtons.push(this.projectButtons.employee[5])
-                }
-                this.projectButtons.employee = this.projectButtons.employee.slice(0,2)
-
-                for(let item in this.projectButtons.employee){
-                  this.mergedButtons.push(this.projectButtons.employee[item])
-                }
+              if(isHaveGlobalManagerRole && rights.manager || isHaveGlobalAdminRole){
+                this.mergedButtons.push(...store.state.PROJECT.MANAGERBUTTONS)
               }
-              if(this.projectButtons.admin && this.projectButtons.admin.length>0){
-                this.projectButtons.admin = this.projectButtons.admin.slice(3,8)
-                for(let item in this.projectButtons.admin){
-                  this.mergedButtons.push(this.projectButtons.admin[item])
-                }
+              if(isHaveGlobalEmployeeRole && rights.employee && !isHaveGlobalAdminRole){
+                this.mergedButtons.push(...store.state.PROJECT.EMPLOYEEBUTTONS)
               }
-              if(this.projectButtons.manager && this.projectButtons.manager.length>0){
-                this.mergedButtons.push(this.projectButtons.manager[0])
-                this.projectButtons.manager=this.projectButtons.manager.slice(2)
-                for(let item in this.projectButtons.manager){
-                  this.mergedButtons.push(this.projectButtons.manager[item])
-                }
-              }
-              let foundMatch=false
-              for (let item of this.unreadMessage.Project) {
-                for(let i in Object.values(item)){
-                  if(Object.values(item)[i] == project.project_id){
-                    this.newMessage = true;
-                    foundMatch=true
-                    break;
-                  }else{
-                    this.newMessage = false;
-                  }
-                  if(foundMatch==true){
-                    break;
-                  }
-                }
-                if(foundMatch==true){
-                  break;
-                }
-              }
-            }).catch((error) => {
+            }).catch(error=>{
               if(error.response){
                 this.serverError=error;
                 this.show_error_popup = true
               }
-            });
+            })
         },
         SwitchStatusModal(statusData){
             const{data}=statusData

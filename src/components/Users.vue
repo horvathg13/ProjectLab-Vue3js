@@ -31,6 +31,29 @@ import {store} from '../VuexStore'
             message:"",
             serverError:'',
             errorArray:[],
+            buttons: [
+              {
+                label: "Ban User",
+                emit: { "event": "DataSave", "data": null, "str": "BanUser" },
+                class: "ui small red button item",
+                icon: "ui close icon",
+                onclick: "DataSaveEmit",
+              },
+              {
+                label: "Roles",
+                emit: { "event": "DataSaveRolesEmit", "data": null, "str": "open_show_role_selector_modal" },
+                class: "ui small purple button item",
+                icon: "ui balance scale icon",
+                onclick: "DataSaveRolesEmit"
+              },
+              {
+                label: "Reset<br> password",
+                emit: { "event": "DataSaveResetPassword", "data": null, "str": "PasswordResetManual" },
+                class: "ui small orange button item",
+                icon: "ui key icon",
+                onclick: "DataSaveResetPasswordEmit"
+              }
+            ],
 
             /*Popup Control*/
             showModal:false,
@@ -250,18 +273,6 @@ import {store} from '../VuexStore'
               this.func = user.str
               this.triggerModal= true
           },
-
-          getUsersButton(user){
-              ServiceClient.getUsersButton().then(buttons=>{
-                this.adminbuttons= buttons
-              }).catch((error) => {
-                if (error.response && error.response.status) {
-                  this.serverError=error;
-                  this.show_error_popup = true;
-                }
-              });
-          },
-
           closeErrorModal(){
             this.show_error_popup=false
             this.serverError='';
@@ -321,8 +332,7 @@ import {store} from '../VuexStore'
                                 <td>{{user.roles}}</td>
                                 <td>
                                     <CircularMenu
-                                    @click="getUsersButton(user)"
-                                    :buttons="this.adminbuttons"
+                                    :buttons="this.buttons"
                                     :data="user"
                                     :component="this.$route.name"
                                     @DataSaveEmit="DataSave"

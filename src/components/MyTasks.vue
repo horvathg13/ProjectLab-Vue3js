@@ -259,86 +259,25 @@ export default{
           })
         },
         getButtons(task){
-            this.ActualTaskData = task.taskData;
-            this.ActualTaskProjectData=task.projectData;
-          ServiceClient.getButtons(task.projectData.project_id).then(buttons=>{
-            this.projectButtons = {};
-            this.mergedButtons = [];
+          this.ActualTaskData = task.taskData;
+          this.ActualTaskProjectData=task.projectData;
+          this.mergedButtons=[];
+          ServiceClient.buttonAuth(this.ActualTaskProjectData.project_id).then((rights)=>{
+            let isHaveGlobalManagerRole= store.state.userRole.some(i=>i.role==="Manager");
+            let isHaveGlobalAdminRole=store.state.userRole.some(i=>i.role==='Admin');
+            let isHaveGlobalEmployeeRole=store.state.userRole.some(i=>i.role==="Employee");
 
-            buttons.map((item)=>{
-              if(item.employee){
-                this.projectButtons.employee= item.employee
-              }
-              if(item.manager){
-                this.projectButtons.manager= item.manager
-              }
-              if(item.admin){
-                this.projectButtons.admin= item.admin
-              }
-            });
-
-            if(this.projectButtons.employee && this.projectButtons.employee.length>0){
-                for(let item in this.projectButtons.employee){
-                    if(this.projectButtons.employee[item].label === 'Completed' && this.ActualTaskData.status === 'Completed'){
-                        let findButton =this.projectButtons.employee.indexOf(this.projectButtons.employee[item]);
-                        this.projectButtons.employee.splice(findButton,1)
-                    }
-                }
-                this.mergedButtons.push(this.projectButtons.employee[1])
-                this.mergedButtons.push(this.projectButtons.employee[3])
-                this.mergedButtons.push(this.projectButtons.employee[4])
+            if(isHaveGlobalManagerRole && rights.manager || isHaveGlobalAdminRole){
+              this.mergedButtons.push(...store.state.TASKS.MANAGERBUTTONS)
             }
-
-            if(this.projectButtons.manager && this.projectButtons.manager.length>0){
-                this.projectButtons.manager = this.projectButtons.manager.slice(1)
-                for(let item in this.projectButtons.manager){
-                    this.mergedButtons.push(this.projectButtons.manager[item])
-                }
+            if(isHaveGlobalEmployeeRole && rights.employee && !isHaveGlobalAdminRole){
+              this.mergedButtons.push(...store.state.TASKS.EMPLOYEEBUTTONS)
             }
-            if(this.projectButtons.admin && this.projectButtons.admin.length>0){
-              this.mergedButtons.push(this.projectButtons.admin[8]);
-              this.projectButtons.admin = this.projectButtons.admin.slice(4,7)
-              for(let item in this.projectButtons.admin){
-                this.mergedButtons.push(this.projectButtons.admin[item])
-              }
+          }).catch(error=>{
+            if(error.response){
+              this.serverError=error;
+              this.show_error_popup = true
             }
-
-            for (let item in this.unreadMessage.Task) {
-                const keys = Object.keys(this.unreadMessage.Task[item]);
-
-                if (
-                    this.unreadMessage.Task[item][keys[0]] === task.task_id &&
-                    this.unreadMessage.Task[item][keys[1]] == this.ActualTaskProjectData.project_id
-                ) {
-                    this.newMessage = true;
-                } else {
-                    this.newMessage = false;
-                }
-            }
-            let foundMatch = false;
-            for (let item of this.unreadMessage.Task) {
-                const values = Object.values(item);
-                for (let i = 0; i < values.length - 1; i++) {
-                    if (values[i] == task.id && values[i + 1] == task.projectId) {
-                        this.newMessage = true;
-                        foundMatch = true
-                        break;
-                    }else{
-                        this.newMessage = false;
-                    }
-                    if(foundMatch == true){
-                        break;
-                    }
-                }
-                if(foundMatch == true){
-                    break;
-                }
-            }
-          }).catch((error) => {
-              if (error.response && error.response.status) {
-                this.serverError=error
-                this.show_error_popup=true
-              }
           });
         },
         SwitchStatusModal(task){

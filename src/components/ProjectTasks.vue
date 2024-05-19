@@ -331,81 +331,24 @@
             },
             getButtons(task){
               this.ActualTaskData = task;
-              ServiceClient.getButtons(this.$route.params.id).then(buttons=>{
-                 this.projectButtons = {};
-                 this.mergedButtons = [];
+              this.mergedButtons=[];
+              ServiceClient.buttonAuth(this.$route.params.id).then((rights)=>{
+                let isHaveGlobalManagerRole= store.state.userRole.some(i=>i.role==="Manager");
+                let isHaveGlobalAdminRole=store.state.userRole.some(i=>i.role==='Admin');
+                let isHaveGlobalEmployeeRole=store.state.userRole.some(i=>i.role==="Employee");
 
-                  buttons.map((item)=>{
-                    if(item.employee){
-                      this.projectButtons.employee= item.employee
-                    }
-                    if(item.manager){
-                      this.projectButtons.manager= item.manager
-                    }
-                    if(item.admin){
-                      this.projectButtons.admin= item.admin
-                    }
-                  });
-                  if(this.projectButtons.employee && this.projectButtons.employee.length>0){
-                     this.projectButtons.employee = this.projectButtons.employee.slice(1,5)
-                      for(let item in this.projectButtons.employee){
-                          if(this.projectButtons.employee[item].label === 'Completed' && (task.status === 'Completed' || task.status==='Active') && task.mytask===false){
-                              let findButton =this.projectButtons.employee.indexOf(this.projectButtons.employee[item]);
-                              this.projectButtons.employee.splice(findButton,1)
-                          }
-                          if(this.projectButtons.employee[item].label === 'Completed' && task.status === 'Accepted' && task.mytask===true){
-                              let findButton =this.projectButtons.employee.indexOf(this.projectButtons.employee[item]);
-                              this.projectButtons.employee.splice(findButton,1)
-                          }
-                          if(this.projectButtons.employee[item].label === 'Attach To<br> Myself' && task.mytask === true){
-                              let findButton =this.projectButtons.employee.indexOf(this.projectButtons.employee[item]);
-                              this.projectButtons.employee.splice(findButton,1)
-                          }
-                      }
-                      for(let item in this.projectButtons.employee){
-                         this.mergedButtons.push(this.projectButtons.employee[item])
-                      }
-                  }
-
-                  if(this.projectButtons.manager && this.projectButtons.manager.length>0){
-                      this.projectButtons.manager = this.projectButtons.manager.slice(1)
-                      for(let item in this.projectButtons.manager){
-                         this.mergedButtons.push(this.projectButtons.manager[item])
-                      }
-                  }
-                  if(this.projectButtons.admin && this.projectButtons.admin.length>0){
-                      this.mergedButtons.push(this.projectButtons.admin[8]);
-                      this.projectButtons.admin = this.projectButtons.admin.slice(4,7)
-                      for(let item in this.projectButtons.admin){
-                         this.mergedButtons.push(this.projectButtons.admin[item])
-                      }
-                  }
-
-                  let foundMatch = false;
-                  for (let item of this.unreadMessage.Task) {
-                      const values = Object.values(item);
-                      for (let i = 0; i < values.length - 1; i++) {
-                          if (values[i] == task.task_id && values[i + 1] == this.$route.params.id) {
-                              this.newMessage = true;
-                              foundMatch = true
-                              break;
-                          }else{
-                              this.newMessage = false;
-                          }
-                          if(foundMatch == true){
-                              break;
-                          }
-                      }
-                      if(foundMatch == true){
-                          break;
-                      }
-                  }
-              }).catch((error) => {
-                  if (error.response){
-                    this.serverError=error
-                    this.show_error_popup=true
-                  }
-             });
+                if(isHaveGlobalManagerRole && rights.manager || isHaveGlobalAdminRole){
+                  this.mergedButtons.push(...store.state.TASKS.MANAGERBUTTONS)
+                }
+                if(isHaveGlobalEmployeeRole && rights.employee && !isHaveGlobalAdminRole){
+                  this.mergedButtons.push(...store.state.TASKS.EMPLOYEEBUTTONS)
+                }
+              }).catch(error=>{
+                if(error.response){
+                  this.serverError=error;
+                  this.show_error_popup = true
+                }
+              })
             },
             SwitchStatusModal(statusData){
               const{data}=statusData

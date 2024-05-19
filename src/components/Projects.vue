@@ -334,11 +334,14 @@
             }
         },
         getFilterData(){
-            ServiceClient.getStatus(null, null).then(statuses=>{
-              this.statusDataTravel= statuses.map((u)=>({id: u.id, name: u.p_status}))
-            }).catch(error=>{
-              this.serverError=error
-              this.show_error_popup=true
+            this.filterBtnDisable=true
+            ServiceClient.getStatus(null, null).then(statuses => {
+              this.statusDataTravel = statuses.map((u) => ({id: u.id, name: u.p_status}))
+              this.filterBtnDisable=false
+            }).catch(error => {
+              this.serverError = error
+              this.show_error_popup = true
+              this.filterBtnDisable=false
             })
         },
         filter(selectData){
@@ -515,7 +518,7 @@
                                 <th>ID</th>
                                 <th>Manager</th>
                                 <th>Title</th>
-                                <th>Status <Filter :data="this.statusDataTravel" @select="filter" @deleteSelected="clearFilter" @click="getFilterData"></Filter></th>
+                                <th>Status <Filter :disable="filterBtnDisable" :data="this.statusDataTravel" @select="filter" @deleteSelected="clearFilter" @click="getFilterData"></Filter></th>
                                 <th>Deadline <Sort :data="this.taskData" :sortKey="'deadline'" @sorted="Sort" @deleteSelected="clearFilter"></Sort></th>
                                 <th></th>
                                 <th></th>

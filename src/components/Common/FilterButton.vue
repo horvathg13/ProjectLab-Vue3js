@@ -57,12 +57,11 @@ export default{
 </script>
 
 <template>
-   
-    <div class="ui floating small icon dropdown button" :class="{labeled:Object.keys(selected).length>0, loading:loader}" @click="toggleDropdown" >
+   <div class="ui floating small icon dropdown button" :class="{labeled:Object.keys(selected).length>0, loading:loader, disabled:disable}" @click="toggleDropdown" >
         <i class="filter icon"></i>
         <label><div class="selected-text" v-for="select in selected" :key="select.id">{{ select.name ? select.name:""  }} </div></label>
-        <!--<span class="text">Filter</span>-->
-        <div class=" menu" :class="{active:isDropdownOpen}"  >
+
+        <div class=" menu" :class="{active:isDropdownOpen && disable===false}"  >
             <div class="header item" @click="deleteSelected" v-if="this.SelectCompData.length>0">
                 Clear <i class="trash icon"></i>
             </div>

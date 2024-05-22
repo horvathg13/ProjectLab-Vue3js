@@ -209,7 +209,7 @@ export default{
 <template>
     <div class="header">
         <a href="/home"><div class="logo">
-            <img src="../assets/RegP_icons/lab-nobg.png">
+            <img src="../assets/RegP_icons/lab-nobg_v2.png">
             <h1><span>Pro</span>ject-Lab</h1>
         </div></a>
         <Transition name="drop">

@@ -76,7 +76,7 @@ export default{
         </div>  
         <div class="content-container">
         <div class="HP-title">
-            <h1>Welcome on the board, manager!</h1>
+            <h3>Welcome to your dashboard, manager!</h3>
         </div>
         
         <div class="ui link cards">
@@ -130,7 +130,7 @@ export default{
     .card-icon{
        position: absolute;
        z-index: 9;
-       left: calc(180px - 19.5%);
+       left: calc(180px - 22%);
        background-color: black;
        height: 35px;
        border-radius: 3px !important;

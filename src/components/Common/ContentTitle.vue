@@ -118,39 +118,33 @@ export default{
     .message-container{
         margin-right: 5px;
     }
-    /*.message-container.manager{
-        left:42%;
-    }*/
     .notifications-container{
         display: flex;
         width: 400px;
         min-width: 100px;
     }
-    @media screen and (max-width:800px ){
+    @media screen and (max-width:1080px ){
       .notifications-container{
-        //display: grid;
         height: 35px;
-        width: 50%;
-        flex-flow: row-reverse;
+        width: 100%;
         display: inline-flex;
       }
       .ui.label{
         top: 5px;
       }
       .breadcrumb-container{
-        //display: grid;
-        width: 50%;
-        text-align: center;
+        width: 100%;
         display: inline-block;
-        height: 35px;
-        margin: 10px;
+        padding:10px;
+        height: fit-content;
       }
       .ui.large.breadcrumb{
         height: 25px !important;
         top: 5px !important;
+        left:5% !important;
       }
       .breadcrumb-container{
-        width: fit-content;
+        /*width: fit-content;*/
       }
       .content-title-container{
         display: block !important;
@@ -162,11 +156,15 @@ export default{
         z-index: 999;
         display: flex;
         justify-content: space-around;
-        background-color: #00000019;
+        background-color: #0000002b;
     }
     .content-title{
       width: 400px;
       min-width: 200px;
+    }
+    .message-container{
+      left: 5% !important;
+
     }
     .message-container a {
         opacity: unset;
@@ -186,20 +184,21 @@ export default{
 }
 
 .ui.large.breadcrumb{
-    max-width: max-content;
-    height: 50px;
-    left:calc(100% - 80%);
-    top:35px;
+  max-width: max-content;
+  left:calc(100% - 80%);
+  top: 25px;
 }
 .ui.breadcrumb a.section{
-    color:white;
+  color:white !important;
+  font-weight: normal !important;
 }
 .ui.breadcrumb .icon.divider{
-    color:white;
+  color:white;
 }
 .ui.large.breadcrumb{
-    color: lawngreen;
-    font-weight: bold;
+  color: white !important;
+  font-weight: bold;
+  letter-spacing: .5px;
 }
 
 

@@ -38,9 +38,7 @@ export default{
         },
         '$store.state.userRole'(newValue) {
             this.userRole = newValue;
-            
         }
-
     },
    
     computed: {
@@ -226,15 +224,15 @@ export default{
             <Transition name="mobileMenuTransition">
               <div class="menu" v-if="this.openMenu===true && !buttonLockControll">
                 <div class="closeBtn"><i class="close icon" @click="this.openMobileMenu()"></i></div>
-                  <li  @click="home(); openMobileMenu()">Home</li>
-                  <li v-if="adminButtonControll" @click="users(); openMobileMenu()">Users</li>
-                  <li  @click="notifications(); openMobileMenu()">Notifications</li>
-                  <li  @click="projects(); openMobileMenu()">Projects</li>
-                  <li  @click="fprojects(); openMobileMenu()">Favorite Projects</li>
-                  <li  @click="mytasks(); openMobileMenu()">My Tasks</li>
-                  <li v-if="managerButtonControll" @click="managerDb(); openMobileMenu()">Manager</li>
-                  <li  @click="profileModalSwitch(); openMobileMenu()">{{userData.name}}</li>
-                  <li  @click="logOut(); openMobileMenu()">Logout</li>
+                <router-link to="/home"><li @click="openMobileMenu">Home</li></router-link>
+                <router-link to="/users"><li @click="openMobileMenu" v-if="adminButtonControll">Users</li></router-link>
+                <router-link to="/notifications"><li @click="openMobileMenu"  >Notifications</li></router-link>
+                <router-link to="/projects"><li @click="openMobileMenu">Projects</li></router-link>
+                <router-link to="/favorite-projects"><li @click="openMobileMenu">Favorite Projects</li></router-link>
+                <router-link to="/my-tasks"><li @click="openMobileMenu">My Tasks</li></router-link>
+                <router-link to="/manager-dashboard"><li @click="openMobileMenu" v-if="managerButtonControll" >Manager</li></router-link>
+                <li @click="profileModalSwitch(); openMobileMenu()">{{userData.name}}</li>
+                <li @click="logOut(); openMobileMenu()">Logout</li>
                   <!--<li v-if="lockMode==false">Statistics</li>-->
               </div>
             </Transition>
@@ -242,13 +240,13 @@ export default{
 
         <div class="header-items" v-if="!buttonLockControll">
             <ul>
-                <li  @click="home">Home</li>
-                <li v-if="adminButtonControll" @click="users">Users</li>
-                <li  @click="notifications">Notifications</li>
-                <li  @click="projects">Projects</li>
-                <li @click="fprojects">Favorite Projects</li>
-                <li  @click="mytasks">My Tasks</li>
-                <li v-if="managerButtonControll" @click="managerDb">Manager</li>
+              <router-link to="/home"><li>Home</li></router-link>
+              <router-link to="/users"><li v-if="adminButtonControll">Users</li></router-link>
+              <router-link to="/notifications"><li  >Notifications</li></router-link>
+              <router-link to="/projects"><li >Projects</li></router-link>
+              <router-link to="/favorite-projects"><li >Favorite Projects</li></router-link>
+              <router-link to="/my-tasks"><li >My Tasks</li></router-link>
+              <router-link to="/manager-dashboard"><li v-if="managerButtonControll" >Manager</li></router-link>
                 <!--<li v-if="lockMode==false">Statistics</li>-->
             </ul>
         </div>

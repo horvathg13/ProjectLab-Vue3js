@@ -65,17 +65,22 @@
     width: 500px;
     margin: auto;
     border-radius: 20px;
-    padding:20px
+    padding:20px;
+    }
+    @media screen and (max-width: 420px){
+      .modal .form-container{
+        left: 5% !important;
+      }
     }
     .ui.input{
         width: 500px;
         height: auto;
     }
     .form-container{
-        height: 250px;
+        height: 100px;
         display: inline-flex;
-        left:15%;
-        
+        width: 100%;
+        left: 15%;
     }
     .header{
         text-align: center;

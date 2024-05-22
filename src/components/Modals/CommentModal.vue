@@ -31,6 +31,7 @@ export default{
             loader:true,
             buttonDisable:false,
             serverError:'',
+            mobileParticipants:false,
         }
     },
     watch:{
@@ -108,6 +109,9 @@ export default{
           this.show_error_popup=false
           this.serverError=[]
           this.errorMessage=''
+        },
+        openMobileParticipantMenu(){
+          this.mobileParticipants=!this.mobileParticipants
         }
     },
     mounted(){
@@ -133,7 +137,19 @@ export default{
                 <span>{{participant.name}}</span>
             </div>
         </div>
-            
+        <div class="mobile-participants" @click="openMobileParticipantMenu">
+          <h1>P</h1>
+        </div>
+        <div class="mobile-participants-menu modal" v-if="this.mobileParticipants">
+          <div class="close-container">
+            <i class="close large red icon" @click="openMobileParticipantMenu"></i>
+          </div>
+            <div class="header"><h1>Participants</h1></div>
+            <div class="card participants" v-for="participant in this.NewParticipants" :key="participant.id">
+              <div class="avatar" :style="{backgroundColor: participant.color}" ><h1>{{participant.name.charAt(0).toUpperCase()}}</h1></div>
+              <span>{{participant.name}}</span>
+            </div>
+        </div>
         <div class="modal"> 
             <div class="close-container">
                 <i class="close large red icon" @click="cancelModal"></i>
@@ -354,6 +370,36 @@ export default{
         min-width: 200px;
         width:250px;
         overflow: auto;
+    }
+    @media screen and (max-width: 650px){
+      .modal.participants{
+        display: none;
+      }
+      .mobile-participants{
+        position: fixed;
+        top:10px;
+        left: 3px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        z-index: 999999;
+        background: rgb(35, 109, 206);
+        color: white;
+        border:1px solid #bebef5;
+        cursor: pointer;
+        box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.7);
+      }
+      .mobile-participants h1{
+        margin: 20% auto;
+        text-align: center;
+      }
+      .mobile-participants-menu{
+        position: fixed;
+        top:0;
+        z-index: 999999;
+        width: 95%;
+        height: fit-content;
+      }
     }
     .ui.input{
         width: 500px;

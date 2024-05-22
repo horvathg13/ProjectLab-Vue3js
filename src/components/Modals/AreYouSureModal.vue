@@ -29,26 +29,16 @@
                 <div class="header">
                     <i class="exclamation huge triangle icon"></i>
                     <h2>Are You Sure?</h2>
-                    
                 </div>
-          
-              
                 <div class="forms">
-
                     <div class="form-container">
                         <div class="cancel">
                             <button class="ui big green button" @click="response(true)">Yes</button>
                             <button class="ui big red button" @click="response(false)">No</button>
                         </div>
-                        
                     </div>
-                   
-                    
-                    
               </div>
-              
             </div>
-            
       </div>
 </template>
 
@@ -67,7 +57,6 @@
     background-color: #221e1eda;
     width: 100%;
     min-height: calc(100vh - 55px);
-    
     }
 
     .modal {
@@ -88,7 +77,6 @@
         left:15%;
         
     }
-
     .header{
         text-align: center;
     }

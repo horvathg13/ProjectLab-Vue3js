@@ -113,7 +113,6 @@ import VueClickAway from "vue3-click-away";
         scrollbar-width: thin;
 
     }
-
     .ui.button.item{
         width: 120px !important;
     }

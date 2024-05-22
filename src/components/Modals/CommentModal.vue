@@ -186,7 +186,7 @@ export default{
                         </div>
                     </div>
                 </div>
-                <div class="ui large  input" :class="{disabled:buttonDisable}">
+                <div class="ui large input" :class="{disabled:buttonDisable}">
                     <input id="input" :class="{disabled:buttonDisable}"  type="text" placeholder="Type message" v-model="InputMessage" @keydown.enter="(e)=>Send(e)">
                     <button class="ui primary button" @click="(e)=>Send(e)" :class="{disabled:buttonDisable}"><i class="ui large paper plane outline icon"></i></button>
                 </div>
@@ -226,7 +226,6 @@ export default{
         color: #fff;
         text-align: center;
         line-height: 40px;
-        
         z-index: 9;
     }
     .avatar.response{
@@ -239,9 +238,6 @@ export default{
         line-height: 40px;
         left: auto;
         right: 0;
-       /** transform:translate(-50%, -50%);
-        top:50%;
-        left:4%**/
     }
     .avatar.message{
         
@@ -274,8 +270,6 @@ export default{
         height:calc(100% - 25%);
         width: auto;
         max-width: 700px;
-        /*overflow: auto;*/
-        
     }
     .message.content{
         overflow: auto;
@@ -304,7 +298,6 @@ export default{
     }
     .message{
         display: flex;
-        margin:5px;
         max-width: 650px;
     }
     .message.response{
@@ -402,8 +395,9 @@ export default{
       }
     }
     .ui.input{
-        width: 500px;
-        height: auto;
+      width: 500px;
+      height: auto;
+      margin: 5px 0;
     }
     .form-container{
         height: 150px;

@@ -6,11 +6,16 @@ html{
 }
 
 #app {
-  background-color: #17351a;
+  background: #233433;
   min-height: 100vh;
 }
 
 /*General CSS Rules*/
+.router-link-active{
+  color: rgb(2, 248, 240) !important;
+  font-weight: bold !important;
+}
+
 .ui.disabled.dropdown{
   opacity: 1;
 }
@@ -35,7 +40,6 @@ html{
   width: 100%;
   background-position: center;
   height: 100vh;
-  filter: blur(21px) grayscale(0.35) hue-rotate(1091deg) brightness(0.85);
   position: fixed;
   top: 0;
   background-size: 100%;
@@ -45,19 +49,17 @@ html{
 }
 
 .background.component{
-  background-image: url("../assets/mozaik-v2.png");
-  
-  
+  background: linear-gradient(20deg, #10312e, #43756e, #56996d);
 }
 
 span{
-  color: rgb(251, 215, 33);
+  color: #19ea26;
   font-weight: bold;
 }
 
 .main-container{
   width: 100%;
-  min-height: calc(100vh - 55px);
+  /*min-height: calc(100vh - 55px);*/
   display: flex;
   height: 100%;
   
@@ -65,7 +67,6 @@ span{
 
 .form-container{
   color: white;
-  /*width: 500px;*/
   height: auto;
   margin:auto;
   width: auto;
@@ -97,8 +98,6 @@ form{
   max-height: 100%;
   min-width: 50%;
   width: 100%;
-  /*height: calc(100% - 90px);*/
-  /*background-color: #00000050;*/
   height: 100%;
 
 }
@@ -119,8 +118,6 @@ form{
   padding: 0.7em ;
   text-align: center;
   max-width: 200px;
-  /*min-width: 100px;*/
-  /*overflow: auto;*/
   text-overflow: ellipsis;
   padding:15px
 }
@@ -142,12 +139,11 @@ form{
 
 .content-container{
   width: 100%;
-  min-height:calc(100vh - 55px) ;
+  /*min-height:calc(100vh - 55px) ;*/
 }
 .content-title{
   z-index: 99;
   padding: 10px;
- /*width: 20%;*/
   border-bottom: rgb(86, 247, 11) 3px solid;
   left: 5%;
   min-width: 20%;
@@ -181,6 +177,9 @@ form{
   font-size:25px
 }
 /*Header*/
+.header .header-items a, .header .mobile-menu .menu a{
+  color: white;
+}
 .ui.buttons:not(.basic):not(.inverted){
   height: 40px;
   top:7px;
@@ -205,52 +204,51 @@ form{
 }
 
 .background.greeting{
-  background-image:url("../assets/GreetingP_icons/labyrinth_v2.jpg");
-  /*filter: blur(17px) grayscale(0.35) hue-rotate(1091deg);*/
-  /*filter: blur(17px) grayscale(0.35) hue-rotate(292deg);*/
-  filter: blur(17px) hue-rotate(282deg);
-
+  background-image:url("../assets/GreetingP_icons/labyrinth_v3.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: grayscale(0.25)hue-rotate(330deg);
 }
 
 .g-header-container{
   color: white;
-  margin-top: 0px;
-  position: absolute;
-  /*top: calc(50% - 300px);*/
   top: calc(45% - 300px);
-  left: 5%;
   z-index: 2;
-  width: 50%;
-  /*height: 75%;*/
+  width: 100%;
   height: fit-content;
-  margin:2% 20%;
+  margin:2% auto;
   text-align: center;
-  /*background-color: #07071970;
-  border-radius: 30px;*/
+  letter-spacing: 1px;
 }
 .g-main-header{
   padding: 10px;
 }
 
 .g-header{
-  /*padding: 70px;*/
   padding:40px
 }
 .g-main-header h1{
-  /*font-size: 110px;*/
-  font-size: 90px;
+  font-size: 75px;
 }
 
 .g-header h2{
-  /*font-size: 35px;*/
   font-size:30px;
 }
 .g-buttons{
-  /*display: flex;
-  margin-left: 30%;*/
   margin:0 auto;
   display: inline-flex;
   padding: 15px;
+}
+@media screen and (max-width: 500px){
+  .g-buttons{
+    display: flex;
+    flex-direction: column;
+  }
+  .g-buttons button{
+    margin: 5px auto !important;
+    width: 50%;
+  }
 }
 .g-buttons a {
   text-decoration: none;
@@ -297,27 +295,30 @@ form{
   margin:auto
 }
 
-
-
 /*Login*/
 
 .background.login{
- /* background-image:url("../assets/LoginP_icons/login_bcgrd_v3.jpg");*/
   background-image: url("../assets/GreetingP_icons/labyrinth_v2.jpg");
   filter: blur(17px) grayscale(0.35) hue-rotate(292deg);
 }
 
 /*Home Page*/
 .background.home{
-  background-image: url("../assets/HomeP_icons/home_doors.jpg");
-  filter: blur(13px);
+  background-size: 60%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("/src/assets/RegP_icons/lab-nobg_v2.png");
+  filter: opacity(0.08);
 }
 .ui.link.cards > .card {
   width: 180px;
   box-shadow: none !important;
   -webkit-box-shadow: none !important;
+  border: 2px solid white;
 }
-
+.ui.link.cards > .card:hover{
+  border: 2px solid #85eca5;
+}
 .ui.cards>.card>.image>img{
   height: 200px;
 }
@@ -325,12 +326,12 @@ form{
   display: flex;
   justify-content: center;
   text-align: center;
-  background-color: rgb(210, 245, 53);
+  background: #ecfafb;
 }
 .HP-title{
   color: white;
-  margin: 0 auto;
-  width: max-content;
+  margin: 30px auto;
+  width: fit-content;
 }
 .HP-title h1{
   font-size: 40px;
@@ -341,8 +342,9 @@ form{
 }
 
 .ui.link.cards{
-  margin: 60px auto;
-  width: fit-content
+  width: 100%;
+  justify-content: center;
+  height: fit-content;
 }
 
 /*Alternative Login*/
@@ -373,4 +375,25 @@ form{
   cursor: pointer;
 }
 
-
+.modal{
+  background: linear-gradient(30deg, #457a5b, #447976) !important;
+  color: white !important;
+  box-shadow: 1px 2px 3px rgba(137, 239, 196, 0.74);
+}
+.modal form .field label{
+  color: white !important;
+}
+.modal form button{
+  background: rgb(35, 109, 206) !important;
+  border:1px solid #bebef5 !important;
+  width: 30%;
+}
+.modal .close-container i.icon{
+  color: rgb(239, 17, 69) !important;
+}
+.modal .participants span{
+  color: white !important;
+}
+input::placeholder{
+  color: rgba(0, 0, 0, 0.8) !important;
+}

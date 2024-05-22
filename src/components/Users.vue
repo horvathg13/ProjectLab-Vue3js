@@ -9,9 +9,8 @@ import ResetPasswordManualModal from './Modals/ResetPasswordManualModal.vue';
 import ContentTitle from './Common/ContentTitle.vue';
 import CircularMenu from './Common/CircularMenu.vue';
 import {store} from '../VuexStore'
-  import EventHandler from "@/components/Common/EventHandler/eventHandler.vue";
-  import serviceClient from "../ServiceClient";
-  import * as Promis from "axios";
+import EventHandler from "@/components/Common/EventHandler/eventHandler.vue";
+
 
   export default {
     components: {

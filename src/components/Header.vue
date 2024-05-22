@@ -294,7 +294,7 @@ export default{
     }
     .mobile-menu .menu{
       position: absolute;
-      background: #bff3c3;
+      background: #375352;
       padding: 25px;
       top: 60px;
       right: 0;
@@ -302,7 +302,7 @@ export default{
       margin-right: auto;
       border-radius: 10px;
       min-width: 200px;
-      border: 1px solid black;
+      border: 1px solid #347978;
       box-shadow: 2px 2px 5px rgba(37, 35, 35, 0.53);
     }
     .mobile-menu .closeBtn{
@@ -321,15 +321,23 @@ export default{
       list-style: none;
       padding: 8px;
       text-align: center;
+      margin: 5px 0;
     }
     .mobile-menu .menu li:hover{
-      transform: scale(1.1);
-      color: white;
-      background: rgba(0, 128, 0, 0.7);
-      align-content: center;
-      border-radius: 5px;
-      font-weight: bold;
       cursor: pointer;
+      color: rgb(2, 248, 240);
+    }
+    .mobile-menu .menu li:hover::after{
+      content: "";
+      width: 100%;
+      background: rgb(2, 248, 240);
+      height: 4px;
+      display: block;
+      position: absolute;
+      bottom: 3px;
+      left: 0;
+      transform: translateX(0px) skewX(-45deg);
+      animation: .3s menuHoverAnim;
     }
     .mobile-menu .menu ul{
       align-items: center;
@@ -346,11 +354,12 @@ export default{
     .header{
         display: flex;
         justify-content: space-between;
-        background-color: rgba(255,255,255,.5);
+        background: #375352;
+        color: white;
+        border-bottom: 1px solid #0dae6a;
     }
     .logo{
         display: flex;
-        /*background-color: yellowgreen;*/
         color:white;
         min-width: 230px;
         border-radius:5px;
@@ -358,27 +367,48 @@ export default{
     }
     .logo h1{
         margin:auto;
-        
     }
     .header img{
         max-width: 70px;
         max-height:60px;
-        /*background-color: yellowgreen;*/
     }
-
+    .header-items ul{
+      display: flex;
+      flex-direction: row;
+      list-style: none;
+      height: 100%;
+    }
     .header-items ul li{
-        display: inline-flex;
-        justify-content: space-between;
-        padding: 15px 30px;
-
+      margin:0 15px;
+      padding:15px;
+      transition: color .3s ease-in-out;
     }
     .header-items ul li:hover{
-        background-color: yellowgreen;
-        cursor: pointer;
-        border-radius: 10px;
-        font-weight: bold;
-        color: white;
+      cursor: pointer;
+      color: rgb(2, 248, 240);
     }
+  .header-items ul li:hover::after{
+    content: "";
+    width: 100%;
+    background: rgb(2, 248, 240);
+    height: 4px;
+    display: block;
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    transform: translateX(0px) skewX(-45deg);
+    animation: .3s menuHoverAnim;
+  }
+  @keyframes menuHoverAnim {
+    0% {
+      transform: translateX(-30%) skewX(-45deg);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0) skewX(-45deg);
+      opacity: 1;
+    }
+  }
     .header-items ul li a{
         text-decoration: none;
         color:black;

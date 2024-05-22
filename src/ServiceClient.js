@@ -72,6 +72,15 @@ class ServiceClient {
     static getNotifications() {
         return this.post('/api/notifications').then(response => {
             store.commit("getNotifications", response.data);
+            return response.data
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+    static getUnreadMessages(){
+        return this.post('/api/get-unread-messages').then(response => {
+            store.commit("setUserData",response.data);
+            return response.data
         }).catch(error => {
             console.log(error);
         });

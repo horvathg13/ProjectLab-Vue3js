@@ -21,6 +21,9 @@ export default{
         '$store.state.notifications'(newValue) {
             this.notifications = newValue
         },
+        '$store.state.unreadMessages'(newValue) {
+          this.unreadMessage = newValue
+        },
         
     },
     computed:{
@@ -29,12 +32,25 @@ export default{
     },
     methods:{
         getUnreadMessages(){
+          if(Object.keys(store.state.unreadMessages).length){
             this.unreadMessage = this.$store.state.unreadMessages
+          }else{
+            ServiceClient.getUnreadMessages().then((unreadMessages)=>{
+              this.unreadMessage=unreadMessages
+            });
+          }
         },
         getNotifications(){
+          if(store.state.notifications !==0){
             this.notifications = this.$store.state.notifications
+          }else{
+            ServiceClient.getNotifications().then((data)=>{
+              this.notifications=data
+            })
+          }
         },
         ShoudShowEnvelope(n){
+          console.log(this.unreadMessage);
             let foundMatch=false
             if(this.unreadMessage.Project !== undefined && n.type == 'Project'){
                 for (let item of this.unreadMessage.Project) {
@@ -89,8 +105,9 @@ export default{
 
     },
     mounted(){
-        this.getNotifications();
-        this.getUnreadMessages();
+      this.getUnreadMessages();
+      this.getNotifications();
+
     },
 }
 </script>

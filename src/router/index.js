@@ -62,35 +62,39 @@ const router = createRouter({
     },
     {
       path: "/projects",
-      name:"Projects",
-      component: Projects,
-      props:true,
-      meta:{breadcrumbs:[
+      children:[
         {
-        breadcrumb: 'Home',
-        path:'/home'
-        }
-      ],
-      requiresAuth: true}
-      
-    },
-    {
-      path: "/projects/:id?/tasks",
-      name:"Tasks",
-      component: ProjectTasks,
-      props:true,
-      meta:{breadcrumbs:[
-        {
-          breadcrumb: 'Home',
-          path:'/home'
+          path: '' ,
+          name:"Projects",
+          component: Projects,
+          props:true,
+          meta:{breadcrumbs:[
+              {
+                breadcrumb: 'Home',
+                path:'/home'
+              }
+            ],
+            requiresAuth: true},
         },
         {
-        breadcrumb: 'Project',
-        path: '/projects'
+          path: ":id?/tasks",
+          name:"Tasks",
+          component: ProjectTasks,
+          props:true,
+          meta:{breadcrumbs:[
+              {
+                breadcrumb: 'Home',
+                path:'/home'
+              },
+              {
+                breadcrumb: 'Project',
+                path: '/projects'
+              }
+            ],
+            requiresAuth: true}
+
         }
-      ],
-      requiresAuth: true}
-      
+      ]
     },
     {
       path:"/notifications",

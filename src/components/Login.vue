@@ -89,32 +89,40 @@
         />
 
         <div class="content-container">
-        <div class="centerd-component-container">
-            
-            <div class="form-container">
-                <div class="form-title">
-                        <h1><span>L</span>og in</h1>
-                </div>
-                <form class="ui big form" @submit.prevent="login" novalidate>
-                    <div class="field">
-                        <label><span>E</span>-mail</label>
-                        <input type="email" name="email" :disabled="disablefield" placeholder="email" v-model="email">
-                    </div>
-                    <div class="field">
-                        <label><span>P</span>assword</label>
-                        <input type="password" name="password" :disabled="disablefield" placeholder="password" v-model="password">
-                    </div>
-                    <button class="big ui green button" type="submit" :disabled="disablefield">Login</button>
-                </form>
-            
-            </div>
-        </div>
+          <div class="form-container login-container">
+              <div class="form-title login-title">
+                      <h1><span>L</span>og in</h1>
+              </div>
+              <form class="ui big form" @submit.prevent="login" novalidate>
+                  <div class="field">
+                      <label><span>E</span>-mail</label>
+                      <input type="email" name="email" :disabled="disablefield" placeholder="email" v-model="email">
+                  </div>
+                  <div class="field">
+                      <label><span>P</span>assword</label>
+                      <input type="password" name="password" :disabled="disablefield" placeholder="password" v-model="password">
+                  </div>
+                  <button class="big ui green button" type="submit" :disabled="disablefield">Login</button>
+              </form>
+          </div>
         </div>
     </div>
 
 </template>
 
 <style scoped>
+    .form-container.login-container{
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+    }
+    .form-title.login-title{
+      text-align: center;
+      width: 100%;
+    }
+    .login-title h1{
+      font-size: 65px !important;
+    }
     .background.login{
         filter: blur(10px) grayscale(0.35) hue-rotate(1091deg);
     }

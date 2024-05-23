@@ -105,7 +105,7 @@
                             :update-selected="clear"></MultipleSelectComponents>
                             
                     
-                            <button class="ui green create button" type="submit" :disabled="buttonDisable">That's it!</button>
+                            <button class="ui green create button" type="submit" :disabled="buttonDisable">OK</button>
                         </form>
                     </div>
                 </div>
